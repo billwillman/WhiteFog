@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Dawn of Defense/Fog preset")]
+[CreateAssetMenu(menuName = "White Fog/Fog preset")]
 public sealed class FogPreset : ScriptableObject
 {
     [Serializable]
