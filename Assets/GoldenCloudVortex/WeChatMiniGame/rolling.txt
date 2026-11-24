@@ -90,8 +90,7 @@ float3 RolledCloud(float2 uv, float2 normalXY, float depth, float cycle, float p
     return color;
 }
 
-// A material preview may still compile a previously imported shader while
-// the shared include is already up to date. Preserve each published entry.
+// Retain the fixed-camera and passage entry points used by older wrappers.
 float3 RolledCloud(float2 uv, float2 normalXY, float cycle, float4 storm)
 {
     return RolledCloud(uv,normalXY,0.0,cycle,0.0,storm);
