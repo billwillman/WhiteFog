@@ -6,3 +6,5 @@
 /.vs/
 *.csproj
 *.sln
+/Assets/CloudFlight/WeChatMiniGame/project.private.config.json
+/Assets/CloudFlight/WeChatMiniGame/project.private.config.json.meta

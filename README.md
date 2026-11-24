@@ -22,6 +22,18 @@
 | [![PC 天气雾色变化](docs/previews/WhiteFog-Weather-PC.webp)](WhiteFog-Weather-PC.mp4) | [![微信天气雾色变化](docs/previews/WhiteFog-Weather-WeChat.webp)](WhiteFog-Weather-WeChat.mp4) |
 | [完整 MP4](WhiteFog-Weather-PC.mp4) | [完整 MP4](WhiteFog-Weather-WeChat.mp4) |
 
+### Mesh 云海穿梭与局部雷光
+
+[![飞机穿过云海中的云洞](Assets/CloudFlight/Media~/CloudFlight-Preview.webp)](Assets/CloudFlight/Media~/CloudFlight-Unity.mp4)
+
+[团结编辑器实录 · 24 秒](Assets/CloudFlight/Media~/CloudFlight-Unity.mp4) · [小游戏渲染器的浏览器 WebGL 预览 · 24 秒](Assets/CloudFlight/Media~/CloudFlight-WebGL.mp4)
+
+打开独立场景 [CloudFlight.unity](Assets/CloudFlight/CloudFlight.unity)，进入 Play 即可沿云海飞行。微信开发者工具选择「小游戏」并导入 [WeChatMiniGame](Assets/CloudFlight/WeChatMiniGame)。轻点屏幕或按空格可切换跟拍距离。录像约 4.2 秒时左侧灰色云壁大范围透亮，约 7.5 秒时左上方云沿再次泛起冷白色雷光。
+
+云顶、两侧云壁和下沿由同一份三维噪波密度场连续生成，围成一圈，中央留出可飞行的通道。稠密云芯使用三角网格，外层使用随密度弯曲的半透明网格。雷光从航线附近有云的位置随机选点，借助自制 MatCap 在附近云层内渐亮、衰减。场景的 Flash Strength 可调整强度，设为 0 可关闭雷光。
+
+两个平台共用烘焙网格、光照和贴图。192 米的航线按 24 米分块循环复用，镜头只提交沿航向可见范围内的分块。小游戏的目标为 30 FPS，横屏渲染上限为 960×540。小游戏录像取自桌面浏览器，手机帧率尚待实测。
+
 ### 运行演示
 
 切换构建目标时，工程自动选择对应演示场景。微信小游戏（MiniGame）和 WebGL 使用移动场景及 WebGL 2，Standalone 使用 PC 场景。可以在桌面编辑器中直接打开任一场景预览。手机上轻点完全开雾，长按松开切换半可见，双指捏合缩放。

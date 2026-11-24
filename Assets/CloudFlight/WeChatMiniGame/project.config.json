@@ -1,0 +1,41 @@
+{
+  "description": "Cloud flight and localized in-cloud flashes",
+  "projectname": "CloudFlight",
+  "setting": {
+    "es6": true,
+    "minified": true,
+    "urlCheck": true,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    }
+  },
+  "miniprogramRoot": "",
+  "packOptions": {
+    "ignore": [
+      {
+        "value": ".meta",
+        "type": "suffix"
+      }
+    ],
+    "include": [
+      {
+        "value": "shaders/volume.txt",
+        "type": "file"
+      },
+      {
+        "value": "art/CloudSea.cloudmesh",
+        "type": "file"
+      }
+    ]
+  },
+  "compileType": "game",
+  "appid": "touristappid",
+  "libVersion": "3.7.5",
+  "condition": {},
+  "editorSetting": {
+    "tabIndent": "insertSpaces",
+    "tabSize": 2
+  }
+}

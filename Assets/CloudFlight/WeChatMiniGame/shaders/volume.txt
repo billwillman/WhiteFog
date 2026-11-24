@@ -1,0 +1,31 @@
+float3 CloudNormal(float2 octa)
+{
+    float2 xy = octa * 2.0 - 1.0;
+    float3 n = float3(xy, 1.0 - abs(xy.x)-abs(xy.y));
+    float fold = max(0.0,-n.z);
+    n.xy += float2(n.x < 0.0 ? fold : -fold,n.y < 0.0 ? fold : -fold);
+    return normalize(n);
+}
+
+float4 SeaCloud(float4 baked, float3 world, float depth, float core, float4 pulse)
+{
+    float3 n = CloudNormal(baked.ba);
+    float2 detailUv=float2(world.x*.067+world.z*(9.0/192.0),world.y*.091-world.z*(11.0/192.0));
+    float4 detail=CLOUD_DETAIL(detailUv);
+    float grain=detail.g-.5;
+    n=normalize(n+float3(detail.b-.5,detail.a-.5,-grain)*.68);
+    float cap = CLOUD_CAP(n);
+    float light = clamp(.045 + 1.03*baked.g + .30*(cap-.62) + grain*.36,0.0,1.0);
+    float3 shadow = float3(.039,.041,.054);
+    float3 pearl = float3(.73,.73,.75);
+    float3 color = lerp(shadow,pearl,light*light*(2.4-1.4*light));
+    float3 offset = (world-pulse.xyz)*float3(.064,.085,.063);
+    float halo = max(0.0,(exp2(-1.65*dot(offset,offset))-.045)/.955);
+    color += float3(.82,.85,1.24)*pulse.w*halo*(.35+.83*cap)*(.60+.4*baked.g);
+    color=lerp(color,float3(.076,.082,.123),smoothstep(29.0,94.0,depth)*.94);
+    float opacity = 1.0-exp2(-baked.r*baked.r*1.57);
+    opacity *= clamp(1.0+grain*1.45,.50,1.38);
+    opacity = min(opacity,.95);
+    opacity *= smoothstep(.2,4.7,depth);
+    return float4(color,lerp(opacity,1.0,core));
+}
