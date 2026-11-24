@@ -1,0 +1,87 @@
+%YAML 1.1
+%TAG !u! tag:yousandi.cn,2023:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: FogOfWar
+  m_Shader: {fileID: 4800000, guid: b0c01ec04027302408025cf349d816f8, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 3006
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BaseClouds:
+        m_Texture: {fileID: 2800000, guid: 6745ceecec2d32d4ba4688fb6b2b0872, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CloudsA:
+        m_Texture: {fileID: 2800000, guid: dc86bf116edd82f4596d42f019107e69, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CloudsB:
+        m_Texture: {fileID: 2800000, guid: dc86bf116edd82f4596d42f019107e69, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AlphaFull: 1
+    - _AlphaHalf: 1
+    - _AlphaMultiply: 1
+    - _AlphaOuter: 0
+    - _AlphaPower: 0.5
+    - _BaseCloudsIntensity: 1.5
+    - _BaseCloudsScale: 0.8
+    - _BaseScale: 3
+    - _BaseSpeed: 0.02
+    - _CloudsAScale: 0.5
+    - _CloudsBScale: 1
+    - _CloudsOpacityHalf: 0.8
+    - _CloudsOpacityOuter: 0.8
+    - _DarkTintFalloff: 0.8
+    - _DetailCloudsPower: 1
+    - _DirectionFalloff: 2
+    - _DirectionIntensity: 1
+    - _DirectionalMaskClouds: 0.35
+    - _DirectionlessMaskIntensity: 0.5
+    - _DisplacementHeight: 1.5
+    - _EmissionStrength: 0.25
+    - _FadeDistanceEdge: 3
+    - _FadeDistanceFull: 6
+    - _FadeDistanceHalf: 3
+    - _FadeDistanceOutside: 0
+    - _FadePower: 2
+    - _FresnelOpacity: 0.35
+    - _FresnelPower: 2.2
+    - _FresnelScale: 2
+    - _OffsetEdge: 1
+    - _OffsetFull: 6
+    - _OffsetHalf: 3
+    - _OffsetOutside: 0.5
+    - _SmoothstepMax: 0.6
+    - _SmoothstepMin: 0
+    m_Colors:
+    - _BaseCloudsRemap: {r: -0.4, g: 1.71, b: 0.08, a: 0.7}
+    - _BaseCloudsSpeed: {r: -0.5, g: -0.8, b: 0, a: 0}
+    - _CloudsASpeed: {r: 0.2, g: 0.1, b: 0, a: 0}
+    - _CloudsBSpeed: {r: -0.15, g: -1, b: 0, a: 0}
+    - _Color: {r: 0.8853191, g: 0.849175, b: 0.81299543, a: 1}
+    - _ColorPeaks: {r: 0.9, g: 0.9416667, b: 1, a: 0}
+    - _ColorValleys: {r: 0.48460788, g: 0.554144, b: 0.6309999, a: 0}
+    - _DarkTint: {r: 0.34587118, g: 0.36391664, b: 0.39699998, a: 0}
+    - _DetailCloudsRemap: {r: 0.16, g: 2, b: -0.2, a: 1}
+    - _Direction: {r: 1, g: 1, b: 1, a: 0}
+    - _DirectionColor: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []

@@ -1,0 +1,25 @@
+#pragma kernel FogOfWar
+struct Cutout { float2 position; float radius; float visibility; };
+StructuredBuffer<Cutout> _Buffer;
+RWTexture2D<float> _Mask;
+int _Count, _Size, _Resolution;
+float2 _Origin;
+float _FullRadius, _HalfRadius, _OuterRadius, _FullBlend, _HalfBlend, _OuterBlend;
+
+[numthreads(8,8,1)]
+void FogOfWar(uint3 id : SV_DispatchThreadID)
+{
+    float2 uv = (id.xy + 0.5) / _Resolution;
+    float2 world = (uv - 0.5) * _Size + _Origin;
+    float3 bands = 0;
+    for (int i = 0; i < _Count; ++i)
+    {
+        Cutout cut = _Buffer[i];
+        float3 radii = cut.radius * float3(_FullRadius, _HalfRadius, _OuterRadius);
+        float3 blend = float3(_FullBlend, _HalfBlend, _OuterBlend);
+        float3 inside = smoothstep(radii + blend, radii, distance(world, cut.position));
+        bands = max(bands, inside * saturate(cut.visibility - float3(2, 1, 0)));
+    }
+    float2 edge = saturate(uv * 20) * saturate(1 - (uv - 0.95) * 20);
+    _Mask[id.xy] = (bands.x + bands.y + bands.z) * edge.x * edge.y;
+}
