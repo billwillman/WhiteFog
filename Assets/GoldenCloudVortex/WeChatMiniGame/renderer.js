@@ -6,6 +6,7 @@ const common = `
 #define VORTEX_MIX(a,b,t) mix(a,b,t)
 uniform float cycle;
 varying vec2 uv,relief;
+varying float depth;
 `
 const vertex = `
 attribute vec3 position;
@@ -25,11 +26,11 @@ vec3 toDisplay(vec3 c){
 const vertexEnd = `
 void main(){
     vec3 p=ShapeCloudBank(position,texcoord);
-    uv=texcoord;relief=surface;
+    uv=texcoord;relief=surface;depth=position.z;
     gl_Position=vec4(p.xy*focal,((100.0+.2)*p.z-2.0*.2*100.0)/(100.0-.2),p.z);
 }`
 const fragmentEnd = `
-void main(){gl_FragColor=vec4(toDisplay(RolledCloud(uv,relief,cycle,storm)),1);}
+void main(){gl_FragColor=vec4(toDisplay(RolledCloud(uv,relief,depth,cycle,storm)),1);}
 `
 
 function random01(seed){
@@ -94,7 +95,7 @@ function createVortexRenderer(gl,assets){
     const slot=Math.min(assets.sites.length-1,Math.floor(random01(key+3)*assets.sites.length))
     const pos=assets.sites[slot],age=seconds-event*3.2-.48-.29*random01(key+1)
     const heat=ramp(0,.32,age)*(1-ramp(.32,1.26,age))
-    gl.uniform1f(uCycle,(seconds/12.8)%1)
+    gl.uniform1f(uCycle,(seconds/19.2)%1)
     gl.uniform4f(uStorm,pos.x,pos.y,.35+.09*random01(key+2),heat*strength)
     gl.drawElements(gl.TRIANGLES,indices,gl.UNSIGNED_SHORT,0)
   }

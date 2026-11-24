@@ -7,7 +7,7 @@ public sealed class GoldenCloudVortexDemo : MonoBehaviour
     public MeshRenderer clouds;
     public Vector2[] flashSites;
     [Range(0,1.5f)] public float flashStrength = 1;
-    public const float LoopSeconds = 12.8f;
+    public const float LoopSeconds = 19.2f;
     MaterialPropertyBlock properties;
     int sessionSeed;
     float elapsed;

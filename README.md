@@ -42,9 +42,9 @@
 
 小游戏的目标为 30 FPS，横屏渲染上限为 960×540。上方的小游戏录像取自桌面浏览器，手机帧率尚待实测。
 
-### 金色云洞与局部紫色雷光
+### 金色云洞穿行与局部紫色雷光
 
-[![固定镜头下，金色云壁绕洞心顺时针滚动](Assets/GoldenCloudVortex/Media~/Preview.webp)](Assets/GoldenCloudVortex/Media~/GoldenCloudVortex-PC.mp4)
+[![金色云壁与阴影接续移动，亮口停在远处](Assets/GoldenCloudVortex/Media~/Preview.webp)](Assets/GoldenCloudVortex/Media~/GoldenCloudVortex-PC.mp4)
 
 [PC 实录](Assets/GoldenCloudVortex/Media~/GoldenCloudVortex-PC.mp4) · [小游戏渲染器桌面 WebGL 2 实录](Assets/GoldenCloudVortex/Media~/GoldenCloudVortex-WebGL.mp4) · [场景、原理和性能参数](Assets/GoldenCloudVortex/README.md)
 

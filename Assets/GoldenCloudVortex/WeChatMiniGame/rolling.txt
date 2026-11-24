@@ -11,7 +11,7 @@ float3 ShapeCloudBank(float3 localPos, float2 uv)
 float2 SampleClockwiseOrbit(float2 uv, float2 radius, float angle)
 {
     // Backtrace counterclockwise in y-up painting UV. Both taps stay on
-    // the same elliptical band. A half-trace is at most 0.36 radians.
+    // the same elliptical band. The trace remains below 0.56 radians.
     float squared=angle*angle;
     float sine=angle*(1.0-squared/6.0);
     float cosineMinusOne=squared*(-.5+squared/24.0);
@@ -20,20 +20,34 @@ float2 SampleClockwiseOrbit(float2 uv, float2 radius, float angle)
                      radius.x*sine*axisRatio+radius.y*cosineMinusOne);
 }
 
-float3 RolledCloud(float2 uv, float2 normalXY, float cycle, float4 storm)
+// Each axial section projects the same painted banks at its own apparent
+// distance. Its painted highlights and shadows are transported together.
+float2 PassageSectionUV(float2 uv, float2 orbitRadius, float turn, float wall, float offset, float variant)
+{
+    float angle=turn*wall*(1.35*offset+.09*variant);
+    float2 rolled=SampleClockwiseOrbit(uv,orbitRadius,angle);
+    float2 throat=float2(.5,.35);
+    float scale=exp2(-.70*wall*offset);
+    float2 source=throat+(rolled-throat)*scale;
+    // Reflect the narrow overscan at the frame edges to avoid stretched texels.
+    return 1.0-abs(1.0-abs(source));
+}
+
+float3 RolledCloud(float2 uv, float2 normalXY, float depth, float cycle, float4 storm)
 {
     float3 flow=VORTEX_FLOW(uv).rgb;
     float2 radius=uv-float2(.5,flow.g);
-    float phase=VORTEX_FRAC(6.0*cycle+flow.b);
+    float2 fromOpening=(uv-float2(.5,.35))*float2(1.7777778,1.0);
+    float wall=smoothstep(.08,.40,length(fromOpening));
+    // One virtual pair spans 32 depth units. Advancing the longitudinal
+    // coordinate moves ridges toward the camera. Each hidden end can wrap.
+    float phase=VORTEX_FRAC(depth/32.0+3.0*cycle+.22*flow.b);
     float next=VORTEX_FRAC(phase+.5);
-    float weight=smoothstep(.18,.82,abs(2.0*phase-1.0));
-    float3 a=VORTEX_ART(SampleClockwiseOrbit(uv,radius,(phase-.5)*flow.r));
-    float3 b=VORTEX_ART(SampleClockwiseOrbit(uv,radius,(next-.5)*flow.r));
-    float3 color=VORTEX_MIX(a,b,weight);
-    float2 inward=(uv-float2(.5,.35))*float2(1.7777778,1.0);
-    float ivory=1.0-smoothstep(.08,.71,length(inward));
-    color+=float3(.003,.071,.153)*ivory*(.40+.60*color.g);
-    color*=1.0-.15*smoothstep(.57,.87,uv.x)*smoothstep(.52,.84,uv.y);
+    float join=smoothstep(.20,.80,abs(2.0*phase-1.0));
+    float3 nearColor=VORTEX_ART(PassageSectionUV(uv,radius,flow.r,wall,phase-.5,0.0));
+    float3 farColor=VORTEX_ART(PassageSectionUV(uv,radius,flow.r,wall,next-.5,1.0));
+    float3 color=VORTEX_MIX(nearColor,farColor,join)*float3(.80,.76,.74);
+    color+=float3(0.0,.019,.052)*(1.0-smoothstep(.08,.54,length(fromOpening)));
     if(storm.w>0.0)
     {
         // Deform the pocket along the painted folds. Retain the relief's
