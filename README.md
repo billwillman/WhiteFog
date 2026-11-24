@@ -4,12 +4,27 @@
 
 ## 双平台演示
 
+### 开雾与镜头缩放
+
 | PC 原画质 | 微信小游戏平衡档 |
 | --- | --- |
 | [![PC 原画质开雾与镜头缩放演示](docs/previews/WhiteFog-PC.webp)](WhiteFog-PC.mp4) | [![微信平衡档开雾与镜头缩放演示](docs/previews/WhiteFog-WeChat.webp)](WhiteFog-WeChat.mp4) |
 | [完整 MP4](WhiteFog-PC.mp4) · [PC 演示场景](Assets/Scenes/WhiteFog.unity) | [完整 MP4](WhiteFog-WeChat.mp4) · [微信演示场景](Assets/Scenes/WhiteFog_WeChat.unity) |
 
-两段视频均为团结编辑器实录，采用相同的镜头和开雾顺序，各 12 秒。切换构建目标时，工程自动选择对应演示场景。微信小游戏（MiniGame）和 WebGL 使用移动场景及 WebGL 2，Standalone 使用 PC 场景。可以在桌面编辑器中直接打开任一场景预览。手机上轻点完全开雾，长按松开切换半可见，双指捏合缩放。
+两段开雾演示均为团结编辑器实录，各 12 秒，镜头和操作顺序相同。
+
+### 天气颜色变化
+
+固定镜头和开雾范围，用 8 秒走完原本 800 秒的昼夜雾色周期。留意雾边从夜间冷色转为晨光暖金、日间灰白和晚霞暖色，再回到夜色。两段均为团结编辑器实录，使用相同的预设和时间进度。
+
+| PC 原画质 | 微信小游戏平衡档 |
+| --- | --- |
+| [![PC 天气雾色变化](docs/previews/WhiteFog-Weather-PC.webp)](WhiteFog-Weather-PC.mp4) | [![微信天气雾色变化](docs/previews/WhiteFog-Weather-WeChat.webp)](WhiteFog-Weather-WeChat.mp4) |
+| [完整 MP4](WhiteFog-Weather-PC.mp4) | [完整 MP4](WhiteFog-Weather-WeChat.mp4) |
+
+### 运行演示
+
+切换构建目标时，工程自动选择对应演示场景。微信小游戏（MiniGame）和 WebGL 使用移动场景及 WebGL 2，Standalone 使用 PC 场景。可以在桌面编辑器中直接打开任一场景预览。手机上轻点完全开雾，长按松开切换半可见，双指捏合缩放。
 
 PC 场景使用原计算着色器、高密度网格和两张 2048 噪声纹理。移动场景采用 128×128 的 CPU R8 遮罩，变化时最多每秒上传 15 次。每个开雾点按原公式独立合并三段可见度，遮罩与世界坐标原点同步更新。移动材质使用两张保留 mip 的 1024 R8 噪声纹理，顶点采一次云纹，片元采两次，逐帧滚动，保留场景深度软交界。
 
