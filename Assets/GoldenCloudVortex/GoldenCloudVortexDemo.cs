@@ -8,10 +8,81 @@ public sealed class GoldenCloudVortexDemo : MonoBehaviour
     public Vector2[] flashSites;
     [Range(0,1.5f)] public float flashStrength = 1;
     public const float LoopSeconds = 12.8f;
+    const float PassageLoopSeconds = 19.2f;
+    const float PassageSpeed = 32f * 3f / PassageLoopSeconds;
+    public const string CameraSettingsResource = "GoldenCloudCamera";
+
+    [System.Serializable]
+    public sealed class CameraSettings
+    {
+        public bool fixedCamera = true;
+    }
+
+    public static CameraSettings ReadCameraSettings()
+    {
+        var asset=Resources.Load<TextAsset>(CameraSettingsResource);
+        var settings=new CameraSettings();
+        if(asset!=null) JsonUtility.FromJsonOverwrite(asset.text,settings);
+        return settings;
+    }
+
+    bool? fixedCamera;
+    public bool FixedCamera
+    {
+        get
+        {
+            if(!fixedCamera.HasValue) fixedCamera=ReadCameraSettings().fixedCamera;
+            return fixedCamera.Value;
+        }
+        set { fixedCamera=value; }
+    }
+
     MaterialPropertyBlock properties;
     int sessionSeed;
     float elapsed;
     float previousAspect;
+    bool traveling;
+    float travelStartTime;
+    Vector3 cameraStart,cloudStart,travelDirection;
+
+    void UpdateCameraTravel(float seconds)
+    {
+        if(FixedCamera)
+        {
+            RestoreView();
+            return;
+        }
+        if(!traveling)
+        {
+            cameraStart=viewCamera.transform.position;
+            cloudStart=clouds.transform.position;
+            travelDirection=viewCamera.transform.forward;
+            travelStartTime=seconds;
+            traveling=true;
+        }
+        Vector3 offset=travelDirection*((seconds-travelStartTime)*PassageSpeed);
+        SetRigPosition(offset);
+    }
+
+    // The distant opening travels with the camera. The material provides
+    // the depth-dependent motion of the nearer cloud banks.
+    void SetRigPosition(Vector3 offset)
+    {
+        var cameraTransform=viewCamera.transform;
+        var cloudTransform=clouds.transform;
+        if(cameraTransform==cloudTransform || !cameraTransform.IsChildOf(cloudTransform))
+            cameraTransform.position=cameraStart+offset;
+        if(!cloudTransform.IsChildOf(cameraTransform)) cloudTransform.position=cloudStart+offset;
+    }
+
+    void RestoreView()
+    {
+        if(!traveling) return;
+        if(viewCamera!=null && clouds!=null) SetRigPosition(Vector3.zero);
+        traveling=false;
+    }
+
+    void OnDisable() => RestoreView();
 
     void Start()
     {
@@ -38,6 +109,7 @@ public sealed class GoldenCloudVortexDemo : MonoBehaviour
     public void SetTime(float seconds,int seed)
     {
         if(properties==null) properties=new MaterialPropertyBlock();
+        UpdateCameraTravel(seconds);
         float aspect=viewCamera.aspect;
         if(!Mathf.Approximately(previousAspect,aspect))
         {
@@ -52,7 +124,9 @@ public sealed class GoldenCloudVortexDemo : MonoBehaviour
         float age=seconds-index*3.2f-.48f-.29f*Random01(key+1);
         float heat=Ramp(0,.32f,age)*(1-Ramp(.32f,1.26f,age));
         float radius=Mathf.Lerp(.35f,.44f,Random01(key+2));
-        properties.SetFloat("_Cycle",Mathf.Repeat(seconds/LoopSeconds,1));
+        float duration=FixedCamera?LoopSeconds:PassageLoopSeconds;
+        properties.SetFloat("_Cycle",Mathf.Repeat(seconds/duration,1));
+        properties.SetFloat("_PassageMode",FixedCamera?0f:1f);
         properties.SetVector("_Storm",new Vector4(site.x,site.y,radius,heat*flashStrength));
         clouds.SetPropertyBlock(properties);
     }

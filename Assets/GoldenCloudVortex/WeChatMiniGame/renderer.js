@@ -6,6 +6,7 @@ const common = `
 #define VORTEX_MIX(a,b,t) mix(a,b,t)
 uniform float cycle;
 varying vec2 uv,relief;
+varying float depth;
 `
 const vertex = `
 attribute vec3 position;
@@ -15,6 +16,7 @@ uniform vec2 focal;
 const fragment = `
 uniform sampler2D painting,flowCap;
 uniform vec4 storm;
+uniform float passageMode;
 vec3 toLinear(vec3 c){return c*(c*(.305306*c+.682171)+.012523);}
 vec3 toDisplay(vec3 c){
   return mix(12.92*c,1.055*pow(max(c,vec3(0)),vec3(1.0/2.4))-.055,step(vec3(.0031308),c));
@@ -25,11 +27,11 @@ vec3 toDisplay(vec3 c){
 const vertexEnd = `
 void main(){
     vec3 p=ShapeCloudBank(position,texcoord);
-    uv=texcoord;relief=surface;
+    uv=texcoord;relief=surface;depth=position.z;
     gl_Position=vec4(p.xy*focal,((100.0+.2)*p.z-2.0*.2*100.0)/(100.0-.2),p.z);
 }`
 const fragmentEnd = `
-void main(){gl_FragColor=vec4(toDisplay(RolledCloud(uv,relief,cycle,storm)),1);}
+void main(){gl_FragColor=vec4(toDisplay(RolledCloud(uv,relief,depth,cycle,passageMode,storm)),1);}
 `
 
 function random01(seed){
@@ -59,6 +61,7 @@ function createVortexRenderer(gl,assets){
   gl.useProgram(program)
   const uniform=name=>gl.getUniformLocation(program,name)
   const uCycle=uniform('cycle'),uStorm=uniform('storm'),uFocal=uniform('focal')
+  const uPassageMode=uniform('passageMode')
   const file=new DataView(assets.mesh)
   if(file.getUint32(0)!==0x47565831)throw Error('Invalid funnel mesh')
   const n=file.getUint32(4,true),indices=file.getUint32(8,true),stride=44
@@ -84,7 +87,7 @@ function createVortexRenderer(gl,assets){
   gl.disable(gl.DEPTH_TEST);gl.disable(gl.CULL_FACE);gl.disable(gl.BLEND)
   const lens=1/Math.tan(25*Math.PI/180)
   let width=0,height=0
-  return function draw(seconds,seed,strength=1){
+  return function draw(seconds,seed,strength=1,fixedCamera=true){
     if(width!==gl.drawingBufferWidth||height!==gl.drawingBufferHeight){
       width=gl.drawingBufferWidth;height=gl.drawingBufferHeight
       const aspect=width/height,scale=Math.max(1,aspect/(16/9))
@@ -94,7 +97,8 @@ function createVortexRenderer(gl,assets){
     const slot=Math.min(assets.sites.length-1,Math.floor(random01(key+3)*assets.sites.length))
     const pos=assets.sites[slot],age=seconds-event*3.2-.48-.29*random01(key+1)
     const heat=ramp(0,.32,age)*(1-ramp(.32,1.26,age))
-    gl.uniform1f(uCycle,(seconds/12.8)%1)
+    gl.uniform1f(uCycle,(seconds/(fixedCamera?12.8:19.2))%1)
+    gl.uniform1f(uPassageMode,fixedCamera?0:1)
     gl.uniform4f(uStorm,pos.x,pos.y,.35+.09*random01(key+2),heat*strength)
     gl.drawElements(gl.TRIANGLES,indices,gl.UNSIGNED_SHORT,0)
   }

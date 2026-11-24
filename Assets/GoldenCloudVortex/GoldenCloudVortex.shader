@@ -21,6 +21,7 @@ Shader "GoldenCloudVortex/Rolling painted cloud"
             TEXTURE2D(_Flow); SAMPLER(sampler_Flow);
             CBUFFER_START(UnityPerMaterial)
                 float _Cycle;
+                float _PassageMode;
                 float4 _Storm;
             CBUFFER_END
             #define VORTEX_ART(uv) SAMPLE_TEXTURE2D(_Painting,sampler_Painting,uv).rgb
@@ -29,15 +30,15 @@ Shader "GoldenCloudVortex/Rolling painted cloud"
             #define VORTEX_MIX(a,b,t) lerp(a,b,t)
             #include "WeChatMiniGame/rolling.txt"
             struct Attributes {float3 pos:POSITION;float2 uv:TEXCOORD0;float2 relief:TEXCOORD2;};
-            struct Varyings {float4 pos:SV_POSITION;float2 uv:TEXCOORD0;float2 relief:TEXCOORD1;};
+            struct Varyings {float4 pos:SV_POSITION;float2 uv:TEXCOORD0;float2 relief:TEXCOORD1;float depth:TEXCOORD2;};
             Varyings Vert(Attributes i)
             {
                 Varyings o;
                 o.pos=TransformObjectToHClip(ShapeCloudBank(i.pos,i.uv));
-                o.uv=i.uv;o.relief=i.relief;
+                o.uv=i.uv;o.relief=i.relief;o.depth=i.pos.z;
                 return o;
             }
-            half4 Frag(Varyings i):SV_Target {return half4(RolledCloud(i.uv,i.relief,_Cycle,_Storm),1);}
+            half4 Frag(Varyings i):SV_Target {return half4(RolledCloud(i.uv,i.relief,i.depth,_Cycle,_PassageMode,_Storm),1);}
             ENDHLSL
         }
     }

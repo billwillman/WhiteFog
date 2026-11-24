@@ -1,14 +1,24 @@
 # 金色滚动云洞
 
-打开 [GoldenCloudVortex.unity](GoldenCloudVortex.unity)，点击 Play。固定机位看向金白色洞心，洞顶云带向右，右壁向下，前景向左，再沿左壁向上卷。微信开发者工具选择「小游戏」并导入 [WeChatMiniGame](WeChatMiniGame/)。
+打开 [GoldenCloudVortex.unity](GoldenCloudVortex.unity)，选择 **Rolling cloud funnel → Golden Cloud Vortex Demo → 固定相机**。
 
-[![固定机位下，金色云带顺时针滚动，云壁局部透出紫光](Media~/Preview.webp)](Media~/GoldenCloudVortex-PC.mp4)
+- **勾选（默认）** 后，镜头停在起始位置，金色云带绕洞心顺时针滚动。
+- **取消勾选** 后，镜头向前穿行，云壁和灰蓝阴影一起向近处掠过，亮口的位置和大小保持稳定。切回固定模式会恢复起始机位。
 
-[团结编辑器实录](Media~/GoldenCloudVortex-PC.mp4) · [小游戏渲染器的桌面 WebGL 2 实录](Media~/GoldenCloudVortex-WebGL.mp4)。两段均为 12.8 秒、30 帧/秒，采用相同的固定机位和雷暴种子。约第 1 秒可见左上云层透紫，第 4.3 秒亮区移到右侧。实际运行时随机选择雷暴位置。
+在编辑模式调整开关会保存 PC 与微信小游戏的共同默认值。微信开发者工具导入 [WeChatMiniGame](WeChatMiniGame/) 后重新编译即可使用。也可以直接编辑共享配置中的 `fixedCamera`。[GoldenCloudCamera.json](WeChatMiniGame/Resources/GoldenCloudCamera.json)
+
+Play 模式下可即时切换，也可在脚本中设置 `demo.FixedCamera = false` 或 `true`，作用于当前实例。
+
+| 固定机位 · 12.8 秒 | 云洞穿行 · 21 秒 |
+| --- | --- |
+| [![固定机位顺时针云洞](Media~/Preview.webp)](Media~/GoldenCloudVortex-PC.mp4) | [![云壁和阴影接续移动](Media~/Passage.webp)](Media~/Passage-PC.mp4) |
+| [PC 实录](Media~/GoldenCloudVortex-PC.mp4) · [小游戏桌面 WebGL 2 实录](Media~/GoldenCloudVortex-WebGL.mp4) | [PC 实录](Media~/Passage-PC.mp4) · [小游戏桌面 WebGL 2 实录](Media~/Passage-WebGL.mp4) |
 
 ## 滚动与透光
 
 金色云彩图铺在漏斗形网格上。烘焙时给每个位置分配一条椭圆弧，越往外围，椭圆中心越高，让下方弧线贴着低缓的前景云坡。贴图记录弧线的中心高度、转速和动画起始位置。播放时材质沿弧线回溯采样原画，云边的亮部、暗部和细节便一起顺时针移动。两组采样相差半个周期，交替接续。靠近洞心的位置流速渐减。
+
+穿行时，相机和远处亮口一起前进，近处云壁根据深度改变贴图的采样位置。相邻云段在交界处平滑混合，让一段云带和自己的阴影掠过后，下一段继续接上。小游戏在相机相对坐标中计算同样的视差。两种模式共用网格、材质和局部紫色 MatCap。
 
 每 3.2 秒，程序从云壁的候选位置中选一处透光，约 0.32 秒亮起，再用约 0.94 秒衰减。每个顶点携带云面的起伏方向，供材质查询自制 MatCap。MatCap 存在流向图的 Alpha 通道中。灰紫的暗部与淡紫的亮部保留原画中的明暗起伏。场景组件的 Flash Strength 控制强度，设为 0 可单独观察滚动。
 
@@ -27,10 +37,13 @@
 
 测试设备为 NVIDIA GeForce RTX 3080。预热后采样，P95 表示 95% 的样本耗时不超过该值。
 
-| 环境及测量范围 | 分辨率 | 样本 | 中位数 | P95 |
-| --- | --- | ---: | ---: | ---: |
-| 团结编辑器 D3D11，离屏相机渲染并同步回读 1 像素 | 1280×720 | 180 | 1.17 ms | 2.77 ms |
-| 桌面 Chrome WebGL 2，GPU 计时查询，仅云洞绘制，雷暴关闭 | 960×540 | 160 | 0.014 ms | 0.016 ms |
-| 桌面 Chrome WebGL 2，GPU 计时查询，仅云洞绘制，雷暴点亮 | 960×540 | 160 | 0.016 ms | 0.017 ms |
+| 模式 | 环境及测量范围 | 分辨率 | 样本 | 中位数 | P95 |
+| --- | --- | --- | ---: | ---: | ---: |
+| 固定机位 | 团结编辑器 D3D11，离屏相机渲染并同步回读 1 像素 | 1280×720 | 180 | 1.16 ms | 2.35 ms |
+| 固定机位 | 桌面 Chrome WebGL 2，仅云洞绘制，雷暴关闭 | 960×540 | 160 | 0.012 ms | 0.014 ms |
+| 固定机位 | 桌面 Chrome WebGL 2，仅云洞绘制，雷暴点亮 | 960×540 | 160 | 0.015 ms | 0.017 ms |
+| 云洞穿行 | 团结编辑器 D3D11，离屏相机渲染并同步回读 1 像素 | 1280×720 | 180 | 0.48 ms | 0.76 ms |
+| 云洞穿行 | 桌面 Chrome WebGL 2，仅云洞绘制，雷暴关闭 | 960×540 | 160 | 0.013 ms | 0.013 ms |
+| 云洞穿行 | 桌面 Chrome WebGL 2，仅云洞绘制，雷暴点亮 | 960×540 | 160 | 0.016 ms | 0.016 ms |
 
 编辑器与浏览器测量的范围不同。已验证桌面 WebGL 1 和 2 运行入口。微信手机上的持续帧率、功耗与温升尚待真机测量。

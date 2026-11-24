@@ -8,7 +8,7 @@
   "setting": {"es6":true,"minified":true,"urlCheck":true,"babelSetting":{"ignore":[],"disablePlugins":[],"outputPath":""}},
   "packOptions": {
     "ignore":[{"type":"suffix","value":".meta"}],
-    "include":[{"type":"file","value":"art/Funnel.bytes"},{"type":"file","value":"rolling.txt"}]
+    "include":[{"type":"file","value":"art/Funnel.bytes"},{"type":"file","value":"rolling.txt"},{"type":"file","value":"Resources/GoldenCloudCamera.json"}]
   },
   "condition":{}
 }

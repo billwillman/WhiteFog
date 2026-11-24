@@ -44,9 +44,12 @@
 
 ### 金色云洞与局部紫色雷光
 
-[![固定镜头下，金色云壁绕洞心顺时针滚动](Assets/GoldenCloudVortex/Media~/Preview.webp)](Assets/GoldenCloudVortex/Media~/GoldenCloudVortex-PC.mp4)
+在 [GoldenCloudVortex 场景](Assets/GoldenCloudVortex/GoldenCloudVortex.unity) 中选中 **Rolling cloud funnel**，在 **Golden Cloud Vortex Demo** 组件上切换 **固定相机**。勾选时云带绕固定机位滚动，取消后镜头穿行，云壁和阴影掠过，亮口保持在远处。PC 和微信小游戏共用此设置。[切换说明与性能参数](Assets/GoldenCloudVortex/README.md)
 
-[PC 实录](Assets/GoldenCloudVortex/Media~/GoldenCloudVortex-PC.mp4) · [小游戏渲染器桌面 WebGL 2 实录](Assets/GoldenCloudVortex/Media~/GoldenCloudVortex-WebGL.mp4) · [场景、原理和性能参数](Assets/GoldenCloudVortex/README.md)
+| 固定机位 · 12.8 秒 | 云洞穿行 · 21 秒 |
+| --- | --- |
+| [![固定机位顺时针云洞](Assets/GoldenCloudVortex/Media~/Preview.webp)](Assets/GoldenCloudVortex/Media~/GoldenCloudVortex-PC.mp4) | [![云壁和阴影接续移动](Assets/GoldenCloudVortex/Media~/Passage.webp)](Assets/GoldenCloudVortex/Media~/Passage-PC.mp4) |
+| [PC 实录](Assets/GoldenCloudVortex/Media~/GoldenCloudVortex-PC.mp4) · [小游戏桌面 WebGL 2 实录](Assets/GoldenCloudVortex/Media~/GoldenCloudVortex-WebGL.mp4) | [PC 实录](Assets/GoldenCloudVortex/Media~/Passage-PC.mp4) · [小游戏桌面 WebGL 2 实录](Assets/GoldenCloudVortex/Media~/Passage-WebGL.mp4) |
 
 ### 运行演示
 
