@@ -42,6 +42,12 @@
 
 小游戏的目标为 30 FPS，横屏渲染上限为 960×540。上方的小游戏录像取自桌面浏览器，手机帧率尚待实测。
 
+### 金色云洞与局部紫色雷光
+
+[![固定镜头下，金色云壁绕洞心顺时针滚动](Assets/GoldenCloudVortex/Media~/Preview.webp)](Assets/GoldenCloudVortex/Media~/GoldenCloudVortex-PC.mp4)
+
+[PC 实录](Assets/GoldenCloudVortex/Media~/GoldenCloudVortex-PC.mp4) · [小游戏渲染器桌面 WebGL 2 实录](Assets/GoldenCloudVortex/Media~/GoldenCloudVortex-WebGL.mp4) · [场景、原理和性能参数](Assets/GoldenCloudVortex/README.md)
+
 ### 运行演示
 
 切换构建目标时，工程自动选择对应演示场景。微信小游戏（MiniGame）和 WebGL 使用移动场景及 WebGL 2，Standalone 使用 PC 场景。可以在桌面编辑器中直接打开任一场景预览。手机上轻点完全开雾，长按松开切换半可见，双指捏合缩放。

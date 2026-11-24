@@ -1,0 +1,14 @@
+{
+  "description": "Golden rolling cloud vortex",
+  "projectname": "GoldenCloudVortex",
+  "compileType": "game",
+  "appid": "touristappid",
+  "libVersion": "3.7.5",
+  "miniprogramRoot": "",
+  "setting": {"es6":true,"minified":true,"urlCheck":true,"babelSetting":{"ignore":[],"disablePlugins":[],"outputPath":""}},
+  "packOptions": {
+    "ignore":[{"type":"suffix","value":".meta"}],
+    "include":[{"type":"file","value":"art/Funnel.bytes"},{"type":"file","value":"rolling.txt"}]
+  },
+  "condition":{}
+}
