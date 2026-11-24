@@ -4,10 +4,10 @@
 
 ## 双平台演示
 
-| 平台 | 编辑器中打开的场景 | 录像 |
-| --- | --- | --- |
-| PC 原画质 | [WhiteFog.unity](Assets/Scenes/WhiteFog.unity) | [PC 演示](WhiteFog-PC.mp4) |
-| 微信小游戏平衡档 | [WhiteFog_WeChat.unity](Assets/Scenes/WhiteFog_WeChat.unity) | [微信配置演示](WhiteFog-WeChat.mp4) |
+| PC 原画质 | 微信小游戏平衡档 |
+| --- | --- |
+| [![PC 原画质开雾与镜头缩放演示](docs/previews/WhiteFog-PC.webp)](WhiteFog-PC.mp4) | [![微信平衡档开雾与镜头缩放演示](docs/previews/WhiteFog-WeChat.webp)](WhiteFog-WeChat.mp4) |
+| [完整 MP4](WhiteFog-PC.mp4) · [PC 演示场景](Assets/Scenes/WhiteFog.unity) | [完整 MP4](WhiteFog-WeChat.mp4) · [微信演示场景](Assets/Scenes/WhiteFog_WeChat.unity) |
 
 两段视频均为团结编辑器实录，采用相同的镜头和开雾顺序，各 12 秒。切换构建目标时，工程自动选择对应演示场景。微信小游戏（MiniGame）和 WebGL 使用移动场景及 WebGL 2，Standalone 使用 PC 场景。可以在桌面编辑器中直接打开任一场景预览。手机上轻点完全开雾，长按松开切换半可见，双指捏合缩放。
 
