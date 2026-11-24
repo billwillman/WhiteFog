@@ -64,7 +64,8 @@ Shader "DOD/VFX/FogOfWar"
             ZTest Always
             Cull Back
             HLSLPROGRAM
-            #pragma target 4.5
+            #pragma target 3.5
+            #pragma shader_feature_local _ FOG_MOBILE
             #pragma vertex Vert
             #pragma fragment Frag
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
@@ -103,6 +104,20 @@ Shader "DOD/VFX/FogOfWar"
                 float2 bUV = uv * _CloudsBScale + _CloudsBSpeed.xy * scroll;
                 float2 baseUV = uv * _BaseCloudsScale + _BaseCloudsSpeed.xy * scroll;
                 float a, b, baseCloud;
+                #if defined(FOG_MOBILE)
+                if (vertexStage)
+                {
+                    baseCloud = SAMPLE_TEXTURE2D_LOD(_BaseClouds, sampler_BaseClouds, baseUV, 0).r;
+                    // Mean detail of the source noise keeps the large-scale displacement level.
+                    a = b = 0.64;
+                }
+                else
+                {
+                    baseCloud = SAMPLE_TEXTURE2D(_BaseClouds, sampler_BaseClouds, baseUV).r;
+                    a = SAMPLE_TEXTURE2D(_CloudsA, sampler_CloudsA, aUV).r;
+                    b = 0.64;
+                }
+                #else
                 if (vertexStage)
                 {
                     a = SAMPLE_TEXTURE2D_LOD(_CloudsA, sampler_CloudsA, aUV, 0).r;
@@ -115,6 +130,7 @@ Shader "DOD/VFX/FogOfWar"
                     b = SAMPLE_TEXTURE2D(_CloudsB, sampler_CloudsB, bUV).r;
                     baseCloud = SAMPLE_TEXTURE2D(_BaseClouds, sampler_BaseClouds, baseUV).r;
                 }
+                #endif
                 float detail = pow(saturate((a+b)*0.5), _DetailCloudsPower);
                 detail = smoothstep(_SmoothstepMin, _SmoothstepMax, abs(Remap(detail, _DetailCloudsRemap)));
                 float density = Remap(baseCloud, _BaseCloudsRemap) * _BaseCloudsIntensity + detail;
@@ -124,6 +140,9 @@ Shader "DOD/VFX/FogOfWar"
             {
                 float2 uv = (xz - g_FogOfWar_Origin) / g_FogOfWar_Size + 0.5;
                 float mask = SAMPLE_TEXTURE2D_LOD(g_FogOfWar_Mask, sampler_g_FogOfWar_Mask, uv, 0).r;
+                #if defined(FOG_MOBILE)
+                    mask *= 3.0;
+                #endif
                 return smoothstep(0, 1, mask - float3(0, 1, 2));
             }
             float Layers(float outside, float edge, float halfVisible, float full, float3 bands)

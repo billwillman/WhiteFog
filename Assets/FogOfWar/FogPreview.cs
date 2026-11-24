@@ -8,6 +8,9 @@ public sealed class FogPreview : MonoBehaviour
     public Transform focus;
     Vector2 point;
     float distanceFromFocus = 25f;
+    float touchStartTime;
+    Vector2 touchStart;
+    bool tapCandidate;
     readonly AnimationCurve fieldOfView = new AnimationCurve(new Keyframe(0, 0, 2, 2), new Keyframe(1, 1, .28165814f, .28165814f));
     readonly AnimationCurve pitch = new AnimationCurve(new Keyframe(0, 0, 2, 2), new Keyframe(1, 1, 0, 0));
 
@@ -27,17 +30,13 @@ public sealed class FogPreview : MonoBehaviour
     }
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.touchCount > 0)
         {
-            Ray ray = view.ScreenPointToRay(Input.mousePosition);
-            var ground = new Plane(Vector3.up, Vector3.zero);
-            if (ground.Raycast(ray, out float hit))
-            {
-                Vector3 p = ray.GetPoint(hit);
-                point = new Vector2(p.x, p.z);
-                fog.SetVisibility(point, Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) ? 1 : 2, 4);
-            }
+            HandleTouch();
+            return;
         }
+        if (Input.GetMouseButtonDown(0))
+            Reveal(Input.mousePosition, Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) ? 1 : 2);
         if (Input.GetMouseButtonDown(1)) fog.HideAll();
         if (Input.GetKeyDown(KeyCode.Alpha1)) fog.SetVisibility(point, 0, 4);
         if (Input.GetKeyDown(KeyCode.Alpha2)) fog.SetVisibility(point, 1, 4);
@@ -46,10 +45,48 @@ public sealed class FogPreview : MonoBehaviour
         float scrub = (Input.GetKey(KeyCode.RightBracket) ? 1 : 0) - (Input.GetKey(KeyCode.LeftBracket) ? 1 : 0);
         fog.timeOfDay = Mathf.Repeat(fog.timeOfDay + scrub * Time.deltaTime * 0.15f, 1);
         float wheel = Input.mouseScrollDelta.y;
-        if (wheel != 0)
+        if (wheel != 0) SetDistance(distanceFromFocus - wheel * 4.6f);
+    }
+
+    void HandleTouch()
+    {
+        Touch first = Input.GetTouch(0);
+        if (Input.touchCount >= 2)
         {
-            distanceFromFocus = Mathf.Clamp(distanceFromFocus - wheel * 4.6f, 10, 90);
-            FrameView();
+            tapCandidate = false;
+            Touch second = Input.GetTouch(1);
+            Vector2 separation = first.position - second.position;
+            float previous = (separation - first.deltaPosition + second.deltaPosition).magnitude;
+            if (separation.magnitude > 1 && previous > 1)
+                SetDistance(distanceFromFocus * previous / separation.magnitude);
+            return;
         }
+        if (first.phase == TouchPhase.Began)
+        {
+            tapCandidate = true;
+            touchStartTime = Time.unscaledTime;
+            touchStart = first.position;
+        }
+        if (Vector2.Distance(first.position, touchStart) > 0.025f * Mathf.Min(Screen.width, Screen.height))
+            tapCandidate = false;
+        if (first.phase != TouchPhase.Ended || !tapCandidate) return;
+        Reveal(first.position, Time.unscaledTime - touchStartTime >= 0.45f ? 1 : 2);
+        tapCandidate = false;
+    }
+
+    void Reveal(Vector2 screenPoint, int state)
+    {
+        Ray ray = view.ScreenPointToRay(screenPoint);
+        var ground = new Plane(Vector3.up, Vector3.zero);
+        if (!ground.Raycast(ray, out float hit)) return;
+        Vector3 p = ray.GetPoint(hit);
+        point = new Vector2(p.x, p.z);
+        fog.SetVisibility(point, state, 4);
+    }
+
+    public void SetDistance(float distance)
+    {
+        distanceFromFocus = Mathf.Clamp(distance, 10, 90);
+        FrameView();
     }
 }

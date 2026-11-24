@@ -15,10 +15,13 @@ public sealed class FogOfWar : MonoBehaviour
 
     const int Resolution = 128, Size = 200, MaxCutouts = 1024;
     const float PlaneHeight = 5.8f, ColorLerpSpeed = 5f;
-    readonly Vector4[] packed = new Vector4[MaxCutouts];
+    Vector4[] packed;
     readonly List<Cutout> cutouts = new List<Cutout>();
     RenderTexture mask;
     ComputeBuffer buffer;
+    MobileFogMask mobileMask;
+    MobileFogSurface mobileSurface;
+    float nextMaskUpdate;
     Transform planes;
     Material material;
     Color directionColor = Color.black;
@@ -48,15 +51,31 @@ public sealed class FogOfWar : MonoBehaviour
     void OnEnable()
     {
         material = new Material(fogMaterial);
+        planes = new GameObject("FogPlanes").transform;
+        planes.SetParent(transform, false);
+        if (material.IsKeywordEnabled("FOG_MOBILE"))
+        {
+            mobileMask = new MobileFogMask(Resolution, Size);
+            mobileSurface = new MobileFogSurface(planes, material);
+            Shader.SetGlobalTexture("g_FogOfWar_Mask", mobileMask.texture);
+            nextMaskUpdate = 0;
+        }
+        else CreateDesktopFog();
+        Shader.SetGlobalFloat("g_FogOfWar_Size", Size);
+        dirty = true;
+        Tick(0);
+    }
+
+    void CreateDesktopFog()
+    {
         mask = new RenderTexture(Resolution, Resolution, 0, GraphicsFormat.R16_SFloat)
         {
             name = "Fog Of War Mask", enableRandomWrite = true, filterMode = FilterMode.Bilinear,
             wrapMode = TextureWrapMode.Clamp
         };
         mask.Create();
+        packed = new Vector4[MaxCutouts];
         buffer = new ComputeBuffer(MaxCutouts, 16);
-        planes = new GameObject("FogPlanes").transform;
-        planes.SetParent(transform, false);
         float width = highDensity.bounds.size.x;
         for (int z = -1; z <= 1; ++z)
         for (int x = -1; x <= 1; ++x)
@@ -74,9 +93,6 @@ public sealed class FogOfWar : MonoBehaviour
             renderer.shadowCastingMode = ShadowCastingMode.Off;
         }
         Shader.SetGlobalTexture("g_FogOfWar_Mask", mask);
-        Shader.SetGlobalFloat("g_FogOfWar_Size", Size);
-        dirty = true;
-        Tick(0);
     }
 
     // World-space XZ point and maximum reveal radius supplied by the calling game.
@@ -126,7 +142,6 @@ public sealed class FogOfWar : MonoBehaviour
         float texel = (float)Size / Resolution;
         var origin = new Vector2(Mathf.Floor(center.x / texel), Mathf.Floor(center.z / texel)) * texel;
         dirty |= origin != maskOrigin;
-        maskOrigin = origin;
         for (int i = cutouts.Count - 1; i >= 0; i--)
         {
             var cut = cutouts[i];
@@ -135,7 +150,24 @@ public sealed class FogOfWar : MonoBehaviour
             if (cut.transition == null && cut.state == 0) cutouts.RemoveAt(i);
             dirty = true;
         }
-        if (!dirty) return;
+        nextMaskUpdate = Mathf.Max(0, nextMaskUpdate - dt);
+        if (!dirty || nextMaskUpdate > 0) return;
+        if (mobileMask != null)
+        {
+            mobileMask.Clear();
+            foreach (var c in cutouts) mobileMask.Stamp(origin, c.position, c.radius, c.visibility);
+            mobileMask.Upload();
+            nextMaskUpdate = 1f / 15f;
+        }
+        else UpdateDesktopMask(origin);
+        // The origin must travel with the texture, including between throttled updates.
+        maskOrigin = origin;
+        Shader.SetGlobalVector("g_FogOfWar_Origin", origin);
+        dirty = false;
+    }
+
+    void UpdateDesktopMask(Vector2 origin)
+    {
         for (int i = 0; i < cutouts.Count; ++i)
         {
             var c = cutouts[i];
@@ -155,14 +187,19 @@ public sealed class FogOfWar : MonoBehaviour
         maskShader.SetBuffer(0, "_Buffer", buffer);
         maskShader.SetTexture(0, "_Mask", mask);
         maskShader.Dispatch(0, Resolution / 8, Resolution / 8, 1);
-        Shader.SetGlobalVector("g_FogOfWar_Origin", origin);
-        dirty = false;
     }
 
     void OnDisable()
     {
-        if (Shader.GetGlobalTexture("g_FogOfWar_Mask") == mask) Shader.SetGlobalTexture("g_FogOfWar_Mask", null);
+        Texture activeMask = mobileMask != null ? (Texture)mobileMask.texture : mask;
+        if (Shader.GetGlobalTexture("g_FogOfWar_Mask") == activeMask) Shader.SetGlobalTexture("g_FogOfWar_Mask", null);
+        mobileSurface?.Dispose();
+        mobileSurface = null;
+        if (mobileMask != null) Destroy(mobileMask.texture);
+        mobileMask = null;
         buffer?.Release();
+        buffer = null;
+        nextMaskUpdate = 0;
         if (mask) { mask.Release(); Destroy(mask); }
         if (material) Destroy(material);
         if (planes) Destroy(planes.gameObject);
