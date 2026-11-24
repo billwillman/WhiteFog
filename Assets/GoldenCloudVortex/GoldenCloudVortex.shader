@@ -4,6 +4,7 @@ Shader "GoldenCloudVortex/Rolling painted cloud"
     {
         [NoScaleOffset] _Painting("Painted cloud",2D)="white"{}
         [NoScaleOffset] _Flow("Painted cloud flow and lightning MatCap",2D)="gray"{}
+        [HideInInspector] _PassageMode("Passage mode",Float)=0
     }
     SubShader
     {
