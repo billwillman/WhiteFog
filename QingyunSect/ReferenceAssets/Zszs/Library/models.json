@@ -1,0 +1,96 @@
+[
+  {
+    "id": "mon_xiaodiao_001",
+    "title": "小雕",
+    "group": "怪物",
+    "source": "artres/model/monster/mon_xiaodiao_001.ab",
+    "prefab": "resourcesab/prefabs/effect/monster/shendiao.ab",
+    "vertices": 1328,
+    "triangles": 1024,
+    "skins": 1,
+    "animations": [
+      "mon_xiaodiao_001@fly",
+      "mon_xiaodiao_001@fly_100314",
+      "mon_xiaodiao_001@fly_101314",
+      "mon_xiaodiao_001@fly_idle01",
+      "mon_xiaodiao_001@fly_texiao"
+    ]
+  },
+  {
+    "id": "jy_shendiao_001",
+    "title": "神雕",
+    "group": "怪物",
+    "source": "artres/model/jy/jy_shendiao_001.ab",
+    "prefab": "resourcesab/prefabs/charactor/monster.ab",
+    "vertices": 4719,
+    "triangles": 3430,
+    "skins": 1,
+    "animations": []
+  },
+  {
+    "id": "mon_liequan_001",
+    "title": "猎犬",
+    "group": "怪物",
+    "source": "artres/model/monster/mon_liequan_001.ab",
+    "prefab": "resourcesab/prefabs/charactor/monster.ab",
+    "vertices": 1844,
+    "triangles": 2122,
+    "skins": 1,
+    "animations": []
+  },
+  {
+    "id": "mon_yegou001",
+    "title": "野狗",
+    "group": "怪物",
+    "source": "artres/model/monster/mon_yegou001.ab",
+    "prefab": "resourcesab/prefabs/charactor/monster.ab",
+    "vertices": 1620,
+    "triangles": 1948,
+    "skins": 1,
+    "animations": []
+  },
+  {
+    "id": "mon_jinlianyt_001",
+    "title": "金莲玉兔",
+    "group": "怪物",
+    "source": "artres/model/monster/mon_jinlianyt_001.ab",
+    "prefab": "resourcesab/prefabs/charactor/monster/xian.ab",
+    "vertices": 1210,
+    "triangles": 1726,
+    "skins": 1,
+    "animations": []
+  },
+  {
+    "id": "jy_xianbaihu_001",
+    "title": "仙白虎",
+    "group": "怪物",
+    "source": "artres/model/jy/jy_xianbaihu_001.ab",
+    "prefab": "resourcesab/prefabs/charactor/boss.ab",
+    "vertices": 4512,
+    "triangles": 5482,
+    "skins": 2,
+    "animations": []
+  },
+  {
+    "id": "chr_male_000",
+    "title": "男角色 000",
+    "group": "人物",
+    "source": "artres/model/character/chr_male_000.ab",
+    "prefab": "artres/charactor/character/backup.ab",
+    "vertices": 3943,
+    "triangles": 4313,
+    "skins": 4,
+    "animations": []
+  },
+  {
+    "id": "chr_male_001",
+    "title": "男角色 001",
+    "group": "人物",
+    "source": "artres/model/character/chr_male_001.ab",
+    "prefab": "artres/charactor/character/backup.ab",
+    "vertices": 5114,
+    "triangles": 5574,
+    "skins": 4,
+    "animations": []
+  }
+]

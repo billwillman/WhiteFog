@@ -1,0 +1,70 @@
+{
+  "sprites": {
+    "worldcombat_skill_state_bg01": {
+      "bundle": "atlas/worldcombat.ab",
+      "pathId": "-468280517955366991",
+      "size": [
+        134,
+        158
+      ]
+    },
+    "worldcombat_bg_skill_group": {
+      "bundle": "atlas/worldcombat.ab",
+      "pathId": "-7671403937614460697",
+      "size": [
+        270,
+        60
+      ]
+    },
+    "21020": {
+      "bundle": "resourcesab/ui_new/uiimage/icon/skill.ab",
+      "pathId": "-6584251650449223989",
+      "size": [
+        128,
+        128
+      ]
+    },
+    "25090": {
+      "bundle": "resourcesab/ui_new/uiimage/icon/skill.ab",
+      "pathId": "4874851870386447232",
+      "size": [
+        128,
+        128
+      ]
+    },
+    "25120": {
+      "bundle": "resourcesab/ui_new/uiimage/icon/skill.ab",
+      "pathId": "1302469977832712979",
+      "size": [
+        128,
+        128
+      ]
+    },
+    "quality_skill_new_01": {
+      "bundle": "resourcesab/ui_new/uiimage/icon/quality/idx1.ab",
+      "pathId": "3395840913623687571",
+      "size": [
+        154,
+        178
+      ]
+    },
+    "quality_skill_new_05": {
+      "bundle": "resourcesab/ui_new/uiimage/icon/quality/idx5.ab",
+      "pathId": "6392001999606071",
+      "size": [
+        154,
+        178
+      ]
+    }
+  },
+  "prefab": "resourcesab/prefabs_ui/worldcombat.ab",
+  "node": "WorldCombatSkillNodeNew",
+  "slots": 6,
+  "cell": [
+    134,
+    158
+  ],
+  "spacing": 35,
+  "iconNode": "SkillItem/SkillImg",
+  "cooldownNode": "SkillItem/TxtTime"
+}

@@ -1,0 +1,279 @@
+{
+  "id": "mon_jinlianyt_001",
+  "title": "金莲玉兔",
+  "group": "怪物",
+  "source": "artres/model/monster/mon_jinlianyt_001.ab",
+  "prefab": "resourcesab/prefabs/charactor/monster/xian.ab",
+  "vertices": 1210,
+  "triangles": 1726,
+  "skins": 1,
+  "materials": [
+    {
+      "name": "mon_jinlianyt_001",
+      "bundle": "resourcesab/prefabs/charactor/monster/xian.ab",
+      "pathID": "-3799992550778220861",
+      "shader": "Star03/Character/Character_InBattle_XiaoGuai",
+      "shaderPathID": "7901391450234294350",
+      "shaderBundle": "resourcesab/shaders.ab",
+      "renderQueue": -1,
+      "keywords": [],
+      "invalidKeywords": [
+        "_SELFSHADOW_ON",
+        "_ZWRITE"
+      ],
+      "floats": {
+        "_Alpahtest": 0.0,
+        "_Cull": 2.0,
+        "_CullMode": 2.0,
+        "_Cutoff": 0.5,
+        "_DissolveAmount": -0.20000000298023224,
+        "_DissolveEdge": 0.30000001192092896,
+        "_DissolveFlow": 1.0,
+        "_DissolveSpread": 0.5,
+        "_DstBlend": 0.0,
+        "_Emission": 0.0,
+        "_EnableDissolve": 0.0,
+        "_EnableIce": 0.0,
+        "_Expose": 0.30000001192092896,
+        "_HighlightScaler": 0.0,
+        "_HitFresnelPow": 2.0,
+        "_IceColorInt": 0.5,
+        "_IceControl": 0.0,
+        "_IceFresnelMul": 12.0,
+        "_IceFresnelPow": 1.2000000476837158,
+        "_IceNoiseOffset": 0.699999988079071,
+        "_IsHit": 0.0,
+        "_ObjectScale": 0.30000001192092896,
+        "_RimToonThesHold": 0.3840000033378601,
+        "_RoughnessAdjust": 0.20000000298023224,
+        "_SelfShadow": 1.0,
+        "_SrcBlend": 1.0,
+        "_ToonHardness": 30.700000762939453,
+        "_ToonThesHold": 0.4959999918937683,
+        "_ZTest": 4.0,
+        "_ZWrite": 1.0
+      },
+      "integers": {},
+      "colors": {
+        "_AmbientColor": [
+          0.8867924213409424,
+          0.8867924213409424,
+          0.8867924213409424,
+          1.0
+        ],
+        "_BaseColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_DialogueLightColor": [
+          1.5,
+          1.5,
+          1.5,
+          1.0
+        ],
+        "_DialogueLightDir": [
+          3.5,
+          -3.5,
+          3.700000047683716,
+          0.0
+        ],
+        "_DissolveCol": [
+          1.0,
+          1.0,
+          0.6000000238418579,
+          1.0
+        ],
+        "_EmissionColor": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_EnvColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_HitColor": [
+          11.979999542236328,
+          2.25,
+          0.5,
+          1.0
+        ],
+        "_IceCol": [
+          0.0,
+          0.5,
+          1.0,
+          1.0
+        ],
+        "_IceCol2": [
+          0.0,
+          0.07999999821186066,
+          0.5,
+          1.0
+        ],
+        "_IceNoiseOffset": [
+          0.699999988079071,
+          0.699999988079071,
+          0.0,
+          0.0
+        ],
+        "_IcePosition": [
+          0.9399999976158142,
+          -0.30000001192092896,
+          0.0,
+          0.0
+        ],
+        "_IceTexColor": [
+          1.0,
+          1.0,
+          1.0,
+          0.699999988079071
+        ],
+        "_RimLightColor": [
+          0.8349056243896484,
+          1.0,
+          1.0,
+          0.3450980484485626
+        ],
+        "_RimLightDir": [
+          0.6200000047683716,
+          0.0,
+          -3.0,
+          1.0
+        ],
+        "_ShadowColor": [
+          0.7730000019073486,
+          0.7688882946968079,
+          0.7688882946968079,
+          1.0
+        ]
+      },
+      "textures": {
+        "_BaseMap": {
+          "asset": {
+            "name": "mon_jinlianyt_001_d",
+            "file": "Textures/mon_jinlianyt_001_d_1668870058671932192.png",
+            "size": [
+              512,
+              512
+            ],
+            "unityFormat": 50,
+            "bundle": "resourcesab/prefabs/charactor/monster/xian.ab",
+            "pathID": "1668870058671932192"
+          },
+          "pathID": "1668870058671932192",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_DissolveTex": {
+          "asset": {
+            "name": "NoiseTex256",
+            "file": "Textures/NoiseTex256_-3065966560932905197.png",
+            "size": [
+              64,
+              64
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/shader/testure.ab",
+            "pathID": "-3065966560932905197"
+          },
+          "pathID": "-3065966560932905197",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_IceColorTex": {
+          "asset": {
+            "name": "iceTex",
+            "file": "Textures/iceTex_7248459528624634763.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/shader/testure.ab",
+            "pathID": "7248459528624634763"
+          },
+          "pathID": "7248459528624634763",
+          "scale": [
+            2.0,
+            2.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_IceTexNoise": {
+          "asset": {
+            "name": "IceOffset",
+            "file": "Textures/IceOffset_-6004570308252836407.png",
+            "size": [
+              32,
+              32
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/shader/testure.ab",
+            "pathID": "-6004570308252836407"
+          },
+          "pathID": "-6004570308252836407",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "instancing": false,
+      "disabledPasses": []
+    }
+  ],
+  "animations": [],
+  "archivedBundles": [
+    "artres/model/monster/mon_jinlianyt_001.ab",
+    "artres/shader/testure.ab",
+    "resourcesab/animation/monster/mon_jinlianyt_001.ab",
+    "resourcesab/prefabs/charactor/monster/xian.ab",
+    "resourcesab/shaders.ab"
+  ],
+  "sourceClips": [
+    {
+      "name": "mon_jinlianyt_001@idle",
+      "bundle": "resourcesab/animation/monster/mon_jinlianyt_001.ab"
+    },
+    {
+      "name": "mon_jinlianyt_001@move",
+      "bundle": "resourcesab/animation/monster/mon_jinlianyt_001.ab"
+    },
+    {
+      "name": "mon_jinlianyt_001@attack01_206260",
+      "bundle": "resourcesab/animation/monster/mon_jinlianyt_001.ab"
+    },
+    {
+      "name": "mon_jinlianyt_001@die",
+      "bundle": "resourcesab/animation/monster/mon_jinlianyt_001.ab"
+    },
+    {
+      "name": "mon_jinlianyt_001@hurt",
+      "bundle": "resourcesab/animation/monster/mon_jinlianyt_001.ab"
+    }
+  ]
+}

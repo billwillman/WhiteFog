@@ -1,0 +1,1252 @@
+{
+  "id": "chr_male_000",
+  "title": "男角色 000",
+  "group": "人物",
+  "source": "artres/model/character/chr_male_000.ab",
+  "prefab": "artres/charactor/character/backup.ab",
+  "vertices": 3943,
+  "triangles": 4313,
+  "skins": 4,
+  "materials": [
+    {
+      "name": "chr_male_000_lod1_toushi",
+      "bundle": "artres/model/character/chr_male_000/materials.ab",
+      "pathID": "2591287488231007234",
+      "shader": "Star03/Character/Character_InBattle_Outline",
+      "shaderPathID": "8809953876185120155",
+      "shaderBundle": "resourcesab/shaders.ab",
+      "renderQueue": -1,
+      "keywords": [
+        "_ENABLEBUFFRIMTEX_ON"
+      ],
+      "invalidKeywords": [
+        "_ZWRITE"
+      ],
+      "floats": {
+        "_Alpahtest": 0.0,
+        "_BuffRimLightCutoff": 0.0,
+        "_BuffRimLightHeight": 0.5,
+        "_BuffRimLightNoiseSpeed": 0.5,
+        "_BuffRimLightNoiseTill": 10.0,
+        "_BuffRimLightOffset": 0.0,
+        "_BuffRimLightScanOffset": -0.10000000149011612,
+        "_BuffRimLightSpeed": 1.0,
+        "_BuffRimLightTex": 1.0,
+        "_Cull": 2.0,
+        "_CullMode": 2.0,
+        "_Cutoff": 0.5,
+        "_DepthBias": 0.0,
+        "_DissolveAmount": -0.20000000298023224,
+        "_DissolveEdge": 0.5,
+        "_DissolveFlow": 1.0,
+        "_DissolveSpread": 0.20000000298023224,
+        "_DstBlend": 0.0,
+        "_Emission": 0.0,
+        "_EnableDissolve": 0.0,
+        "_EnableIce": 0.0,
+        "_Expose": 0.009999999776482582,
+        "_HighlightScaler": 0.0,
+        "_HitFresnelPow": 4.320000171661377,
+        "_IceColorInt": 0.3720000088214874,
+        "_IceControl": 0.0,
+        "_IceFresnelMul": 12.0,
+        "_IceFresnelPow": 1.2000000476837158,
+        "_IsAddRimLight": 0.0,
+        "_IsBuffRimLight": 0.0,
+        "_IsHit": 0.0,
+        "_ObjectScale": 2.0,
+        "_OutlineColorLerp": 0.0,
+        "_RenderMode": 0.0,
+        "_RimToonThesHold": 0.4000000059604645,
+        "_RoughnessAdjust": 0.20000000298023224,
+        "_STilling": 100.0,
+        "_SelfShadow": 1.0,
+        "_Slope_ScaledBias": 0.0,
+        "_SpecSize": 0.3720000088214874,
+        "_SrcBlend": 1.0,
+        "_Swaying": 0.0,
+        "_SwayingAmount": 0.05000000074505806,
+        "_SwayingOffset": 0.30000001192092896,
+        "_SwayingRigidness": 1.0,
+        "_SwayingSpeed": 0.5,
+        "_TODInt": 1.0,
+        "_ToonHardness": 0.0,
+        "_ToonThesHold": 0.0,
+        "_ZTest": 4.0,
+        "_ZWrite": 1.0,
+        "_group7": 1.0,
+        "_normalizeViewNormalXYScale": 10.0
+      },
+      "integers": {},
+      "colors": {
+        "_AmbientColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_BaseColor": [
+          0.9528301954269409,
+          0.9213688373565674,
+          0.9213688373565674,
+          0.0
+        ],
+        "_BuffRimLightColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_BuffRimLightFalloff": [
+          0.20000000298023224,
+          0.20999999344348907,
+          0.17000000178813934,
+          0.20000000298023224
+        ],
+        "_DialogueLightColor": [
+          1.5,
+          1.5,
+          1.5,
+          1.0
+        ],
+        "_DialogueLightDir": [
+          3.5,
+          -3.5,
+          3.700000047683716,
+          0.0
+        ],
+        "_DissolveCol": [
+          1.0,
+          1.0,
+          0.6000000238418579,
+          1.0
+        ],
+        "_EmissionColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_EnvColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_HighLightColor": [
+          1.0,
+          0.7685534358024597,
+          0.4213835597038269,
+          0.0
+        ],
+        "_HitColor": [
+          6.0,
+          1.1299999952316284,
+          0.25,
+          1.0
+        ],
+        "_IceCol": [
+          0.0,
+          0.5,
+          1.0,
+          1.0
+        ],
+        "_IceCol2": [
+          0.0,
+          0.07999999821186066,
+          0.5,
+          1.0
+        ],
+        "_IceNoiseOffset": [
+          0.699999988079071,
+          0.699999988079071,
+          0.0,
+          0.0
+        ],
+        "_IcePosition": [
+          0.7599999904632568,
+          -0.30000001192092896,
+          0.0,
+          0.0
+        ],
+        "_IceTexColor": [
+          1.0,
+          1.0,
+          1.0,
+          0.699999988079071
+        ],
+        "_OutlineColor": [
+          0.0,
+          0.0,
+          0.0,
+          0.501960813999176
+        ],
+        "_RimLightColor": [
+          0.0,
+          0.0,
+          0.0,
+          0.5
+        ],
+        "_RimLightDir": [
+          1.0,
+          0.0,
+          -3.0,
+          1.0
+        ],
+        "_ShadowColor": [
+          0.8679245114326477,
+          0.855642557144165,
+          0.855642557144165,
+          0.0
+        ],
+        "_SkinColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "textures": {
+        "_BaseMap": {
+          "asset": {
+            "name": "chr_male_000_toushi_d",
+            "file": "Textures/chr_male_000_toushi_d_3661605073153094119.png",
+            "size": [
+              256,
+              256
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/model/character/chr_male_000/textures.ab",
+            "pathID": "3661605073153094119"
+          },
+          "pathID": "3661605073153094119",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_ControlMap": {
+          "asset": {
+            "name": "chr_male_000_toushi_l",
+            "file": "Textures/chr_male_000_toushi_l_-8762942011473440805.png",
+            "size": [
+              256,
+              256
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/model/character/chr_male_000/textures.ab",
+            "pathID": "-8762942011473440805"
+          },
+          "pathID": "-8762942011473440805",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_DissolveTex": {
+          "asset": {
+            "name": "NoiseTex256",
+            "file": "Textures/NoiseTex256_-3065966560932905197.png",
+            "size": [
+              64,
+              64
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/shader/testure.ab",
+            "pathID": "-3065966560932905197"
+          },
+          "pathID": "-3065966560932905197",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_EnvMap": {
+          "asset": {
+            "name": "MaCrea_4",
+            "bundle": "artres/art_character/matcap.ab",
+            "pathID": "-4225055065353518069",
+            "type": "Cubemap",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "faces": 6
+          },
+          "pathID": "-4225055065353518069",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_IceColorTex": {
+          "asset": {
+            "name": "iceTex",
+            "file": "Textures/iceTex_7248459528624634763.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/shader/testure.ab",
+            "pathID": "7248459528624634763"
+          },
+          "pathID": "7248459528624634763",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_IceTexNoise": {
+          "asset": {
+            "name": "IceOffset",
+            "file": "Textures/IceOffset_-6004570308252836407.png",
+            "size": [
+              32,
+              32
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/shader/testure.ab",
+            "pathID": "-6004570308252836407"
+          },
+          "pathID": "-6004570308252836407",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_RampLight": {
+          "asset": {
+            "name": "qm_vfx_t_noise_m_09",
+            "file": "Textures/qm_vfx_t_noise_m_09_2556630356832912492.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "2556630356832912492"
+          },
+          "pathID": "2556630356832912492",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "instancing": false,
+      "disabledPasses": []
+    },
+    {
+      "name": "chr_male_000_lod1_toufa",
+      "bundle": "artres/model/character/chr_male_000/materials.ab",
+      "pathID": "2683017671021990972",
+      "shader": "Star03/Hair_lod1",
+      "shaderPathID": "-2180853598161620738",
+      "shaderBundle": "resourcesab/shaders.ab",
+      "renderQueue": -1,
+      "keywords": [],
+      "invalidKeywords": [],
+      "floats": {
+        "_BaseColorControl": 0.0949999988079071,
+        "_Cutoff": 0.5,
+        "_DepthBias": 0.0,
+        "_DissolveAmount": -0.20000000298023224,
+        "_DissolveEdge": 0.5,
+        "_DissolveFlow": 1.0,
+        "_DissolveSpread": 0.20000000298023224,
+        "_EnableDissolve": 0.0,
+        "_EnableTopLight": 0.0,
+        "_HideAll": 0.0,
+        "_HideFaji": 0.0,
+        "_HideLiuhai": 0.0,
+        "_HideMawei": 0.0,
+        "_HighlightScaler": 0.0,
+        "_HitFresnelPow": 4.320000171661377,
+        "_IsHit": 0.0,
+        "_ObjectScale": 2.0,
+        "_OutlineColorLerp": 0.0,
+        "_RenderMode": 0.0,
+        "_RimToonThesHold": 0.4000000059604645,
+        "_Slope_ScaledBias": 0.0,
+        "_ToonHardness": 20.0,
+        "_ToonThesHold": 0.30000001192092896,
+        "_TopLightHardness": 2.0,
+        "_TopLightIntensity": 1.5,
+        "_TopLightThreshold": 0.699999988079071,
+        "_normalizeViewNormalXYScale": 10.0
+      },
+      "integers": {},
+      "colors": {
+        "_AddColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_BaseColor": [
+          0.19215688109397888,
+          0.1764705926179886,
+          0.1725490242242813,
+          0.0
+        ],
+        "_BaseColorB": [
+          0.32549020648002625,
+          0.2823529541492462,
+          0.2666666805744171,
+          0.0
+        ],
+        "_DialogueLightColor": [
+          1.5,
+          1.5,
+          1.5,
+          1.0
+        ],
+        "_DialogueLightDir": [
+          3.5,
+          -3.5,
+          3.700000047683716,
+          0.0
+        ],
+        "_DissolveCol": [
+          1.0,
+          1.0,
+          0.6000000238418579,
+          1.0
+        ],
+        "_HighLightColor": [
+          0.162029430270195,
+          0.14412850141525269,
+          0.12213881313800812,
+          0.0
+        ],
+        "_HitColor": [
+          6.0,
+          1.1299999952316284,
+          0.25,
+          1.0
+        ],
+        "_OutlineColor": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_RimLightColor": [
+          0.0,
+          0.0,
+          0.0,
+          0.20000000298023224
+        ],
+        "_RimLightDir": [
+          1.0,
+          0.0,
+          -3.0,
+          1.0
+        ],
+        "_ShadowColor": [
+          0.8301886916160583,
+          0.8301886916160583,
+          0.8301886916160583,
+          0.0
+        ],
+        "_TopLightColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "textures": {
+        "_BaseMap": {
+          "asset": {
+            "name": "chr_male_000_toufa_d",
+            "file": "Textures/chr_male_000_toufa_d_6863993246946754556.png",
+            "size": [
+              512,
+              512
+            ],
+            "unityFormat": 48,
+            "bundle": "artres/model/character/chr_male_000/textures.ab",
+            "pathID": "6863993246946754556"
+          },
+          "pathID": "6863993246946754556",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_DissolveTex": {
+          "asset": {
+            "name": "NoiseTex256",
+            "file": "Textures/NoiseTex256_-3065966560932905197.png",
+            "size": [
+              64,
+              64
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/shader/testure.ab",
+            "pathID": "-3065966560932905197"
+          },
+          "pathID": "-3065966560932905197",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "instancing": false,
+      "disabledPasses": []
+    },
+    {
+      "name": "chr_male_000_lod1_lian",
+      "bundle": "artres/model/character/chr_male_000/materials.ab",
+      "pathID": "2813050847173208994",
+      "shader": "Star03/Character/Character_InBattle_Outline",
+      "shaderPathID": "8809953876185120155",
+      "shaderBundle": "resourcesab/shaders.ab",
+      "renderQueue": -1,
+      "keywords": [
+        "_ENABLEBUFFRIMTEX_ON"
+      ],
+      "invalidKeywords": [
+        "_ZWRITE"
+      ],
+      "floats": {
+        "_Alpahtest": 0.0,
+        "_BuffRimLightCutoff": 0.0,
+        "_BuffRimLightHeight": 0.5,
+        "_BuffRimLightNoiseSpeed": 0.5,
+        "_BuffRimLightNoiseTill": 10.0,
+        "_BuffRimLightOffset": 0.0,
+        "_BuffRimLightScanOffset": -0.10000000149011612,
+        "_BuffRimLightSpeed": 1.0,
+        "_BuffRimLightTex": 1.0,
+        "_Cull": 2.0,
+        "_CullMode": 2.0,
+        "_Cutoff": 0.5,
+        "_DepthBias": 0.0,
+        "_DissolveAmount": -0.20000000298023224,
+        "_DissolveEdge": 0.5,
+        "_DissolveFlow": 1.0,
+        "_DissolveSpread": 0.20000000298023224,
+        "_DstBlend": 0.0,
+        "_Emission": 0.0,
+        "_EnableDissolve": 0.0,
+        "_EnableIce": 0.0,
+        "_Expose": 1.0,
+        "_HighlightScaler": 0.0,
+        "_HitFresnelPow": 4.320000171661377,
+        "_IceColorInt": 0.3070000112056732,
+        "_IceControl": 0.0,
+        "_IceFresnelMul": 12.0,
+        "_IceFresnelPow": 1.2000000476837158,
+        "_IsAddRimLight": 0.0,
+        "_IsBuffRimLight": 0.0,
+        "_IsHit": 0.0,
+        "_ObjectScale": 2.0,
+        "_OutlineColorLerp": 0.4790000021457672,
+        "_RenderMode": 0.0,
+        "_RimToonThesHold": 0.4000000059604645,
+        "_RoughnessAdjust": 0.0,
+        "_STilling": 100.0,
+        "_SelfShadow": 1.0,
+        "_Slope_ScaledBias": 4.0,
+        "_SpecSize": 0.4749999940395355,
+        "_SrcBlend": 1.0,
+        "_Swaying": 0.0,
+        "_SwayingAmount": 0.05000000074505806,
+        "_SwayingOffset": 0.30000001192092896,
+        "_SwayingRigidness": 1.0,
+        "_SwayingSpeed": 0.5,
+        "_TODInt": 1.0,
+        "_ToonHardness": 20.0,
+        "_ToonThesHold": 0.07599999755620956,
+        "_ZTest": 4.0,
+        "_ZWrite": 1.0,
+        "_group7": 1.0,
+        "_normalizeViewNormalXYScale": 3.200000047683716
+      },
+      "integers": {},
+      "colors": {
+        "_AmbientColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_BaseColor": [
+          0.8196078538894653,
+          0.8156862854957581,
+          0.8156862854957581,
+          1.0
+        ],
+        "_BuffRimLightColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_BuffRimLightFalloff": [
+          0.20000000298023224,
+          0.20999999344348907,
+          0.17000000178813934,
+          0.20000000298023224
+        ],
+        "_DialogueLightColor": [
+          1.5,
+          1.5,
+          1.5,
+          1.0
+        ],
+        "_DialogueLightDir": [
+          3.5,
+          -3.5,
+          3.700000047683716,
+          0.0
+        ],
+        "_DissolveCol": [
+          1.0,
+          1.0,
+          0.6000000238418579,
+          1.0
+        ],
+        "_EmissionColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_EnvColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_HighLightColor": [
+          1.0,
+          1.0,
+          1.0,
+          0.0
+        ],
+        "_HitColor": [
+          6.0,
+          1.1299999952316284,
+          0.25,
+          1.0
+        ],
+        "_IceCol": [
+          0.0,
+          0.5,
+          1.0,
+          1.0
+        ],
+        "_IceCol2": [
+          0.0,
+          0.07999999821186066,
+          0.5,
+          1.0
+        ],
+        "_IceNoiseOffset": [
+          0.699999988079071,
+          0.699999988079071,
+          0.0,
+          0.0
+        ],
+        "_IcePosition": [
+          0.7599999904632568,
+          -0.30000001192092896,
+          0.0,
+          0.0
+        ],
+        "_IceTexColor": [
+          1.0,
+          1.0,
+          1.0,
+          0.699999988079071
+        ],
+        "_OutlineColor": [
+          0.09433960914611816,
+          0.0842529833316803,
+          0.0842529833316803,
+          1.0
+        ],
+        "_RimLightColor": [
+          0.0,
+          0.0,
+          0.0,
+          0.30000001192092896
+        ],
+        "_RimLightDir": [
+          1.0,
+          0.0,
+          -3.0,
+          1.0
+        ],
+        "_ShadowColor": [
+          0.6886792182922363,
+          0.5825619697570801,
+          0.5959450006484985,
+          0.0
+        ],
+        "_SkinColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "textures": {
+        "_BaseMap": {
+          "asset": {
+            "name": "chr_male_000_lian_lod1_d",
+            "file": "Textures/chr_male_000_lian_lod1_d_8503069710032574371.png",
+            "size": [
+              512,
+              512
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/model/character/chr_male_000/textures.ab",
+            "pathID": "8503069710032574371"
+          },
+          "pathID": "8503069710032574371",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_ControlMap": {
+          "asset": {
+            "name": "chr_male_004_lian_lod1_l",
+            "file": "Textures/chr_male_004_lian_lod1_l_-4566203374179020644.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/model/character/chr_male_004/textures.ab",
+            "pathID": "-4566203374179020644"
+          },
+          "pathID": "-4566203374179020644",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_DissolveTex": {
+          "asset": {
+            "name": "NoiseTex256",
+            "file": "Textures/NoiseTex256_-3065966560932905197.png",
+            "size": [
+              64,
+              64
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/shader/testure.ab",
+            "pathID": "-3065966560932905197"
+          },
+          "pathID": "-3065966560932905197",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_IceColorTex": {
+          "asset": {
+            "name": "iceTex",
+            "file": "Textures/iceTex_7248459528624634763.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/shader/testure.ab",
+            "pathID": "7248459528624634763"
+          },
+          "pathID": "7248459528624634763",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_IceTexNoise": {
+          "asset": {
+            "name": "IceOffset",
+            "file": "Textures/IceOffset_-6004570308252836407.png",
+            "size": [
+              32,
+              32
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/shader/testure.ab",
+            "pathID": "-6004570308252836407"
+          },
+          "pathID": "-6004570308252836407",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_RampLight": {
+          "asset": {
+            "name": "qm_vfx_t_noise_m_09",
+            "file": "Textures/qm_vfx_t_noise_m_09_2556630356832912492.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "2556630356832912492"
+          },
+          "pathID": "2556630356832912492",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "instancing": false,
+      "disabledPasses": []
+    },
+    {
+      "name": "chr_male_000_lod1_yifu",
+      "bundle": "artres/model/character/chr_male_000/materials.ab",
+      "pathID": "-8329039315434483480",
+      "shader": "Star03/Character/Character_InBattle_Outline",
+      "shaderPathID": "8809953876185120155",
+      "shaderBundle": "resourcesab/shaders.ab",
+      "renderQueue": -1,
+      "keywords": [
+        "_ENABLEBUFFRIMTEX_ON",
+        "_ISADDRIMLIGHT_ON"
+      ],
+      "invalidKeywords": [
+        "_ZWRITE"
+      ],
+      "floats": {
+        "_Alpahtest": 0.0,
+        "_BuffRimLightCutoff": 0.0,
+        "_BuffRimLightHeight": 0.5,
+        "_BuffRimLightNoiseSpeed": 0.5,
+        "_BuffRimLightNoiseTill": 10.0,
+        "_BuffRimLightOffset": 0.0,
+        "_BuffRimLightScanOffset": -0.10000000149011612,
+        "_BuffRimLightSpeed": 1.0,
+        "_BuffRimLightTex": 1.0,
+        "_Cull": 2.0,
+        "_CullMode": 2.0,
+        "_Cutoff": 0.0,
+        "_DepthBias": 0.0,
+        "_DissolveAmount": -0.20000000298023224,
+        "_DissolveEdge": 0.5,
+        "_DissolveFlow": 1.0,
+        "_DissolveSpread": 0.20000000298023224,
+        "_DstBlend": 0.0,
+        "_Emission": 0.0,
+        "_EnableDissolve": 0.0,
+        "_EnableIce": 0.0,
+        "_Expose": -0.20000000298023224,
+        "_HighlightScaler": 0.0,
+        "_HitFresnelPow": 4.320000171661377,
+        "_IceColorInt": 0.2919999957084656,
+        "_IceControl": 0.0,
+        "_IceFresnelMul": 12.0,
+        "_IceFresnelPow": 1.2000000476837158,
+        "_IsAddRimLight": 1.0,
+        "_IsBuffRimLight": 0.0,
+        "_IsHit": 0.0,
+        "_ObjectScale": 2.0,
+        "_OutlineColorLerp": 0.0,
+        "_RenderMode": 0.0,
+        "_RimToonThesHold": 0.4000000059604645,
+        "_RoughnessAdjust": 0.4000000059604645,
+        "_STilling": 100.0,
+        "_SelfShadow": 1.0,
+        "_Slope_ScaledBias": 0.0,
+        "_SpecSize": 0.20000000298023224,
+        "_SrcBlend": 1.0,
+        "_Swaying": 0.0,
+        "_SwayingAmount": 0.05000000074505806,
+        "_SwayingOffset": 0.30000001192092896,
+        "_SwayingRigidness": 1.0,
+        "_SwayingSpeed": 0.5,
+        "_TODInt": 1.0,
+        "_ToonHardness": 40.0,
+        "_ToonThesHold": 0.4000000059604645,
+        "_ZTest": 4.0,
+        "_ZWrite": 1.0,
+        "_group7": 1.0,
+        "_normalizeViewNormalXYScale": 20.0
+      },
+      "integers": {},
+      "colors": {
+        "_AmbientColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_BaseColor": [
+          0.9056603908538818,
+          0.8330366611480713,
+          0.8330366611480713,
+          0.0
+        ],
+        "_BuffRimLightColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_BuffRimLightFalloff": [
+          0.20000000298023224,
+          0.20999999344348907,
+          0.17000000178813934,
+          0.20000000298023224
+        ],
+        "_DialogueLightColor": [
+          1.5,
+          1.5,
+          1.5,
+          1.0
+        ],
+        "_DialogueLightDir": [
+          3.5,
+          -3.5,
+          3.700000047683716,
+          0.0
+        ],
+        "_DissolveCol": [
+          1.0,
+          1.0,
+          0.6000000238418579,
+          1.0
+        ],
+        "_EmissionColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_EnvColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_HighLightColor": [
+          1.0,
+          0.8766173720359802,
+          0.5157232284545898,
+          0.0
+        ],
+        "_HitColor": [
+          6.0,
+          1.1299999952316284,
+          0.25,
+          1.0
+        ],
+        "_IceCol": [
+          0.0,
+          0.5,
+          1.0,
+          1.0
+        ],
+        "_IceCol2": [
+          0.0,
+          0.07999999821186066,
+          0.5,
+          1.0
+        ],
+        "_IceNoiseOffset": [
+          0.699999988079071,
+          0.699999988079071,
+          0.0,
+          0.0
+        ],
+        "_IcePosition": [
+          0.23999999463558197,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_IceTexColor": [
+          1.0,
+          1.0,
+          1.0,
+          0.699999988079071
+        ],
+        "_OutlineColor": [
+          0.0,
+          0.0,
+          0.0,
+          0.501960813999176
+        ],
+        "_RimLightColor": [
+          0.8930817246437073,
+          1.0,
+          0.9947236776351929,
+          0.5
+        ],
+        "_RimLightDir": [
+          1.0,
+          0.0,
+          -3.0,
+          1.0
+        ],
+        "_ShadowColor": [
+          0.5188679099082947,
+          0.4864746630191803,
+          0.4576806426048279,
+          0.0
+        ],
+        "_SkinColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "textures": {
+        "_BaseMap": {
+          "asset": {
+            "name": "chr_male_000_yifu_d",
+            "file": "Textures/chr_male_000_yifu_d_2304485287283091111.png",
+            "size": [
+              512,
+              512
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/model/character/chr_male_000/textures.ab",
+            "pathID": "2304485287283091111"
+          },
+          "pathID": "2304485287283091111",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_ControlMap": {
+          "asset": {
+            "name": "chr_male_000_yifu_l",
+            "file": "Textures/chr_male_000_yifu_l_8611639000770134660.png",
+            "size": [
+              512,
+              512
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/model/character/chr_male_000/textures.ab",
+            "pathID": "8611639000770134660"
+          },
+          "pathID": "8611639000770134660",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_DissolveTex": {
+          "asset": {
+            "name": "NoiseTex256",
+            "file": "Textures/NoiseTex256_-3065966560932905197.png",
+            "size": [
+              64,
+              64
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/shader/testure.ab",
+            "pathID": "-3065966560932905197"
+          },
+          "pathID": "-3065966560932905197",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_EnvMap": {
+          "asset": {
+            "name": "MaCrea_4",
+            "bundle": "artres/art_character/matcap.ab",
+            "pathID": "-4225055065353518069",
+            "type": "Cubemap",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "faces": 6
+          },
+          "pathID": "-4225055065353518069",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_IceColorTex": {
+          "asset": {
+            "name": "iceTex",
+            "file": "Textures/iceTex_7248459528624634763.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/shader/testure.ab",
+            "pathID": "7248459528624634763"
+          },
+          "pathID": "7248459528624634763",
+          "scale": [
+            2.0,
+            2.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_IceTexNoise": {
+          "asset": {
+            "name": "IceOffset",
+            "file": "Textures/IceOffset_-6004570308252836407.png",
+            "size": [
+              32,
+              32
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/shader/testure.ab",
+            "pathID": "-6004570308252836407"
+          },
+          "pathID": "-6004570308252836407",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_RampLight": {
+          "asset": {
+            "name": "qm_vfx_t_noise_m_09",
+            "file": "Textures/qm_vfx_t_noise_m_09_2556630356832912492.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "2556630356832912492"
+          },
+          "pathID": "2556630356832912492",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "instancing": false,
+      "disabledPasses": []
+    }
+  ],
+  "animations": [],
+  "archivedBundles": [
+    "artres/art_character/matcap.ab",
+    "artres/art_vfx/vfx_texture.ab",
+    "artres/charactor/character/backup.ab",
+    "artres/model/character/chr_male_000.ab",
+    "artres/model/character/chr_male_000/materials.ab",
+    "artres/model/character/chr_male_000/textures.ab",
+    "artres/model/character/chr_male_004/textures.ab",
+    "artres/shader/testure.ab",
+    "resourcesab/animation/character/chr_male_001/common/chr_male_000_lod1@qinggong_end_map5.anim.ab",
+    "resourcesab/shaders.ab"
+  ],
+  "sourceClips": [
+    {
+      "name": "chr_male_000_lod1@qinggong_end_map5",
+      "bundle": "resourcesab/animation/character/chr_male_001/common/chr_male_000_lod1@qinggong_end_map5.anim.ab"
+    }
+  ]
+}

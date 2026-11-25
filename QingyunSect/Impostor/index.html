@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>云台 · Impostor 烘焙</title>
+<style>
+:root{color-scheme:light;--ink:#24342f;--paper:#f4f0e5;--border:#c8c4b3;--jade:#286452}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 system-ui,"Microsoft YaHei",sans-serif}
+main{max-width:1060px;margin:auto;padding:clamp(16px,4vw,56px)}
+h1,h2{font-family:Georgia,"Songti SC",SimSun,serif;font-weight:600}h1{margin:.2em 0 .1em;font-size:clamp(30px,5vw,50px)}h2{margin:0 0 .7em;font-size:20px}
+header{margin-bottom:22px;border-bottom:1px solid var(--border);padding-bottom:18px}header p{margin:0;color:#536058}
+.layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(215px,1fr);gap:22px}
+.pane{padding:18px;border:1px solid var(--border);background:#faf8f0}
+.stage{display:grid;place-items:center;aspect-ratio:1;background:repeating-conic-gradient(#deded2 0% 25%,#e9e9df 0% 50%) 0 0/24px 24px}
+canvas{display:block;max-width:100%}#view{width:100%;height:100%;object-fit:contain}
+label{display:grid;gap:3px;margin:0 0 15px}select,input,button{font:inherit;color:var(--ink)}
+select,button,input[type=file]{max-width:100%;padding:.36em .55em;border:1px solid var(--border);background:#fffdf6}
+input[type=range]{accent-color:var(--jade);width:100%}button{cursor:pointer}button:disabled{opacity:.45;cursor:default}
+.action{background:var(--jade);color:white;border-color:var(--jade);width:100%;padding:.6em}
+.downloads{display:flex;gap:12px;flex-wrap:wrap}.downloads a{color:#19583f}
+#result{margin-top:20px}#atlas{max-width:100%;max-height:260px;background:#ddddcf}
+#status{min-height:1.6em;margin:.7em 0 0}#pose-controls[hidden],[hidden]{display:none}
+@media(max-width:640px){.layout{grid-template-columns:1fr}.pane{padding:12px}.stage{max-height:45vh}main{padding:12px}}
+</style></head><body><main>
+<header><h1>Impostor 烘焙</h1><p>导入带贴图的 GLB，选好姿势和俯角，将一圈视图烘到透明图集。</p></header>
+<div class="layout"><section class="pane"><h2 id="preview-heading">模型预览</h2>
+<div class="stage"><canvas id="view" width="480" height="480" aria-label="模型或已烘焙面片预览"></canvas></div>
+<label>观察方位 <output id="angle-out">0°</output><input id="yaw" type="range" min="0" max="359" value="0"></label>
+<button id="toggle" disabled>查看烘焙面片</button></section>
+<section class="pane"><h2>烘焙设置</h2>
+<label>模型文件<input id="file" type="file" accept=".glb"></label>
+<div id="pose-controls" hidden><label>动作<select id="clip"></select></label><label>取样时间 <output id="time-out"></output><input id="pose-time" type="range" min="0" max="1" step=".01" value="0"></label></div>
+<label>相机俯角 <output id="elev-out">38°</output><input id="elevation" type="range" min="0" max="85" value="38"></label>
+<label>水平视角数<select id="angles"><option>1</option><option>4</option><option selected>8</option><option>16</option></select></label>
+<label>单格像素<select id="size"><option>128</option><option selected>256</option><option>512</option></select></label>
+<button class="action" id="bake">烘焙图集</button><p id="status" role="status">正在打开战场角色 NP0023…</p></section></div>
+<section id="result" class="pane" hidden><h2>图集</h2><canvas id="atlas"></canvas>
+<p class="downloads"><a id="png" download>下载透明 PNG</a><a id="json" download>下载角度配置 JSON</a></p></section>
+<script src="atlas.js"></script><script src="baker.js"></script></main></body></html>

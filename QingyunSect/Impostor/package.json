@@ -1,0 +1,6 @@
+{
+  "private": true,
+  "scripts": {"build": "esbuild src.js --bundle --minify --legal-comments=inline --format=iife --outfile=baker.js"},
+  "dependencies": {"three": "0.186.0"},
+  "devDependencies": {"esbuild": "0.25.12"}
+}

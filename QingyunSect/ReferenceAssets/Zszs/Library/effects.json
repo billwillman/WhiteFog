@@ -1,0 +1,23 @@
+[
+  {
+    "id": "pugongjian",
+    "title": "剑普攻",
+    "prefabs": 36,
+    "layers": 44,
+    "materials": 8
+  },
+  {
+    "id": "pokongjianfa",
+    "title": "破空剑法",
+    "prefabs": 24,
+    "layers": 78,
+    "materials": 16
+  },
+  {
+    "id": "liuxingjianyu",
+    "title": "流星剑雨",
+    "prefabs": 15,
+    "layers": 57,
+    "materials": 14
+  }
+]

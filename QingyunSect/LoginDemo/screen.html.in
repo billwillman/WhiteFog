@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>重生之我在青云宗修仙 · 第三声渡钟</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;background:#191b1e}
+body{display:grid;place-items:center}
+main{position:relative;width:min(100vw,56.25vh);height:100vh;width:min(100vw,56.25dvh);height:100dvh;overflow:hidden;isolation:isolate;background:#635e56}
+canvas{width:100%;height:100%;display:block}
+h1{position:absolute;top:14.8%;left:50%;width:74.3%;margin:0;transform:translateX(-50%);pointer-events:none}
+h1 svg{display:block;width:100%;height:auto;overflow:visible}
+button{position:absolute;left:50%;top:85.2%;transform:translate(-50%,-50%);min-height:44px;width:39%;aspect-ratio:3.6;border:0;cursor:pointer;color:#ffebbf;font:600 clamp(22px,min(8vw,4.5vh),70px)/1.1 KaiTi,STKaiti,"Songti SC",serif;letter-spacing:.16em;text-indent:.16em;background:transparent;isolation:isolate;touch-action:manipulation}
+button::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(100deg,#b9532a,#aa3920 28%,#96351d 68%,#b85729);clip-path:polygon(2% 14%,15% 9%,39% 10%,71% 6%,88% 11%,98% 19%,95% 29%,99% 33%,97% 46%,99% 63%,94% 81%,99% 85%,83% 88%,69% 94%,40% 92%,19% 94%,0% 83%,4% 70%,1% 59%,3% 41%,0 31%,5% 24%);}
+button:focus-visible{outline:2px solid #fff0be;outline-offset:4px}
+[hidden]{display:none!important}
+#notice{position:absolute;top:48%;width:100%;margin:0;text-align:center;color:#fff6db;font:16px/1.7 sans-serif}
+#enter{width:46.23%;height:auto;aspect-ratio:435/151;top:86.1%;padding:0}
+#enter::before{display:none}
+#enter svg{display:block;width:100%;height:100%}
+</style>
+<style>/* STORY_STYLE */</style>
+</head>
+<body><main aria-label="重生之我在青云宗修仙">
+<canvas aria-label="金色云洞与悬停御剑的青衣弟子"></canvas>
+<h1 aria-label="重生之我在青云宗修仙" hidden>
+<svg aria-hidden="true" viewBox="0 0 699 318" xmlns="http://www.w3.org/2000/svg">
+<defs><filter id="ink" x="0%" y="0%" width="100%" height="100%" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 .115  0 0 0 0 .089  0 0 0 0 .071  -1.7 -1.95 -.35 1.68 0"/></filter></defs>
+<image href="TITLE_PLATE" width="699" height="318" filter="url(#ink)"/>
+</svg></h1>
+<button id="enter" type="button" aria-label="登录" hidden>
+<svg aria-hidden="true" viewBox="0 0 435 151" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<image id="seal-art" href="BUTTON_PLATE" width="435" height="151"/>
+<filter id="vermilion" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+<feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  4 -6.5 0 0 -.05"/>
+</filter>
+<mask id="seal-mask"><use href="#seal-art" filter="url(#vermilion)"/><rect x="110" y="25" width="220" height="93" rx="6" fill="white"/></mask>
+</defs><use href="#seal-art" mask="url(#seal-mask)"/>
+</svg></button>
+<button id="again" type="button" hidden>重看</button>
+<p id="notice" role="status">入云中…</p>
+<div id="story" hidden>
+  <section id="region" aria-label="区域舆图">
+    <header class="map-head">
+      <img id="avatar" width="72" height="72" alt="">
+      <div class="identity"><b>炼气一层</b><span>外门弟子</span></div>
+      <button id="task" type="button">到外院，找师兄领药</button>
+    </header>
+    <div class="map-scroll"><div class="map-field">
+      <img id="region-art" alt="青云宗、旧渡、古道和云关分列河湾两岸" draggable="false">
+      <canvas id="river-motion" aria-hidden="true" width="480" height="732"></canvas>
+      <img class="map-part" id="bell" alt=""><img class="map-part" id="boat" alt="">
+      <img class="map-part" id="sailboat" alt=""><img class="map-part" id="river-pine" alt="">
+      <canvas class="map-part" id="bridge-flag" aria-hidden="true"></canvas>
+      <button class="place home" data-place="home" aria-label="青云宗外院"></button>
+      <button class="place pass" data-place="pass" aria-label="云关"></button>
+      <button class="place ferry" data-place="ferry" aria-label="旧渡"></button>
+      <button class="place road" data-place="road" aria-label="古道"></button>
+      <i id="home-seal" aria-hidden="true" hidden>宗</i>
+      <i id="route-seal" aria-hidden="true" hidden>任</i>
+    </div></div>
+    <nav class="map-foot" aria-label="修行手札">
+      <button data-note="修行">修行</button><button data-note="功法">功法</button><button data-note="伙伴">伙伴</button>
+    </nav>
+  </section>
+  <section id="court" aria-label="青云宗外院" hidden>
+    <img id="court-art" alt="青云宗外院的石阶与廊庑">
+    <button id="to-map" type="button">‹ 舆图</button>
+    <div class="court-chapter"><small>第一章　第三声渡钟</small><strong>外院的药包</strong></div>
+  </section>
+  <section id="battle-entry" aria-label="旧渡云端战场" hidden>
+    <canvas id="battle-role" aria-label="后上方斜视，外门弟子踏剑飞过滚动的云雾"></canvas>
+    <img id="battle-still" alt="云端御剑入场" hidden>
+    <span id="battle-skill" hidden></span>
+    <ol id="battle-bar" aria-label="出战功法，自动施放"></ol>
+    <section id="battle-result" role="status" hidden>
+      <h2>药舟已入避风水面</h2><p>首通所得　修为 · 通用残页</p>
+      <button type="button" id="battle-return">回到舆图</button>
+    </section>
+    <button id="battle-map" type="button">‹ 舆图</button>
+    <div class="court-chapter"><small>第一章　第三声渡钟</small><strong>雾里有灯</strong></div>
+  </section>
+  <div class="dialogue" id="dialogue" hidden></div>
+</div>
+<template id="dialogue-template">
+  <div class="portrait-frame" aria-hidden="true" hidden><canvas class="portrait" width="280" height="372"></canvas></div>
+  <section class="speech" aria-label="剧情对话">
+    <div aria-live="polite" aria-atomic="true"><h2 class="speaker"></h2><p class="words"></p></div>
+    <button class="advance" type="button"></button>
+  </section>
+</template>
+<canvas id="veil" aria-hidden="true" hidden></canvas>
+</main>
+<script>
+'use strict';
+/* PACKED_ASSETS */
+/* DIALOGUE_CODE */
+/* MAP_MOTION */
+/* BATTLE_ENTRY */
+/* STORY_CODE */
+/* SCENE_CODE */
+</script></body></html>
+

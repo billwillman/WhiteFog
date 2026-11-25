@@ -1,0 +1,820 @@
+{
+  "id": "jy_xianbaihu_001",
+  "title": "仙白虎",
+  "group": "怪物",
+  "source": "artres/model/jy/jy_xianbaihu_001.ab",
+  "prefab": "resourcesab/prefabs/charactor/boss.ab",
+  "vertices": 4512,
+  "triangles": 5482,
+  "skins": 2,
+  "materials": [
+    {
+      "name": "boss_xianbaihu_001",
+      "bundle": "artres/model/boss/boss_xianbaihu_001/materials.ab",
+      "pathID": "-6382788894645877388",
+      "shader": "Star03/Character/Character_InBattle_Outline",
+      "shaderPathID": "8809953876185120155",
+      "shaderBundle": "resourcesab/shaders.ab",
+      "renderQueue": -1,
+      "keywords": [
+        "_EMISSION_ON",
+        "_ENABLEBUFFRIMTEX_ON",
+        "_ISADDRIMLIGHT_ON"
+      ],
+      "invalidKeywords": [
+        "_SELFSHADOW_ON",
+        "_ZWRITE"
+      ],
+      "floats": {
+        "_Alpahtest": 0.0,
+        "_BuffRimLightCutoff": 0.0,
+        "_BuffRimLightHeight": 0.0,
+        "_BuffRimLightNoiseSpeed": 0.5,
+        "_BuffRimLightNoiseTill": 10.0,
+        "_BuffRimLightOffset": 0.18000000715255737,
+        "_BuffRimLightScanOffset": -0.10000000149011612,
+        "_BuffRimLightSpeed": 1.0,
+        "_BuffRimLightTex": 1.0,
+        "_Cull": 2.0,
+        "_CullMode": 2.0,
+        "_Cutoff": 0.5,
+        "_DepthBias": 0.0,
+        "_DissolveAmount": -0.20000000298023224,
+        "_DissolveEdge": 0.5,
+        "_DissolveFlow": 1.0,
+        "_DissolveSpread": 0.20000000298023224,
+        "_DstBlend": 0.0,
+        "_Emission": 1.0,
+        "_EnableDissolve": 0.0,
+        "_EnableIce": 0.0,
+        "_Expose": 0.5,
+        "_HighlightScaler": 0.0,
+        "_HitFresnelPow": 3.5,
+        "_IceColorInt": 0.24899999797344208,
+        "_IceControl": 0.0,
+        "_IceFresnelMul": 12.0,
+        "_IceFresnelPow": 1.2000000476837158,
+        "_IsAddRimLight": 1.0,
+        "_IsBuffRimLight": 0.0,
+        "_IsHit": 0.0,
+        "_ObjectScale": 2.0,
+        "_OutlineColorLerp": 0.5,
+        "_RenderMode": 0.0,
+        "_RimToonThesHold": 0.5799999833106995,
+        "_RoughnessAdjust": 0.375,
+        "_STilling": 100.0,
+        "_SelfShadow": 1.0,
+        "_Slope_ScaledBias": 4.0,
+        "_SpecSize": 0.12800000607967377,
+        "_SrcBlend": 1.0,
+        "_Swaying": 0.0,
+        "_SwayingAmount": 0.05000000074505806,
+        "_SwayingOffset": 0.30000001192092896,
+        "_SwayingRigidness": 1.0,
+        "_SwayingSpeed": 0.5,
+        "_TODInt": 1.0,
+        "_ToonHardness": 6.800000190734863,
+        "_ToonThesHold": 0.5789999961853027,
+        "_ZTest": 4.0,
+        "_ZWrite": 1.0,
+        "_group7": 1.0,
+        "_normalizeViewNormalXYScale": 28.0
+      },
+      "integers": {},
+      "colors": {
+        "_AmbientColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_BaseColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_BuffRimLightColor": [
+          0.6792452931404114,
+          0.5856707692146301,
+          0.47739410400390625,
+          1.0
+        ],
+        "_BuffRimLightFalloff": [
+          0.20000000298023224,
+          0.20999999344348907,
+          0.17000000178813934,
+          0.20000000298023224
+        ],
+        "_DialogueLightColor": [
+          1.1353013515472412,
+          1.1353013515472412,
+          1.1353013515472412,
+          0.9019607901573181
+        ],
+        "_DialogueLightDir": [
+          3.5999999046325684,
+          47.91999816894531,
+          37.5,
+          0.0
+        ],
+        "_DissolveCol": [
+          1.0,
+          1.0,
+          0.6000000238418579,
+          1.0
+        ],
+        "_EmissionColor": [
+          0.0,
+          11.98431396484375,
+          9.656285285949707,
+          1.0
+        ],
+        "_EnvColor": [
+          0.338848352432251,
+          0.298015296459198,
+          0.349056601524353,
+          1.0
+        ],
+        "_HighLightColor": [
+          31.626798629760742,
+          28.535911560058594,
+          14.172386169433594,
+          1.0
+        ],
+        "_HitColor": [
+          11.979999542236328,
+          2.25,
+          0.5,
+          1.0
+        ],
+        "_IceCol": [
+          0.0,
+          0.5,
+          1.0,
+          1.0
+        ],
+        "_IceCol2": [
+          0.0,
+          0.07999999821186066,
+          0.5,
+          1.0
+        ],
+        "_IceNoiseOffset": [
+          3.559999942779541,
+          1.1100000143051147,
+          0.27000001072883606,
+          0.0
+        ],
+        "_IcePosition": [
+          0.5799999833106995,
+          1.3300000429153442,
+          0.0,
+          0.0
+        ],
+        "_IceTexColor": [
+          1.0,
+          1.0,
+          1.0,
+          0.699999988079071
+        ],
+        "_OutlineColor": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_RimLightColor": [
+          9.743539810180664,
+          11.403741836547852,
+          12.95683479309082,
+          0.2823529541492462
+        ],
+        "_RimLightDir": [
+          -0.5,
+          1.1799999475479126,
+          -3.759999990463257,
+          1.0
+        ],
+        "_ShadowColor": [
+          0.3536663353443146,
+          0.3268066942691803,
+          0.4528301954269409,
+          1.0
+        ],
+        "_SkinColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "textures": {
+        "_BaseMap": {
+          "asset": {
+            "name": "boss_xianbaihu_001_d_hd",
+            "file": "Textures/boss_xianbaihu_001_d_hd_6111131800690965748.png",
+            "size": [
+              1024,
+              1024
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/model/boss/boss_xianbaihu_001/textures.ab",
+            "pathID": "6111131800690965748"
+          },
+          "pathID": "6111131800690965748",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_ControlMap": {
+          "asset": {
+            "name": "boss_xianbaihu_001_l",
+            "file": "Textures/boss_xianbaihu_001_l_2815508520578322262.png",
+            "size": [
+              256,
+              256
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/model/boss/boss_xianbaihu_001/textures.ab",
+            "pathID": "2815508520578322262"
+          },
+          "pathID": "2815508520578322262",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_DissolveTex": {
+          "asset": {
+            "name": "NoiseTex256",
+            "file": "Textures/NoiseTex256_-3065966560932905197.png",
+            "size": [
+              64,
+              64
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/shader/testure.ab",
+            "pathID": "-3065966560932905197"
+          },
+          "pathID": "-3065966560932905197",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_EmissionTex": {
+          "asset": {
+            "name": "boss_xianbaihu_001_e",
+            "file": "Textures/boss_xianbaihu_001_e_-3768182781200018296.png",
+            "size": [
+              256,
+              256
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/model/boss/boss_xianbaihu_001/textures.ab",
+            "pathID": "-3768182781200018296"
+          },
+          "pathID": "-3768182781200018296",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_EnvMap": {
+          "asset": {
+            "name": "MaCrea_4",
+            "bundle": "artres/art_character/matcap.ab",
+            "pathID": "-4225055065353518069",
+            "type": "Cubemap",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "faces": 6
+          },
+          "pathID": "-4225055065353518069",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_IceColorTex": {
+          "asset": {
+            "name": "iceTex",
+            "file": "Textures/iceTex_7248459528624634763.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/shader/testure.ab",
+            "pathID": "7248459528624634763"
+          },
+          "pathID": "7248459528624634763",
+          "scale": [
+            3.0,
+            3.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_IceTexNoise": {
+          "asset": {
+            "name": "IceOffset",
+            "file": "Textures/IceOffset_-6004570308252836407.png",
+            "size": [
+              32,
+              32
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/shader/testure.ab",
+            "pathID": "-6004570308252836407"
+          },
+          "pathID": "-6004570308252836407",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_RampLight": {
+          "asset": {
+            "name": "qm_vfx_t_noise_m_09",
+            "file": "Textures/qm_vfx_t_noise_m_09_2556630356832912492.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "2556630356832912492"
+          },
+          "pathID": "2556630356832912492",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "instancing": false,
+      "disabledPasses": []
+    },
+    {
+      "name": "boss_xianbaihucb_001",
+      "bundle": "artres/model/boss/boss_xianbaihu_001/materials.ab",
+      "pathID": "-413508323715400740",
+      "shader": "Star03/Character/Character_InBattle_Outline",
+      "shaderPathID": "8809953876185120155",
+      "shaderBundle": "resourcesab/shaders.ab",
+      "renderQueue": -1,
+      "keywords": [
+        "_ISADDRIMLIGHT_ON"
+      ],
+      "invalidKeywords": [
+        "_ZWRITE"
+      ],
+      "floats": {
+        "_Alpahtest": 0.0,
+        "_BuffRimLightCutoff": 0.0,
+        "_BuffRimLightHeight": 0.5,
+        "_BuffRimLightNoiseSpeed": 0.5,
+        "_BuffRimLightNoiseTill": 10.0,
+        "_BuffRimLightOffset": 0.0,
+        "_BuffRimLightScanOffset": -0.10000000149011612,
+        "_BuffRimLightSpeed": 1.0,
+        "_BuffRimLightTex": 0.0,
+        "_Cull": 2.0,
+        "_CullMode": 2.0,
+        "_Cutoff": 0.5,
+        "_DepthBias": 0.0,
+        "_DissolveAmount": -0.20000000298023224,
+        "_DissolveEdge": 0.10000000149011612,
+        "_DissolveFlow": 1.0,
+        "_DissolveSpread": 0.5,
+        "_DstBlend": 0.0,
+        "_Emission": 0.0,
+        "_EnableDissolve": 0.0,
+        "_EnableIce": 0.0,
+        "_Expose": 0.10000000149011612,
+        "_HighlightScaler": 0.0,
+        "_HitFresnelPow": 2.0,
+        "_IceColorInt": 0.2750000059604645,
+        "_IceControl": 0.0,
+        "_IceFresnelMul": 12.0,
+        "_IceFresnelPow": 1.2000000476837158,
+        "_IsAddRimLight": 1.0,
+        "_IsBuffRimLight": 0.0,
+        "_IsHit": 0.0,
+        "_ObjectScale": 5.0,
+        "_OutlineColorLerp": 0.0,
+        "_RenderMode": 0.0,
+        "_RimToonThesHold": 0.4000000059604645,
+        "_RoughnessAdjust": 0.9390000104904175,
+        "_STilling": 100.0,
+        "_SelfShadow": 0.0,
+        "_Slope_ScaledBias": 0.0,
+        "_SpecSize": 0.20000000298023224,
+        "_SrcBlend": 1.0,
+        "_Swaying": 0.0,
+        "_SwayingAmount": 0.05000000074505806,
+        "_SwayingOffset": 0.30000001192092896,
+        "_SwayingRigidness": 1.0,
+        "_SwayingSpeed": 0.5,
+        "_TODInt": 1.0,
+        "_ToonHardness": 1.0,
+        "_ToonThesHold": 0.0,
+        "_ZTest": 4.0,
+        "_ZWrite": 1.0,
+        "_group7": 1.0,
+        "_normalizeViewNormalXYScale": 26.0
+      },
+      "integers": {},
+      "colors": {
+        "_AmbientColor": [
+          0.5,
+          0.5,
+          0.5,
+          1.0
+        ],
+        "_BaseColor": [
+          1.0,
+          1.0,
+          1.0,
+          0.0
+        ],
+        "_BuffRimLightColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_BuffRimLightFalloff": [
+          0.20000000298023224,
+          0.20999999344348907,
+          0.17000000178813934,
+          0.20000000298023224
+        ],
+        "_DialogueLightColor": [
+          1.5,
+          1.5,
+          1.5,
+          1.0
+        ],
+        "_DialogueLightDir": [
+          3.5,
+          -3.5,
+          3.700000047683716,
+          0.0
+        ],
+        "_DissolveCol": [
+          1.0,
+          1.0,
+          0.6000000238418579,
+          1.0
+        ],
+        "_EmissionColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_EnvColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_HighLightColor": [
+          23.968629837036133,
+          20.388751983642578,
+          9.383944511413574,
+          0.0
+        ],
+        "_HitColor": [
+          11.979999542236328,
+          2.25,
+          0.5,
+          1.0
+        ],
+        "_IceCol": [
+          0.0,
+          0.5,
+          1.0,
+          1.0
+        ],
+        "_IceCol2": [
+          0.0,
+          0.07999999821186066,
+          0.5,
+          1.0
+        ],
+        "_IceNoiseOffset": [
+          0.699999988079071,
+          0.699999988079071,
+          1.0800000429153442,
+          0.0
+        ],
+        "_IcePosition": [
+          -0.4399999976158142,
+          0.0,
+          0.0,
+          0.6899999976158142
+        ],
+        "_IceTexColor": [
+          1.0,
+          1.0,
+          1.0,
+          0.699999988079071
+        ],
+        "_OutlineColor": [
+          0.0,
+          0.0,
+          0.0,
+          0.501960813999176
+        ],
+        "_RimLightColor": [
+          0.8410466313362122,
+          0.9433962106704712,
+          0.9403409957885742,
+          0.5
+        ],
+        "_RimLightDir": [
+          0.6499999761581421,
+          0.0,
+          -3.0,
+          1.0
+        ],
+        "_ShadowColor": [
+          0.7358490228652954,
+          0.7248575687408447,
+          0.6699002981185913,
+          0.0
+        ],
+        "_SkinColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "textures": {
+        "_BaseMap": {
+          "asset": {
+            "name": "boss_xianbaihucb_001_d",
+            "file": "Textures/boss_xianbaihucb_001_d_-1259011517957325507.png",
+            "size": [
+              512,
+              512
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/model/boss/boss_xianbaihu_001/textures.ab",
+            "pathID": "-1259011517957325507"
+          },
+          "pathID": "-1259011517957325507",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_ControlMap": {
+          "asset": {
+            "name": "boss_xianbaihucb_001_l",
+            "file": "Textures/boss_xianbaihucb_001_l_7117541437070668225.png",
+            "size": [
+              256,
+              256
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/model/boss/boss_xianbaihu_001/textures.ab",
+            "pathID": "7117541437070668225"
+          },
+          "pathID": "7117541437070668225",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_DissolveTex": {
+          "asset": {
+            "name": "NoiseTex256",
+            "file": "Textures/NoiseTex256_-3065966560932905197.png",
+            "size": [
+              64,
+              64
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/shader/testure.ab",
+            "pathID": "-3065966560932905197"
+          },
+          "pathID": "-3065966560932905197",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_EnvMap": {
+          "asset": {
+            "name": "HDR_Studio 05",
+            "bundle": "artres/art_character/matcap.ab",
+            "pathID": "-2601297099269521290",
+            "type": "Cubemap",
+            "size": [
+              64,
+              64
+            ],
+            "unityFormat": 50,
+            "faces": 6
+          },
+          "pathID": "-2601297099269521290",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_IceColorTex": {
+          "asset": {
+            "name": "iceTex",
+            "file": "Textures/iceTex_7248459528624634763.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/shader/testure.ab",
+            "pathID": "7248459528624634763"
+          },
+          "pathID": "7248459528624634763",
+          "scale": [
+            3.0,
+            3.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_IceTexNoise": {
+          "asset": {
+            "name": "IceOffset",
+            "file": "Textures/IceOffset_-6004570308252836407.png",
+            "size": [
+              32,
+              32
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/shader/testure.ab",
+            "pathID": "-6004570308252836407"
+          },
+          "pathID": "-6004570308252836407",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_RampLight": {
+          "asset": {
+            "name": "qm_vfx_t_noise_m_09",
+            "file": "Textures/qm_vfx_t_noise_m_09_2556630356832912492.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "2556630356832912492"
+          },
+          "pathID": "2556630356832912492",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "instancing": false,
+      "disabledPasses": []
+    }
+  ],
+  "animations": [],
+  "archivedBundles": [
+    "artres/art_character/matcap.ab",
+    "artres/art_vfx/vfx_texture.ab",
+    "artres/model/boss/boss_xianbaihu_001/materials.ab",
+    "artres/model/boss/boss_xianbaihu_001/textures.ab",
+    "artres/model/jy/jy_xianbaihu_001.ab",
+    "artres/shader/testure.ab",
+    "resourcesab/animation/monster/jy_xianbaihu_001.ab",
+    "resourcesab/animation/monster/jy_xianbaihu_001/boss_xianbaihu_001.ab",
+    "resourcesab/prefabs/charactor/boss.ab",
+    "resourcesab/shaders.ab"
+  ],
+  "sourceClips": [
+    {
+      "name": "jy_xianbaihu_001@attidle01",
+      "bundle": "resourcesab/animation/monster/jy_xianbaihu_001.ab"
+    },
+    {
+      "name": "jy_xianbaihu_001@skill01_206021",
+      "bundle": "resourcesab/animation/monster/jy_xianbaihu_001.ab"
+    },
+    {
+      "name": "jy_xianbaihu_001@come",
+      "bundle": "resourcesab/animation/monster/jy_xianbaihu_001.ab"
+    },
+    {
+      "name": "jy_xianbaihu_001@attack01_206020",
+      "bundle": "resourcesab/animation/monster/jy_xianbaihu_001.ab"
+    },
+    {
+      "name": "jy_xianbaihu_001@move",
+      "bundle": "resourcesab/animation/monster/jy_xianbaihu_001.ab"
+    },
+    {
+      "name": "jy_xianbaihu_001@die",
+      "bundle": "resourcesab/animation/monster/jy_xianbaihu_001.ab"
+    },
+    {
+      "name": "jy_xianbaihu_001@hurt",
+      "bundle": "resourcesab/animation/monster/jy_xianbaihu_001.ab"
+    },
+    {
+      "name": "jy_xianbaihu_001@skill03",
+      "bundle": "resourcesab/animation/monster/jy_xianbaihu_001.ab"
+    },
+    {
+      "name": "jy_xianbaihu_001@skill02",
+      "bundle": "resourcesab/animation/monster/jy_xianbaihu_001.ab"
+    },
+    {
+      "name": "jy_xianbaihu_001@skill02_207022",
+      "bundle": "resourcesab/animation/monster/jy_xianbaihu_001/boss_xianbaihu_001.ab"
+    },
+    {
+      "name": "jy_xianbaihu_001@skill03_207023",
+      "bundle": "resourcesab/animation/monster/jy_xianbaihu_001/boss_xianbaihu_001.ab"
+    },
+    {
+      "name": "jy_xianbaihu_001@skill01_207021",
+      "bundle": "resourcesab/animation/monster/jy_xianbaihu_001/boss_xianbaihu_001.ab"
+    },
+    {
+      "name": "jy_xianbaihu_001@attack01_207020",
+      "bundle": "resourcesab/animation/monster/jy_xianbaihu_001/boss_xianbaihu_001.ab"
+    }
+  ]
+}

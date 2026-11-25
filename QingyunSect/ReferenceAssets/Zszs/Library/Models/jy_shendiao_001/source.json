@@ -1,0 +1,431 @@
+{
+  "id": "jy_shendiao_001",
+  "title": "神雕",
+  "group": "怪物",
+  "source": "artres/model/jy/jy_shendiao_001.ab",
+  "prefab": "resourcesab/prefabs/charactor/monster.ab",
+  "vertices": 4719,
+  "triangles": 3430,
+  "skins": 1,
+  "materials": [
+    {
+      "name": "jy_shendiao_001",
+      "bundle": "artres/model/jy/jy_shendiao_001/materials.ab",
+      "pathID": "-6748070161753056140",
+      "shader": "Star03/Character/Character_InBattle_Outline",
+      "shaderPathID": "8809953876185120155",
+      "shaderBundle": "resourcesab/shaders.ab",
+      "renderQueue": -1,
+      "keywords": [],
+      "invalidKeywords": [
+        "_SELFSHADOW_ON",
+        "_ZWRITE"
+      ],
+      "floats": {
+        "_Alpahtest": 0.0,
+        "_BuffRimLightCutoff": 0.0,
+        "_BuffRimLightHeight": 0.0,
+        "_BuffRimLightNoiseSpeed": 0.5,
+        "_BuffRimLightNoiseTill": 10.0,
+        "_BuffRimLightOffset": 0.1599999964237213,
+        "_BuffRimLightScanOffset": -0.10000000149011612,
+        "_BuffRimLightSpeed": 1.0,
+        "_BuffRimLightTex": 0.0,
+        "_Cull": 2.0,
+        "_CullMode": 2.0,
+        "_Cutoff": 0.5,
+        "_DepthBias": 0.0,
+        "_DissolveAmount": -0.20000000298023224,
+        "_DissolveEdge": 0.10000000149011612,
+        "_DissolveFlow": 1.0,
+        "_DissolveSpread": 0.5,
+        "_DstBlend": 0.0,
+        "_Emission": 0.0,
+        "_EnableDissolve": 0.0,
+        "_EnableIce": 0.0,
+        "_Expose": 0.4399999976158142,
+        "_HighlightScaler": 0.0,
+        "_HitFresnelPow": 2.0,
+        "_IceColorInt": 0.27000001072883606,
+        "_IceControl": 0.0,
+        "_IceFresnelMul": 12.0,
+        "_IceFresnelPow": 1.2000000476837158,
+        "_IsAddRimLight": 0.0,
+        "_IsBuffRimLight": 0.0,
+        "_IsHit": 0.0,
+        "_ObjectScale": 2.0,
+        "_OutlineColorLerp": 0.4790000021457672,
+        "_RenderMode": 0.0,
+        "_RimToonThesHold": 0.4000000059604645,
+        "_RoughnessAdjust": 0.44999998807907104,
+        "_STilling": 100.0,
+        "_SelfShadow": 1.0,
+        "_Slope_ScaledBias": 4.0,
+        "_SpecSize": 0.14000000059604645,
+        "_SrcBlend": 1.0,
+        "_Swaying": 0.0,
+        "_SwayingAmount": 0.05000000074505806,
+        "_SwayingOffset": 0.30000001192092896,
+        "_SwayingRigidness": 1.0,
+        "_SwayingSpeed": 0.5,
+        "_TODInt": 1.0,
+        "_ToonHardness": 38.0,
+        "_ToonThesHold": 0.3959999978542328,
+        "_ZTest": 4.0,
+        "_ZWrite": 1.0,
+        "_group7": 1.0,
+        "_normalizeViewNormalXYScale": 35.0
+      },
+      "integers": {},
+      "colors": {
+        "_AmbientColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_BaseColor": [
+          0.8396226167678833,
+          0.8054184317588806,
+          0.7894564867019653,
+          1.0
+        ],
+        "_BuffRimLightColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_BuffRimLightFalloff": [
+          0.20000000298023224,
+          0.20999999344348907,
+          0.17000000178813934,
+          0.20000000298023224
+        ],
+        "_DialogueLightColor": [
+          0.9883370995521545,
+          0.9883370995521545,
+          0.9883370995521545,
+          1.0
+        ],
+        "_DialogueLightDir": [
+          3.5,
+          -3.5,
+          3.700000047683716,
+          0.0
+        ],
+        "_DissolveCol": [
+          1.0,
+          1.0,
+          0.6000000238418579,
+          1.0
+        ],
+        "_EmissionColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_EnvColor": [
+          0.5960784554481506,
+          0.6431372761726379,
+          0.6745098233222961,
+          1.0
+        ],
+        "_HighLightColor": [
+          126.50720977783203,
+          126.50720977783203,
+          126.50720977783203,
+          0.0
+        ],
+        "_HitColor": [
+          11.979999542236328,
+          2.25,
+          0.5,
+          1.0
+        ],
+        "_IceCol": [
+          0.0,
+          0.5,
+          1.0,
+          1.0
+        ],
+        "_IceCol2": [
+          0.0,
+          0.07999999821186066,
+          0.5,
+          1.0
+        ],
+        "_IceNoiseOffset": [
+          0.699999988079071,
+          0.699999988079071,
+          0.0,
+          0.0
+        ],
+        "_IcePosition": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_IceTexColor": [
+          1.0,
+          1.0,
+          1.0,
+          0.699999988079071
+        ],
+        "_OutlineColor": [
+          0.09433960914611816,
+          0.0842529833316803,
+          0.0842529833316803,
+          1.0
+        ],
+        "_RimLightColor": [
+          0.723055362701416,
+          0.5271153450012207,
+          0.4620770514011383,
+          0.30000001192092896
+        ],
+        "_RimLightDir": [
+          1.059999942779541,
+          0.0,
+          -3.0,
+          1.0
+        ],
+        "_ShadowColor": [
+          0.7264150977134705,
+          0.633899986743927,
+          0.6441794037818909,
+          0.0
+        ],
+        "_SkinColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "textures": {
+        "_BaseMap": {
+          "asset": {
+            "name": "jy_shendiao_001_d",
+            "file": "Textures/jy_shendiao_001_d_-953470394699761118.png",
+            "size": [
+              512,
+              512
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/model/jy/jy_shendiao_001/textures.ab",
+            "pathID": "-953470394699761118"
+          },
+          "pathID": "-953470394699761118",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_ControlMap": {
+          "asset": {
+            "name": "jy_shendiao_001_l",
+            "file": "Textures/jy_shendiao_001_l_1329535795957813279.png",
+            "size": [
+              256,
+              256
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/model/jy/jy_shendiao_001/textures.ab",
+            "pathID": "1329535795957813279"
+          },
+          "pathID": "1329535795957813279",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_DissolveTex": {
+          "asset": {
+            "name": "NoiseTex256",
+            "file": "Textures/NoiseTex256_-3065966560932905197.png",
+            "size": [
+              64,
+              64
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/shader/testure.ab",
+            "pathID": "-3065966560932905197"
+          },
+          "pathID": "-3065966560932905197",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_EnvMap": {
+          "asset": {
+            "name": "MaCrea_4",
+            "bundle": "artres/art_character/matcap.ab",
+            "pathID": "-4225055065353518069",
+            "type": "Cubemap",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "faces": 6
+          },
+          "pathID": "-4225055065353518069",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_IceColorTex": {
+          "asset": {
+            "name": "iceTex",
+            "file": "Textures/iceTex_7248459528624634763.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/shader/testure.ab",
+            "pathID": "7248459528624634763"
+          },
+          "pathID": "7248459528624634763",
+          "scale": [
+            2.0,
+            2.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_IceTexNoise": {
+          "asset": {
+            "name": "IceOffset",
+            "file": "Textures/IceOffset_-6004570308252836407.png",
+            "size": [
+              32,
+              32
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/shader/testure.ab",
+            "pathID": "-6004570308252836407"
+          },
+          "pathID": "-6004570308252836407",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_RampLight": {
+          "asset": {
+            "name": "qm_vfx_t_noise_m_09",
+            "file": "Textures/qm_vfx_t_noise_m_09_2556630356832912492.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "2556630356832912492"
+          },
+          "pathID": "2556630356832912492",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "instancing": false,
+      "disabledPasses": []
+    }
+  ],
+  "animations": [],
+  "archivedBundles": [
+    "artres/art_character/matcap.ab",
+    "artres/art_vfx/vfx_texture.ab",
+    "artres/model/jy/jy_shendiao_001.ab",
+    "artres/model/jy/jy_shendiao_001/materials.ab",
+    "artres/model/jy/jy_shendiao_001/textures.ab",
+    "artres/shader/testure.ab",
+    "resourcesab/animation/monster/jy_shendiao_001.ab",
+    "resourcesab/prefabs/charactor/monster.ab",
+    "resourcesab/shaders.ab"
+  ],
+  "sourceClips": [
+    {
+      "name": "jy_shendiao_001@attack01_101313",
+      "bundle": "resourcesab/animation/monster/jy_shendiao_001.ab"
+    },
+    {
+      "name": "jy_shendiao_001@hurt_h",
+      "bundle": "resourcesab/animation/monster/jy_shendiao_001.ab"
+    },
+    {
+      "name": "jy_shendiao_001@hurt_l",
+      "bundle": "resourcesab/animation/monster/jy_shendiao_001.ab"
+    },
+    {
+      "name": "jy_shendiao_001@move",
+      "bundle": "resourcesab/animation/monster/jy_shendiao_001.ab"
+    },
+    {
+      "name": "jy_shendiao_001@skill01_101311",
+      "bundle": "resourcesab/animation/monster/jy_shendiao_001.ab"
+    },
+    {
+      "name": "jy_shendiao_001@attidle01",
+      "bundle": "resourcesab/animation/monster/jy_shendiao_001.ab"
+    },
+    {
+      "name": "jy_shendiao_001@come",
+      "bundle": "resourcesab/animation/monster/jy_shendiao_001.ab"
+    },
+    {
+      "name": "jy_shendiao_001@skill01_101312",
+      "bundle": "resourcesab/animation/monster/jy_shendiao_001.ab"
+    },
+    {
+      "name": "jy_shendiao_001@die",
+      "bundle": "resourcesab/animation/monster/jy_shendiao_001.ab"
+    },
+    {
+      "name": "jy_shendiao_001@attack01",
+      "bundle": "resourcesab/animation/monster/jy_shendiao_001.ab"
+    },
+    {
+      "name": "jy_shendiao_001@skill01",
+      "bundle": "resourcesab/animation/monster/jy_shendiao_001.ab"
+    },
+    {
+      "name": "jy_shendiao_001@attack01_101310",
+      "bundle": "resourcesab/animation/monster/jy_shendiao_001.ab"
+    }
+  ]
+}

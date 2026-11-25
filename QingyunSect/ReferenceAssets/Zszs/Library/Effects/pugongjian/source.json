@@ -1,0 +1,3406 @@
+{
+  "id": "pugongjian",
+  "title": "剑普攻",
+  "source": "resourcesab/prefabs/effect/character/pugongjian.ab",
+  "prefabs": [
+    {
+      "name": "eff_cha_jianpugong_hit",
+      "path": "assets/resourcesab/prefabs/effect/character/pugongjian/eff_cha_jianpugong_hit.prefab",
+      "layers": [
+        {
+          "node": "01",
+          "id": "-4019202409735998601",
+          "duration": 1.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "02",
+          "id": "4111724360738849299",
+          "duration": 1.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "ColorModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "01",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "-4509576710620924439"
+          ]
+        },
+        {
+          "node": "02",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "908017015099317487"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "eff_cha_jianpugong_hit_lod1",
+      "path": "assets/resourcesab/prefabs/effect/character/pugongjian/eff_cha_jianpugong_hit_lod1.prefab",
+      "layers": [
+        {
+          "node": "02",
+          "id": "-8086646253637495937",
+          "duration": 1.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "ColorModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "01",
+          "id": "-1250922025262138431",
+          "duration": 1.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "02",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "908017015099317487"
+          ]
+        },
+        {
+          "node": "01",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "-4509576710620924439"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "eff_cha_jianpugong_hit_lod2",
+      "path": "assets/resourcesab/prefabs/effect/character/pugongjian/eff_cha_jianpugong_hit_lod2.prefab",
+      "layers": [
+        {
+          "node": "02",
+          "id": "9058335748998277356",
+          "duration": 1.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "ColorModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "01",
+          "id": "-5175774304556473745",
+          "duration": 1.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "02",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "908017015099317487"
+          ]
+        },
+        {
+          "node": "01",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "-4509576710620924439"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "eff_cha_jianpugong_shifa01",
+      "path": "assets/resourcesab/prefabs/effect/character/pugongjian/eff_cha_jianpugong_shifa01.prefab",
+      "layers": [
+        {
+          "node": "pugongjian",
+          "id": "7581416798037618796",
+          "duration": 1.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "RotationModule",
+            "ColorModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "pugongjian",
+          "type": "ParticleSystemRenderer",
+          "mode": 4,
+          "materials": [
+            "86289340544345811"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "eff_cha_jianpugong_shifa01_lod1",
+      "path": "assets/resourcesab/prefabs/effect/character/pugongjian/eff_cha_jianpugong_shifa01_lod1.prefab",
+      "layers": [
+        {
+          "node": "pugongjian",
+          "id": "1947331193031108127",
+          "duration": 1.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "RotationModule",
+            "ColorModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "pugongjian",
+          "type": "ParticleSystemRenderer",
+          "mode": 4,
+          "materials": [
+            "86289340544345811"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "eff_cha_jianpugong_shifa01_lod2",
+      "path": "assets/resourcesab/prefabs/effect/character/pugongjian/eff_cha_jianpugong_shifa01_lod2.prefab",
+      "layers": [
+        {
+          "node": "pugongjian",
+          "id": "-1872758889835074899",
+          "duration": 1.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "RotationModule",
+            "ColorModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "pugongjian",
+          "type": "ParticleSystemRenderer",
+          "mode": 4,
+          "materials": [
+            "86289340544345811"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "eff_cha_jianpugong_shifa02",
+      "path": "assets/resourcesab/prefabs/effect/character/pugongjian/eff_cha_jianpugong_shifa02.prefab",
+      "layers": [
+        {
+          "node": "pugongjian",
+          "id": "-8765838038531128646",
+          "duration": 1.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "RotationModule",
+            "ColorModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "pugongjian",
+          "type": "ParticleSystemRenderer",
+          "mode": 4,
+          "materials": [
+            "86289340544345811"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "eff_cha_jianpugong_shifa02_lod1",
+      "path": "assets/resourcesab/prefabs/effect/character/pugongjian/eff_cha_jianpugong_shifa02_lod1.prefab",
+      "layers": [
+        {
+          "node": "pugongjian",
+          "id": "2192107735295606694",
+          "duration": 1.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "RotationModule",
+            "ColorModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "pugongjian",
+          "type": "ParticleSystemRenderer",
+          "mode": 4,
+          "materials": [
+            "86289340544345811"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "eff_cha_jianpugong_shifa02_lod2",
+      "path": "assets/resourcesab/prefabs/effect/character/pugongjian/eff_cha_jianpugong_shifa02_lod2.prefab",
+      "layers": [
+        {
+          "node": "pugongjian",
+          "id": "2240054749089675255",
+          "duration": 1.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "RotationModule",
+            "ColorModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "pugongjian",
+          "type": "ParticleSystemRenderer",
+          "mode": 4,
+          "materials": [
+            "86289340544345811"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "eff_cha_jianpugong_shifa03",
+      "path": "assets/resourcesab/prefabs/effect/character/pugongjian/eff_cha_jianpugong_shifa03.prefab",
+      "layers": [
+        {
+          "node": "pugongjian",
+          "id": "-8724535004186688455",
+          "duration": 1.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "RotationModule",
+            "ColorModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "pugongjian",
+          "type": "ParticleSystemRenderer",
+          "mode": 4,
+          "materials": [
+            "86289340544345811"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "eff_cha_jianpugong_shifa03_lod1",
+      "path": "assets/resourcesab/prefabs/effect/character/pugongjian/eff_cha_jianpugong_shifa03_lod1.prefab",
+      "layers": [
+        {
+          "node": "pugongjian",
+          "id": "4268167073092753510",
+          "duration": 1.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "RotationModule",
+            "ColorModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "pugongjian",
+          "type": "ParticleSystemRenderer",
+          "mode": 4,
+          "materials": [
+            "86289340544345811"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "eff_cha_jianpugong_shifa03_lod2",
+      "path": "assets/resourcesab/prefabs/effect/character/pugongjian/eff_cha_jianpugong_shifa03_lod2.prefab",
+      "layers": [
+        {
+          "node": "pugongjian",
+          "id": "-720074533376114540",
+          "duration": 1.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "RotationModule",
+            "ColorModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "pugongjian",
+          "type": "ParticleSystemRenderer",
+          "mode": 4,
+          "materials": [
+            "86289340544345811"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "eff_cha_jianpugong_shifa04",
+      "path": "assets/resourcesab/prefabs/effect/character/pugongjian/eff_cha_jianpugong_shifa04.prefab",
+      "layers": [
+        {
+          "node": "pugongjian",
+          "id": "-9096442039897773991",
+          "duration": 1.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "RotationModule",
+            "ColorModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "pugongjian",
+          "type": "ParticleSystemRenderer",
+          "mode": 4,
+          "materials": [
+            "7152982070011424413"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "eff_cha_jianpugong_shifa04_lod1",
+      "path": "assets/resourcesab/prefabs/effect/character/pugongjian/eff_cha_jianpugong_shifa04_lod1.prefab",
+      "layers": [
+        {
+          "node": "pugongjian",
+          "id": "879601007552205570",
+          "duration": 1.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "RotationModule",
+            "ColorModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "pugongjian",
+          "type": "ParticleSystemRenderer",
+          "mode": 4,
+          "materials": [
+            "7152982070011424413"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "eff_cha_jianpugong_shifa04_lod2",
+      "path": "assets/resourcesab/prefabs/effect/character/pugongjian/eff_cha_jianpugong_shifa04_lod2.prefab",
+      "layers": [
+        {
+          "node": "pugongjian",
+          "id": "-791021998332016829",
+          "duration": 1.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "RotationModule",
+            "ColorModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "pugongjian",
+          "type": "ParticleSystemRenderer",
+          "mode": 4,
+          "materials": [
+            "7152982070011424413"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "eff_cha_jianpugong_shifa05",
+      "path": "assets/resourcesab/prefabs/effect/character/pugongjian/eff_cha_jianpugong_shifa05.prefab",
+      "layers": [
+        {
+          "node": "pugongjian",
+          "id": "4190595269877138036",
+          "duration": 1.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "RotationModule",
+            "ColorModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "pugongjian",
+          "type": "ParticleSystemRenderer",
+          "mode": 4,
+          "materials": [
+            "7152982070011424413"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "eff_cha_jianpugong_shifa05_lod1",
+      "path": "assets/resourcesab/prefabs/effect/character/pugongjian/eff_cha_jianpugong_shifa05_lod1.prefab",
+      "layers": [
+        {
+          "node": "pugongjian",
+          "id": "-7066308622365580300",
+          "duration": 1.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "RotationModule",
+            "ColorModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "pugongjian",
+          "type": "ParticleSystemRenderer",
+          "mode": 4,
+          "materials": [
+            "7152982070011424413"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "eff_cha_jianpugong_shifa05_lod2",
+      "path": "assets/resourcesab/prefabs/effect/character/pugongjian/eff_cha_jianpugong_shifa05_lod2.prefab",
+      "layers": [
+        {
+          "node": "pugongjian",
+          "id": "2430442416438796235",
+          "duration": 1.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "RotationModule",
+            "ColorModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "pugongjian",
+          "type": "ParticleSystemRenderer",
+          "mode": 4,
+          "materials": [
+            "7152982070011424413"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "eff_cha_jianpugong_shifa06",
+      "path": "assets/resourcesab/prefabs/effect/character/pugongjian/eff_cha_jianpugong_shifa06.prefab",
+      "layers": [
+        {
+          "node": "pugongjian",
+          "id": "8466994827748822796",
+          "duration": 1.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "RotationModule",
+            "ColorModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "pugongjian",
+          "type": "ParticleSystemRenderer",
+          "mode": 4,
+          "materials": [
+            "7152982070011424413"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "eff_cha_jianpugong_shifa06_lod1",
+      "path": "assets/resourcesab/prefabs/effect/character/pugongjian/eff_cha_jianpugong_shifa06_lod1.prefab",
+      "layers": [
+        {
+          "node": "pugongjian",
+          "id": "1345303464021582606",
+          "duration": 1.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "RotationModule",
+            "ColorModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "pugongjian",
+          "type": "ParticleSystemRenderer",
+          "mode": 4,
+          "materials": [
+            "7152982070011424413"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "eff_cha_jianpugong_shifa06_lod2",
+      "path": "assets/resourcesab/prefabs/effect/character/pugongjian/eff_cha_jianpugong_shifa06_lod2.prefab",
+      "layers": [
+        {
+          "node": "pugongjian",
+          "id": "-2271665198432082371",
+          "duration": 1.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "RotationModule",
+            "ColorModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "pugongjian",
+          "type": "ParticleSystemRenderer",
+          "mode": 4,
+          "materials": [
+            "7152982070011424413"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "eff_cha_jianpugong_trail01",
+      "path": "assets/resourcesab/prefabs/effect/character/pugongjian/eff_cha_jianpugong_trail01.prefab",
+      "layers": [
+        {
+          "node": "taijijiandandao02",
+          "id": "-3129416990125519880",
+          "duration": 1.0,
+          "loop": true,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "taijijiandandao01",
+          "id": "-891614600233612630",
+          "duration": 1.0,
+          "loop": true,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "taijijiandandao02",
+          "type": "ParticleSystemRenderer",
+          "mode": 4,
+          "materials": [
+            "7507513760999323536"
+          ]
+        },
+        {
+          "node": "taijijiandandao01",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "-5171052143638034136"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "eff_cha_jianpugong_trail01_d",
+      "path": "assets/resourcesab/prefabs/effect/character/pugongjian/eff_cha_jianpugong_trail01_d.prefab",
+      "layers": [
+        {
+          "node": "taijijiandandao02",
+          "id": "5085251011125949661",
+          "duration": 1.0,
+          "loop": true,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "taijijiandandao01",
+          "id": "6321464588309584521",
+          "duration": 1.0,
+          "loop": true,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "taijijiandandao02",
+          "type": "ParticleSystemRenderer",
+          "mode": 4,
+          "materials": [
+            "7507513760999323536"
+          ]
+        },
+        {
+          "node": "taijijiandandao01",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "-5171052143638034136"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "eff_cha_jianpugong_trail01_d_lod1",
+      "path": "assets/resourcesab/prefabs/effect/character/pugongjian/eff_cha_jianpugong_trail01_d_lod1.prefab",
+      "layers": [
+        {
+          "node": "taijijiandandao01",
+          "id": "6244280498245975866",
+          "duration": 1.0,
+          "loop": true,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "taijijiandandao02",
+          "id": "-756425826729485588",
+          "duration": 1.0,
+          "loop": true,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "taijijiandandao01",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "-5171052143638034136"
+          ]
+        },
+        {
+          "node": "taijijiandandao02",
+          "type": "ParticleSystemRenderer",
+          "mode": 4,
+          "materials": [
+            "7507513760999323536"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "eff_cha_jianpugong_trail01_d_lod2",
+      "path": "assets/resourcesab/prefabs/effect/character/pugongjian/eff_cha_jianpugong_trail01_d_lod2.prefab",
+      "layers": [
+        {
+          "node": "taijijiandandao01",
+          "id": "-4650835474215023221",
+          "duration": 1.0,
+          "loop": true,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "taijijiandandao01",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "-5171052143638034136"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "eff_cha_jianpugong_trail01_lod1",
+      "path": "assets/resourcesab/prefabs/effect/character/pugongjian/eff_cha_jianpugong_trail01_lod1.prefab",
+      "layers": [
+        {
+          "node": "taijijiandandao01",
+          "id": "-4228415753001682747",
+          "duration": 1.0,
+          "loop": true,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "taijijiandandao02",
+          "id": "4012347644634589600",
+          "duration": 1.0,
+          "loop": true,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "taijijiandandao01",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "-5171052143638034136"
+          ]
+        },
+        {
+          "node": "taijijiandandao02",
+          "type": "ParticleSystemRenderer",
+          "mode": 4,
+          "materials": [
+            "7507513760999323536"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "eff_cha_jianpugong_trail01_lod2",
+      "path": "assets/resourcesab/prefabs/effect/character/pugongjian/eff_cha_jianpugong_trail01_lod2.prefab",
+      "layers": [
+        {
+          "node": "taijijiandandao01",
+          "id": "2842385194311889236",
+          "duration": 1.0,
+          "loop": true,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "taijijiandandao01",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "-5171052143638034136"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "eff_cha_jianpugong_trail02",
+      "path": "assets/resourcesab/prefabs/effect/character/pugongjian/eff_cha_jianpugong_trail02.prefab",
+      "layers": [
+        {
+          "node": "taijijiandandao02",
+          "id": "1688862479956735011",
+          "duration": 1.0,
+          "loop": true,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "taijijiandandao01",
+          "id": "6809818278314323202",
+          "duration": 1.0,
+          "loop": true,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "taijijiandandao02",
+          "type": "ParticleSystemRenderer",
+          "mode": 4,
+          "materials": [
+            "7507513760999323536"
+          ]
+        },
+        {
+          "node": "taijijiandandao01",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "-5171052143638034136"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "eff_cha_jianpugong_trail02_lod1",
+      "path": "assets/resourcesab/prefabs/effect/character/pugongjian/eff_cha_jianpugong_trail02_lod1.prefab",
+      "layers": [
+        {
+          "node": "taijijiandandao02",
+          "id": "8875677539009942716",
+          "duration": 1.0,
+          "loop": true,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "taijijiandandao01",
+          "id": "-1729263411739165601",
+          "duration": 1.0,
+          "loop": true,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "taijijiandandao02",
+          "type": "ParticleSystemRenderer",
+          "mode": 4,
+          "materials": [
+            "7507513760999323536"
+          ]
+        },
+        {
+          "node": "taijijiandandao01",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "-5171052143638034136"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "eff_cha_jianpugong_trail02_lod2",
+      "path": "assets/resourcesab/prefabs/effect/character/pugongjian/eff_cha_jianpugong_trail02_lod2.prefab",
+      "layers": [
+        {
+          "node": "taijijiandandao01",
+          "id": "-5108365565868840430",
+          "duration": 1.0,
+          "loop": true,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "taijijiandandao01",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "-5171052143638034136"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "eff_cha_jianpugong_trail03",
+      "path": "assets/resourcesab/prefabs/effect/character/pugongjian/eff_cha_jianpugong_trail03.prefab",
+      "layers": [
+        {
+          "node": "taijijiandandao01",
+          "id": "8952716414375052708",
+          "duration": 1.0,
+          "loop": true,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "taijijiandandao02",
+          "id": "2627436718520980068",
+          "duration": 1.0,
+          "loop": true,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "taijijiandandao01",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "-5171052143638034136"
+          ]
+        },
+        {
+          "node": "taijijiandandao02",
+          "type": "ParticleSystemRenderer",
+          "mode": 4,
+          "materials": [
+            "7507513760999323536"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "eff_cha_jianpugong_trail03_lod1",
+      "path": "assets/resourcesab/prefabs/effect/character/pugongjian/eff_cha_jianpugong_trail03_lod1.prefab",
+      "layers": [
+        {
+          "node": "taijijiandandao01",
+          "id": "-3637345430112042051",
+          "duration": 1.0,
+          "loop": true,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "taijijiandandao02",
+          "id": "2605396053018076546",
+          "duration": 1.0,
+          "loop": true,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "taijijiandandao01",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "-5171052143638034136"
+          ]
+        },
+        {
+          "node": "taijijiandandao02",
+          "type": "ParticleSystemRenderer",
+          "mode": 4,
+          "materials": [
+            "7507513760999323536"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "eff_cha_jianpugong_trail03_lod2",
+      "path": "assets/resourcesab/prefabs/effect/character/pugongjian/eff_cha_jianpugong_trail03_lod2.prefab",
+      "layers": [
+        {
+          "node": "taijijiandandao01",
+          "id": "-4969326571943939447",
+          "duration": 1.0,
+          "loop": true,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "taijijiandandao01",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "-5171052143638034136"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "eff_cha_jianpugong_weapon",
+      "path": "assets/resourcesab/prefabs/effect/character/pugongjian/eff_cha_jianpugong_weapon.prefab",
+      "layers": [],
+      "renderers": [
+        {
+          "node": "Weapon_Jian 1",
+          "type": "MeshRenderer",
+          "mode": null,
+          "materials": [
+            "2210684158449104651"
+          ]
+        }
+      ],
+      "components": [
+        {
+          "node": "Weapon_Jian 1",
+          "type": "MeshFilter"
+        }
+      ]
+    },
+    {
+      "name": "eff_cha_jianpugong_weapon_lod1",
+      "path": "assets/resourcesab/prefabs/effect/character/pugongjian/eff_cha_jianpugong_weapon_lod1.prefab",
+      "layers": [],
+      "renderers": [
+        {
+          "node": "Weapon_Jian 1",
+          "type": "MeshRenderer",
+          "mode": null,
+          "materials": [
+            "8965378394937164048"
+          ]
+        }
+      ],
+      "components": [
+        {
+          "node": "Weapon_Jian 1",
+          "type": "MeshFilter"
+        }
+      ]
+    },
+    {
+      "name": "eff_cha_jianpugong_weapon_lod2",
+      "path": "assets/resourcesab/prefabs/effect/character/pugongjian/eff_cha_jianpugong_weapon_lod2.prefab",
+      "layers": [],
+      "renderers": [
+        {
+          "node": "Weapon_Jian 1",
+          "type": "MeshRenderer",
+          "mode": null,
+          "materials": [
+            "8965378394937164048"
+          ]
+        }
+      ],
+      "components": [
+        {
+          "node": "Weapon_Jian 1",
+          "type": "MeshFilter"
+        }
+      ]
+    }
+  ],
+  "materials": [
+    {
+      "name": "vfx_m_pugongjian_05",
+      "bundle": "resourcesab/prefabs/effect/character/pugongjian.ab",
+      "pathID": "-4509576710620924439",
+      "shader": "RhinoX/Effect/FX_Standard",
+      "shaderPathID": "-7662726360800107545",
+      "shaderBundle": "resourcesab/shaders.ab",
+      "renderQueue": 3000,
+      "keywords": [
+        "_USE_COLORCONTROL",
+        "_USE_CUTOUT",
+        "_USE_CUTOUT_DETAILTEX",
+        "_USE_CUTOUT_TEX",
+        "_USE_CUTOUT_THRESHOLD"
+      ],
+      "invalidKeywords": [],
+      "floats": {
+        "_AlphaAdjust": 1.0,
+        "_AlphaClip": 0.0,
+        "_Brightness": 1.0,
+        "_ColorControlPolar": 0.0,
+        "_ColorControlTexIndependentTiling": 0.0,
+        "_ColorControlTexUscroll": 0.0,
+        "_ColorControlTexVscroll": 0.0,
+        "_Contrast": 1.0,
+        "_DetailAddorMultiply": 0.0,
+        "_DetailAlphaIgnore": 0.0,
+        "_DetailChoiceRGB": 0.0,
+        "_DetailPolar": 0.0,
+        "_DetailTexAngle": 0.0,
+        "_DetailTexRotSpeed": 0.0,
+        "_DetailTexSpeed_U": 0.0,
+        "_DetailTexSpeed_V": 0.0,
+        "_DetailTexStrength": 1.0,
+        "_DifferentFaceColor": 0.0,
+        "_DissipateDetailPolar": 0.0,
+        "_DissipatePolar": 0.0,
+        "_DissipateSoftCutout": 0.10000000149011612,
+        "_DissloveTexRotSpeed": 0.0,
+        "_Dissolve": 0.0,
+        "_DissolveEdageWidth": 0.07000000029802322,
+        "_DissolveTailControl": 0.0,
+        "_DissolveTexAngle": 0.0,
+        "_DissolveTexDetailRotSpeed": 0.9599999785423279,
+        "_DissolveTexDetailUscroll": 0.0,
+        "_DissolveTexDetailVscroll": 0.0,
+        "_DissolveTexLerp": 0.20000000298023224,
+        "_DissolveTexUscroll": 0.0,
+        "_DissolveTexVscroll": 0.0,
+        "_DistForceU": 1.0,
+        "_DistForceV": 1.0,
+        "_DistTime": 0.10000000149011612,
+        "_DistTime1": 0.10000000149011612,
+        "_DistortParticleSystemControl": 0.0,
+        "_DistortPolar": 0.0,
+        "_FlowDeadZone": 0.05000000074505806,
+        "_FlowMapDistForceU": 1.0,
+        "_FlowMapDistForceV": 1.0,
+        "_FlowMapDistSpeedX": 0.10000000149011612,
+        "_FlowMapDistSpeedY": 0.10000000149011612,
+        "_FlowMapRate": 1.0,
+        "_FlowMapSpeed": 1.0,
+        "_FlowMapStrength": 0.5,
+        "_FxCullMode": 0.0,
+        "_FxDstBlend": 10.0,
+        "_FxSrcBlend": 5.0,
+        "_Gradian": 0.0,
+        "_GradianPow": 1.0,
+        "_Hue": 0.0,
+        "_IgnoreShadow": 1.0,
+        "_MainTexAngle": 0.0,
+        "_MainTexAngleSpeed": 0.0,
+        "_MainTexStrength": 1.0,
+        "_MaskParticleSystemControl": 0.0,
+        "_MaskPolar": 0.0,
+        "_MaskTexAngle": 0.0,
+        "_MaskU": 0.0,
+        "_MaskV": 0.0,
+        "_ParticleControl": 1.0,
+        "_RimLightAlpha": 1.0,
+        "_RimLightCenterAlpha": 1.0,
+        "_RimLightIntensity": 1.0,
+        "_RimLightPower": 1.0,
+        "_Saturation": 1.0,
+        "_SequenceColCount": 1.0,
+        "_SequenceRowCount": 1.0,
+        "_SequenceSpeed": 1.0,
+        "_Stencil": 1.0,
+        "_StencilComp": 8.0,
+        "_StencilOp": 0.0,
+        "_UVParticleControl": 0.0,
+        "_U_Mirror": 0.0,
+        "_Uscroll": 0.0,
+        "_UsePolar": 0.0,
+        "_UseTODColor": 0.0,
+        "_V_Mirror": 0.0,
+        "_VertexAnimLerp": 0.0,
+        "_VertexAnimParticleSystemControl": 0.0,
+        "_VertexAnimStrength": 0.5,
+        "_VertexAnimStrengthB": 0.5,
+        "_ViewStrength": 1.0,
+        "_Vscroll": 0.0,
+        "_ZTest": 8.0,
+        "_ZWrite": 0.0
+      },
+      "integers": {},
+      "colors": {
+        "_BackColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_BackColor1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_Color": [
+          1.8274509906768799,
+          1.8274509906768799,
+          1.8274509906768799,
+          1.0
+        ],
+        "_Color1": [
+          1.5660377740859985,
+          1.5660377740859985,
+          1.5660377740859985,
+          1.0
+        ],
+        "_DistRGBA": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_EdageColor": [
+          0.009999999776482582,
+          0.009999999776482582,
+          0.009999999776482582,
+          1.0
+        ],
+        "_MaskRGBA": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_MaskSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_MaskTilingOffset": [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "_RimLightColor": [
+          1.0,
+          1.0,
+          0.0,
+          1.0
+        ],
+        "_VertexAnimSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_VertexAnimSpeedB": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "textures": {
+        "_ColorControlTex": {
+          "asset": {
+            "name": "vfx_t_8122_ZhangYing_16_glow",
+            "file": "Textures/vfx_t_8122_ZhangYing_16_glow_666421964118623059.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "666421964118623059"
+          },
+          "pathID": "666421964118623059",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_DissolveTex": {
+          "asset": {
+            "name": "vfx_taijijian_06",
+            "file": "Textures/vfx_taijijian_06_-4934626330400748290.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "-4934626330400748290"
+          },
+          "pathID": "-4934626330400748290",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_DissolveTexDetail": {
+          "asset": {
+            "name": "vfx_t_fluid_m_02_dissolve",
+            "file": "Textures/vfx_t_fluid_m_02_dissolve_-5545208731542748532.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "-5545208731542748532"
+          },
+          "pathID": "-5545208731542748532",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_Texture": {
+          "asset": {
+            "name": "vfx_taijijian_09",
+            "file": "Textures/vfx_taijijian_09_-6880668585736368694.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "-6880668585736368694"
+          },
+          "pathID": "-6880668585736368694",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "instancing": false,
+      "disabledPasses": []
+    },
+    {
+      "name": "vfx_m_pugongjian_06",
+      "bundle": "resourcesab/prefabs/effect/character/pugongjian.ab",
+      "pathID": "908017015099317487",
+      "shader": "RhinoX/Effect/FX_Standard",
+      "shaderPathID": "-7662726360800107545",
+      "shaderBundle": "resourcesab/shaders.ab",
+      "renderQueue": 3000,
+      "keywords": [
+        "_USE_COLORCONTROL",
+        "_USE_CUTOUT",
+        "_USE_CUTOUT_DETAILTEX",
+        "_USE_CUTOUT_TEX",
+        "_USE_CUTOUT_THRESHOLD"
+      ],
+      "invalidKeywords": [],
+      "floats": {
+        "_AlphaAdjust": 1.0,
+        "_AlphaClip": 0.0,
+        "_Brightness": 1.0,
+        "_ColorControlPolar": 0.0,
+        "_ColorControlTexIndependentTiling": 1.0,
+        "_ColorControlTexUscroll": 0.0,
+        "_ColorControlTexVscroll": 0.0,
+        "_Contrast": 1.0,
+        "_DetailAddorMultiply": 0.0,
+        "_DetailAlphaIgnore": 0.0,
+        "_DetailChoiceRGB": 0.0,
+        "_DetailPolar": 0.0,
+        "_DetailTexAngle": 0.0,
+        "_DetailTexRotSpeed": 0.0,
+        "_DetailTexSpeed_U": 0.0,
+        "_DetailTexSpeed_V": 0.0,
+        "_DetailTexStrength": 1.0,
+        "_DifferentFaceColor": 0.0,
+        "_DissipateDetailPolar": 0.0,
+        "_DissipatePolar": 0.0,
+        "_DissipateSoftCutout": 0.0,
+        "_DissloveTexRotSpeed": 0.0,
+        "_Dissolve": 0.48500001430511475,
+        "_DissolveEdageWidth": 0.10000000149011612,
+        "_DissolveTailControl": 0.0,
+        "_DissolveTexAngle": 0.0,
+        "_DissolveTexDetailRotSpeed": 0.0,
+        "_DissolveTexDetailUscroll": 0.0,
+        "_DissolveTexDetailVscroll": 0.0,
+        "_DissolveTexLerp": 1.0,
+        "_DissolveTexUscroll": 0.0,
+        "_DissolveTexVscroll": 0.0,
+        "_DistForceU": 1.0,
+        "_DistForceV": 1.0,
+        "_DistTime": 0.10000000149011612,
+        "_DistTime1": 0.10000000149011612,
+        "_DistortParticleSystemControl": 0.0,
+        "_DistortPolar": 0.0,
+        "_FlowDeadZone": 0.05000000074505806,
+        "_FlowMapDistForceU": 1.0,
+        "_FlowMapDistForceV": 1.0,
+        "_FlowMapDistSpeedX": 0.10000000149011612,
+        "_FlowMapDistSpeedY": 0.10000000149011612,
+        "_FlowMapRate": 1.0,
+        "_FlowMapSpeed": 1.0,
+        "_FlowMapStrength": 0.5,
+        "_FxCullMode": 0.0,
+        "_FxDstBlend": 10.0,
+        "_FxSrcBlend": 5.0,
+        "_Gradian": 0.05000000074505806,
+        "_GradianPow": 1.0,
+        "_Hue": 0.0,
+        "_IgnoreShadow": 1.0,
+        "_MainTexAngle": 0.0,
+        "_MainTexAngleSpeed": 0.0,
+        "_MainTexStrength": 1.0,
+        "_MaskParticleSystemControl": 0.0,
+        "_MaskPolar": 0.0,
+        "_MaskTexAngle": 0.0,
+        "_MaskU": 0.0,
+        "_MaskV": 0.0,
+        "_ParticleControl": 1.0,
+        "_RimLightAlpha": 1.0,
+        "_RimLightCenterAlpha": 1.0,
+        "_RimLightIntensity": 1.0,
+        "_RimLightPower": 1.0,
+        "_Saturation": 1.0,
+        "_SequenceColCount": 1.0,
+        "_SequenceRowCount": 1.0,
+        "_SequenceSpeed": 1.0,
+        "_Stencil": 1.0,
+        "_StencilComp": 8.0,
+        "_StencilOp": 0.0,
+        "_UVParticleControl": 0.0,
+        "_U_Mirror": 0.0,
+        "_Uscroll": 0.0,
+        "_UsePolar": 0.0,
+        "_UseTODColor": 0.0,
+        "_V_Mirror": 0.0,
+        "_VertexAnimLerp": 0.0,
+        "_VertexAnimParticleSystemControl": 0.0,
+        "_VertexAnimStrength": 0.5,
+        "_VertexAnimStrengthB": 0.5,
+        "_ViewStrength": 1.0,
+        "_Vscroll": 0.0,
+        "_ZTest": 8.0,
+        "_ZWrite": 0.0
+      },
+      "integers": {},
+      "colors": {
+        "_BackColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_BackColor1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_Color": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_Color1": [
+          2.0,
+          2.0,
+          2.0,
+          1.0
+        ],
+        "_DistRGBA": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_EdageColor": [
+          0.08490568399429321,
+          0.08490568399429321,
+          0.08490568399429321,
+          1.0
+        ],
+        "_MaskRGBA": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_MaskSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_MaskTilingOffset": [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "_RimLightColor": [
+          1.0,
+          1.0,
+          0.0,
+          1.0
+        ],
+        "_VertexAnimSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_VertexAnimSpeedB": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "textures": {
+        "_ColorControlTex": {
+          "asset": {
+            "name": "vfx_t_ring_m_08_mask_clamp",
+            "file": "Textures/vfx_t_ring_m_08_mask_clamp_-5933848087390398733.png",
+            "size": [
+              128,
+              32
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "-5933848087390398733"
+          },
+          "pathID": "-5933848087390398733",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            -0.25
+          ]
+        },
+        "_DissolveTex": {
+          "asset": {
+            "name": "vfx_taijijian_04",
+            "file": "Textures/vfx_taijijian_04_6772903843155793508.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "6772903843155793508"
+          },
+          "pathID": "6772903843155793508",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_DissolveTexDetail": {
+          "asset": {
+            "name": "vfx_t_4007_DongZhuo_26_n",
+            "file": "Textures/vfx_t_4007_DongZhuo_26_n_-2170657535170453600.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "-2170657535170453600"
+          },
+          "pathID": "-2170657535170453600",
+          "scale": [
+            1.5,
+            2.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_Texture": {
+          "asset": {
+            "name": "vfx_t_pugongjian_01_clamp",
+            "file": "Textures/vfx_t_pugongjian_01_clamp_-1972526914735007878.png",
+            "size": [
+              128,
+              32
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "-1972526914735007878"
+          },
+          "pathID": "-1972526914735007878",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "instancing": false,
+      "disabledPasses": []
+    },
+    {
+      "name": "vfx_m_pugongjian_02",
+      "bundle": "resourcesab/prefabs/effect/character/pugongjian.ab",
+      "pathID": "86289340544345811",
+      "shader": "RhinoX/Effect/FX_Standard",
+      "shaderPathID": "-7662726360800107545",
+      "shaderBundle": "resourcesab/shaders.ab",
+      "renderQueue": 3000,
+      "keywords": [
+        "_USE_COLORCONTROL",
+        "_USE_CUTOUT_DETAILTEX",
+        "_USE_CUTOUT_TEX",
+        "_USE_CUTOUT_THRESHOLD",
+        "_USE_MASK_ON"
+      ],
+      "invalidKeywords": [],
+      "floats": {
+        "_AlphaAdjust": 1.0,
+        "_AlphaClip": 0.0,
+        "_Brightness": 1.0,
+        "_ColorControlPolar": 0.0,
+        "_ColorControlTexIndependentTiling": 1.0,
+        "_ColorControlTexUscroll": 0.0,
+        "_ColorControlTexVscroll": 0.0,
+        "_Contrast": 1.0,
+        "_DetailAddorMultiply": 0.0,
+        "_DetailAlphaIgnore": 0.0,
+        "_DetailChoiceRGB": 0.5,
+        "_DetailPolar": 0.0,
+        "_DetailTexAngle": 0.0,
+        "_DetailTexRotSpeed": 1.0,
+        "_DetailTexSpeed_U": 0.0,
+        "_DetailTexSpeed_V": 0.0,
+        "_DetailTexStrength": 2.0,
+        "_DifferentFaceColor": 0.0,
+        "_DissipateDetailPolar": 0.0,
+        "_DissipatePolar": 0.0,
+        "_DissipateSoftCutout": 0.0,
+        "_DissloveTexRotSpeed": 0.0,
+        "_Dissolve": 0.004999999888241291,
+        "_DissolveEdageWidth": 0.017999999225139618,
+        "_DissolveTailControl": 0.0,
+        "_DissolveTexAngle": 0.0,
+        "_DissolveTexDetailRotSpeed": 0.0,
+        "_DissolveTexDetailUscroll": 0.0,
+        "_DissolveTexDetailVscroll": 0.0,
+        "_DissolveTexLerp": 0.5,
+        "_DissolveTexUscroll": 1.0,
+        "_DissolveTexVscroll": 0.0,
+        "_DistForceU": 1.0,
+        "_DistForceV": 1.0,
+        "_DistTime": 0.10000000149011612,
+        "_DistTime1": 0.10000000149011612,
+        "_DistortParticleSystemControl": 0.0,
+        "_DistortPolar": 0.0,
+        "_FlowDeadZone": 0.05000000074505806,
+        "_FlowMapDistForceU": 1.0,
+        "_FlowMapDistForceV": 1.0,
+        "_FlowMapDistSpeedX": 0.10000000149011612,
+        "_FlowMapDistSpeedY": 0.10000000149011612,
+        "_FlowMapRate": 1.0,
+        "_FlowMapSpeed": 1.0,
+        "_FlowMapStrength": 0.5,
+        "_FxCullMode": 1.0,
+        "_FxDstBlend": 10.0,
+        "_FxSrcBlend": 5.0,
+        "_Gradian": 0.0,
+        "_GradianPow": 1.0,
+        "_Hue": 0.0,
+        "_IgnoreShadow": 1.0,
+        "_MainTexAngle": 0.0,
+        "_MainTexAngleSpeed": 0.0,
+        "_MainTexStrength": 1.5,
+        "_MaskParticleSystemControl": 0.0,
+        "_MaskPolar": 0.0,
+        "_MaskTexAngle": 0.0,
+        "_MaskU": 0.0,
+        "_MaskV": 0.0,
+        "_ParticleControl": 1.0,
+        "_RimLightAlpha": 1.0,
+        "_RimLightCenterAlpha": 1.0,
+        "_RimLightIntensity": 1.0,
+        "_RimLightPower": 1.0,
+        "_Saturation": 1.0,
+        "_SequenceColCount": 1.0,
+        "_SequenceRowCount": 1.0,
+        "_SequenceSpeed": 1.0,
+        "_Stencil": 1.0,
+        "_StencilComp": 8.0,
+        "_StencilOp": 0.0,
+        "_UVParticleControl": 1.0,
+        "_U_Mirror": 0.0,
+        "_Uscroll": 0.0,
+        "_UsePolar": 0.0,
+        "_UseTODColor": 0.0,
+        "_V_Mirror": 0.0,
+        "_VertexAnimLerp": 0.0,
+        "_VertexAnimParticleSystemControl": 0.0,
+        "_VertexAnimStrength": 0.5,
+        "_VertexAnimStrengthB": 0.5,
+        "_ViewStrength": 1.0,
+        "_Vscroll": 0.0,
+        "_ZTest": 4.0,
+        "_ZWrite": 0.0
+      },
+      "integers": {},
+      "colors": {
+        "_BackColor": [
+          0.8941176533699036,
+          0.8941176533699036,
+          0.8941176533699036,
+          1.0
+        ],
+        "_BackColor1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_Color": [
+          2.0,
+          2.0,
+          2.0,
+          0.501960813999176
+        ],
+        "_Color1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_DistRGBA": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_EdageColor": [
+          0.009433984756469727,
+          0.009433984756469727,
+          0.009433984756469727,
+          1.0
+        ],
+        "_MaskRGBA": [
+          1.0,
+          1.0,
+          1.0,
+          0.0
+        ],
+        "_MaskSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_MaskTilingOffset": [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "_RimLightColor": [
+          1.0,
+          1.0,
+          0.0,
+          1.0
+        ],
+        "_VertexAnimSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_VertexAnimSpeedB": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "textures": {
+        "_ColorControlTex": {
+          "asset": {
+            "name": "qm_vfx_t_1001_xhy_jian_03",
+            "file": "Textures/qm_vfx_t_1001_xhy_jian_03_75350239859293054.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "75350239859293054"
+          },
+          "pathID": "75350239859293054",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_DetailTex": {
+          "asset": {
+            "name": "qm_vfx_t_1001_xhy_jian_03",
+            "file": "Textures/qm_vfx_t_1001_xhy_jian_03_75350239859293054.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "75350239859293054"
+          },
+          "pathID": "75350239859293054",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_DissolveTex": {
+          "asset": {
+            "name": "vfx_t_mask_m_06",
+            "file": "Textures/vfx_t_mask_m_06_-4852848434633701428.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "-4852848434633701428"
+          },
+          "pathID": "-4852848434633701428",
+          "scale": [
+            1.0,
+            -1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_DissolveTexDetail": {
+          "asset": {
+            "name": "vfx_t_noise_ld_36",
+            "file": "Textures/vfx_t_noise_ld_36_-5984281712223079467.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "-5984281712223079467"
+          },
+          "pathID": "-5984281712223079467",
+          "scale": [
+            -1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_Mask": {
+          "asset": {
+            "name": "qm_vfx_t_mask_m_03",
+            "file": "Textures/qm_vfx_t_mask_m_03_7094365346108799600.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "7094365346108799600"
+          },
+          "pathID": "7094365346108799600",
+          "scale": [
+            -0.699999988079071,
+            1.0
+          ],
+          "offset": [
+            0.009999999776482582,
+            0.0
+          ]
+        },
+        "_Texture": {
+          "asset": {
+            "name": "vfx_taijijian_02",
+            "file": "Textures/vfx_taijijian_02_9032702521249099151.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "9032702521249099151"
+          },
+          "pathID": "9032702521249099151",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "instancing": false,
+      "disabledPasses": []
+    },
+    {
+      "name": "vfx_m_pugongjian_07",
+      "bundle": "resourcesab/prefabs/effect/character/pugongjian.ab",
+      "pathID": "7152982070011424413",
+      "shader": "RhinoX/Effect/FX_Standard",
+      "shaderPathID": "-7662726360800107545",
+      "shaderBundle": "resourcesab/shaders.ab",
+      "renderQueue": 3000,
+      "keywords": [
+        "_USE_COLORCONTROL",
+        "_USE_CUTOUT_DETAILTEX",
+        "_USE_CUTOUT_TEX",
+        "_USE_CUTOUT_THRESHOLD",
+        "_USE_MASK_ON"
+      ],
+      "invalidKeywords": [
+        "_COLORCONTROLTEXINDEPENDENTTILING_ON",
+        "_IGNORESHADOW_ON",
+        "_PARTICLECONTROL_ON",
+        "_RIMLIGHTCENTERALPHA_ON",
+        "_UVPARTICLECONTROL_ON"
+      ],
+      "floats": {
+        "_AlphaAdjust": 1.0,
+        "_AlphaClip": 0.0,
+        "_Brightness": 1.0,
+        "_ColorControlPolar": 0.0,
+        "_ColorControlTexIndependentTiling": 1.0,
+        "_ColorControlTexUscroll": 0.0,
+        "_ColorControlTexVscroll": 0.0,
+        "_Contrast": 1.0,
+        "_DetailAddorMultiply": 0.0,
+        "_DetailAlphaIgnore": 0.0,
+        "_DetailChoiceRGB": 0.5,
+        "_DetailPolar": 0.0,
+        "_DetailTexAngle": 0.0,
+        "_DetailTexRotSpeed": 1.0,
+        "_DetailTexSpeed_U": 0.0,
+        "_DetailTexSpeed_V": 0.0,
+        "_DetailTexStrength": 2.0,
+        "_DifferentFaceColor": 0.0,
+        "_DissipateDetailPolar": 0.0,
+        "_DissipatePolar": 0.0,
+        "_DissipateSoftCutout": 0.0,
+        "_DissloveTexRotSpeed": 0.0,
+        "_Dissolve": 0.004999999888241291,
+        "_DissolveEdageWidth": 0.017999999225139618,
+        "_DissolveTailControl": 0.0,
+        "_DissolveTexAngle": 0.0,
+        "_DissolveTexDetailRotSpeed": 0.0,
+        "_DissolveTexDetailUscroll": 0.0,
+        "_DissolveTexDetailVscroll": 0.0,
+        "_DissolveTexLerp": 0.5,
+        "_DissolveTexUscroll": 1.0,
+        "_DissolveTexVscroll": 0.0,
+        "_DistForceU": 1.0,
+        "_DistForceV": 1.0,
+        "_DistTime": 0.10000000149011612,
+        "_DistTime1": 0.10000000149011612,
+        "_DistortParticleSystemControl": 0.0,
+        "_DistortPolar": 0.0,
+        "_FlowDeadZone": 0.05000000074505806,
+        "_FlowMapDistForceU": 1.0,
+        "_FlowMapDistForceV": 1.0,
+        "_FlowMapDistSpeedX": 0.10000000149011612,
+        "_FlowMapDistSpeedY": 0.10000000149011612,
+        "_FlowMapRate": 1.0,
+        "_FlowMapSpeed": 1.0,
+        "_FlowMapStrength": 0.5,
+        "_FxCullMode": 1.0,
+        "_FxDstBlend": 10.0,
+        "_FxSrcBlend": 5.0,
+        "_Gradian": 0.0,
+        "_GradianPow": 1.0,
+        "_Hue": 0.0,
+        "_IgnoreShadow": 1.0,
+        "_MainTexAngle": 0.0,
+        "_MainTexAngleSpeed": 0.0,
+        "_MainTexStrength": 1.5,
+        "_MaskParticleSystemControl": 0.0,
+        "_MaskPolar": 0.0,
+        "_MaskTexAngle": 0.0,
+        "_MaskU": 0.0,
+        "_MaskV": 0.0,
+        "_ParticleControl": 1.0,
+        "_RimLightAlpha": 1.0,
+        "_RimLightCenterAlpha": 1.0,
+        "_RimLightIntensity": 1.0,
+        "_RimLightPower": 1.0,
+        "_Saturation": 1.0,
+        "_SequenceColCount": 1.0,
+        "_SequenceRowCount": 1.0,
+        "_SequenceSpeed": 1.0,
+        "_Stencil": 1.0,
+        "_StencilComp": 8.0,
+        "_StencilOp": 0.0,
+        "_UVParticleControl": 1.0,
+        "_U_Mirror": 0.0,
+        "_Uscroll": 0.0,
+        "_UsePolar": 0.0,
+        "_UseTODColor": 0.0,
+        "_V_Mirror": 0.0,
+        "_VertexAnimLerp": 0.0,
+        "_VertexAnimParticleSystemControl": 0.0,
+        "_VertexAnimStrength": 0.5,
+        "_VertexAnimStrengthB": 0.5,
+        "_ViewStrength": 1.0,
+        "_Vscroll": 0.0,
+        "_ZTest": 4.0,
+        "_ZWrite": 0.0
+      },
+      "integers": {},
+      "colors": {
+        "_BackColor": [
+          0.8941176533699036,
+          0.8941176533699036,
+          0.8941176533699036,
+          1.0
+        ],
+        "_BackColor1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_Color": [
+          4.0,
+          3.1315178871154785,
+          1.2264151573181152,
+          0.4000000059604645
+        ],
+        "_Color1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_DistRGBA": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_EdageColor": [
+          0.009433984756469727,
+          0.009433984756469727,
+          0.009433984756469727,
+          1.0
+        ],
+        "_MaskRGBA": [
+          1.0,
+          1.0,
+          1.0,
+          0.0
+        ],
+        "_MaskSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_MaskTilingOffset": [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "_RimLightColor": [
+          1.0,
+          1.0,
+          0.0,
+          1.0
+        ],
+        "_VertexAnimSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_VertexAnimSpeedB": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "textures": {
+        "_ColorControlTex": {
+          "asset": {
+            "name": "qm_vfx_t_1001_xhy_jian_03",
+            "file": "Textures/qm_vfx_t_1001_xhy_jian_03_75350239859293054.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "75350239859293054"
+          },
+          "pathID": "75350239859293054",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_DetailTex": {
+          "asset": {
+            "name": "qm_vfx_t_1001_xhy_jian_03",
+            "file": "Textures/qm_vfx_t_1001_xhy_jian_03_75350239859293054.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "75350239859293054"
+          },
+          "pathID": "75350239859293054",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_DissolveTex": {
+          "asset": {
+            "name": "vfx_t_mask_m_06",
+            "file": "Textures/vfx_t_mask_m_06_-4852848434633701428.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "-4852848434633701428"
+          },
+          "pathID": "-4852848434633701428",
+          "scale": [
+            1.0,
+            -1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_DissolveTexDetail": {
+          "asset": {
+            "name": "vfx_t_noise_ld_36",
+            "file": "Textures/vfx_t_noise_ld_36_-5984281712223079467.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "-5984281712223079467"
+          },
+          "pathID": "-5984281712223079467",
+          "scale": [
+            -1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_Mask": {
+          "asset": {
+            "name": "qm_vfx_t_mask_m_03",
+            "file": "Textures/qm_vfx_t_mask_m_03_7094365346108799600.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "7094365346108799600"
+          },
+          "pathID": "7094365346108799600",
+          "scale": [
+            -0.699999988079071,
+            1.0
+          ],
+          "offset": [
+            0.009999999776482582,
+            0.0
+          ]
+        },
+        "_Texture": {
+          "asset": {
+            "name": "vfx_taijijian_02",
+            "file": "Textures/vfx_taijijian_02_9032702521249099151.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "9032702521249099151"
+          },
+          "pathID": "9032702521249099151",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "instancing": false,
+      "disabledPasses": []
+    },
+    {
+      "name": "vfx_m_pugongjian_04",
+      "bundle": "resourcesab/prefabs/effect/character/pugongjian.ab",
+      "pathID": "7507513760999323536",
+      "shader": "RhinoX/Effect/FX_Standard",
+      "shaderPathID": "-7662726360800107545",
+      "shaderBundle": "resourcesab/shaders.ab",
+      "renderQueue": 3000,
+      "keywords": [
+        "_USE_COLORCONTROL",
+        "_USE_CUTOUT_DETAILTEX",
+        "_USE_MASK_ON"
+      ],
+      "invalidKeywords": [],
+      "floats": {
+        "_AlphaAdjust": 1.0,
+        "_AlphaClip": 0.0,
+        "_Brightness": 1.0,
+        "_ColorControlPolar": 0.0,
+        "_ColorControlTexIndependentTiling": 0.0,
+        "_ColorControlTexUscroll": 0.0,
+        "_ColorControlTexVscroll": 0.0,
+        "_Contrast": 1.0,
+        "_DetailAddorMultiply": 0.0,
+        "_DetailAlphaIgnore": 0.0,
+        "_DetailChoiceRGB": 0.0,
+        "_DetailPolar": 0.0,
+        "_DetailTexAngle": 0.0,
+        "_DetailTexRotSpeed": 0.0,
+        "_DetailTexSpeed_U": 0.0,
+        "_DetailTexSpeed_V": 0.0,
+        "_DetailTexStrength": 1.0,
+        "_DifferentFaceColor": 0.0,
+        "_DissipateDetailPolar": 0.0,
+        "_DissipatePolar": 0.0,
+        "_DissipateSoftCutout": 0.10000000149011612,
+        "_DissloveTexRotSpeed": 0.0,
+        "_Dissolve": 0.48500001430511475,
+        "_DissolveEdageWidth": 0.10000000149011612,
+        "_DissolveTailControl": 0.0,
+        "_DissolveTexAngle": 0.0,
+        "_DissolveTexDetailRotSpeed": 0.0,
+        "_DissolveTexDetailUscroll": 0.0,
+        "_DissolveTexDetailVscroll": 1.5,
+        "_DissolveTexLerp": 0.16300000250339508,
+        "_DissolveTexUscroll": 0.0,
+        "_DissolveTexVscroll": 0.0,
+        "_DistForceU": 1.0,
+        "_DistForceV": 1.0,
+        "_DistTime": 0.10000000149011612,
+        "_DistTime1": 0.10000000149011612,
+        "_DistortParticleSystemControl": 0.0,
+        "_DistortPolar": 0.0,
+        "_FlowDeadZone": 0.05000000074505806,
+        "_FlowMapDistForceU": 1.0,
+        "_FlowMapDistForceV": 1.0,
+        "_FlowMapDistSpeedX": 0.10000000149011612,
+        "_FlowMapDistSpeedY": 0.10000000149011612,
+        "_FlowMapRate": 1.0,
+        "_FlowMapSpeed": 1.0,
+        "_FlowMapStrength": 0.5,
+        "_FxCullMode": 0.0,
+        "_FxDstBlend": 10.0,
+        "_FxSrcBlend": 5.0,
+        "_Gradian": 0.05000000074505806,
+        "_GradianPow": 1.0,
+        "_Hue": 0.0,
+        "_IgnoreShadow": 1.0,
+        "_MainTexAngle": 0.25,
+        "_MainTexAngleSpeed": 0.0,
+        "_MainTexStrength": 1.0,
+        "_MaskParticleSystemControl": 1.0,
+        "_MaskPolar": 0.0,
+        "_MaskTexAngle": 0.0,
+        "_MaskU": 0.0,
+        "_MaskV": 0.0,
+        "_ParticleControl": 0.0,
+        "_RimLightAlpha": 1.0,
+        "_RimLightCenterAlpha": 1.0,
+        "_RimLightIntensity": 1.0,
+        "_RimLightPower": 1.0,
+        "_Saturation": 1.0,
+        "_SequenceColCount": 1.0,
+        "_SequenceRowCount": 1.0,
+        "_SequenceSpeed": 1.0,
+        "_Stencil": 1.0,
+        "_StencilComp": 8.0,
+        "_StencilOp": 0.0,
+        "_UVParticleControl": 0.0,
+        "_U_Mirror": 0.0,
+        "_Uscroll": 0.0,
+        "_UsePolar": 0.0,
+        "_UseTODColor": 0.0,
+        "_V_Mirror": 0.0,
+        "_VertexAnimLerp": 0.0,
+        "_VertexAnimParticleSystemControl": 0.0,
+        "_VertexAnimStrength": 0.5,
+        "_VertexAnimStrengthB": 0.5,
+        "_ViewStrength": 1.0,
+        "_Vscroll": 0.0,
+        "_ZTest": 4.0,
+        "_ZWrite": 0.0
+      },
+      "integers": {},
+      "colors": {
+        "_BackColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_BackColor1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_Color": [
+          0.4528301954269409,
+          0.4528301954269409,
+          0.4528301954269409,
+          1.0
+        ],
+        "_Color1": [
+          1.662550687789917,
+          1.662550687789917,
+          1.662550687789917,
+          1.0
+        ],
+        "_DistRGBA": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_EdageColor": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_MaskRGBA": [
+          1.2999999523162842,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_MaskSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_MaskTilingOffset": [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "_RimLightColor": [
+          1.0,
+          1.0,
+          0.0,
+          1.0
+        ],
+        "_VertexAnimSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_VertexAnimSpeedB": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "textures": {
+        "_ColorControlTex": {
+          "asset": {
+            "name": "qm_vfx_t_mask_skybox",
+            "file": "Textures/qm_vfx_t_mask_skybox_-2348423444605329061.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "-2348423444605329061"
+          },
+          "pathID": "-2348423444605329061",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_DissolveTex": {
+          "asset": {
+            "name": "vfx_taijijian_04",
+            "file": "Textures/vfx_taijijian_04_6772903843155793508.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "6772903843155793508"
+          },
+          "pathID": "6772903843155793508",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_DissolveTexDetail": {
+          "asset": {
+            "name": "vfx_t_4007_DongZhuo_26_n",
+            "file": "Textures/vfx_t_4007_DongZhuo_26_n_-2170657535170453600.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "-2170657535170453600"
+          },
+          "pathID": "-2170657535170453600",
+          "scale": [
+            5.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_Mask": {
+          "asset": {
+            "name": "vfx_taijijian_11",
+            "file": "Textures/vfx_taijijian_11_-5566028549250179293.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "-5566028549250179293"
+          },
+          "pathID": "-5566028549250179293",
+          "scale": [
+            0.4000000059604645,
+            1.0
+          ],
+          "offset": [
+            0.30000001192092896,
+            0.0
+          ]
+        },
+        "_Texture": {
+          "asset": {
+            "name": "vfx_t_pugongjian_01_clamp",
+            "file": "Textures/vfx_t_pugongjian_01_clamp_-1972526914735007878.png",
+            "size": [
+              128,
+              32
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "-1972526914735007878"
+          },
+          "pathID": "-1972526914735007878",
+          "scale": [
+            2.0,
+            1.2000000476837158
+          ],
+          "offset": [
+            -0.5,
+            -0.27000001072883606
+          ]
+        }
+      },
+      "instancing": false,
+      "disabledPasses": []
+    },
+    {
+      "name": "vfx_m_pugongjian_03",
+      "bundle": "resourcesab/prefabs/effect/character/pugongjian.ab",
+      "pathID": "-5171052143638034136",
+      "shader": "RhinoX/Effect/FX_Standard",
+      "shaderPathID": "-7662726360800107545",
+      "shaderBundle": "resourcesab/shaders.ab",
+      "renderQueue": 3001,
+      "keywords": [
+        "_USE_CUTOUT",
+        "_USE_CUTOUT_TEX",
+        "_USE_CUTOUT_THRESHOLD"
+      ],
+      "invalidKeywords": [],
+      "floats": {
+        "_AlphaAdjust": 1.0,
+        "_AlphaClip": 0.0,
+        "_Brightness": 1.0,
+        "_ColorControlPolar": 0.0,
+        "_ColorControlTexIndependentTiling": 0.0,
+        "_ColorControlTexUscroll": 0.0,
+        "_ColorControlTexVscroll": 0.0,
+        "_Contrast": 1.0,
+        "_DetailAddorMultiply": 0.0,
+        "_DetailAlphaIgnore": 0.0,
+        "_DetailChoiceRGB": 0.0,
+        "_DetailPolar": 0.0,
+        "_DetailTexAngle": 0.0,
+        "_DetailTexRotSpeed": 0.0,
+        "_DetailTexSpeed_U": 0.0,
+        "_DetailTexSpeed_V": 0.0,
+        "_DetailTexStrength": 1.0,
+        "_DifferentFaceColor": 0.0,
+        "_DissipateDetailPolar": 0.0,
+        "_DissipatePolar": 0.0,
+        "_DissipateSoftCutout": 0.10000000149011612,
+        "_DissloveTexRotSpeed": 0.0,
+        "_Dissolve": 0.6949999928474426,
+        "_DissolveEdageWidth": 0.15000000596046448,
+        "_DissolveTailControl": 0.0,
+        "_DissolveTexAngle": 0.0,
+        "_DissolveTexDetailRotSpeed": 0.0,
+        "_DissolveTexDetailUscroll": 0.0,
+        "_DissolveTexDetailVscroll": 0.0,
+        "_DissolveTexLerp": 0.0,
+        "_DissolveTexUscroll": 0.0,
+        "_DissolveTexVscroll": 0.0,
+        "_DistForceU": 1.0,
+        "_DistForceV": 1.0,
+        "_DistTime": 0.10000000149011612,
+        "_DistTime1": 0.10000000149011612,
+        "_DistortParticleSystemControl": 0.0,
+        "_DistortPolar": 0.0,
+        "_FlowDeadZone": 0.05000000074505806,
+        "_FlowMapDistForceU": 1.0,
+        "_FlowMapDistForceV": 1.0,
+        "_FlowMapDistSpeedX": 0.10000000149011612,
+        "_FlowMapDistSpeedY": 0.10000000149011612,
+        "_FlowMapRate": 1.0,
+        "_FlowMapSpeed": 1.0,
+        "_FlowMapStrength": 0.5,
+        "_FxCullMode": 0.0,
+        "_FxDstBlend": 10.0,
+        "_FxSrcBlend": 5.0,
+        "_Gradian": 0.05000000074505806,
+        "_GradianPow": 1.0,
+        "_Hue": 0.0,
+        "_IgnoreShadow": 1.0,
+        "_MainTexAngle": 0.0,
+        "_MainTexAngleSpeed": 0.0,
+        "_MainTexStrength": 1.0,
+        "_MaskParticleSystemControl": 1.0,
+        "_MaskPolar": 0.0,
+        "_MaskTexAngle": 0.0,
+        "_MaskU": 0.0,
+        "_MaskV": 0.0,
+        "_ParticleControl": 0.0,
+        "_RimLightAlpha": 1.0,
+        "_RimLightCenterAlpha": 1.0,
+        "_RimLightIntensity": 1.0,
+        "_RimLightPower": 1.0,
+        "_Saturation": 1.0,
+        "_SequenceColCount": 1.0,
+        "_SequenceRowCount": 1.0,
+        "_SequenceSpeed": 1.0,
+        "_Stencil": 1.0,
+        "_StencilComp": 8.0,
+        "_StencilOp": 0.0,
+        "_UVParticleControl": 0.0,
+        "_U_Mirror": 0.0,
+        "_Uscroll": 0.0,
+        "_UsePolar": 0.0,
+        "_UseTODColor": 0.0,
+        "_V_Mirror": 0.0,
+        "_VertexAnimLerp": 0.0,
+        "_VertexAnimParticleSystemControl": 0.0,
+        "_VertexAnimStrength": 0.5,
+        "_VertexAnimStrengthB": 0.5,
+        "_ViewStrength": 1.0,
+        "_Vscroll": 0.0,
+        "_ZTest": 4.0,
+        "_ZWrite": 0.0
+      },
+      "integers": {},
+      "colors": {
+        "_BackColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_BackColor1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_Color": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_Color1": [
+          1.157788634300232,
+          1.157788634300232,
+          1.157788634300232,
+          1.0
+        ],
+        "_DistRGBA": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_EdageColor": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_MaskRGBA": [
+          1.5099999904632568,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_MaskSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_MaskTilingOffset": [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "_RimLightColor": [
+          1.0,
+          1.0,
+          0.0,
+          1.0
+        ],
+        "_VertexAnimSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_VertexAnimSpeedB": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "textures": {
+        "_DissolveTex": {
+          "asset": {
+            "name": "vfx_t_pugongjian_02",
+            "file": "Textures/vfx_t_pugongjian_02_-376097075221937121.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "-376097075221937121"
+          },
+          "pathID": "-376097075221937121",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_Mask": {
+          "asset": {
+            "name": "vfx_taijijian_11",
+            "file": "Textures/vfx_taijijian_11_-5566028549250179293.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "-5566028549250179293"
+          },
+          "pathID": "-5566028549250179293",
+          "scale": [
+            0.4000000059604645,
+            1.0
+          ],
+          "offset": [
+            0.30000001192092896,
+            0.0
+          ]
+        },
+        "_Texture": {
+          "asset": {
+            "name": "vfx_taijijian_01",
+            "file": "Textures/vfx_taijijian_01_-2082001383691579739.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "-2082001383691579739"
+          },
+          "pathID": "-2082001383691579739",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "instancing": false,
+      "disabledPasses": []
+    },
+    {
+      "name": "vfx_m_pugongjian_01",
+      "bundle": "resourcesab/prefabs/effect/character/pugongjian.ab",
+      "pathID": "2210684158449104651",
+      "shader": "Star03/Character/Character_InBattle_Outline",
+      "shaderPathID": "8809953876185120155",
+      "shaderBundle": "resourcesab/shaders.ab",
+      "renderQueue": -1,
+      "keywords": [
+        "_ENABLEBUFFRIMTEX_ON"
+      ],
+      "invalidKeywords": [
+        "_SELFSHADOW_ON",
+        "_ZWRITE"
+      ],
+      "floats": {
+        "_Alpahtest": 0.0,
+        "_BuffRimLightCutoff": 0.0,
+        "_BuffRimLightHeight": 0.5,
+        "_BuffRimLightNoiseSpeed": 0.5,
+        "_BuffRimLightNoiseTill": 10.0,
+        "_BuffRimLightOffset": 0.0,
+        "_BuffRimLightScanOffset": -0.10000000149011612,
+        "_BuffRimLightSpeed": 1.0,
+        "_BuffRimLightTex": 1.0,
+        "_Cull": 2.0,
+        "_CullMode": 2.0,
+        "_Cutoff": 0.5,
+        "_DepthBias": 0.0,
+        "_DissolveAmount": -0.10000000149011612,
+        "_DissolveEdge": 0.5,
+        "_DissolveFlow": 1.0,
+        "_DissolveSpread": 0.20000000298023224,
+        "_DstBlend": 0.0,
+        "_Emission": 0.0,
+        "_EnableDissolve": 0.0,
+        "_EnableIce": 0.0,
+        "_Expose": 0.30000001192092896,
+        "_HighlightScaler": 0.0,
+        "_HitFresnelPow": 4.320000171661377,
+        "_IceColorInt": 0.5,
+        "_IceControl": 0.0,
+        "_IceFresnelMul": 12.0,
+        "_IceFresnelPow": 1.2000000476837158,
+        "_IsAddRimLight": 0.0,
+        "_IsBuffRimLight": 0.0,
+        "_IsHit": 0.0,
+        "_ObjectScale": 2.0,
+        "_OutlineColorLerp": 0.5,
+        "_RenderMode": 0.0,
+        "_RimToonThesHold": 0.4000000059604645,
+        "_RoughnessAdjust": 0.20000000298023224,
+        "_STilling": 100.0,
+        "_SelfShadow": 1.0,
+        "_Slope_ScaledBias": 0.0,
+        "_SpecSize": 0.05000000074505806,
+        "_SrcBlend": 1.0,
+        "_Swaying": 0.0,
+        "_SwayingAmount": 0.05000000074505806,
+        "_SwayingOffset": 0.30000001192092896,
+        "_SwayingRigidness": 1.0,
+        "_SwayingSpeed": 0.5,
+        "_TODInt": 1.0,
+        "_ToonHardness": 40.0,
+        "_ToonThesHold": 0.5,
+        "_ZTest": 4.0,
+        "_ZWrite": 1.0,
+        "_group7": 1.0,
+        "_normalizeViewNormalXYScale": 12.0
+      },
+      "integers": {},
+      "colors": {
+        "_AmbientColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_BaseColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_BuffRimLightColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_BuffRimLightFalloff": [
+          0.20000000298023224,
+          0.20999999344348907,
+          0.17000000178813934,
+          0.20000000298023224
+        ],
+        "_DialogueLightColor": [
+          3.0,
+          3.0,
+          3.0,
+          1.0
+        ],
+        "_DialogueLightDir": [
+          3.5,
+          -3.5,
+          3.700000047683716,
+          0.0
+        ],
+        "_DissolveCol": [
+          1.0,
+          1.0,
+          0.6000000238418579,
+          1.0
+        ],
+        "_EmissionColor": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_EnvColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_HighLightColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_HitColor": [
+          6.0,
+          1.1299999952316284,
+          0.25,
+          1.0
+        ],
+        "_IceCol": [
+          0.0,
+          0.5,
+          1.0,
+          1.0
+        ],
+        "_IceCol2": [
+          0.0,
+          0.07999999821186066,
+          0.5,
+          1.0
+        ],
+        "_IceNoiseOffset": [
+          0.699999988079071,
+          0.699999988079071,
+          0.0,
+          0.0
+        ],
+        "_IcePosition": [
+          0.7599999904632568,
+          -0.30000001192092896,
+          0.0,
+          0.0
+        ],
+        "_IceTexColor": [
+          1.0,
+          1.0,
+          1.0,
+          0.699999988079071
+        ],
+        "_OutlineColor": [
+          0.11320751905441284,
+          0.11320751905441284,
+          0.11320751905441284,
+          1.0
+        ],
+        "_RimLightColor": [
+          1.0,
+          1.0,
+          1.0,
+          0.5
+        ],
+        "_RimLightDir": [
+          1.0,
+          0.0,
+          -3.0,
+          1.0
+        ],
+        "_ShadowColor": [
+          0.4811320900917053,
+          0.4811320900917053,
+          0.4811320900917053,
+          1.0
+        ],
+        "_SkinColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "textures": {
+        "_BaseMap": {
+          "asset": {
+            "name": "vfx_t_pugongjian_01",
+            "file": "Textures/vfx_t_pugongjian_01_-2981031991219368308.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "resourcesab/prefabs/effect/character/pugongjian.ab",
+            "pathID": "-2981031991219368308"
+          },
+          "pathID": "-2981031991219368308",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_DissolveTex": {
+          "asset": {
+            "name": "NoiseTex256",
+            "file": "Textures/NoiseTex256_-3065966560932905197.png",
+            "size": [
+              64,
+              64
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/shader/testure.ab",
+            "pathID": "-3065966560932905197"
+          },
+          "pathID": "-3065966560932905197",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_RampLight": {
+          "asset": {
+            "name": "qm_vfx_t_noise_m_09",
+            "file": "Textures/qm_vfx_t_noise_m_09_2556630356832912492.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "2556630356832912492"
+          },
+          "pathID": "2556630356832912492",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "instancing": false,
+      "disabledPasses": []
+    },
+    {
+      "name": "vfx_m_pugongjian_01_lod",
+      "bundle": "resourcesab/prefabs/effect/character/pugongjian.ab",
+      "pathID": "8965378394937164048",
+      "shader": "Star03/Character/Character_InBattle_LOD",
+      "shaderPathID": "3223504838148039718",
+      "shaderBundle": "resourcesab/shaders.ab",
+      "renderQueue": -1,
+      "keywords": [],
+      "invalidKeywords": [
+        "_ENABLEBUFFRIMTEX_ON",
+        "_ZWRITE"
+      ],
+      "floats": {
+        "_Alpahtest": 0.0,
+        "_AmbientInt": 1.0,
+        "_Brightness": 1.0,
+        "_Cull": 2.0,
+        "_CullMode": 2.0,
+        "_Cutoff": 0.5,
+        "_DepthBias": 0.0,
+        "_DissolveAmount": -0.10000000149011612,
+        "_DissolveEdge": 0.5,
+        "_DissolveFlow": 1.0,
+        "_DissolveSpread": 0.20000000298023224,
+        "_DstBlend": 0.0,
+        "_EnableDissolve": 0.0,
+        "_Expose": 0.30000001192092896,
+        "_HighlightScaler": 0.0,
+        "_HitFresnelPow": 4.320000171661377,
+        "_IsHit": 0.0,
+        "_ObjectScale": 2.0,
+        "_OutlineColorLerp": 0.5,
+        "_RenderMode": 0.0,
+        "_RoughnessAdjust": 0.20000000298023224,
+        "_Saturation": 1.0,
+        "_Slope_ScaledBias": 0.0,
+        "_SrcBlend": 1.0,
+        "_ToonHardness": 40.0,
+        "_ToonThesHold": 0.5,
+        "_ZTest": 4.0,
+        "_ZWrite": 1.0,
+        "_group7": 1.0,
+        "_normalizeViewNormalXYScale": 30.0
+      },
+      "integers": {},
+      "colors": {
+        "_AmbientColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_BaseColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_DissolveCol": [
+          1.0,
+          1.0,
+          0.6000000238418579,
+          1.0
+        ],
+        "_EnvColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_HitColor": [
+          6.0,
+          1.1299999952316284,
+          0.25,
+          1.0
+        ],
+        "_OutlineColor": [
+          0.11320751905441284,
+          0.11320751905441284,
+          0.11320751905441284,
+          1.0
+        ],
+        "_ShadowColor": [
+          0.4811320900917053,
+          0.4811320900917053,
+          0.4811320900917053,
+          1.0
+        ],
+        "_SkinColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "textures": {
+        "_BaseMap": {
+          "asset": {
+            "name": "vfx_t_pugongjian_01",
+            "file": "Textures/vfx_t_pugongjian_01_-2981031991219368308.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "resourcesab/prefabs/effect/character/pugongjian.ab",
+            "pathID": "-2981031991219368308"
+          },
+          "pathID": "-2981031991219368308",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_DissolveTex": {
+          "asset": {
+            "name": "NoiseTex256",
+            "file": "Textures/NoiseTex256_-3065966560932905197.png",
+            "size": [
+              64,
+              64
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/shader/testure.ab",
+            "pathID": "-3065966560932905197"
+          },
+          "pathID": "-3065966560932905197",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "instancing": false,
+      "disabledPasses": []
+    }
+  ],
+  "dependencies": [
+    "artres/art_vfx/vfx_mesh.ab",
+    "artres/art_vfx/vfx_texture.ab",
+    "artres/art_vx/vx_texture/noise.ab",
+    "artres/shader/dynamicfogurp/demo/environment/water/textures.ab",
+    "artres/shader/fog/textures.ab",
+    "artres/shader/starfield.ab",
+    "artres/shader/testure.ab",
+    "atlas/activitymsj.ab",
+    "packages/com.unity.render-pipelines.universal.ab",
+    "resourcesab/prefabs/effect/character/pugongjian.ab",
+    "resourcesab/shaders.ab"
+  ]
+}

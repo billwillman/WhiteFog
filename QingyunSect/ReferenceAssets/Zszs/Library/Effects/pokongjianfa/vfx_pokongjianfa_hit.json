@@ -1,0 +1,13 @@
+{
+  "rate": 24,
+  "count": 11,
+  "cols": 6,
+  "rows": 2,
+  "cell": 160,
+  "captureBounds": [
+    157,
+    153,
+    227,
+    223
+  ]
+}

@@ -1,0 +1,294 @@
+{
+  "id": "mon_yegou001",
+  "title": "野狗",
+  "group": "怪物",
+  "source": "artres/model/monster/mon_yegou001.ab",
+  "prefab": "resourcesab/prefabs/charactor/monster.ab",
+  "vertices": 1620,
+  "triangles": 1948,
+  "skins": 1,
+  "materials": [
+    {
+      "name": "mon_yegou_001",
+      "bundle": "resourcesab/prefabs/charactor/monster.ab",
+      "pathID": "3820998279338670792",
+      "shader": "Star03/Character/Character_InBattle_XiaoGuai",
+      "shaderPathID": "7901391450234294350",
+      "shaderBundle": "resourcesab/shaders.ab",
+      "renderQueue": -1,
+      "keywords": [],
+      "invalidKeywords": [
+        "_ZWRITE"
+      ],
+      "floats": {
+        "_Alpahtest": 0.0,
+        "_Cull": 2.0,
+        "_CullMode": 2.0,
+        "_Cutoff": 0.5,
+        "_DissolveAmount": -0.20000000298023224,
+        "_DissolveEdge": 0.30000001192092896,
+        "_DissolveFlow": 1.0,
+        "_DissolveSpread": 0.25,
+        "_DstBlend": 0.0,
+        "_Emission": 0.0,
+        "_EnableDissolve": 0.0,
+        "_EnableIce": 0.0,
+        "_Expose": 0.30000001192092896,
+        "_HighlightScaler": 0.0,
+        "_HitFresnelPow": 2.0,
+        "_IceColorInt": 0.2529999911785126,
+        "_IceControl": 0.0,
+        "_IceFresnelMul": 12.0,
+        "_IceFresnelPow": 1.2000000476837158,
+        "_IceNoiseOffset": 0.699999988079071,
+        "_IsHit": 0.0,
+        "_ObjectScale": 0.30000001192092896,
+        "_RimToonThesHold": 0.4000000059604645,
+        "_RoughnessAdjust": 0.20000000298023224,
+        "_SelfShadow": 1.0,
+        "_SrcBlend": 1.0,
+        "_ToonHardness": 35.599998474121094,
+        "_ToonThesHold": 0.3100000023841858,
+        "_ZTest": 4.0,
+        "_ZWrite": 1.0
+      },
+      "integers": {},
+      "colors": {
+        "_AmbientColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_BaseColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_DialogueLightColor": [
+          1.5,
+          1.5,
+          1.5,
+          1.0
+        ],
+        "_DialogueLightDir": [
+          3.5,
+          -3.5,
+          3.700000047683716,
+          0.0
+        ],
+        "_DissolveCol": [
+          1.0,
+          1.0,
+          0.6000000238418579,
+          1.0
+        ],
+        "_EmissionColor": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_EnvColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_HitColor": [
+          11.979999542236328,
+          2.25,
+          0.5,
+          1.0
+        ],
+        "_IceCol": [
+          0.0,
+          0.5,
+          1.0,
+          1.0
+        ],
+        "_IceCol2": [
+          0.0,
+          0.07999999821186066,
+          0.5,
+          1.0
+        ],
+        "_IceNoiseOffset": [
+          0.699999988079071,
+          0.699999988079071,
+          0.0,
+          0.0
+        ],
+        "_IcePosition": [
+          0.7799999713897705,
+          -0.20000000298023224,
+          0.0,
+          -0.4000000059604645
+        ],
+        "_IceTexColor": [
+          1.0,
+          1.0,
+          1.0,
+          0.699999988079071
+        ],
+        "_RimLightColor": [
+          0.8301886916160583,
+          0.6618013381958008,
+          0.6618013381958008,
+          0.5
+        ],
+        "_RimLightDir": [
+          0.6200000047683716,
+          0.0,
+          -3.0,
+          1.0
+        ],
+        "_ShadowColor": [
+          0.7254902124404907,
+          0.729411780834198,
+          0.7647059559822083,
+          1.0
+        ]
+      },
+      "textures": {
+        "_BaseMap": {
+          "asset": {
+            "name": "mon_yegou_001",
+            "file": "Textures/mon_yegou_001_-2597674103516932421.png",
+            "size": [
+              512,
+              512
+            ],
+            "unityFormat": 50,
+            "bundle": "resourcesab/prefabs/charactor/monster.ab",
+            "pathID": "-2597674103516932421"
+          },
+          "pathID": "-2597674103516932421",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_DissolveTex": {
+          "asset": {
+            "name": "NoiseTex256",
+            "file": "Textures/NoiseTex256_-3065966560932905197.png",
+            "size": [
+              64,
+              64
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/shader/testure.ab",
+            "pathID": "-3065966560932905197"
+          },
+          "pathID": "-3065966560932905197",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_IceColorTex": {
+          "asset": {
+            "name": "iceTex",
+            "file": "Textures/iceTex_7248459528624634763.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/shader/testure.ab",
+            "pathID": "7248459528624634763"
+          },
+          "pathID": "7248459528624634763",
+          "scale": [
+            2.0,
+            2.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_IceTexNoise": {
+          "asset": {
+            "name": "IceOffset",
+            "file": "Textures/IceOffset_-6004570308252836407.png",
+            "size": [
+              32,
+              32
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/shader/testure.ab",
+            "pathID": "-6004570308252836407"
+          },
+          "pathID": "-6004570308252836407",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "instancing": false,
+      "disabledPasses": []
+    }
+  ],
+  "animations": [],
+  "archivedBundles": [
+    "artres/model/monster/mon_yegou001.ab",
+    "artres/shader/testure.ab",
+    "resourcesab/animation/monster/mon_yegou001.ab",
+    "resourcesab/prefabs/charactor/monster.ab",
+    "resourcesab/shaders.ab"
+  ],
+  "sourceClips": [
+    {
+      "name": "mon_yegou001@skill01_200121",
+      "bundle": "resourcesab/animation/monster/mon_yegou001.ab"
+    },
+    {
+      "name": "mon_yegou001@hurt_jitui",
+      "bundle": "resourcesab/animation/monster/mon_yegou001.ab"
+    },
+    {
+      "name": "mon_yegou001@skill01",
+      "bundle": "resourcesab/animation/monster/mon_yegou001.ab"
+    },
+    {
+      "name": "mon_yegou001@hurt",
+      "bundle": "resourcesab/animation/monster/mon_yegou001.ab"
+    },
+    {
+      "name": "mon_yegou001@attackidle01",
+      "bundle": "resourcesab/animation/monster/mon_yegou001.ab"
+    },
+    {
+      "name": "mon_yegou001@attack01",
+      "bundle": "resourcesab/animation/monster/mon_yegou001.ab"
+    },
+    {
+      "name": "mon_yegou001@move",
+      "bundle": "resourcesab/animation/monster/mon_yegou001.ab"
+    },
+    {
+      "name": "mon_yegou001@die",
+      "bundle": "resourcesab/animation/monster/mon_yegou001.ab"
+    },
+    {
+      "name": "mon_yegou001@attack01_200120",
+      "bundle": "resourcesab/animation/monster/mon_yegou001.ab"
+    }
+  ]
+}

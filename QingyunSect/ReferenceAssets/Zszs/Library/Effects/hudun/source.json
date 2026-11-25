@@ -1,0 +1,1369 @@
+{
+  "id": "hudun",
+  "title": "护盾",
+  "source": "resourcesab/prefabs/effect/buff.ab",
+  "prefabs": [
+    {
+      "name": "vfx_cha_buff_xinfa_hudun",
+      "renderers": [
+        {
+          "node": "Sphere",
+          "materials": [
+            "5951994236035848032"
+          ]
+        },
+        {
+          "node": "Particle System",
+          "materials": [
+            "8295484042383312713"
+          ]
+        },
+        {
+          "node": "Sphere (1)",
+          "materials": [
+            "-3528502779467854552"
+          ]
+        },
+        {
+          "node": "Particle System (1)",
+          "materials": [
+            "-4340444627195535526"
+          ]
+        },
+        {
+          "node": "Particle System",
+          "materials": [
+            "-6735714127076464572"
+          ]
+        }
+      ]
+    }
+  ],
+  "materials": [
+    {
+      "name": "fx_m_buff_xinfa_hudun01",
+      "bundle": "resourcesab/prefabs/effect/buff.ab",
+      "pathID": "5951994236035848032",
+      "shader": "RhinoX/Effect/FX_Standard",
+      "shaderPathID": "-7662726360800107545",
+      "shaderBundle": "resourcesab/shaders.ab",
+      "renderQueue": 3010,
+      "keywords": [
+        "_USE_COLORCONTROL",
+        "_USE_DETAIL_ON",
+        "_USE_MASK_ON"
+      ],
+      "invalidKeywords": [],
+      "floats": {
+        "_AlphaAdjust": 1.0,
+        "_AlphaClip": 0.0,
+        "_Brightness": 1.0,
+        "_ColorControlPolar": 0.0,
+        "_ColorControlTexIndependentTiling": 1.0,
+        "_ColorControlTexUscroll": 0.0,
+        "_ColorControlTexVscroll": 0.0,
+        "_Contrast": 1.0,
+        "_DetailAddorMultiply": 0.0,
+        "_DetailAlphaIgnore": 0.0,
+        "_DetailChoiceRGB": 0.7049999833106995,
+        "_DetailPolar": 0.0,
+        "_DetailTexAngle": 0.0,
+        "_DetailTexRotSpeed": 0.0,
+        "_DetailTexSpeed_U": 0.0,
+        "_DetailTexSpeed_V": 0.30000001192092896,
+        "_DetailTexStrength": 5.789999961853027,
+        "_DifferentFaceColor": 0.0,
+        "_DissipateDetailPolar": 0.0,
+        "_DissipatePolar": 0.0,
+        "_DissipateSoftCutout": 1.0,
+        "_DissloveTexRotSpeed": 0.0,
+        "_Dissolve": 0.0,
+        "_DissolveEdageWidth": 0.014999999664723873,
+        "_DissolveTailControl": 0.0,
+        "_DissolveTexAngle": 0.0,
+        "_DissolveTexDetailRotSpeed": 0.0,
+        "_DissolveTexDetailUscroll": 0.0,
+        "_DissolveTexDetailVscroll": 0.0,
+        "_DissolveTexLerp": 0.0,
+        "_DissolveTexUscroll": 0.0,
+        "_DissolveTexVscroll": 0.0,
+        "_DistForceU": 1.0,
+        "_DistForceV": 1.0,
+        "_DistTime": 0.10000000149011612,
+        "_DistTime1": 0.10000000149011612,
+        "_DistortParticleSystemControl": 0.0,
+        "_DistortPolar": 0.0,
+        "_FlowDeadZone": 0.05000000074505806,
+        "_FlowMapDistForceU": 1.0,
+        "_FlowMapDistForceV": 1.0,
+        "_FlowMapDistSpeedX": 0.10000000149011612,
+        "_FlowMapDistSpeedY": 0.10000000149011612,
+        "_FlowMapRate": 1.0,
+        "_FlowMapSpeed": 1.0,
+        "_FlowMapStrength": 0.5,
+        "_FxCullMode": 2.0,
+        "_FxDstBlend": 10.0,
+        "_FxSrcBlend": 5.0,
+        "_Gradian": 0.009999999776482582,
+        "_GradianPow": 1.0,
+        "_Hue": 0.0,
+        "_IgnoreShadow": 1.0,
+        "_MainTexAngle": 0.0,
+        "_MainTexAngleSpeed": 0.0,
+        "_MainTexStrength": 0.5,
+        "_MaskParticleSystemControl": 0.0,
+        "_MaskPolar": 0.0,
+        "_MaskTexAngle": 180.0,
+        "_MaskU": 0.0,
+        "_MaskV": 0.0,
+        "_ParticleControl": 0.0,
+        "_RimLightAlpha": 0.30000001192092896,
+        "_RimLightCenterAlpha": 1.0,
+        "_RimLightIntensity": 1.0,
+        "_RimLightPower": 2.819999933242798,
+        "_Saturation": 1.0,
+        "_SequenceColCount": 1.0,
+        "_SequenceRowCount": 1.0,
+        "_SequenceSpeed": 1.0,
+        "_Stencil": 0.0,
+        "_StencilComp": 8.0,
+        "_StencilOp": 0.0,
+        "_UVParticleControl": 0.0,
+        "_U_Mirror": 0.0,
+        "_Uscroll": 0.20000000298023224,
+        "_UsePolar": 0.0,
+        "_UseTODColor": 0.0,
+        "_V_Mirror": 0.0,
+        "_VertexAnimLerp": 0.0,
+        "_VertexAnimParticleSystemControl": 0.0,
+        "_VertexAnimStrength": 0.5,
+        "_VertexAnimStrengthB": 0.5,
+        "_ViewStrength": 1.0,
+        "_Vscroll": 0.30000001192092896,
+        "_ZTest": 4.0,
+        "_ZWrite": 0.0
+      },
+      "integers": {},
+      "colors": {
+        "_BackColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_BackColor1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_Color": [
+          0.10980392247438431,
+          0.8980392217636108,
+          1.0,
+          0.501960813999176
+        ],
+        "_Color1": [
+          0.1568627506494522,
+          1.4901961088180542,
+          1.4980392456054688,
+          1.0
+        ],
+        "_DistRGBA": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_EdageColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_MaskRGBA": [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "_MaskSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_MaskTilingOffset": [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "_RimLightColor": [
+          0.6745098233222961,
+          2.5568628311157227,
+          2.9960784912109375,
+          1.0
+        ],
+        "_VertexAnimSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_VertexAnimSpeedB": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "textures": {
+        "_ColorControlTex": {
+          "asset": {
+            "name": "vfx_map_mask_m_03",
+            "file": "Textures/vfx_map_mask_m_03_-902610632353281338.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "-902610632353281338"
+          },
+          "pathID": "-902610632353281338",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_DetailTex": {
+          "asset": {
+            "name": "vfx_t_line_zwp_01",
+            "file": "Textures/vfx_t_line_zwp_01_8861649085363451584.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "resourcesab/prefabs/effect/buff.ab",
+            "pathID": "8861649085363451584"
+          },
+          "pathID": "8861649085363451584",
+          "scale": [
+            3.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_Mask": {
+          "asset": {
+            "name": "vfx_t_8122_ZhangYing_32",
+            "file": "Textures/vfx_t_8122_ZhangYing_32_2383434499612204137.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "2383434499612204137"
+          },
+          "pathID": "2383434499612204137",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            -0.009999999776482582
+          ]
+        },
+        "_Texture": {
+          "asset": {
+            "name": "vfx_t_buff_02",
+            "file": "Textures/vfx_t_buff_02_6010319749590574253.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "6010319749590574253"
+          },
+          "pathID": "6010319749590574253",
+          "scale": [
+            1.5,
+            2.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "instancing": false,
+      "disabledPasses": []
+    },
+    {
+      "name": "fx_m_buff_xinfa_hudun02",
+      "bundle": "resourcesab/prefabs/effect/buff.ab",
+      "pathID": "8295484042383312713",
+      "shader": "RhinoX/Effect/FX_Standard",
+      "shaderPathID": "-7662726360800107545",
+      "shaderBundle": "resourcesab/shaders.ab",
+      "renderQueue": 3009,
+      "keywords": [],
+      "invalidKeywords": [],
+      "floats": {
+        "_AlphaAdjust": 1.0,
+        "_AlphaClip": 0.0,
+        "_Brightness": 1.0,
+        "_ColorControlPolar": 0.0,
+        "_ColorControlTexIndependentTiling": 0.0,
+        "_ColorControlTexUscroll": 0.0,
+        "_ColorControlTexVscroll": 0.0,
+        "_Contrast": 1.0,
+        "_DetailAddorMultiply": 0.0,
+        "_DetailAlphaIgnore": 0.0,
+        "_DetailChoiceRGB": 0.0,
+        "_DetailPolar": 0.0,
+        "_DetailTexAngle": 0.0,
+        "_DetailTexRotSpeed": 0.0,
+        "_DetailTexSpeed_U": 0.0,
+        "_DetailTexSpeed_V": 0.5,
+        "_DetailTexStrength": 5.789999961853027,
+        "_DifferentFaceColor": 0.0,
+        "_DissipateDetailPolar": 0.0,
+        "_DissipatePolar": 0.0,
+        "_DissipateSoftCutout": 1.0,
+        "_DissloveTexRotSpeed": 0.0,
+        "_Dissolve": 0.0,
+        "_DissolveEdageWidth": 0.014999999664723873,
+        "_DissolveTailControl": 0.0,
+        "_DissolveTexAngle": 0.0,
+        "_DissolveTexDetailRotSpeed": 0.0,
+        "_DissolveTexDetailUscroll": 0.0,
+        "_DissolveTexDetailVscroll": 0.0,
+        "_DissolveTexLerp": 0.0,
+        "_DissolveTexUscroll": 0.0,
+        "_DissolveTexVscroll": 0.0,
+        "_DistForceU": 1.0,
+        "_DistForceV": 1.0,
+        "_DistTime": 0.10000000149011612,
+        "_DistTime1": 0.10000000149011612,
+        "_DistortParticleSystemControl": 0.0,
+        "_DistortPolar": 0.0,
+        "_FlowDeadZone": 0.05000000074505806,
+        "_FlowMapDistForceU": 1.0,
+        "_FlowMapDistForceV": 1.0,
+        "_FlowMapDistSpeedX": 0.10000000149011612,
+        "_FlowMapDistSpeedY": 0.10000000149011612,
+        "_FlowMapRate": 1.0,
+        "_FlowMapSpeed": 1.0,
+        "_FlowMapStrength": 0.5,
+        "_FxCullMode": 2.0,
+        "_FxDstBlend": 10.0,
+        "_FxSrcBlend": 5.0,
+        "_Gradian": 0.009999999776482582,
+        "_GradianPow": 1.0,
+        "_Hue": 0.0,
+        "_IgnoreShadow": 1.0,
+        "_MainTexAngle": 0.0,
+        "_MainTexAngleSpeed": 0.0,
+        "_MainTexStrength": 0.800000011920929,
+        "_MaskParticleSystemControl": 0.0,
+        "_MaskPolar": 0.0,
+        "_MaskTexAngle": 180.0,
+        "_MaskU": 0.0,
+        "_MaskV": 0.0,
+        "_ParticleControl": 0.0,
+        "_RimLightAlpha": 0.30000001192092896,
+        "_RimLightCenterAlpha": 1.0,
+        "_RimLightIntensity": 1.0,
+        "_RimLightPower": 2.819999933242798,
+        "_Saturation": 1.0,
+        "_SequenceColCount": 1.0,
+        "_SequenceRowCount": 1.0,
+        "_SequenceSpeed": 1.0,
+        "_Stencil": 0.0,
+        "_StencilComp": 8.0,
+        "_StencilOp": 0.0,
+        "_UVParticleControl": 0.0,
+        "_U_Mirror": 0.0,
+        "_Uscroll": 0.0,
+        "_UsePolar": 0.0,
+        "_UseTODColor": 0.0,
+        "_V_Mirror": 0.0,
+        "_VertexAnimLerp": 0.0,
+        "_VertexAnimParticleSystemControl": 0.0,
+        "_VertexAnimStrength": 0.5,
+        "_VertexAnimStrengthB": 0.5,
+        "_ViewStrength": 1.0,
+        "_Vscroll": 0.0,
+        "_ZTest": 4.0,
+        "_ZWrite": 0.0
+      },
+      "integers": {},
+      "colors": {
+        "_BackColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_BackColor1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_Color": [
+          0.3216642439365387,
+          1.5639538764953613,
+          2.1185474395751953,
+          1.0
+        ],
+        "_Color1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_DistRGBA": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_EdageColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_MaskRGBA": [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "_MaskSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_MaskTilingOffset": [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "_RimLightColor": [
+          0.6745098233222961,
+          2.5568628311157227,
+          2.9960784912109375,
+          1.0
+        ],
+        "_VertexAnimSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_VertexAnimSpeedB": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "textures": {
+        "_DetailTex": {
+          "asset": {
+            "name": "vfx_t_line_zwp_01",
+            "file": "Textures/vfx_t_line_zwp_01_8861649085363451584.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "resourcesab/prefabs/effect/buff.ab",
+            "pathID": "8861649085363451584"
+          },
+          "pathID": "8861649085363451584",
+          "scale": [
+            3.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_Mask": {
+          "asset": {
+            "name": "vfx_t_8122_ZhangYing_32",
+            "file": "Textures/vfx_t_8122_ZhangYing_32_2383434499612204137.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "2383434499612204137"
+          },
+          "pathID": "2383434499612204137",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_Texture": {
+          "asset": {
+            "name": "fx_t_buff_xinfa_hudun01",
+            "file": "Textures/fx_t_buff_xinfa_hudun01_2805004814088058008.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "resourcesab/prefabs/effect/buff.ab",
+            "pathID": "2805004814088058008"
+          },
+          "pathID": "2805004814088058008",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "instancing": false,
+      "disabledPasses": []
+    },
+    {
+      "name": "fx_m_buff_xinfa_hudun03",
+      "bundle": "resourcesab/prefabs/effect/buff.ab",
+      "pathID": "-3528502779467854552",
+      "shader": "RhinoX/Effect/FX_Standard",
+      "shaderPathID": "-7662726360800107545",
+      "shaderBundle": "resourcesab/shaders.ab",
+      "renderQueue": 3011,
+      "keywords": [
+        "_USE_RIMLIGHT_ON"
+      ],
+      "invalidKeywords": [],
+      "floats": {
+        "_AlphaAdjust": 1.0,
+        "_AlphaClip": 0.0,
+        "_Brightness": 1.0,
+        "_ColorControlPolar": 0.0,
+        "_ColorControlTexIndependentTiling": 0.0,
+        "_ColorControlTexUscroll": 0.0,
+        "_ColorControlTexVscroll": 0.0,
+        "_Contrast": 1.0,
+        "_DetailAddorMultiply": 0.0,
+        "_DetailAlphaIgnore": 0.0,
+        "_DetailChoiceRGB": 0.0,
+        "_DetailPolar": 0.0,
+        "_DetailTexAngle": 0.0,
+        "_DetailTexRotSpeed": 0.0,
+        "_DetailTexSpeed_U": 0.0,
+        "_DetailTexSpeed_V": 0.5,
+        "_DetailTexStrength": 5.789999961853027,
+        "_DifferentFaceColor": 0.0,
+        "_DissipateDetailPolar": 0.0,
+        "_DissipatePolar": 0.0,
+        "_DissipateSoftCutout": 1.0,
+        "_DissloveTexRotSpeed": 0.0,
+        "_Dissolve": 0.0,
+        "_DissolveEdageWidth": 0.014999999664723873,
+        "_DissolveTailControl": 0.0,
+        "_DissolveTexAngle": 0.0,
+        "_DissolveTexDetailRotSpeed": 0.0,
+        "_DissolveTexDetailUscroll": 0.0,
+        "_DissolveTexDetailVscroll": 0.0,
+        "_DissolveTexLerp": 0.0,
+        "_DissolveTexUscroll": 0.0,
+        "_DissolveTexVscroll": 0.0,
+        "_DistForceU": 1.0,
+        "_DistForceV": 1.0,
+        "_DistTime": 0.10000000149011612,
+        "_DistTime1": 0.10000000149011612,
+        "_DistortParticleSystemControl": 0.0,
+        "_DistortPolar": 0.0,
+        "_FlowDeadZone": 0.05000000074505806,
+        "_FlowMapDistForceU": 1.0,
+        "_FlowMapDistForceV": 1.0,
+        "_FlowMapDistSpeedX": 0.10000000149011612,
+        "_FlowMapDistSpeedY": 0.10000000149011612,
+        "_FlowMapRate": 1.0,
+        "_FlowMapSpeed": 1.0,
+        "_FlowMapStrength": 0.5,
+        "_FxCullMode": 2.0,
+        "_FxDstBlend": 1.0,
+        "_FxSrcBlend": 5.0,
+        "_Gradian": 0.009999999776482582,
+        "_GradianPow": 1.0,
+        "_Hue": 0.0,
+        "_IgnoreShadow": 1.0,
+        "_MainTexAngle": 0.0,
+        "_MainTexAngleSpeed": 0.0,
+        "_MainTexStrength": 1.0,
+        "_MaskParticleSystemControl": 0.0,
+        "_MaskPolar": 0.0,
+        "_MaskTexAngle": 180.0,
+        "_MaskU": 0.0,
+        "_MaskV": 0.0,
+        "_ParticleControl": 0.0,
+        "_RimLightAlpha": 0.30000001192092896,
+        "_RimLightCenterAlpha": 1.0,
+        "_RimLightIntensity": 1.0,
+        "_RimLightPower": 2.819999933242798,
+        "_Saturation": 1.0,
+        "_SequenceColCount": 1.0,
+        "_SequenceRowCount": 1.0,
+        "_SequenceSpeed": 1.0,
+        "_Stencil": 0.0,
+        "_StencilComp": 8.0,
+        "_StencilOp": 0.0,
+        "_UVParticleControl": 0.0,
+        "_U_Mirror": 0.0,
+        "_Uscroll": 0.0,
+        "_UsePolar": 0.0,
+        "_UseTODColor": 0.0,
+        "_V_Mirror": 0.0,
+        "_VertexAnimLerp": 0.0,
+        "_VertexAnimParticleSystemControl": 0.0,
+        "_VertexAnimStrength": 0.5,
+        "_VertexAnimStrengthB": 0.5,
+        "_ViewStrength": 1.0,
+        "_Vscroll": 0.0,
+        "_ZTest": 4.0,
+        "_ZWrite": 0.0
+      },
+      "integers": {},
+      "colors": {
+        "_BackColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_BackColor1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_Color": [
+          10.35040283203125,
+          60.8704833984375,
+          128.0,
+          1.0
+        ],
+        "_Color1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_DistRGBA": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_EdageColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_MaskRGBA": [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "_MaskSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_MaskTilingOffset": [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "_RimLightColor": [
+          0.6745098233222961,
+          2.5568628311157227,
+          2.9960784912109375,
+          1.0
+        ],
+        "_VertexAnimSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_VertexAnimSpeedB": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "textures": {
+        "_DetailTex": {
+          "asset": {
+            "name": "vfx_t_line_zwp_01",
+            "file": "Textures/vfx_t_line_zwp_01_8861649085363451584.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "resourcesab/prefabs/effect/buff.ab",
+            "pathID": "8861649085363451584"
+          },
+          "pathID": "8861649085363451584",
+          "scale": [
+            3.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_Mask": {
+          "asset": {
+            "name": "vfx_t_8122_ZhangYing_32",
+            "file": "Textures/vfx_t_8122_ZhangYing_32_2383434499612204137.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "2383434499612204137"
+          },
+          "pathID": "2383434499612204137",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            -0.009999999776482582
+          ]
+        },
+        "_Texture": {
+          "asset": {
+            "name": "fx_t_buff_xinfa_hudun02",
+            "file": "Textures/fx_t_buff_xinfa_hudun02_130832798372371030.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "resourcesab/prefabs/effect/buff.ab",
+            "pathID": "130832798372371030"
+          },
+          "pathID": "130832798372371030",
+          "scale": [
+            2.5,
+            3.0
+          ],
+          "offset": [
+            2.2699999809265137,
+            0.0
+          ]
+        }
+      },
+      "instancing": false,
+      "disabledPasses": []
+    },
+    {
+      "name": "fx_m_buff_xinfa_hudun04",
+      "bundle": "resourcesab/prefabs/effect/buff.ab",
+      "pathID": "-4340444627195535526",
+      "shader": "RhinoX/Effect/FX_Standard",
+      "shaderPathID": "-7662726360800107545",
+      "shaderBundle": "resourcesab/shaders.ab",
+      "renderQueue": 3009,
+      "keywords": [
+        "_USE_CUTOUT",
+        "_USE_CUTOUT_DETAILTEX",
+        "_USE_CUTOUT_TEX"
+      ],
+      "invalidKeywords": [],
+      "floats": {
+        "_AlphaAdjust": 1.0,
+        "_AlphaClip": 0.0,
+        "_Brightness": 1.0,
+        "_ColorControlPolar": 0.0,
+        "_ColorControlTexIndependentTiling": 0.0,
+        "_ColorControlTexUscroll": 0.0,
+        "_ColorControlTexVscroll": 0.0,
+        "_Contrast": 1.0,
+        "_DetailAddorMultiply": 0.0,
+        "_DetailAlphaIgnore": 0.0,
+        "_DetailChoiceRGB": 0.0,
+        "_DetailPolar": 0.0,
+        "_DetailTexAngle": 0.0,
+        "_DetailTexRotSpeed": 0.0,
+        "_DetailTexSpeed_U": 0.0,
+        "_DetailTexSpeed_V": 0.5,
+        "_DetailTexStrength": 5.789999961853027,
+        "_DifferentFaceColor": 0.0,
+        "_DissipateDetailPolar": 0.0,
+        "_DissipatePolar": 0.0,
+        "_DissipateSoftCutout": 1.0,
+        "_DissloveTexRotSpeed": 0.0,
+        "_Dissolve": 0.0,
+        "_DissolveEdageWidth": 0.014999999664723873,
+        "_DissolveTailControl": 0.0,
+        "_DissolveTexAngle": 0.0,
+        "_DissolveTexDetailRotSpeed": 0.0,
+        "_DissolveTexDetailUscroll": 0.0,
+        "_DissolveTexDetailVscroll": 0.0,
+        "_DissolveTexLerp": 0.20399999618530273,
+        "_DissolveTexUscroll": 0.0,
+        "_DissolveTexVscroll": 0.0,
+        "_DistForceU": 1.0,
+        "_DistForceV": 1.0,
+        "_DistTime": 0.10000000149011612,
+        "_DistTime1": 0.10000000149011612,
+        "_DistortParticleSystemControl": 0.0,
+        "_DistortPolar": 0.0,
+        "_FlowDeadZone": 0.05000000074505806,
+        "_FlowMapDistForceU": 1.0,
+        "_FlowMapDistForceV": 1.0,
+        "_FlowMapDistSpeedX": 0.10000000149011612,
+        "_FlowMapDistSpeedY": 0.10000000149011612,
+        "_FlowMapRate": 1.0,
+        "_FlowMapSpeed": 1.0,
+        "_FlowMapStrength": 0.5,
+        "_FxCullMode": 2.0,
+        "_FxDstBlend": 10.0,
+        "_FxSrcBlend": 5.0,
+        "_Gradian": 0.009999999776482582,
+        "_GradianPow": 1.0,
+        "_Hue": 0.0,
+        "_IgnoreShadow": 1.0,
+        "_MainTexAngle": 0.0,
+        "_MainTexAngleSpeed": 0.0,
+        "_MainTexStrength": 1.0,
+        "_MaskParticleSystemControl": 0.0,
+        "_MaskPolar": 0.0,
+        "_MaskTexAngle": 180.0,
+        "_MaskU": 0.0,
+        "_MaskV": 0.0,
+        "_ParticleControl": 1.0,
+        "_RimLightAlpha": 0.30000001192092896,
+        "_RimLightCenterAlpha": 1.0,
+        "_RimLightIntensity": 1.0,
+        "_RimLightPower": 2.819999933242798,
+        "_Saturation": 1.0,
+        "_SequenceColCount": 1.0,
+        "_SequenceRowCount": 1.0,
+        "_SequenceSpeed": 1.0,
+        "_Stencil": 0.0,
+        "_StencilComp": 8.0,
+        "_StencilOp": 0.0,
+        "_UVParticleControl": 0.0,
+        "_U_Mirror": 0.0,
+        "_Uscroll": 0.0,
+        "_UsePolar": 0.0,
+        "_UseTODColor": 0.0,
+        "_V_Mirror": 0.0,
+        "_VertexAnimLerp": 0.0,
+        "_VertexAnimParticleSystemControl": 0.0,
+        "_VertexAnimStrength": 0.5,
+        "_VertexAnimStrengthB": 0.5,
+        "_ViewStrength": 1.0,
+        "_Vscroll": 0.0,
+        "_ZTest": 8.0,
+        "_ZWrite": 0.0
+      },
+      "integers": {},
+      "colors": {
+        "_BackColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_BackColor1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_Color": [
+          0.3216642439365387,
+          1.5639538764953613,
+          2.1185474395751953,
+          1.0
+        ],
+        "_Color1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_DistRGBA": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_EdageColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_MaskRGBA": [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "_MaskSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_MaskTilingOffset": [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "_RimLightColor": [
+          0.6745098233222961,
+          2.5568628311157227,
+          2.9960784912109375,
+          1.0
+        ],
+        "_VertexAnimSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_VertexAnimSpeedB": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "textures": {
+        "_DetailTex": {
+          "asset": {
+            "name": "vfx_t_line_zwp_01",
+            "file": "Textures/vfx_t_line_zwp_01_8861649085363451584.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "resourcesab/prefabs/effect/buff.ab",
+            "pathID": "8861649085363451584"
+          },
+          "pathID": "8861649085363451584",
+          "scale": [
+            3.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_DissolveTex": {
+          "asset": {
+            "name": "vx_mask_tex_04_uv_d",
+            "file": "Textures/vx_mask_tex_04_uv_d_-3961816903029650897.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vx/vx_texture/mask.ab",
+            "pathID": "-3961816903029650897"
+          },
+          "pathID": "-3961816903029650897",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_DissolveTexDetail": {
+          "asset": {
+            "name": "qm_vfx_t_noise_m_29",
+            "file": "Textures/qm_vfx_t_noise_m_29_3583175753268323309.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "3583175753268323309"
+          },
+          "pathID": "3583175753268323309",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_Mask": {
+          "asset": {
+            "name": "vfx_t_8122_ZhangYing_32",
+            "file": "Textures/vfx_t_8122_ZhangYing_32_2383434499612204137.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "2383434499612204137"
+          },
+          "pathID": "2383434499612204137",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_Texture": {
+          "asset": {
+            "name": "Dugujiujian04",
+            "file": "Textures/Dugujiujian04_76702452558623075.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "76702452558623075"
+          },
+          "pathID": "76702452558623075",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "instancing": false,
+      "disabledPasses": []
+    },
+    {
+      "name": "fx_m_buff_xinfa_hudun05",
+      "bundle": "resourcesab/prefabs/effect/buff.ab",
+      "pathID": "-6735714127076464572",
+      "shader": "RhinoX/Effect/FX_Standard",
+      "shaderPathID": "-7662726360800107545",
+      "shaderBundle": "resourcesab/shaders.ab",
+      "renderQueue": 3009,
+      "keywords": [
+        "_USE_COLORCONTROL"
+      ],
+      "invalidKeywords": [],
+      "floats": {
+        "_AlphaAdjust": 1.0,
+        "_AlphaClip": 0.0,
+        "_Brightness": 1.0,
+        "_ColorControlPolar": 0.0,
+        "_ColorControlTexIndependentTiling": 1.0,
+        "_ColorControlTexUscroll": 1.0,
+        "_ColorControlTexVscroll": 0.0,
+        "_Contrast": 1.0,
+        "_DetailAddorMultiply": 0.0,
+        "_DetailAlphaIgnore": 0.0,
+        "_DetailChoiceRGB": 0.0,
+        "_DetailPolar": 0.0,
+        "_DetailTexAngle": 0.0,
+        "_DetailTexRotSpeed": 0.0,
+        "_DetailTexSpeed_U": 0.0,
+        "_DetailTexSpeed_V": 0.5,
+        "_DetailTexStrength": 5.789999961853027,
+        "_DifferentFaceColor": 0.0,
+        "_DissipateDetailPolar": 0.0,
+        "_DissipatePolar": 0.0,
+        "_DissipateSoftCutout": 1.0,
+        "_DissloveTexRotSpeed": 0.0,
+        "_Dissolve": 0.0,
+        "_DissolveEdageWidth": 0.014999999664723873,
+        "_DissolveTailControl": 0.0,
+        "_DissolveTexAngle": 0.0,
+        "_DissolveTexDetailRotSpeed": 0.0,
+        "_DissolveTexDetailUscroll": 0.0,
+        "_DissolveTexDetailVscroll": 0.0,
+        "_DissolveTexLerp": 0.0,
+        "_DissolveTexUscroll": 0.0,
+        "_DissolveTexVscroll": 0.0,
+        "_DistForceU": 1.0,
+        "_DistForceV": 1.0,
+        "_DistTime": 0.10000000149011612,
+        "_DistTime1": 0.10000000149011612,
+        "_DistortParticleSystemControl": 0.0,
+        "_DistortPolar": 0.0,
+        "_FlowDeadZone": 0.05000000074505806,
+        "_FlowMapDistForceU": 1.0,
+        "_FlowMapDistForceV": 1.0,
+        "_FlowMapDistSpeedX": 0.10000000149011612,
+        "_FlowMapDistSpeedY": 0.10000000149011612,
+        "_FlowMapRate": 1.0,
+        "_FlowMapSpeed": 1.0,
+        "_FlowMapStrength": 0.5,
+        "_FxCullMode": 2.0,
+        "_FxDstBlend": 10.0,
+        "_FxSrcBlend": 5.0,
+        "_Gradian": 0.009999999776482582,
+        "_GradianPow": 1.0,
+        "_Hue": 0.0,
+        "_IgnoreShadow": 1.0,
+        "_MainTexAngle": 0.0,
+        "_MainTexAngleSpeed": 0.0,
+        "_MainTexStrength": 1.0,
+        "_MaskParticleSystemControl": 0.0,
+        "_MaskPolar": 0.0,
+        "_MaskTexAngle": 180.0,
+        "_MaskU": 0.0,
+        "_MaskV": 0.0,
+        "_ParticleControl": 0.0,
+        "_RimLightAlpha": 0.30000001192092896,
+        "_RimLightCenterAlpha": 1.0,
+        "_RimLightIntensity": 1.0,
+        "_RimLightPower": 2.819999933242798,
+        "_Saturation": 1.0,
+        "_SequenceColCount": 1.0,
+        "_SequenceRowCount": 1.0,
+        "_SequenceSpeed": 1.0,
+        "_Stencil": 0.0,
+        "_StencilComp": 8.0,
+        "_StencilOp": 0.0,
+        "_UVParticleControl": 0.0,
+        "_U_Mirror": 0.0,
+        "_Uscroll": 0.0,
+        "_UsePolar": 0.0,
+        "_UseTODColor": 0.0,
+        "_V_Mirror": 0.0,
+        "_VertexAnimLerp": 0.0,
+        "_VertexAnimParticleSystemControl": 0.0,
+        "_VertexAnimStrength": 0.5,
+        "_VertexAnimStrengthB": 0.5,
+        "_ViewStrength": 1.0,
+        "_Vscroll": 0.0,
+        "_ZTest": 4.0,
+        "_ZWrite": 0.0
+      },
+      "integers": {},
+      "colors": {
+        "_BackColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_BackColor1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_Color": [
+          0.22745098173618317,
+          1.1058824062347412,
+          1.4980392456054688,
+          1.0
+        ],
+        "_Color1": [
+          2.2588236331939697,
+          4.956862926483154,
+          5.992156982421875,
+          1.0
+        ],
+        "_DistRGBA": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_EdageColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_MaskRGBA": [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "_MaskSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_MaskTilingOffset": [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "_RimLightColor": [
+          0.6745098233222961,
+          2.5568628311157227,
+          2.9960784912109375,
+          1.0
+        ],
+        "_VertexAnimSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_VertexAnimSpeedB": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "textures": {
+        "_ColorControlTex": {
+          "asset": {
+            "name": "qm_vfx_t_noise_ld_24",
+            "file": "Textures/qm_vfx_t_noise_ld_24_-4798998242298451095.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "-4798998242298451095"
+          },
+          "pathID": "-4798998242298451095",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_DetailTex": {
+          "asset": {
+            "name": "vfx_t_line_zwp_01",
+            "file": "Textures/vfx_t_line_zwp_01_8861649085363451584.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "resourcesab/prefabs/effect/buff.ab",
+            "pathID": "8861649085363451584"
+          },
+          "pathID": "8861649085363451584",
+          "scale": [
+            3.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_Mask": {
+          "asset": {
+            "name": "vfx_t_8122_ZhangYing_32",
+            "file": "Textures/vfx_t_8122_ZhangYing_32_2383434499612204137.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "2383434499612204137"
+          },
+          "pathID": "2383434499612204137",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_Texture": {
+          "asset": {
+            "name": "vfx_map_glow_ld_02",
+            "file": "Textures/vfx_map_glow_ld_02_5488921302993697556.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "5488921302993697556"
+          },
+          "pathID": "5488921302993697556",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "instancing": false,
+      "disabledPasses": []
+    }
+  ]
+}

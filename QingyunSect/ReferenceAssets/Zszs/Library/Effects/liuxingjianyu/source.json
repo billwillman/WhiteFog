@@ -1,0 +1,4940 @@
+{
+  "id": "liuxingjianyu",
+  "title": "流星剑雨",
+  "source": "resourcesab/prefabs/effect/character/liuxingjianyu.ab",
+  "prefabs": [
+    {
+      "name": "vfx_liuxingjianyu_hit",
+      "path": "assets/resourcesab/prefabs/effect/character/liuxingjianyu/vfx_liuxingjianyu_hit.prefab",
+      "layers": [
+        {
+          "node": "vfx_liuxingjianyu_hit03",
+          "id": "-5999260972996013584",
+          "duration": 1.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "vfx_liuxingjianyu_hit01",
+          "id": "-7472880266154748005",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "vfx_liuxingjianyu_hit02",
+          "id": "4705022216694827574",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "vfx_liuxingjianyu_hit03",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "-3956267509015393678"
+          ]
+        },
+        {
+          "node": "vfx_liuxingjianyu_hit01",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "2038057531872255116"
+          ]
+        },
+        {
+          "node": "vfx_liuxingjianyu_hit02",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "922610439208940968"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "vfx_liuxingjianyu_hit_d",
+      "path": "assets/resourcesab/prefabs/effect/character/liuxingjianyu/vfx_liuxingjianyu_hit_d.prefab",
+      "layers": [
+        {
+          "node": "vfx_liuxingjianyu_hit01",
+          "id": "-3061698195998632299",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "vfx_liuxingjianyu_hit02",
+          "id": "921159894361595283",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "vfx_liuxingjianyu_hit03",
+          "id": "-7431540854025261144",
+          "duration": 1.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "vfx_liuxingjianyu_hit01",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "2038057531872255116"
+          ]
+        },
+        {
+          "node": "vfx_liuxingjianyu_hit02",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "922610439208940968"
+          ]
+        },
+        {
+          "node": "vfx_liuxingjianyu_hit03",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "-3956267509015393678"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "vfx_liuxingjianyu_hit_d_lod1",
+      "path": "assets/resourcesab/prefabs/effect/character/liuxingjianyu/vfx_liuxingjianyu_hit_d_lod1.prefab",
+      "layers": [
+        {
+          "node": "vfx_liuxingjianyu_hit01",
+          "id": "216486627049402320",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "vfx_liuxingjianyu_hit03",
+          "id": "648614336397953655",
+          "duration": 1.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "vfx_liuxingjianyu_hit01",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "2038057531872255116"
+          ]
+        },
+        {
+          "node": "vfx_liuxingjianyu_hit03",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "-3956267509015393678"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "vfx_liuxingjianyu_hit_d_lod2",
+      "path": "assets/resourcesab/prefabs/effect/character/liuxingjianyu/vfx_liuxingjianyu_hit_d_lod2.prefab",
+      "layers": [
+        {
+          "node": "vfx_liuxingjianyu_hit01",
+          "id": "-4412827604039883505",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "vfx_liuxingjianyu_hit01",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "2038057531872255116"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "vfx_liuxingjianyu_hit_lod1",
+      "path": "assets/resourcesab/prefabs/effect/character/liuxingjianyu/vfx_liuxingjianyu_hit_lod1.prefab",
+      "layers": [
+        {
+          "node": "vfx_liuxingjianyu_hit01",
+          "id": "2207556120595686308",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "vfx_liuxingjianyu_hit03",
+          "id": "8364095087625631883",
+          "duration": 1.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "vfx_liuxingjianyu_hit01",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "2038057531872255116"
+          ]
+        },
+        {
+          "node": "vfx_liuxingjianyu_hit03",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "-3956267509015393678"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "vfx_liuxingjianyu_hit_lod2",
+      "path": "assets/resourcesab/prefabs/effect/character/liuxingjianyu/vfx_liuxingjianyu_hit_lod2.prefab",
+      "layers": [
+        {
+          "node": "vfx_liuxingjianyu_hit01",
+          "id": "8489110013438706919",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "vfx_liuxingjianyu_hit01",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "2038057531872255116"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "vfx_liuxingjianyu_shifa",
+      "path": "assets/resourcesab/prefabs/effect/character/liuxingjianyu/vfx_liuxingjianyu_shifa.prefab",
+      "layers": [
+        {
+          "node": "vfx_liuxingjianyu_shifa04",
+          "id": "-3799456825063832013",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "ShapeModule",
+            "EmissionModule",
+            "UVModule",
+            "VelocityModule",
+            "NoiseModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "vfx_liuxingjianyu_shifa03",
+          "id": "-5684205265656657037",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "vfx_liuxingjianyu_shifa01",
+          "id": "1458325540772462641",
+          "duration": 2.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "ShapeModule",
+            "EmissionModule",
+            "SizeModule",
+            "VelocityModule",
+            "ClampVelocityModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "vfx_liuxingjianyu_shifa02",
+          "id": "7673362529734773360",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "ShapeModule",
+            "EmissionModule",
+            "ColorModule",
+            "VelocityModule",
+            "ClampVelocityModule",
+            "TrailModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "vfx_liuxingjianyu_shifa04",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "4202250361083787483"
+          ]
+        },
+        {
+          "node": "vfx_liuxingjianyu_shifa03",
+          "type": "ParticleSystemRenderer",
+          "mode": 4,
+          "materials": [
+            "362506664741407303"
+          ]
+        },
+        {
+          "node": "vfx_liuxingjianyu_shifa01",
+          "type": "ParticleSystemRenderer",
+          "mode": 1,
+          "materials": [
+            "5873996052731555660"
+          ]
+        },
+        {
+          "node": "vfx_liuxingjianyu_shifa02",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "-3700998016199214186",
+            "-1615258261642691876"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "vfx_liuxingjianyu_shifa_lod1",
+      "path": "assets/resourcesab/prefabs/effect/character/liuxingjianyu/vfx_liuxingjianyu_shifa_lod1.prefab",
+      "layers": [
+        {
+          "node": "vfx_liuxingjianyu_shifa02",
+          "id": "1039322912563857716",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "ShapeModule",
+            "EmissionModule",
+            "ColorModule",
+            "VelocityModule",
+            "ClampVelocityModule",
+            "TrailModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "vfx_liuxingjianyu_shifa01",
+          "id": "-4111320716767964528",
+          "duration": 2.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "ShapeModule",
+            "EmissionModule",
+            "SizeModule",
+            "VelocityModule",
+            "ClampVelocityModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "vfx_liuxingjianyu_shifa03",
+          "id": "2269222205445484009",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "vfx_liuxingjianyu_shifa02",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "-3700998016199214186",
+            "-1615258261642691876"
+          ]
+        },
+        {
+          "node": "vfx_liuxingjianyu_shifa01",
+          "type": "ParticleSystemRenderer",
+          "mode": 1,
+          "materials": [
+            "5873996052731555660"
+          ]
+        },
+        {
+          "node": "vfx_liuxingjianyu_shifa03",
+          "type": "ParticleSystemRenderer",
+          "mode": 4,
+          "materials": [
+            "362506664741407303"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "vfx_liuxingjianyu_shifa_lod2",
+      "path": "assets/resourcesab/prefabs/effect/character/liuxingjianyu/vfx_liuxingjianyu_shifa_lod2.prefab",
+      "layers": [
+        {
+          "node": "vfx_liuxingjianyu_shifa01",
+          "id": "-1574427159029216364",
+          "duration": 2.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "ShapeModule",
+            "EmissionModule",
+            "SizeModule",
+            "VelocityModule",
+            "ClampVelocityModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "vfx_liuxingjianyu_shifa02",
+          "id": "-633494180122893324",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "ShapeModule",
+            "EmissionModule",
+            "ColorModule",
+            "VelocityModule",
+            "ClampVelocityModule",
+            "TrailModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "vfx_liuxingjianyu_shifa01",
+          "type": "ParticleSystemRenderer",
+          "mode": 1,
+          "materials": [
+            "5873996052731555660"
+          ]
+        },
+        {
+          "node": "vfx_liuxingjianyu_shifa02",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "-3700998016199214186",
+            "-1615258261642691876"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "vfx_liuxingjianyu_trail",
+      "path": "assets/resourcesab/prefabs/effect/character/liuxingjianyu/vfx_liuxingjianyu_trail.prefab",
+      "layers": [
+        {
+          "node": "01",
+          "id": "-8431441300248232313",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "ShapeModule",
+            "EmissionModule",
+            "CollisionModule",
+            "SubModule",
+            "TrailModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "01_4",
+          "id": "3121682086851166476",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "01_6",
+          "id": "-4833494641521765774",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "ShapeModule",
+            "EmissionModule",
+            "SizeModule",
+            "UVModule",
+            "ClampVelocityModule"
+          ]
+        },
+        {
+          "node": "01_7",
+          "id": "-2515019724383959533",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule"
+          ]
+        },
+        {
+          "node": "01_2",
+          "id": "4276078994142044749",
+          "duration": 1.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "ShapeModule",
+            "EmissionModule",
+            "SizeModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "01_5",
+          "id": "2906464655740694012",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "ColorModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "01_1",
+          "id": "1533176780071844086",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "01_3",
+          "id": "-6221640081874632347",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "ColorModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "01",
+          "type": "ParticleSystemRenderer",
+          "mode": 4,
+          "materials": [
+            "-3773943274093751793",
+            "-1615258261642691876"
+          ]
+        },
+        {
+          "node": "01_4",
+          "type": "ParticleSystemRenderer",
+          "mode": 4,
+          "materials": [
+            "-2812551355119269705"
+          ]
+        },
+        {
+          "node": "01_6",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "4202250361083787483"
+          ]
+        },
+        {
+          "node": "01_7",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "922610439208940968"
+          ]
+        },
+        {
+          "node": "01_2",
+          "type": "ParticleSystemRenderer",
+          "mode": 1,
+          "materials": [
+            "-6184897479446227843"
+          ]
+        },
+        {
+          "node": "01_5",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "2185744274919002471"
+          ]
+        },
+        {
+          "node": "01_1",
+          "type": "ParticleSystemRenderer",
+          "mode": 1,
+          "materials": [
+            "4543331661471995024"
+          ]
+        },
+        {
+          "node": "01_3",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "-5365380447276581032"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "vfx_liuxingjianyu_trail_d",
+      "path": "assets/resourcesab/prefabs/effect/character/liuxingjianyu/vfx_liuxingjianyu_trail_d.prefab",
+      "layers": [
+        {
+          "node": "01",
+          "id": "2887238382203310611",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "ShapeModule",
+            "EmissionModule",
+            "CollisionModule",
+            "SubModule",
+            "TrailModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "01_7",
+          "id": "-7387825707727722178",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule"
+          ]
+        },
+        {
+          "node": "01_4",
+          "id": "2324504095334887512",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "01_1",
+          "id": "-8171753112863256280",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "01_2",
+          "id": "979178260300999627",
+          "duration": 1.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "ShapeModule",
+            "EmissionModule",
+            "SizeModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "01_5",
+          "id": "8290259637071315762",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "ColorModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "01_3",
+          "id": "-89889630143615134",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "ColorModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "01_6",
+          "id": "-223897836993341665",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "ShapeModule",
+            "EmissionModule",
+            "SizeModule",
+            "UVModule",
+            "ClampVelocityModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "01",
+          "type": "ParticleSystemRenderer",
+          "mode": 4,
+          "materials": [
+            "-3773943274093751793",
+            "-1615258261642691876"
+          ]
+        },
+        {
+          "node": "01_7",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "922610439208940968"
+          ]
+        },
+        {
+          "node": "01_4",
+          "type": "ParticleSystemRenderer",
+          "mode": 4,
+          "materials": [
+            "-2812551355119269705"
+          ]
+        },
+        {
+          "node": "01_1",
+          "type": "ParticleSystemRenderer",
+          "mode": 1,
+          "materials": [
+            "4543331661471995024"
+          ]
+        },
+        {
+          "node": "01_2",
+          "type": "ParticleSystemRenderer",
+          "mode": 1,
+          "materials": [
+            "-6184897479446227843"
+          ]
+        },
+        {
+          "node": "01_5",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "2185744274919002471"
+          ]
+        },
+        {
+          "node": "01_3",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "-5365380447276581032"
+          ]
+        },
+        {
+          "node": "01_6",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "4202250361083787483"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "vfx_liuxingjianyu_trail_d_lod1",
+      "path": "assets/resourcesab/prefabs/effect/character/liuxingjianyu/vfx_liuxingjianyu_trail_d_lod1.prefab",
+      "layers": [
+        {
+          "node": "01",
+          "id": "1673761143509859024",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "ShapeModule",
+            "EmissionModule",
+            "CollisionModule",
+            "SubModule",
+            "TrailModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "01_3",
+          "id": "1395226751996204319",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "ColorModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "01_2",
+          "id": "9164138957562692868",
+          "duration": 1.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "ShapeModule",
+            "EmissionModule",
+            "SizeModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "01_5",
+          "id": "-6687328489023841321",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "ColorModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "01_1",
+          "id": "6265587503120575521",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "01_4",
+          "id": "3397604333335955780",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "01",
+          "type": "ParticleSystemRenderer",
+          "mode": 4,
+          "materials": [
+            "-3773943274093751793",
+            "-1615258261642691876"
+          ]
+        },
+        {
+          "node": "01_3",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "-5365380447276581032"
+          ]
+        },
+        {
+          "node": "01_2",
+          "type": "ParticleSystemRenderer",
+          "mode": 1,
+          "materials": [
+            "-6184897479446227843"
+          ]
+        },
+        {
+          "node": "01_5",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "2185744274919002471"
+          ]
+        },
+        {
+          "node": "01_1",
+          "type": "ParticleSystemRenderer",
+          "mode": 1,
+          "materials": [
+            "4543331661471995024"
+          ]
+        },
+        {
+          "node": "01_4",
+          "type": "ParticleSystemRenderer",
+          "mode": 4,
+          "materials": [
+            "-2812551355119269705"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "vfx_liuxingjianyu_trail_d_lod2",
+      "path": "assets/resourcesab/prefabs/effect/character/liuxingjianyu/vfx_liuxingjianyu_trail_d_lod2.prefab",
+      "layers": [
+        {
+          "node": "01",
+          "id": "3700804725311559307",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "ShapeModule",
+            "EmissionModule",
+            "CollisionModule",
+            "SubModule",
+            "TrailModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "01_2",
+          "id": "4486562354065576084",
+          "duration": 1.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "ShapeModule",
+            "EmissionModule",
+            "SizeModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "01_3",
+          "id": "5659621218187637467",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "ColorModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "01_1",
+          "id": "1040985071698352378",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "01",
+          "type": "ParticleSystemRenderer",
+          "mode": 4,
+          "materials": [
+            "-3773943274093751793",
+            "-1615258261642691876"
+          ]
+        },
+        {
+          "node": "01_2",
+          "type": "ParticleSystemRenderer",
+          "mode": 1,
+          "materials": [
+            "-6184897479446227843"
+          ]
+        },
+        {
+          "node": "01_3",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "-5365380447276581032"
+          ]
+        },
+        {
+          "node": "01_1",
+          "type": "ParticleSystemRenderer",
+          "mode": 1,
+          "materials": [
+            "4543331661471995024"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "vfx_liuxingjianyu_trail_lod1",
+      "path": "assets/resourcesab/prefabs/effect/character/liuxingjianyu/vfx_liuxingjianyu_trail_lod1.prefab",
+      "layers": [
+        {
+          "node": "01",
+          "id": "8264813559954072759",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "ShapeModule",
+            "EmissionModule",
+            "CollisionModule",
+            "SubModule",
+            "TrailModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "01_3",
+          "id": "-7860583877206135783",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "ColorModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "01_2",
+          "id": "-5540841336763703535",
+          "duration": 1.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "ShapeModule",
+            "EmissionModule",
+            "SizeModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "01_1",
+          "id": "-3204281024925854899",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "01_4",
+          "id": "2466342030764786445",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "01_5",
+          "id": "-184787651713052388",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "ColorModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "01",
+          "type": "ParticleSystemRenderer",
+          "mode": 4,
+          "materials": [
+            "-3773943274093751793",
+            "-1615258261642691876"
+          ]
+        },
+        {
+          "node": "01_3",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "-5365380447276581032"
+          ]
+        },
+        {
+          "node": "01_2",
+          "type": "ParticleSystemRenderer",
+          "mode": 1,
+          "materials": [
+            "-6184897479446227843"
+          ]
+        },
+        {
+          "node": "01_1",
+          "type": "ParticleSystemRenderer",
+          "mode": 1,
+          "materials": [
+            "4543331661471995024"
+          ]
+        },
+        {
+          "node": "01_4",
+          "type": "ParticleSystemRenderer",
+          "mode": 4,
+          "materials": [
+            "-2812551355119269705"
+          ]
+        },
+        {
+          "node": "01_5",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "2185744274919002471"
+          ]
+        }
+      ],
+      "components": []
+    },
+    {
+      "name": "vfx_liuxingjianyu_trail_lod2",
+      "path": "assets/resourcesab/prefabs/effect/character/liuxingjianyu/vfx_liuxingjianyu_trail_lod2.prefab",
+      "layers": [
+        {
+          "node": "01",
+          "id": "7847305807299626562",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "ShapeModule",
+            "EmissionModule",
+            "CollisionModule",
+            "SubModule",
+            "TrailModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "01_2",
+          "id": "-8033509720553160922",
+          "duration": 1.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "ShapeModule",
+            "EmissionModule",
+            "SizeModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "01_3",
+          "id": "-583662364966003005",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "ColorModule",
+            "CustomDataModule"
+          ]
+        },
+        {
+          "node": "01_1",
+          "id": "-3529602019819878259",
+          "duration": 5.0,
+          "loop": false,
+          "modules": [
+            "InitialModule",
+            "EmissionModule",
+            "SizeModule",
+            "CustomDataModule"
+          ]
+        }
+      ],
+      "renderers": [
+        {
+          "node": "01",
+          "type": "ParticleSystemRenderer",
+          "mode": 4,
+          "materials": [
+            "-3773943274093751793",
+            "-1615258261642691876"
+          ]
+        },
+        {
+          "node": "01_2",
+          "type": "ParticleSystemRenderer",
+          "mode": 1,
+          "materials": [
+            "-6184897479446227843"
+          ]
+        },
+        {
+          "node": "01_3",
+          "type": "ParticleSystemRenderer",
+          "mode": 0,
+          "materials": [
+            "-5365380447276581032"
+          ]
+        },
+        {
+          "node": "01_1",
+          "type": "ParticleSystemRenderer",
+          "mode": 1,
+          "materials": [
+            "4543331661471995024"
+          ]
+        }
+      ],
+      "components": []
+    }
+  ],
+  "materials": [
+    {
+      "name": "vfx_m_liuxingjianyu17",
+      "bundle": "resourcesab/prefabs/effect/character/liuxingjianyu.ab",
+      "pathID": "-3956267509015393678",
+      "shader": "RhinoX/Effect/FX_Standard",
+      "shaderPathID": "-7662726360800107545",
+      "shaderBundle": "resourcesab/shaders.ab",
+      "renderQueue": -1,
+      "keywords": [
+        "_USE_CUTOUT",
+        "_USE_CUTOUT_DETAILTEX",
+        "_USE_CUTOUT_TEX",
+        "_USE_CUTOUT_THRESHOLD"
+      ],
+      "invalidKeywords": [],
+      "floats": {
+        "_AlphaAdjust": 1.0,
+        "_AlphaClip": 0.2540000081062317,
+        "_Brightness": 1.0,
+        "_ColorControlPolar": 0.0,
+        "_ColorControlTexIndependentTiling": 0.0,
+        "_ColorControlTexUscroll": 0.0,
+        "_ColorControlTexVscroll": 0.0,
+        "_Contrast": 1.0,
+        "_DetailAddorMultiply": 0.0,
+        "_DetailAlphaIgnore": 0.0,
+        "_DetailChoiceRGB": 0.0,
+        "_DetailPolar": 0.0,
+        "_DetailTexAngle": 0.0,
+        "_DetailTexRotSpeed": 0.0,
+        "_DetailTexSpeed_U": 0.0,
+        "_DetailTexSpeed_V": 0.0,
+        "_DetailTexStrength": 1.0,
+        "_DifferentFaceColor": 0.0,
+        "_DissipateDetailPolar": 0.0,
+        "_DissipatePolar": 0.0,
+        "_DissipateSoftCutout": 0.0,
+        "_DissloveTexRotSpeed": 0.0,
+        "_Dissolve": 0.09700000286102295,
+        "_DissolveEdageWidth": 0.019999999552965164,
+        "_DissolveTailControl": 0.0,
+        "_DissolveTexAngle": 0.0,
+        "_DissolveTexDetailRotSpeed": 0.0,
+        "_DissolveTexDetailUscroll": 0.0,
+        "_DissolveTexDetailVscroll": 0.0,
+        "_DissolveTexLerp": 0.4819999933242798,
+        "_DissolveTexUscroll": 0.0,
+        "_DissolveTexVscroll": 0.0,
+        "_DistForceU": 1.0,
+        "_DistForceV": 1.0,
+        "_DistTime": 0.10000000149011612,
+        "_DistTime1": 0.10000000149011612,
+        "_DistortParticleSystemControl": 0.0,
+        "_DistortPolar": 0.0,
+        "_FlowDeadZone": 0.05000000074505806,
+        "_FlowMapDistForceU": 1.0,
+        "_FlowMapDistForceV": 1.0,
+        "_FlowMapDistSpeedX": 0.10000000149011612,
+        "_FlowMapDistSpeedY": 0.10000000149011612,
+        "_FlowMapRate": 1.0,
+        "_FlowMapSpeed": 1.0,
+        "_FlowMapStrength": 0.5,
+        "_FxCullMode": 0.0,
+        "_FxDstBlend": 10.0,
+        "_FxSrcBlend": 5.0,
+        "_Gradian": 0.009999999776482582,
+        "_GradianPow": 1.0,
+        "_Hue": 0.0,
+        "_IgnoreShadow": 1.0,
+        "_MainTexAngle": 0.0,
+        "_MainTexAngleSpeed": 0.0,
+        "_MainTexStrength": 1.0,
+        "_MaskParticleSystemControl": 0.0,
+        "_MaskPolar": 0.0,
+        "_MaskTexAngle": 0.0,
+        "_MaskU": 0.0,
+        "_MaskV": 0.0,
+        "_ParticleControl": 1.0,
+        "_RimLightAlpha": 1.0,
+        "_RimLightCenterAlpha": 1.0,
+        "_RimLightIntensity": 1.0,
+        "_RimLightPower": 1.0,
+        "_Saturation": 1.0,
+        "_SequenceColCount": 1.0,
+        "_SequenceRowCount": 1.0,
+        "_SequenceSpeed": 1.0,
+        "_Stencil": 0.0,
+        "_StencilComp": 8.0,
+        "_StencilOp": 0.0,
+        "_UVParticleControl": 0.0,
+        "_U_Mirror": 0.0,
+        "_Uscroll": 0.0,
+        "_UsePolar": 0.0,
+        "_UseTODColor": 0.0,
+        "_V_Mirror": 0.0,
+        "_VertexAnimLerp": 0.0,
+        "_VertexAnimParticleSystemControl": 0.0,
+        "_VertexAnimStrength": 0.5,
+        "_VertexAnimStrengthB": 0.5,
+        "_ViewStrength": 1.0,
+        "_Vscroll": 0.0,
+        "_ZTest": 4.0,
+        "_ZWrite": 0.0
+      },
+      "integers": {},
+      "colors": {
+        "_BackColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_BackColor1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_Color": [
+          6.274509429931641,
+          4.139204978942871,
+          0.8869725465774536,
+          1.0
+        ],
+        "_Color1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_DistRGBA": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_EdageColor": [
+          1.7176469564437866,
+          1.1820356845855713,
+          0.24734115600585938,
+          1.0
+        ],
+        "_MaskRGBA": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_MaskSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_MaskTilingOffset": [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "_RimLightColor": [
+          1.0,
+          1.0,
+          0.0,
+          1.0
+        ],
+        "_VertexAnimSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_VertexAnimSpeedB": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "textures": {
+        "_DissolveTex": {
+          "asset": {
+            "name": "qm_vfx_t_noise_m_36",
+            "file": "Textures/qm_vfx_t_noise_m_36_6142912490609273207.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "6142912490609273207"
+          },
+          "pathID": "6142912490609273207",
+          "scale": [
+            1.0,
+            1.600000023841858
+          ],
+          "offset": [
+            0.0,
+            0.550000011920929
+          ]
+        },
+        "_DissolveTexDetail": {
+          "asset": {
+            "name": "qm_vfx_t_mask_m_03",
+            "file": "Textures/qm_vfx_t_mask_m_03_7094365346108799600.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "7094365346108799600"
+          },
+          "pathID": "7094365346108799600",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_Texture": {
+          "asset": {
+            "name": "vfx_taijijian_10",
+            "file": "Textures/vfx_taijijian_10_-3670852682315573875.png",
+            "size": [
+              128,
+              32
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "-3670852682315573875"
+          },
+          "pathID": "-3670852682315573875",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "instancing": false,
+      "disabledPasses": []
+    },
+    {
+      "name": "vfx_m_liuxingjianyu16",
+      "bundle": "resourcesab/prefabs/effect/character/liuxingjianyu.ab",
+      "pathID": "2038057531872255116",
+      "shader": "RhinoX/Effect/FX_Standard",
+      "shaderPathID": "-7662726360800107545",
+      "shaderBundle": "resourcesab/shaders.ab",
+      "renderQueue": -1,
+      "keywords": [
+        "_USE_CUTOUT",
+        "_USE_CUTOUT_DETAILTEX",
+        "_USE_CUTOUT_TEX",
+        "_USE_CUTOUT_THRESHOLD"
+      ],
+      "invalidKeywords": [],
+      "floats": {
+        "_AlphaAdjust": 1.0,
+        "_AlphaClip": 0.2540000081062317,
+        "_Brightness": 1.0,
+        "_ColorControlPolar": 0.0,
+        "_ColorControlTexIndependentTiling": 0.0,
+        "_ColorControlTexUscroll": 0.0,
+        "_ColorControlTexVscroll": 0.0,
+        "_Contrast": 1.0,
+        "_DetailAddorMultiply": 0.0,
+        "_DetailAlphaIgnore": 0.0,
+        "_DetailChoiceRGB": 0.0,
+        "_DetailPolar": 0.0,
+        "_DetailTexAngle": 0.0,
+        "_DetailTexRotSpeed": 0.0,
+        "_DetailTexSpeed_U": 0.0,
+        "_DetailTexSpeed_V": 0.0,
+        "_DetailTexStrength": 1.0,
+        "_DifferentFaceColor": 0.0,
+        "_DissipateDetailPolar": 0.0,
+        "_DissipatePolar": 0.0,
+        "_DissipateSoftCutout": 0.0,
+        "_DissloveTexRotSpeed": 0.0,
+        "_Dissolve": 0.09700000286102295,
+        "_DissolveEdageWidth": 0.019999999552965164,
+        "_DissolveTailControl": 0.0,
+        "_DissolveTexAngle": 0.0,
+        "_DissolveTexDetailRotSpeed": 0.0,
+        "_DissolveTexDetailUscroll": 0.0,
+        "_DissolveTexDetailVscroll": 0.0,
+        "_DissolveTexLerp": 0.4819999933242798,
+        "_DissolveTexUscroll": 0.0,
+        "_DissolveTexVscroll": 0.0,
+        "_DistForceU": 1.0,
+        "_DistForceV": 1.0,
+        "_DistTime": 0.10000000149011612,
+        "_DistTime1": 0.10000000149011612,
+        "_DistortParticleSystemControl": 0.0,
+        "_DistortPolar": 0.0,
+        "_FlowDeadZone": 0.05000000074505806,
+        "_FlowMapDistForceU": 1.0,
+        "_FlowMapDistForceV": 1.0,
+        "_FlowMapDistSpeedX": 0.10000000149011612,
+        "_FlowMapDistSpeedY": 0.10000000149011612,
+        "_FlowMapRate": 1.0,
+        "_FlowMapSpeed": 1.0,
+        "_FlowMapStrength": 0.5,
+        "_FxCullMode": 0.0,
+        "_FxDstBlend": 10.0,
+        "_FxSrcBlend": 5.0,
+        "_Gradian": 0.009999999776482582,
+        "_GradianPow": 1.0,
+        "_Hue": 0.0,
+        "_IgnoreShadow": 1.0,
+        "_MainTexAngle": 0.0,
+        "_MainTexAngleSpeed": 0.0,
+        "_MainTexStrength": 1.0,
+        "_MaskParticleSystemControl": 0.0,
+        "_MaskPolar": 0.0,
+        "_MaskTexAngle": 0.0,
+        "_MaskU": 0.0,
+        "_MaskV": 0.0,
+        "_ParticleControl": 1.0,
+        "_RimLightAlpha": 1.0,
+        "_RimLightCenterAlpha": 1.0,
+        "_RimLightIntensity": 1.0,
+        "_RimLightPower": 1.0,
+        "_Saturation": 1.0,
+        "_SequenceColCount": 1.0,
+        "_SequenceRowCount": 1.0,
+        "_SequenceSpeed": 1.0,
+        "_Stencil": 0.0,
+        "_StencilComp": 8.0,
+        "_StencilOp": 0.0,
+        "_UVParticleControl": 0.0,
+        "_U_Mirror": 0.0,
+        "_Uscroll": 0.0,
+        "_UsePolar": 0.0,
+        "_UseTODColor": 0.0,
+        "_V_Mirror": 0.0,
+        "_VertexAnimLerp": 0.0,
+        "_VertexAnimParticleSystemControl": 0.0,
+        "_VertexAnimStrength": 0.5,
+        "_VertexAnimStrengthB": 0.5,
+        "_ViewStrength": 1.0,
+        "_Vscroll": 0.0,
+        "_ZTest": 4.0,
+        "_ZWrite": 0.0
+      },
+      "integers": {},
+      "colors": {
+        "_BackColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_BackColor1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_Color": [
+          6.274509429931641,
+          4.139204978942871,
+          0.8869725465774536,
+          1.0
+        ],
+        "_Color1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_DistRGBA": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_EdageColor": [
+          1.7176469564437866,
+          1.1820356845855713,
+          0.24734115600585938,
+          1.0
+        ],
+        "_MaskRGBA": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_MaskSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_MaskTilingOffset": [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "_RimLightColor": [
+          1.0,
+          1.0,
+          0.0,
+          1.0
+        ],
+        "_VertexAnimSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_VertexAnimSpeedB": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "textures": {
+        "_DissolveTex": {
+          "asset": {
+            "name": "qm_vfx_t_noise_m_36",
+            "file": "Textures/qm_vfx_t_noise_m_36_6142912490609273207.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "6142912490609273207"
+          },
+          "pathID": "6142912490609273207",
+          "scale": [
+            1.0,
+            1.600000023841858
+          ],
+          "offset": [
+            0.0,
+            0.550000011920929
+          ]
+        },
+        "_DissolveTexDetail": {
+          "asset": {
+            "name": "qm_vfx_t_mask_m_03",
+            "file": "Textures/qm_vfx_t_mask_m_03_7094365346108799600.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "7094365346108799600"
+          },
+          "pathID": "7094365346108799600",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_Texture": {
+          "asset": {
+            "name": "vfx_t_Fengshentui_03",
+            "file": "Textures/vfx_t_Fengshentui_03_2204520904183905666.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "2204520904183905666"
+          },
+          "pathID": "2204520904183905666",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "instancing": false,
+      "disabledPasses": []
+    },
+    {
+      "name": "vfx_m_liuxingjianyu13",
+      "bundle": "resourcesab/prefabs/effect/character/liuxingjianyu.ab",
+      "pathID": "922610439208940968",
+      "shader": "RhinoX/Effect/FX_Standard",
+      "shaderPathID": "-7662726360800107545",
+      "shaderBundle": "resourcesab/shaders.ab",
+      "renderQueue": -1,
+      "keywords": [
+        "_USE_COLORCONTROL",
+        "_USE_CUTOUT",
+        "_USE_CUTOUT_DETAILTEX",
+        "_USE_CUTOUT_TEX"
+      ],
+      "invalidKeywords": [],
+      "floats": {
+        "_AlphaAdjust": 1.0,
+        "_AlphaClip": 0.2540000081062317,
+        "_Brightness": 1.0,
+        "_ColorControlPolar": 0.0,
+        "_ColorControlTexIndependentTiling": 0.0,
+        "_ColorControlTexUscroll": 0.0,
+        "_ColorControlTexVscroll": 0.0,
+        "_Contrast": 1.0,
+        "_DetailAddorMultiply": 0.0,
+        "_DetailAlphaIgnore": 0.0,
+        "_DetailChoiceRGB": 0.0,
+        "_DetailPolar": 0.0,
+        "_DetailTexAngle": 0.0,
+        "_DetailTexRotSpeed": 0.0,
+        "_DetailTexSpeed_U": 0.0,
+        "_DetailTexSpeed_V": 0.0,
+        "_DetailTexStrength": 1.0,
+        "_DifferentFaceColor": 0.0,
+        "_DissipateDetailPolar": 0.0,
+        "_DissipatePolar": 0.0,
+        "_DissipateSoftCutout": 0.0,
+        "_DissloveTexRotSpeed": 0.0,
+        "_Dissolve": 0.0,
+        "_DissolveEdageWidth": 0.009999999776482582,
+        "_DissolveTailControl": 0.0,
+        "_DissolveTexAngle": 0.0,
+        "_DissolveTexDetailRotSpeed": 0.0,
+        "_DissolveTexDetailUscroll": 0.0,
+        "_DissolveTexDetailVscroll": 0.0,
+        "_DissolveTexLerp": 0.7429999709129333,
+        "_DissolveTexUscroll": 0.0,
+        "_DissolveTexVscroll": -0.5,
+        "_DistForceU": 1.0,
+        "_DistForceV": 1.0,
+        "_DistTime": 0.10000000149011612,
+        "_DistTime1": 0.10000000149011612,
+        "_DistortParticleSystemControl": 0.0,
+        "_DistortPolar": 0.0,
+        "_FlowDeadZone": 0.05000000074505806,
+        "_FlowMapDistForceU": 1.0,
+        "_FlowMapDistForceV": 1.0,
+        "_FlowMapDistSpeedX": 0.10000000149011612,
+        "_FlowMapDistSpeedY": 0.10000000149011612,
+        "_FlowMapRate": 1.0,
+        "_FlowMapSpeed": 1.0,
+        "_FlowMapStrength": 0.5,
+        "_FxCullMode": 0.0,
+        "_FxDstBlend": 1.0,
+        "_FxSrcBlend": 5.0,
+        "_Gradian": 0.009999999776482582,
+        "_GradianPow": 1.0,
+        "_Hue": 0.0,
+        "_IgnoreShadow": 1.0,
+        "_MainTexAngle": 0.0,
+        "_MainTexAngleSpeed": 0.0,
+        "_MainTexStrength": 1.0,
+        "_MaskParticleSystemControl": 0.0,
+        "_MaskPolar": 0.0,
+        "_MaskTexAngle": 0.0,
+        "_MaskU": 0.0,
+        "_MaskV": 0.0,
+        "_ParticleControl": 0.0,
+        "_RimLightAlpha": 1.0,
+        "_RimLightCenterAlpha": 1.0,
+        "_RimLightIntensity": 1.0,
+        "_RimLightPower": 1.0,
+        "_Saturation": 1.0,
+        "_SequenceColCount": 1.0,
+        "_SequenceRowCount": 1.0,
+        "_SequenceSpeed": 1.0,
+        "_Stencil": 0.0,
+        "_StencilComp": 8.0,
+        "_StencilOp": 0.0,
+        "_UVParticleControl": 0.0,
+        "_U_Mirror": 0.0,
+        "_Uscroll": 0.0,
+        "_UsePolar": 0.0,
+        "_UseTODColor": 0.0,
+        "_V_Mirror": 0.0,
+        "_VertexAnimLerp": 0.0,
+        "_VertexAnimParticleSystemControl": 0.0,
+        "_VertexAnimStrength": 0.5,
+        "_VertexAnimStrengthB": 0.5,
+        "_ViewStrength": 1.0,
+        "_Vscroll": 0.0,
+        "_ZTest": 4.0,
+        "_ZWrite": 0.0
+      },
+      "integers": {},
+      "colors": {
+        "_BackColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_BackColor1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_Color": [
+          4.384397029876709,
+          2.5020904541015625,
+          0.826378583908081,
+          0.250980406999588
+        ],
+        "_Color1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_DistRGBA": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_EdageColor": [
+          1.7176469564437866,
+          1.1767463684082031,
+          0.22329409420490265,
+          1.0
+        ],
+        "_MaskRGBA": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_MaskSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_MaskTilingOffset": [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "_RimLightColor": [
+          1.0,
+          1.0,
+          0.0,
+          1.0
+        ],
+        "_VertexAnimSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_VertexAnimSpeedB": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "textures": {
+        "_ColorControlTex": {
+          "asset": {
+            "name": "vfx_taijijian_08",
+            "file": "Textures/vfx_taijijian_08_-1733809375313015086.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "-1733809375313015086"
+          },
+          "pathID": "-1733809375313015086",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_DissolveTex": {
+          "asset": {
+            "name": "qm_vfx_t_noise_m_36",
+            "file": "Textures/qm_vfx_t_noise_m_36_6142912490609273207.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "6142912490609273207"
+          },
+          "pathID": "6142912490609273207",
+          "scale": [
+            4.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_DissolveTexDetail": {
+          "asset": {
+            "name": "vfx_t_mask_cpb_11",
+            "file": "Textures/vfx_t_mask_cpb_11_4025828174980141246.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "4025828174980141246"
+          },
+          "pathID": "4025828174980141246",
+          "scale": [
+            1.0,
+            -1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_Texture": {
+          "asset": {
+            "name": "vfx_taijijian_07",
+            "file": "Textures/vfx_taijijian_07_28095920579740340.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "28095920579740340"
+          },
+          "pathID": "28095920579740340",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "instancing": false,
+      "disabledPasses": []
+    },
+    {
+      "name": "vfx_m_liuxingjianyu12",
+      "bundle": "resourcesab/prefabs/effect/character/liuxingjianyu.ab",
+      "pathID": "4202250361083787483",
+      "shader": "RhinoX/Effect/FX_Standard",
+      "shaderPathID": "-7662726360800107545",
+      "shaderBundle": "resourcesab/shaders.ab",
+      "renderQueue": -1,
+      "keywords": [
+        "_USE_CUTOUT",
+        "_USE_CUTOUT_DETAILTEX",
+        "_USE_CUTOUT_TEX"
+      ],
+      "invalidKeywords": [],
+      "floats": {
+        "_AlphaAdjust": 1.0,
+        "_AlphaClip": 0.2540000081062317,
+        "_Brightness": 1.0,
+        "_ColorControlPolar": 0.0,
+        "_ColorControlTexIndependentTiling": 0.0,
+        "_ColorControlTexUscroll": 0.0,
+        "_ColorControlTexVscroll": 0.0,
+        "_Contrast": 1.0,
+        "_DetailAddorMultiply": 0.0,
+        "_DetailAlphaIgnore": 0.0,
+        "_DetailChoiceRGB": 0.0,
+        "_DetailPolar": 0.0,
+        "_DetailTexAngle": 0.0,
+        "_DetailTexRotSpeed": 0.0,
+        "_DetailTexSpeed_U": 0.0,
+        "_DetailTexSpeed_V": 0.0,
+        "_DetailTexStrength": 1.0,
+        "_DifferentFaceColor": 0.0,
+        "_DissipateDetailPolar": 0.0,
+        "_DissipatePolar": 0.0,
+        "_DissipateSoftCutout": 0.0,
+        "_DissloveTexRotSpeed": 0.0,
+        "_Dissolve": 0.0,
+        "_DissolveEdageWidth": 0.009999999776482582,
+        "_DissolveTailControl": 0.0,
+        "_DissolveTexAngle": 0.0,
+        "_DissolveTexDetailRotSpeed": 0.0,
+        "_DissolveTexDetailUscroll": 0.0,
+        "_DissolveTexDetailVscroll": 0.0,
+        "_DissolveTexLerp": 0.7429999709129333,
+        "_DissolveTexUscroll": 0.0,
+        "_DissolveTexVscroll": -0.5,
+        "_DistForceU": 1.0,
+        "_DistForceV": 1.0,
+        "_DistTime": 0.10000000149011612,
+        "_DistTime1": 0.10000000149011612,
+        "_DistortParticleSystemControl": 0.0,
+        "_DistortPolar": 0.0,
+        "_FlowDeadZone": 0.05000000074505806,
+        "_FlowMapDistForceU": 1.0,
+        "_FlowMapDistForceV": 1.0,
+        "_FlowMapDistSpeedX": 0.10000000149011612,
+        "_FlowMapDistSpeedY": 0.10000000149011612,
+        "_FlowMapRate": 1.0,
+        "_FlowMapSpeed": 1.0,
+        "_FlowMapStrength": 0.5,
+        "_FxCullMode": 0.0,
+        "_FxDstBlend": 10.0,
+        "_FxSrcBlend": 5.0,
+        "_Gradian": 0.009999999776482582,
+        "_GradianPow": 1.0,
+        "_Hue": 0.0,
+        "_IgnoreShadow": 1.0,
+        "_MainTexAngle": 0.0,
+        "_MainTexAngleSpeed": 0.0,
+        "_MainTexStrength": 1.0,
+        "_MaskParticleSystemControl": 0.0,
+        "_MaskPolar": 0.0,
+        "_MaskTexAngle": 0.0,
+        "_MaskU": 0.0,
+        "_MaskV": 0.0,
+        "_ParticleControl": 0.0,
+        "_RimLightAlpha": 1.0,
+        "_RimLightCenterAlpha": 1.0,
+        "_RimLightIntensity": 1.0,
+        "_RimLightPower": 1.0,
+        "_Saturation": 1.0,
+        "_SequenceColCount": 1.0,
+        "_SequenceRowCount": 1.0,
+        "_SequenceSpeed": 1.0,
+        "_Stencil": 0.0,
+        "_StencilComp": 8.0,
+        "_StencilOp": 0.0,
+        "_UVParticleControl": 0.0,
+        "_U_Mirror": 0.0,
+        "_Uscroll": 0.0,
+        "_UsePolar": 0.0,
+        "_UseTODColor": 0.0,
+        "_V_Mirror": 0.0,
+        "_VertexAnimLerp": 0.0,
+        "_VertexAnimParticleSystemControl": 0.0,
+        "_VertexAnimStrength": 0.5,
+        "_VertexAnimStrengthB": 0.5,
+        "_ViewStrength": 1.0,
+        "_Vscroll": 0.0,
+        "_ZTest": 4.0,
+        "_ZWrite": 0.0
+      },
+      "integers": {},
+      "colors": {
+        "_BackColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_BackColor1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_Color": [
+          4.0,
+          2.274509906768799,
+          0.7529411911964417,
+          1.0
+        ],
+        "_Color1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_DistRGBA": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_EdageColor": [
+          1.7176469564437866,
+          1.1767463684082031,
+          0.22329409420490265,
+          1.0
+        ],
+        "_MaskRGBA": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_MaskSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_MaskTilingOffset": [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "_RimLightColor": [
+          1.0,
+          1.0,
+          0.0,
+          1.0
+        ],
+        "_VertexAnimSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_VertexAnimSpeedB": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "textures": {
+        "_DissolveTex": {
+          "asset": {
+            "name": "qm_vfx_t_noise_m_36",
+            "file": "Textures/qm_vfx_t_noise_m_36_6142912490609273207.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "6142912490609273207"
+          },
+          "pathID": "6142912490609273207",
+          "scale": [
+            4.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_DissolveTexDetail": {
+          "asset": {
+            "name": "vfx_t_mask_cpb_11",
+            "file": "Textures/vfx_t_mask_cpb_11_4025828174980141246.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "4025828174980141246"
+          },
+          "pathID": "4025828174980141246",
+          "scale": [
+            1.0,
+            -1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_Texture": {
+          "asset": {
+            "name": "vfx_t_liuxingjianyu05",
+            "file": "Textures/vfx_t_liuxingjianyu05_-4755934360997373659.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "-4755934360997373659"
+          },
+          "pathID": "-4755934360997373659",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "instancing": false,
+      "disabledPasses": []
+    },
+    {
+      "name": "vfx_m_liuxingjianyu05",
+      "bundle": "resourcesab/prefabs/effect/character/liuxingjianyu.ab",
+      "pathID": "362506664741407303",
+      "shader": "RhinoX/Effect/FX_Standard",
+      "shaderPathID": "-7662726360800107545",
+      "shaderBundle": "resourcesab/shaders.ab",
+      "renderQueue": -1,
+      "keywords": [
+        "_USE_CUTOUT",
+        "_USE_CUTOUT_DETAILTEX",
+        "_USE_CUTOUT_TEX",
+        "_USE_CUTOUT_THRESHOLD",
+        "_USE_DISTORT_ON",
+        "_USE_MASK_ON"
+      ],
+      "invalidKeywords": [],
+      "floats": {
+        "_AlphaAdjust": 1.0,
+        "_AlphaClip": 0.2540000081062317,
+        "_Brightness": 1.0,
+        "_ColorControlPolar": 0.0,
+        "_ColorControlTexIndependentTiling": 0.0,
+        "_ColorControlTexUscroll": 0.0,
+        "_ColorControlTexVscroll": 0.0,
+        "_Contrast": 1.0,
+        "_DetailAddorMultiply": 0.0,
+        "_DetailAlphaIgnore": 0.0,
+        "_DetailChoiceRGB": 0.0,
+        "_DetailPolar": 0.0,
+        "_DetailTexAngle": 0.0,
+        "_DetailTexRotSpeed": 0.0,
+        "_DetailTexSpeed_U": 0.0,
+        "_DetailTexSpeed_V": 0.0,
+        "_DetailTexStrength": 1.0,
+        "_DifferentFaceColor": 0.0,
+        "_DissipateDetailPolar": 0.0,
+        "_DissipatePolar": 0.0,
+        "_DissipateSoftCutout": 0.0,
+        "_DissloveTexRotSpeed": 0.0,
+        "_Dissolve": 0.12200000137090683,
+        "_DissolveEdageWidth": 0.019999999552965164,
+        "_DissolveTailControl": 0.0,
+        "_DissolveTexAngle": 0.0,
+        "_DissolveTexDetailRotSpeed": 0.0,
+        "_DissolveTexDetailUscroll": 0.0,
+        "_DissolveTexDetailVscroll": 0.0,
+        "_DissolveTexLerp": 0.02800000086426735,
+        "_DissolveTexUscroll": -1.5,
+        "_DissolveTexVscroll": 0.0,
+        "_DistForceU": 0.10000000149011612,
+        "_DistForceV": 0.10000000149011612,
+        "_DistTime": 1.0,
+        "_DistTime1": 0.10000000149011612,
+        "_DistortParticleSystemControl": 0.0,
+        "_DistortPolar": 0.0,
+        "_FlowDeadZone": 0.05000000074505806,
+        "_FlowMapDistForceU": 1.0,
+        "_FlowMapDistForceV": 1.0,
+        "_FlowMapDistSpeedX": 0.10000000149011612,
+        "_FlowMapDistSpeedY": 0.10000000149011612,
+        "_FlowMapRate": 1.0,
+        "_FlowMapSpeed": 1.0,
+        "_FlowMapStrength": 0.5,
+        "_FxCullMode": 0.0,
+        "_FxDstBlend": 10.0,
+        "_FxSrcBlend": 5.0,
+        "_Gradian": 0.009999999776482582,
+        "_GradianPow": 1.0,
+        "_Hue": 0.0,
+        "_IgnoreShadow": 1.0,
+        "_MainTexAngle": 0.0,
+        "_MainTexAngleSpeed": 0.0,
+        "_MainTexStrength": 1.0,
+        "_MaskParticleSystemControl": 0.0,
+        "_MaskPolar": 0.0,
+        "_MaskTexAngle": 0.0,
+        "_MaskU": 0.0,
+        "_MaskV": 0.0,
+        "_ParticleControl": 1.0,
+        "_RimLightAlpha": 1.0,
+        "_RimLightCenterAlpha": 1.0,
+        "_RimLightIntensity": 1.0,
+        "_RimLightPower": 1.0,
+        "_Saturation": 1.0,
+        "_SequenceColCount": 1.0,
+        "_SequenceRowCount": 1.0,
+        "_SequenceSpeed": 1.0,
+        "_Stencil": 0.0,
+        "_StencilComp": 8.0,
+        "_StencilOp": 0.0,
+        "_UVParticleControl": 1.0,
+        "_U_Mirror": 0.0,
+        "_Uscroll": 0.0,
+        "_UsePolar": 0.0,
+        "_UseTODColor": 0.0,
+        "_V_Mirror": 0.0,
+        "_VertexAnimLerp": 0.0,
+        "_VertexAnimParticleSystemControl": 0.0,
+        "_VertexAnimStrength": 0.5,
+        "_VertexAnimStrengthB": 0.5,
+        "_ViewStrength": 1.0,
+        "_Vscroll": 0.0,
+        "_ZTest": 4.0,
+        "_ZWrite": 0.0
+      },
+      "integers": {},
+      "colors": {
+        "_BackColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_BackColor1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_Color": [
+          2.2706029415130615,
+          1.3790048360824585,
+          0.3090873062610626,
+          0.12941177189350128
+        ],
+        "_Color1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_DistRGBA": [
+          0.10000000149011612,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_EdageColor": [
+          0.05660378932952881,
+          0.014391979202628136,
+          0.00462797936052084,
+          1.0
+        ],
+        "_MaskRGBA": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_MaskSpeed": [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "_MaskTilingOffset": [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "_RimLightColor": [
+          1.0,
+          1.0,
+          0.0,
+          1.0
+        ],
+        "_VertexAnimSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_VertexAnimSpeedB": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "textures": {
+        "_DissolveTex": {
+          "asset": {
+            "name": "qm_vfx_t_noise_m_36",
+            "file": "Textures/qm_vfx_t_noise_m_36_6142912490609273207.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "6142912490609273207"
+          },
+          "pathID": "6142912490609273207",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_DissolveTexDetail": {
+          "asset": {
+            "name": "qm_vfx_t_mask_m_03",
+            "file": "Textures/qm_vfx_t_mask_m_03_7094365346108799600.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "7094365346108799600"
+          },
+          "pathID": "7094365346108799600",
+          "scale": [
+            -1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_DistortTexture": {
+          "asset": {
+            "name": "vfx_t_noise_m_24",
+            "file": "Textures/vfx_t_noise_m_24_-713767840897733738.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "-713767840897733738"
+          },
+          "pathID": "-713767840897733738",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_Mask": {
+          "asset": {
+            "name": "vfx_t_water_pubu_09",
+            "file": "Textures/vfx_t_water_pubu_09_6764753405502555275.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "6764753405502555275"
+          },
+          "pathID": "6764753405502555275",
+          "scale": [
+            0.8999999761581421,
+            2.0
+          ],
+          "offset": [
+            0.07000000029802322,
+            0.0
+          ]
+        },
+        "_Texture": {
+          "asset": {
+            "name": "vfx_t_liuxingjianyu09",
+            "file": "Textures/vfx_t_liuxingjianyu09_3563200399039449302.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "3563200399039449302"
+          },
+          "pathID": "3563200399039449302",
+          "scale": [
+            1.0,
+            0.699999988079071
+          ],
+          "offset": [
+            -0.20999999344348907,
+            0.10000000149011612
+          ]
+        }
+      },
+      "instancing": false,
+      "disabledPasses": []
+    },
+    {
+      "name": "vfx_m_liuxingjianyu01",
+      "bundle": "resourcesab/prefabs/effect/character/liuxingjianyu.ab",
+      "pathID": "5873996052731555660",
+      "shader": "RhinoX/Effect/FX_Standard",
+      "shaderPathID": "-7662726360800107545",
+      "shaderBundle": "resourcesab/shaders.ab",
+      "renderQueue": -1,
+      "keywords": [
+        "_USE_CUTOUT",
+        "_USE_CUTOUT_DETAILTEX",
+        "_USE_CUTOUT_TEX",
+        "_USE_CUTOUT_THRESHOLD"
+      ],
+      "invalidKeywords": [],
+      "floats": {
+        "_AlphaAdjust": 1.0,
+        "_AlphaClip": 0.2540000081062317,
+        "_Brightness": 1.0,
+        "_ColorControlPolar": 0.0,
+        "_ColorControlTexIndependentTiling": 0.0,
+        "_ColorControlTexUscroll": 0.0,
+        "_ColorControlTexVscroll": 0.0,
+        "_Contrast": 1.0,
+        "_DetailAddorMultiply": 0.0,
+        "_DetailAlphaIgnore": 0.0,
+        "_DetailChoiceRGB": 0.0,
+        "_DetailPolar": 0.0,
+        "_DetailTexAngle": 0.0,
+        "_DetailTexRotSpeed": 0.0,
+        "_DetailTexSpeed_U": 0.0,
+        "_DetailTexSpeed_V": 0.0,
+        "_DetailTexStrength": 1.0,
+        "_DifferentFaceColor": 0.0,
+        "_DissipateDetailPolar": 0.0,
+        "_DissipatePolar": 0.0,
+        "_DissipateSoftCutout": 0.0,
+        "_DissloveTexRotSpeed": 0.0,
+        "_Dissolve": 0.07100000232458115,
+        "_DissolveEdageWidth": 0.014999999664723873,
+        "_DissolveTailControl": 0.0,
+        "_DissolveTexAngle": 0.0,
+        "_DissolveTexDetailRotSpeed": 0.0,
+        "_DissolveTexDetailUscroll": 0.0,
+        "_DissolveTexDetailVscroll": 0.0,
+        "_DissolveTexLerp": 0.4819999933242798,
+        "_DissolveTexUscroll": 1.0,
+        "_DissolveTexVscroll": 0.0,
+        "_DistForceU": 1.0,
+        "_DistForceV": 1.0,
+        "_DistTime": 0.10000000149011612,
+        "_DistTime1": 0.10000000149011612,
+        "_DistortParticleSystemControl": 0.0,
+        "_DistortPolar": 0.0,
+        "_FlowDeadZone": 0.05000000074505806,
+        "_FlowMapDistForceU": 1.0,
+        "_FlowMapDistForceV": 1.0,
+        "_FlowMapDistSpeedX": 0.10000000149011612,
+        "_FlowMapDistSpeedY": 0.10000000149011612,
+        "_FlowMapRate": 1.0,
+        "_FlowMapSpeed": 1.0,
+        "_FlowMapStrength": 0.5,
+        "_FxCullMode": 0.0,
+        "_FxDstBlend": 10.0,
+        "_FxSrcBlend": 5.0,
+        "_Gradian": 0.009999999776482582,
+        "_GradianPow": 1.0,
+        "_Hue": 0.0,
+        "_IgnoreShadow": 1.0,
+        "_MainTexAngle": 0.75,
+        "_MainTexAngleSpeed": 0.0,
+        "_MainTexStrength": 1.0,
+        "_MaskParticleSystemControl": 0.0,
+        "_MaskPolar": 0.0,
+        "_MaskTexAngle": 0.0,
+        "_MaskU": 0.0,
+        "_MaskV": 0.0,
+        "_ParticleControl": 1.0,
+        "_RimLightAlpha": 1.0,
+        "_RimLightCenterAlpha": 1.0,
+        "_RimLightIntensity": 1.0,
+        "_RimLightPower": 1.0,
+        "_Saturation": 1.0,
+        "_SequenceColCount": 1.0,
+        "_SequenceRowCount": 1.0,
+        "_SequenceSpeed": 1.0,
+        "_Stencil": 0.0,
+        "_StencilComp": 8.0,
+        "_StencilOp": 0.0,
+        "_UVParticleControl": 0.0,
+        "_U_Mirror": 0.0,
+        "_Uscroll": 0.0,
+        "_UsePolar": 0.0,
+        "_UseTODColor": 0.0,
+        "_V_Mirror": 0.0,
+        "_VertexAnimLerp": 0.0,
+        "_VertexAnimParticleSystemControl": 0.0,
+        "_VertexAnimStrength": 0.5,
+        "_VertexAnimStrengthB": 0.5,
+        "_ViewStrength": 1.0,
+        "_Vscroll": 0.0,
+        "_ZTest": 4.0,
+        "_ZWrite": 0.0
+      },
+      "integers": {},
+      "colors": {
+        "_BackColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_BackColor1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_Color": [
+          3.1372549533843994,
+          2.619607925415039,
+          1.0823529958724976,
+          1.0
+        ],
+        "_Color1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_DistRGBA": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_EdageColor": [
+          1.7176470756530762,
+          1.2549020051956177,
+          0.45490196347236633,
+          1.0
+        ],
+        "_MaskRGBA": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_MaskSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_MaskTilingOffset": [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "_RimLightColor": [
+          1.0,
+          1.0,
+          0.0,
+          1.0
+        ],
+        "_VertexAnimSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_VertexAnimSpeedB": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "textures": {
+        "_DissolveTex": {
+          "asset": {
+            "name": "qm_vfx_t_noise_m_36",
+            "file": "Textures/qm_vfx_t_noise_m_36_6142912490609273207.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "6142912490609273207"
+          },
+          "pathID": "6142912490609273207",
+          "scale": [
+            0.800000011920929,
+            3.0
+          ],
+          "offset": [
+            0.10000000149011612,
+            0.9399999976158142
+          ]
+        },
+        "_DissolveTexDetail": {
+          "asset": {
+            "name": "qm_vfx_t_mask_m_03",
+            "file": "Textures/qm_vfx_t_mask_m_03_7094365346108799600.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "7094365346108799600"
+          },
+          "pathID": "7094365346108799600",
+          "scale": [
+            -1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_Texture": {
+          "asset": {
+            "name": "vfx_t_liuxingjianyu01",
+            "file": "Textures/vfx_t_liuxingjianyu01_1614632598837803208.png",
+            "size": [
+              512,
+              512
+            ],
+            "unityFormat": 50,
+            "bundle": "resourcesab/prefabs/effect/character/liuxingjianyu.ab",
+            "pathID": "1614632598837803208"
+          },
+          "pathID": "1614632598837803208",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "instancing": false,
+      "disabledPasses": []
+    },
+    {
+      "name": "vfx_m_liuxingjianyu08",
+      "bundle": "resourcesab/prefabs/effect/character/liuxingjianyu.ab",
+      "pathID": "-3700998016199214186",
+      "shader": "RhinoX/Effect/FX_Standard",
+      "shaderPathID": "-7662726360800107545",
+      "shaderBundle": "resourcesab/shaders.ab",
+      "renderQueue": -1,
+      "keywords": [
+        "_USE_CUTOUT",
+        "_USE_CUTOUT_DETAILTEX",
+        "_USE_CUTOUT_TEX"
+      ],
+      "invalidKeywords": [],
+      "floats": {
+        "_AlphaAdjust": 1.0,
+        "_AlphaClip": 0.2540000081062317,
+        "_Brightness": 1.0,
+        "_ColorControlPolar": 0.0,
+        "_ColorControlTexIndependentTiling": 0.0,
+        "_ColorControlTexUscroll": 0.0,
+        "_ColorControlTexVscroll": 0.0,
+        "_Contrast": 1.0,
+        "_DetailAddorMultiply": 0.0,
+        "_DetailAlphaIgnore": 0.0,
+        "_DetailChoiceRGB": 0.0,
+        "_DetailPolar": 0.0,
+        "_DetailTexAngle": 0.0,
+        "_DetailTexRotSpeed": 0.0,
+        "_DetailTexSpeed_U": 0.0,
+        "_DetailTexSpeed_V": 0.0,
+        "_DetailTexStrength": 1.0,
+        "_DifferentFaceColor": 0.0,
+        "_DissipateDetailPolar": 0.0,
+        "_DissipatePolar": 0.0,
+        "_DissipateSoftCutout": 1.0,
+        "_DissloveTexRotSpeed": 0.0,
+        "_Dissolve": 0.06599999964237213,
+        "_DissolveEdageWidth": 0.014999999664723873,
+        "_DissolveTailControl": 0.0,
+        "_DissolveTexAngle": 0.0,
+        "_DissolveTexDetailRotSpeed": 0.0,
+        "_DissolveTexDetailUscroll": 0.0,
+        "_DissolveTexDetailVscroll": 0.0,
+        "_DissolveTexLerp": 0.4819999933242798,
+        "_DissolveTexUscroll": 0.0,
+        "_DissolveTexVscroll": 0.0,
+        "_DistForceU": 1.0,
+        "_DistForceV": 1.0,
+        "_DistTime": 0.10000000149011612,
+        "_DistTime1": 0.10000000149011612,
+        "_DistortParticleSystemControl": 0.0,
+        "_DistortPolar": 0.0,
+        "_FlowDeadZone": 0.05000000074505806,
+        "_FlowMapDistForceU": 1.0,
+        "_FlowMapDistForceV": 1.0,
+        "_FlowMapDistSpeedX": 0.10000000149011612,
+        "_FlowMapDistSpeedY": 0.10000000149011612,
+        "_FlowMapRate": 1.0,
+        "_FlowMapSpeed": 1.0,
+        "_FlowMapStrength": 0.5,
+        "_FxCullMode": 0.0,
+        "_FxDstBlend": 10.0,
+        "_FxSrcBlend": 5.0,
+        "_Gradian": 0.009999999776482582,
+        "_GradianPow": 1.0,
+        "_Hue": 0.0,
+        "_IgnoreShadow": 1.0,
+        "_MainTexAngle": 0.75,
+        "_MainTexAngleSpeed": 0.0,
+        "_MainTexStrength": 1.0,
+        "_MaskParticleSystemControl": 0.0,
+        "_MaskPolar": 0.0,
+        "_MaskTexAngle": 0.0,
+        "_MaskU": 0.0,
+        "_MaskV": 0.0,
+        "_ParticleControl": 1.0,
+        "_RimLightAlpha": 1.0,
+        "_RimLightCenterAlpha": 1.0,
+        "_RimLightIntensity": 1.0,
+        "_RimLightPower": 1.0,
+        "_Saturation": 1.0,
+        "_SequenceColCount": 1.0,
+        "_SequenceRowCount": 1.0,
+        "_SequenceSpeed": 1.0,
+        "_Stencil": 0.0,
+        "_StencilComp": 8.0,
+        "_StencilOp": 0.0,
+        "_UVParticleControl": 0.0,
+        "_U_Mirror": 0.0,
+        "_Uscroll": 0.0,
+        "_UsePolar": 0.0,
+        "_UseTODColor": 0.0,
+        "_V_Mirror": 0.0,
+        "_VertexAnimLerp": 0.0,
+        "_VertexAnimParticleSystemControl": 0.0,
+        "_VertexAnimStrength": 0.5,
+        "_VertexAnimStrengthB": 0.5,
+        "_ViewStrength": 1.0,
+        "_Vscroll": 0.0,
+        "_ZTest": 4.0,
+        "_ZWrite": 0.0
+      },
+      "integers": {},
+      "colors": {
+        "_BackColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_BackColor1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_Color": [
+          51.16270065307617,
+          35.70963668823242,
+          5.357349395751953,
+          1.0
+        ],
+        "_Color1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_DistRGBA": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_EdageColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_MaskRGBA": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_MaskSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_MaskTilingOffset": [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "_RimLightColor": [
+          1.0,
+          1.0,
+          0.0,
+          1.0
+        ],
+        "_VertexAnimSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_VertexAnimSpeedB": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "textures": {
+        "_DissolveTex": {
+          "asset": {
+            "name": "qm_vfx_t_noise_m_36",
+            "file": "Textures/qm_vfx_t_noise_m_36_6142912490609273207.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "6142912490609273207"
+          },
+          "pathID": "6142912490609273207",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_DissolveTexDetail": {
+          "asset": {
+            "name": "qm_vfx_t_mask_m_03",
+            "file": "Textures/qm_vfx_t_mask_m_03_7094365346108799600.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "7094365346108799600"
+          },
+          "pathID": "7094365346108799600",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_Texture": {
+          "asset": {
+            "name": "vfx_t_liuxingjianyu03",
+            "file": "Textures/vfx_t_liuxingjianyu03_-7385012916346388389.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "-7385012916346388389"
+          },
+          "pathID": "-7385012916346388389",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "instancing": false,
+      "disabledPasses": []
+    },
+    {
+      "name": "vfx_m_liuxingjianyu03",
+      "bundle": "resourcesab/prefabs/effect/character/liuxingjianyu.ab",
+      "pathID": "-1615258261642691876",
+      "shader": "RhinoX/Effect/FX_Standard",
+      "shaderPathID": "-7662726360800107545",
+      "shaderBundle": "resourcesab/shaders.ab",
+      "renderQueue": 3000,
+      "keywords": [
+        "_USE_CUTOUT",
+        "_USE_CUTOUT_TEX",
+        "_USE_MASK_ON"
+      ],
+      "invalidKeywords": [],
+      "floats": {
+        "_AlphaAdjust": 1.0,
+        "_AlphaClip": 0.2540000081062317,
+        "_Brightness": 1.0,
+        "_ColorControlPolar": 0.0,
+        "_ColorControlTexIndependentTiling": 0.0,
+        "_ColorControlTexUscroll": 0.0,
+        "_ColorControlTexVscroll": 0.0,
+        "_Contrast": 1.0,
+        "_DetailAddorMultiply": 0.0,
+        "_DetailAlphaIgnore": 0.0,
+        "_DetailChoiceRGB": 0.0,
+        "_DetailPolar": 0.0,
+        "_DetailTexAngle": 0.0,
+        "_DetailTexRotSpeed": 0.0,
+        "_DetailTexSpeed_U": 0.0,
+        "_DetailTexSpeed_V": 0.0,
+        "_DetailTexStrength": 1.0,
+        "_DifferentFaceColor": 0.0,
+        "_DissipateDetailPolar": 0.0,
+        "_DissipatePolar": 0.0,
+        "_DissipateSoftCutout": 1.0,
+        "_DissloveTexRotSpeed": 0.0,
+        "_Dissolve": 0.2630000114440918,
+        "_DissolveEdageWidth": 0.014999999664723873,
+        "_DissolveTailControl": 1.0,
+        "_DissolveTexAngle": 0.0,
+        "_DissolveTexDetailRotSpeed": 0.0,
+        "_DissolveTexDetailUscroll": 0.0,
+        "_DissolveTexDetailVscroll": 0.0,
+        "_DissolveTexLerp": 0.4819999933242798,
+        "_DissolveTexUscroll": 0.0,
+        "_DissolveTexVscroll": 0.0,
+        "_DistForceU": 1.0,
+        "_DistForceV": 1.0,
+        "_DistTime": 0.10000000149011612,
+        "_DistTime1": 0.10000000149011612,
+        "_DistortParticleSystemControl": 0.0,
+        "_DistortPolar": 0.0,
+        "_FlowDeadZone": 0.05000000074505806,
+        "_FlowMapDistForceU": 1.0,
+        "_FlowMapDistForceV": 1.0,
+        "_FlowMapDistSpeedX": 0.10000000149011612,
+        "_FlowMapDistSpeedY": 0.10000000149011612,
+        "_FlowMapRate": 1.0,
+        "_FlowMapSpeed": 1.0,
+        "_FlowMapStrength": 0.5,
+        "_FxCullMode": 0.0,
+        "_FxDstBlend": 10.0,
+        "_FxSrcBlend": 5.0,
+        "_Gradian": 0.009999999776482582,
+        "_GradianPow": 1.0,
+        "_Hue": 0.0,
+        "_IgnoreShadow": 1.0,
+        "_MainTexAngle": 0.0,
+        "_MainTexAngleSpeed": 0.0,
+        "_MainTexStrength": 1.0,
+        "_MaskParticleSystemControl": 0.0,
+        "_MaskPolar": 0.0,
+        "_MaskTexAngle": 0.0,
+        "_MaskU": 0.0,
+        "_MaskV": 0.0,
+        "_ParticleControl": 0.0,
+        "_RimLightAlpha": 1.0,
+        "_RimLightCenterAlpha": 1.0,
+        "_RimLightIntensity": 1.0,
+        "_RimLightPower": 1.0,
+        "_Saturation": 1.0,
+        "_SequenceColCount": 1.0,
+        "_SequenceRowCount": 1.0,
+        "_SequenceSpeed": 1.0,
+        "_Stencil": 0.0,
+        "_StencilComp": 8.0,
+        "_StencilOp": 0.0,
+        "_UVParticleControl": 0.0,
+        "_U_Mirror": 0.0,
+        "_Uscroll": 0.0,
+        "_UsePolar": 0.0,
+        "_UseTODColor": 0.0,
+        "_V_Mirror": 0.0,
+        "_VertexAnimLerp": 0.0,
+        "_VertexAnimParticleSystemControl": 0.0,
+        "_VertexAnimStrength": 0.5,
+        "_VertexAnimStrengthB": 0.5,
+        "_ViewStrength": 1.0,
+        "_Vscroll": 0.0,
+        "_ZTest": 4.0,
+        "_ZWrite": 0.0
+      },
+      "integers": {},
+      "colors": {
+        "_BackColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_BackColor1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_Color": [
+          23.9686279296875,
+          6.023529529571533,
+          0.3764705955982208,
+          1.0
+        ],
+        "_Color1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_DistRGBA": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_EdageColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_MaskRGBA": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_MaskSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_MaskTilingOffset": [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "_RimLightColor": [
+          1.0,
+          1.0,
+          0.0,
+          1.0
+        ],
+        "_VertexAnimSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_VertexAnimSpeedB": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "textures": {
+        "_DissolveTex": {
+          "asset": {
+            "name": "vfx_t_8122_ZhangYing_19",
+            "file": "Textures/vfx_t_8122_ZhangYing_19_-111923393527678226.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "-111923393527678226"
+          },
+          "pathID": "-111923393527678226",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_Mask": {
+          "asset": {
+            "name": "qm_vfx_t_mask_m_03",
+            "file": "Textures/qm_vfx_t_mask_m_03_7094365346108799600.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "7094365346108799600"
+          },
+          "pathID": "7094365346108799600",
+          "scale": [
+            -1.0,
+            1.0
+          ],
+          "offset": [
+            0.009999999776482582,
+            0.0
+          ]
+        },
+        "_Texture": {
+          "asset": {
+            "name": "vfx_t_liuxingjianyu06",
+            "file": "Textures/vfx_t_liuxingjianyu06_2372946550020780600.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "resourcesab/prefabs/effect/character/liuxingjianyu.ab",
+            "pathID": "2372946550020780600"
+          },
+          "pathID": "2372946550020780600",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.009999999776482582,
+            0.0
+          ]
+        }
+      },
+      "instancing": false,
+      "disabledPasses": []
+    },
+    {
+      "name": "vfx_m_liuxingjianyu06",
+      "bundle": "resourcesab/prefabs/effect/character/liuxingjianyu.ab",
+      "pathID": "-3773943274093751793",
+      "shader": "RhinoX/Effect/FX_Standard",
+      "shaderPathID": "-7662726360800107545",
+      "shaderBundle": "resourcesab/shaders.ab",
+      "renderQueue": -1,
+      "keywords": [
+        "_USE_CUTOUT",
+        "_USE_CUTOUT_DETAILTEX",
+        "_USE_CUTOUT_TEX"
+      ],
+      "invalidKeywords": [],
+      "floats": {
+        "_AlphaAdjust": 1.0,
+        "_AlphaClip": 0.2540000081062317,
+        "_Brightness": 1.0,
+        "_ColorControlPolar": 0.0,
+        "_ColorControlTexIndependentTiling": 0.0,
+        "_ColorControlTexUscroll": 0.0,
+        "_ColorControlTexVscroll": 0.0,
+        "_Contrast": 1.0,
+        "_DetailAddorMultiply": 0.0,
+        "_DetailAlphaIgnore": 0.0,
+        "_DetailChoiceRGB": 0.0,
+        "_DetailPolar": 0.0,
+        "_DetailTexAngle": 0.0,
+        "_DetailTexRotSpeed": 0.0,
+        "_DetailTexSpeed_U": 0.0,
+        "_DetailTexSpeed_V": 0.0,
+        "_DetailTexStrength": 1.0,
+        "_DifferentFaceColor": 0.0,
+        "_DissipateDetailPolar": 0.0,
+        "_DissipatePolar": 0.0,
+        "_DissipateSoftCutout": 0.0,
+        "_DissloveTexRotSpeed": 0.0,
+        "_Dissolve": 0.07000000029802322,
+        "_DissolveEdageWidth": 0.014999999664723873,
+        "_DissolveTailControl": 0.0,
+        "_DissolveTexAngle": 0.0,
+        "_DissolveTexDetailRotSpeed": 0.0,
+        "_DissolveTexDetailUscroll": 0.0,
+        "_DissolveTexDetailVscroll": 0.0,
+        "_DissolveTexLerp": 0.4819999933242798,
+        "_DissolveTexUscroll": 0.0,
+        "_DissolveTexVscroll": -1.0,
+        "_DistForceU": 1.0,
+        "_DistForceV": 1.0,
+        "_DistTime": 0.10000000149011612,
+        "_DistTime1": 0.10000000149011612,
+        "_DistortParticleSystemControl": 0.0,
+        "_DistortPolar": 0.0,
+        "_FlowDeadZone": 0.05000000074505806,
+        "_FlowMapDistForceU": 1.0,
+        "_FlowMapDistForceV": 1.0,
+        "_FlowMapDistSpeedX": 0.10000000149011612,
+        "_FlowMapDistSpeedY": 0.10000000149011612,
+        "_FlowMapRate": 1.0,
+        "_FlowMapSpeed": 1.0,
+        "_FlowMapStrength": 0.5,
+        "_FxCullMode": 0.0,
+        "_FxDstBlend": 10.0,
+        "_FxSrcBlend": 5.0,
+        "_Gradian": 0.009999999776482582,
+        "_GradianPow": 1.0,
+        "_Hue": 0.0,
+        "_IgnoreShadow": 1.0,
+        "_MainTexAngle": 0.0,
+        "_MainTexAngleSpeed": 0.0,
+        "_MainTexStrength": 1.0,
+        "_MaskParticleSystemControl": 0.0,
+        "_MaskPolar": 0.0,
+        "_MaskTexAngle": 180.0,
+        "_MaskU": 0.0,
+        "_MaskV": 0.0,
+        "_ParticleControl": 1.0,
+        "_RimLightAlpha": 1.0,
+        "_RimLightCenterAlpha": 1.0,
+        "_RimLightIntensity": 1.0,
+        "_RimLightPower": 1.0,
+        "_Saturation": 1.0,
+        "_SequenceColCount": 1.0,
+        "_SequenceRowCount": 1.0,
+        "_SequenceSpeed": 1.0,
+        "_Stencil": 0.0,
+        "_StencilComp": 8.0,
+        "_StencilOp": 0.0,
+        "_UVParticleControl": 0.0,
+        "_U_Mirror": 0.0,
+        "_Uscroll": 0.0,
+        "_UsePolar": 0.0,
+        "_UseTODColor": 0.0,
+        "_V_Mirror": 0.0,
+        "_VertexAnimLerp": 0.0,
+        "_VertexAnimParticleSystemControl": 0.0,
+        "_VertexAnimStrength": 0.5,
+        "_VertexAnimStrengthB": 0.5,
+        "_ViewStrength": 1.0,
+        "_Vscroll": 0.0,
+        "_ZTest": 4.0,
+        "_ZWrite": 1.0
+      },
+      "integers": {},
+      "colors": {
+        "_BackColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_BackColor1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_Color": [
+          2.9960784912109375,
+          2.462745189666748,
+          0.8156862854957581,
+          1.0
+        ],
+        "_Color1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_DistRGBA": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_EdageColor": [
+          1.7176470756530762,
+          1.2549020051956177,
+          0.45490196347236633,
+          1.0
+        ],
+        "_MaskRGBA": [
+          1.0,
+          1.0,
+          1.0,
+          0.0
+        ],
+        "_MaskSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_MaskTilingOffset": [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "_RimLightColor": [
+          1.0,
+          1.0,
+          0.0,
+          1.0
+        ],
+        "_VertexAnimSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_VertexAnimSpeedB": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "textures": {
+        "_DissolveTex": {
+          "asset": {
+            "name": "qm_vfx_t_noise_m_36",
+            "file": "Textures/qm_vfx_t_noise_m_36_6142912490609273207.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "6142912490609273207"
+          },
+          "pathID": "6142912490609273207",
+          "scale": [
+            4.0,
+            2.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_DissolveTexDetail": {
+          "asset": {
+            "name": "vfx_t_mask_cpb_11",
+            "file": "Textures/vfx_t_mask_cpb_11_4025828174980141246.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "4025828174980141246"
+          },
+          "pathID": "4025828174980141246",
+          "scale": [
+            -1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_Mask": {
+          "asset": {
+            "name": "vfx_t_8122_ZhangYing_32",
+            "file": "Textures/vfx_t_8122_ZhangYing_32_2383434499612204137.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "2383434499612204137"
+          },
+          "pathID": "2383434499612204137",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_Texture": {
+          "asset": {
+            "name": "vfx_t_liuxingjianyu01",
+            "file": "Textures/vfx_t_liuxingjianyu01_1614632598837803208.png",
+            "size": [
+              512,
+              512
+            ],
+            "unityFormat": 50,
+            "bundle": "resourcesab/prefabs/effect/character/liuxingjianyu.ab",
+            "pathID": "1614632598837803208"
+          },
+          "pathID": "1614632598837803208",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "instancing": false,
+      "disabledPasses": []
+    },
+    {
+      "name": "vfx_m_liuxingjianyu11",
+      "bundle": "resourcesab/prefabs/effect/character/liuxingjianyu.ab",
+      "pathID": "-2812551355119269705",
+      "shader": "RhinoX/Effect/FX_Standard",
+      "shaderPathID": "-7662726360800107545",
+      "shaderBundle": "resourcesab/shaders.ab",
+      "renderQueue": -1,
+      "keywords": [
+        "_USE_CUTOUT",
+        "_USE_CUTOUT_DETAILTEX",
+        "_USE_CUTOUT_TEX"
+      ],
+      "invalidKeywords": [],
+      "floats": {
+        "_AlphaAdjust": 1.0,
+        "_AlphaClip": 0.2540000081062317,
+        "_Brightness": 1.0,
+        "_ColorControlPolar": 0.0,
+        "_ColorControlTexIndependentTiling": 0.0,
+        "_ColorControlTexUscroll": 0.0,
+        "_ColorControlTexVscroll": 0.0,
+        "_Contrast": 1.0,
+        "_DetailAddorMultiply": 0.0,
+        "_DetailAlphaIgnore": 0.0,
+        "_DetailChoiceRGB": 0.0,
+        "_DetailPolar": 0.0,
+        "_DetailTexAngle": 0.0,
+        "_DetailTexRotSpeed": 0.0,
+        "_DetailTexSpeed_U": 0.0,
+        "_DetailTexSpeed_V": 0.0,
+        "_DetailTexStrength": 1.0,
+        "_DifferentFaceColor": 0.0,
+        "_DissipateDetailPolar": 0.0,
+        "_DissipatePolar": 0.0,
+        "_DissipateSoftCutout": 0.0,
+        "_DissloveTexRotSpeed": 0.0,
+        "_Dissolve": 0.2070000022649765,
+        "_DissolveEdageWidth": 0.009999999776482582,
+        "_DissolveTailControl": 0.0,
+        "_DissolveTexAngle": 0.0,
+        "_DissolveTexDetailRotSpeed": 0.0,
+        "_DissolveTexDetailUscroll": 0.0,
+        "_DissolveTexDetailVscroll": 0.0,
+        "_DissolveTexLerp": 0.7429999709129333,
+        "_DissolveTexUscroll": 0.0,
+        "_DissolveTexVscroll": -0.5,
+        "_DistForceU": 1.0,
+        "_DistForceV": 1.0,
+        "_DistTime": 0.10000000149011612,
+        "_DistTime1": 0.10000000149011612,
+        "_DistortParticleSystemControl": 0.0,
+        "_DistortPolar": 0.0,
+        "_FlowDeadZone": 0.05000000074505806,
+        "_FlowMapDistForceU": 1.0,
+        "_FlowMapDistForceV": 1.0,
+        "_FlowMapDistSpeedX": 0.10000000149011612,
+        "_FlowMapDistSpeedY": 0.10000000149011612,
+        "_FlowMapRate": 1.0,
+        "_FlowMapSpeed": 1.0,
+        "_FlowMapStrength": 0.5,
+        "_FxCullMode": 0.0,
+        "_FxDstBlend": 10.0,
+        "_FxSrcBlend": 5.0,
+        "_Gradian": 0.009999999776482582,
+        "_GradianPow": 1.0,
+        "_Hue": 0.0,
+        "_IgnoreShadow": 1.0,
+        "_MainTexAngle": 0.0,
+        "_MainTexAngleSpeed": 0.0,
+        "_MainTexStrength": 1.0,
+        "_MaskParticleSystemControl": 0.0,
+        "_MaskPolar": 0.0,
+        "_MaskTexAngle": 0.0,
+        "_MaskU": 0.0,
+        "_MaskV": 0.0,
+        "_ParticleControl": 1.0,
+        "_RimLightAlpha": 1.0,
+        "_RimLightCenterAlpha": 1.0,
+        "_RimLightIntensity": 1.0,
+        "_RimLightPower": 1.0,
+        "_Saturation": 1.0,
+        "_SequenceColCount": 1.0,
+        "_SequenceRowCount": 1.0,
+        "_SequenceSpeed": 1.0,
+        "_Stencil": 0.0,
+        "_StencilComp": 8.0,
+        "_StencilOp": 0.0,
+        "_UVParticleControl": 1.0,
+        "_U_Mirror": 0.0,
+        "_Uscroll": 0.0,
+        "_UsePolar": 0.0,
+        "_UseTODColor": 0.0,
+        "_V_Mirror": 0.0,
+        "_VertexAnimLerp": 0.0,
+        "_VertexAnimParticleSystemControl": 0.0,
+        "_VertexAnimStrength": 0.5,
+        "_VertexAnimStrengthB": 0.5,
+        "_ViewStrength": 1.0,
+        "_Vscroll": 0.0,
+        "_ZTest": 4.0,
+        "_ZWrite": 0.0
+      },
+      "integers": {},
+      "colors": {
+        "_BackColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_BackColor1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_Color": [
+          1.0,
+          0.5533841848373413,
+          0.2290000319480896,
+          1.0
+        ],
+        "_Color1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_DistRGBA": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_EdageColor": [
+          1.7176469564437866,
+          1.1767463684082031,
+          0.22329409420490265,
+          1.0
+        ],
+        "_MaskRGBA": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_MaskSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_MaskTilingOffset": [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "_RimLightColor": [
+          1.0,
+          1.0,
+          0.0,
+          1.0
+        ],
+        "_VertexAnimSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_VertexAnimSpeedB": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "textures": {
+        "_DissolveTex": {
+          "asset": {
+            "name": "qm_vfx_t_noise_m_36",
+            "file": "Textures/qm_vfx_t_noise_m_36_6142912490609273207.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "6142912490609273207"
+          },
+          "pathID": "6142912490609273207",
+          "scale": [
+            4.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_DissolveTexDetail": {
+          "asset": {
+            "name": "vfx_t_mask_cpb_11",
+            "file": "Textures/vfx_t_mask_cpb_11_4025828174980141246.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "4025828174980141246"
+          },
+          "pathID": "4025828174980141246",
+          "scale": [
+            1.0,
+            -1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_Texture": {
+          "asset": {
+            "name": "vfx_t_liuxingjianyu08",
+            "file": "Textures/vfx_t_liuxingjianyu08_-859988707910595607.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "-859988707910595607"
+          },
+          "pathID": "-859988707910595607",
+          "scale": [
+            3.0,
+            0.800000011920929
+          ],
+          "offset": [
+            1.159999966621399,
+            0.8199999928474426
+          ]
+        }
+      },
+      "instancing": false,
+      "disabledPasses": []
+    },
+    {
+      "name": "vfx_m_liuxingjianyu09",
+      "bundle": "resourcesab/prefabs/effect/character/liuxingjianyu.ab",
+      "pathID": "-6184897479446227843",
+      "shader": "RhinoX/Effect/FX_Standard",
+      "shaderPathID": "-7662726360800107545",
+      "shaderBundle": "resourcesab/shaders.ab",
+      "renderQueue": -1,
+      "keywords": [
+        "_USE_CUTOUT",
+        "_USE_CUTOUT_DETAILTEX",
+        "_USE_CUTOUT_TEX",
+        "_USE_CUTOUT_THRESHOLD"
+      ],
+      "invalidKeywords": [],
+      "floats": {
+        "_AlphaAdjust": 1.0,
+        "_AlphaClip": 0.2540000081062317,
+        "_Brightness": 1.0,
+        "_ColorControlPolar": 0.0,
+        "_ColorControlTexIndependentTiling": 0.0,
+        "_ColorControlTexUscroll": 0.0,
+        "_ColorControlTexVscroll": 0.0,
+        "_Contrast": 1.0,
+        "_DetailAddorMultiply": 0.0,
+        "_DetailAlphaIgnore": 0.0,
+        "_DetailChoiceRGB": 0.0,
+        "_DetailPolar": 0.0,
+        "_DetailTexAngle": 0.0,
+        "_DetailTexRotSpeed": 0.0,
+        "_DetailTexSpeed_U": 0.0,
+        "_DetailTexSpeed_V": 0.0,
+        "_DetailTexStrength": 1.0,
+        "_DifferentFaceColor": 0.0,
+        "_DissipateDetailPolar": 0.0,
+        "_DissipatePolar": 0.0,
+        "_DissipateSoftCutout": 0.0,
+        "_DissloveTexRotSpeed": 0.0,
+        "_Dissolve": 0.4909999966621399,
+        "_DissolveEdageWidth": 0.014999999664723873,
+        "_DissolveTailControl": 0.0,
+        "_DissolveTexAngle": 0.0,
+        "_DissolveTexDetailRotSpeed": 0.0,
+        "_DissolveTexDetailUscroll": 0.0,
+        "_DissolveTexDetailVscroll": 0.0,
+        "_DissolveTexLerp": 0.4819999933242798,
+        "_DissolveTexUscroll": 0.0,
+        "_DissolveTexVscroll": 0.0,
+        "_DistForceU": 1.0,
+        "_DistForceV": 1.0,
+        "_DistTime": 0.10000000149011612,
+        "_DistTime1": 0.10000000149011612,
+        "_DistortParticleSystemControl": 0.0,
+        "_DistortPolar": 0.0,
+        "_FlowDeadZone": 0.05000000074505806,
+        "_FlowMapDistForceU": 1.0,
+        "_FlowMapDistForceV": 1.0,
+        "_FlowMapDistSpeedX": 0.10000000149011612,
+        "_FlowMapDistSpeedY": 0.10000000149011612,
+        "_FlowMapRate": 1.0,
+        "_FlowMapSpeed": 1.0,
+        "_FlowMapStrength": 0.5,
+        "_FxCullMode": 0.0,
+        "_FxDstBlend": 10.0,
+        "_FxSrcBlend": 5.0,
+        "_Gradian": 0.009999999776482582,
+        "_GradianPow": 1.0,
+        "_Hue": 0.0,
+        "_IgnoreShadow": 1.0,
+        "_MainTexAngle": 0.75,
+        "_MainTexAngleSpeed": 0.0,
+        "_MainTexStrength": 1.0,
+        "_MaskParticleSystemControl": 0.0,
+        "_MaskPolar": 0.0,
+        "_MaskTexAngle": 0.0,
+        "_MaskU": 0.0,
+        "_MaskV": 0.0,
+        "_ParticleControl": 1.0,
+        "_RimLightAlpha": 1.0,
+        "_RimLightCenterAlpha": 1.0,
+        "_RimLightIntensity": 1.0,
+        "_RimLightPower": 1.0,
+        "_Saturation": 1.0,
+        "_SequenceColCount": 1.0,
+        "_SequenceRowCount": 1.0,
+        "_SequenceSpeed": 1.0,
+        "_Stencil": 0.0,
+        "_StencilComp": 8.0,
+        "_StencilOp": 0.0,
+        "_UVParticleControl": 0.0,
+        "_U_Mirror": 0.0,
+        "_Uscroll": 0.0,
+        "_UsePolar": 0.0,
+        "_UseTODColor": 0.0,
+        "_V_Mirror": 0.0,
+        "_VertexAnimLerp": 0.0,
+        "_VertexAnimParticleSystemControl": 0.0,
+        "_VertexAnimStrength": 0.5,
+        "_VertexAnimStrengthB": 0.5,
+        "_ViewStrength": 1.0,
+        "_Vscroll": 0.0,
+        "_ZTest": 4.0,
+        "_ZWrite": 0.0
+      },
+      "integers": {},
+      "colors": {
+        "_BackColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_BackColor1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_Color": [
+          3.1372549533843994,
+          1.4810458421707153,
+          0.29803934693336487,
+          1.0
+        ],
+        "_Color1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_DistRGBA": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_EdageColor": [
+          1.7176469564437866,
+          1.1820356845855713,
+          0.24734115600585938,
+          1.0
+        ],
+        "_MaskRGBA": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_MaskSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_MaskTilingOffset": [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "_RimLightColor": [
+          1.0,
+          1.0,
+          0.0,
+          1.0
+        ],
+        "_VertexAnimSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_VertexAnimSpeedB": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "textures": {
+        "_DissolveTex": {
+          "asset": {
+            "name": "qm_vfx_t_noise_m_36",
+            "file": "Textures/qm_vfx_t_noise_m_36_6142912490609273207.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "6142912490609273207"
+          },
+          "pathID": "6142912490609273207",
+          "scale": [
+            1.0,
+            1.600000023841858
+          ],
+          "offset": [
+            0.0,
+            0.550000011920929
+          ]
+        },
+        "_DissolveTexDetail": {
+          "asset": {
+            "name": "qm_vfx_t_mask_m_03",
+            "file": "Textures/qm_vfx_t_mask_m_03_7094365346108799600.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "7094365346108799600"
+          },
+          "pathID": "7094365346108799600",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_Texture": {
+          "asset": {
+            "name": "vfx_t_liuxingjianyu07",
+            "file": "Textures/vfx_t_liuxingjianyu07_-3933484569798508716.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "-3933484569798508716"
+          },
+          "pathID": "-3933484569798508716",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "instancing": false,
+      "disabledPasses": []
+    },
+    {
+      "name": "vfx_m_liuxingjianyu14",
+      "bundle": "resourcesab/prefabs/effect/character/liuxingjianyu.ab",
+      "pathID": "2185744274919002471",
+      "shader": "RhinoX/Effect/FX_Standard",
+      "shaderPathID": "-7662726360800107545",
+      "shaderBundle": "resourcesab/shaders.ab",
+      "renderQueue": -1,
+      "keywords": [
+        "_USE_CUTOUT",
+        "_USE_CUTOUT_DETAILTEX",
+        "_USE_CUTOUT_TEX"
+      ],
+      "invalidKeywords": [],
+      "floats": {
+        "_AlphaAdjust": 1.0,
+        "_AlphaClip": 0.2540000081062317,
+        "_Brightness": 1.0,
+        "_ColorControlPolar": 0.0,
+        "_ColorControlTexIndependentTiling": 0.0,
+        "_ColorControlTexUscroll": 0.0,
+        "_ColorControlTexVscroll": 0.0,
+        "_Contrast": 1.0,
+        "_DetailAddorMultiply": 0.0,
+        "_DetailAlphaIgnore": 0.0,
+        "_DetailChoiceRGB": 0.0,
+        "_DetailPolar": 0.0,
+        "_DetailTexAngle": 0.0,
+        "_DetailTexRotSpeed": 0.0,
+        "_DetailTexSpeed_U": 0.0,
+        "_DetailTexSpeed_V": 0.0,
+        "_DetailTexStrength": 1.0,
+        "_DifferentFaceColor": 0.0,
+        "_DissipateDetailPolar": 0.0,
+        "_DissipatePolar": 0.0,
+        "_DissipateSoftCutout": 0.0,
+        "_DissloveTexRotSpeed": 0.0,
+        "_Dissolve": 0.08100000023841858,
+        "_DissolveEdageWidth": 0.009999999776482582,
+        "_DissolveTailControl": 0.0,
+        "_DissolveTexAngle": 0.0,
+        "_DissolveTexDetailRotSpeed": 0.0,
+        "_DissolveTexDetailUscroll": 0.0,
+        "_DissolveTexDetailVscroll": 0.0,
+        "_DissolveTexLerp": 0.7429999709129333,
+        "_DissolveTexUscroll": 0.0,
+        "_DissolveTexVscroll": -0.5,
+        "_DistForceU": 1.0,
+        "_DistForceV": 1.0,
+        "_DistTime": 0.10000000149011612,
+        "_DistTime1": 0.10000000149011612,
+        "_DistortParticleSystemControl": 0.0,
+        "_DistortPolar": 0.0,
+        "_FlowDeadZone": 0.05000000074505806,
+        "_FlowMapDistForceU": 1.0,
+        "_FlowMapDistForceV": 1.0,
+        "_FlowMapDistSpeedX": 0.10000000149011612,
+        "_FlowMapDistSpeedY": 0.10000000149011612,
+        "_FlowMapRate": 1.0,
+        "_FlowMapSpeed": 1.0,
+        "_FlowMapStrength": 0.5,
+        "_FxCullMode": 0.0,
+        "_FxDstBlend": 10.0,
+        "_FxSrcBlend": 5.0,
+        "_Gradian": 0.009999999776482582,
+        "_GradianPow": 1.0,
+        "_Hue": 0.0,
+        "_IgnoreShadow": 1.0,
+        "_MainTexAngle": 0.0,
+        "_MainTexAngleSpeed": 0.0,
+        "_MainTexStrength": 1.0,
+        "_MaskParticleSystemControl": 0.0,
+        "_MaskPolar": 0.0,
+        "_MaskTexAngle": 0.0,
+        "_MaskU": 0.0,
+        "_MaskV": 0.0,
+        "_ParticleControl": 1.0,
+        "_RimLightAlpha": 1.0,
+        "_RimLightCenterAlpha": 1.0,
+        "_RimLightIntensity": 1.0,
+        "_RimLightPower": 1.0,
+        "_Saturation": 1.0,
+        "_SequenceColCount": 1.0,
+        "_SequenceRowCount": 1.0,
+        "_SequenceSpeed": 1.0,
+        "_Stencil": 0.0,
+        "_StencilComp": 8.0,
+        "_StencilOp": 0.0,
+        "_UVParticleControl": 0.0,
+        "_U_Mirror": 0.0,
+        "_Uscroll": 0.0,
+        "_UsePolar": 0.0,
+        "_UseTODColor": 0.0,
+        "_V_Mirror": 0.0,
+        "_VertexAnimLerp": 0.0,
+        "_VertexAnimParticleSystemControl": 0.0,
+        "_VertexAnimStrength": 0.5,
+        "_VertexAnimStrengthB": 0.5,
+        "_ViewStrength": 1.0,
+        "_Vscroll": 0.0,
+        "_ZTest": 4.0,
+        "_ZWrite": 0.0
+      },
+      "integers": {},
+      "colors": {
+        "_BackColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_BackColor1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_Color": [
+          1.5849056243896484,
+          1.0077147483825684,
+          0.5183337926864624,
+          0.800000011920929
+        ],
+        "_Color1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_DistRGBA": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_EdageColor": [
+          1.7176469564437866,
+          1.1767463684082031,
+          0.22329409420490265,
+          1.0
+        ],
+        "_MaskRGBA": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_MaskSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_MaskTilingOffset": [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "_RimLightColor": [
+          1.0,
+          1.0,
+          0.0,
+          1.0
+        ],
+        "_VertexAnimSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_VertexAnimSpeedB": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "textures": {
+        "_DissolveTex": {
+          "asset": {
+            "name": "qm_vfx_t_noise_m_36",
+            "file": "Textures/qm_vfx_t_noise_m_36_6142912490609273207.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "6142912490609273207"
+          },
+          "pathID": "6142912490609273207",
+          "scale": [
+            1.0,
+            1.600000023841858
+          ],
+          "offset": [
+            0.0,
+            0.550000011920929
+          ]
+        },
+        "_DissolveTexDetail": {
+          "asset": {
+            "name": "t_glow05",
+            "file": "Textures/t_glow05_-2184300011497420546.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "-2184300011497420546"
+          },
+          "pathID": "-2184300011497420546",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_Texture": {
+          "asset": {
+            "name": "vfx_t_liuxingjianyu10",
+            "file": "Textures/vfx_t_liuxingjianyu10_-7738270927527217788.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "resourcesab/prefabs/effect/character/liuxingjianyu.ab",
+            "pathID": "-7738270927527217788"
+          },
+          "pathID": "-7738270927527217788",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "instancing": false,
+      "disabledPasses": []
+    },
+    {
+      "name": "vfx_m_liuxingjianyu07",
+      "bundle": "resourcesab/prefabs/effect/character/liuxingjianyu.ab",
+      "pathID": "4543331661471995024",
+      "shader": "RhinoX/Effect/FX_Standard",
+      "shaderPathID": "-7662726360800107545",
+      "shaderBundle": "resourcesab/shaders.ab",
+      "renderQueue": -1,
+      "keywords": [
+        "_USE_CUTOUT",
+        "_USE_CUTOUT_DETAILTEX",
+        "_USE_CUTOUT_TEX",
+        "_USE_CUTOUT_THRESHOLD"
+      ],
+      "invalidKeywords": [],
+      "floats": {
+        "_AlphaAdjust": 1.0,
+        "_AlphaClip": 0.2540000081062317,
+        "_Brightness": 1.0,
+        "_ColorControlPolar": 0.0,
+        "_ColorControlTexIndependentTiling": 0.0,
+        "_ColorControlTexUscroll": 0.0,
+        "_ColorControlTexVscroll": 0.0,
+        "_Contrast": 1.0,
+        "_DetailAddorMultiply": 0.0,
+        "_DetailAlphaIgnore": 0.0,
+        "_DetailChoiceRGB": 0.0,
+        "_DetailPolar": 0.0,
+        "_DetailTexAngle": 0.0,
+        "_DetailTexRotSpeed": 0.0,
+        "_DetailTexSpeed_U": 0.0,
+        "_DetailTexSpeed_V": 0.0,
+        "_DetailTexStrength": 1.0,
+        "_DifferentFaceColor": 0.0,
+        "_DissipateDetailPolar": 0.0,
+        "_DissipatePolar": 0.0,
+        "_DissipateSoftCutout": 0.0,
+        "_DissloveTexRotSpeed": 0.0,
+        "_Dissolve": 0.4909999966621399,
+        "_DissolveEdageWidth": 0.014999999664723873,
+        "_DissolveTailControl": 0.0,
+        "_DissolveTexAngle": 0.0,
+        "_DissolveTexDetailRotSpeed": 0.0,
+        "_DissolveTexDetailUscroll": 0.0,
+        "_DissolveTexDetailVscroll": 0.0,
+        "_DissolveTexLerp": 0.4819999933242798,
+        "_DissolveTexUscroll": 0.0,
+        "_DissolveTexVscroll": 0.0,
+        "_DistForceU": 1.0,
+        "_DistForceV": 1.0,
+        "_DistTime": 0.10000000149011612,
+        "_DistTime1": 0.10000000149011612,
+        "_DistortParticleSystemControl": 0.0,
+        "_DistortPolar": 0.0,
+        "_FlowDeadZone": 0.05000000074505806,
+        "_FlowMapDistForceU": 1.0,
+        "_FlowMapDistForceV": 1.0,
+        "_FlowMapDistSpeedX": 0.10000000149011612,
+        "_FlowMapDistSpeedY": 0.10000000149011612,
+        "_FlowMapRate": 1.0,
+        "_FlowMapSpeed": 1.0,
+        "_FlowMapStrength": 0.5,
+        "_FxCullMode": 0.0,
+        "_FxDstBlend": 10.0,
+        "_FxSrcBlend": 5.0,
+        "_Gradian": 0.009999999776482582,
+        "_GradianPow": 1.0,
+        "_Hue": 0.0,
+        "_IgnoreShadow": 1.0,
+        "_MainTexAngle": 0.75,
+        "_MainTexAngleSpeed": 0.0,
+        "_MainTexStrength": 1.0,
+        "_MaskParticleSystemControl": 0.0,
+        "_MaskPolar": 0.0,
+        "_MaskTexAngle": 0.0,
+        "_MaskU": 0.0,
+        "_MaskV": 0.0,
+        "_ParticleControl": 1.0,
+        "_RimLightAlpha": 1.0,
+        "_RimLightCenterAlpha": 1.0,
+        "_RimLightIntensity": 1.0,
+        "_RimLightPower": 1.0,
+        "_Saturation": 1.0,
+        "_SequenceColCount": 1.0,
+        "_SequenceRowCount": 1.0,
+        "_SequenceSpeed": 1.0,
+        "_Stencil": 0.0,
+        "_StencilComp": 8.0,
+        "_StencilOp": 0.0,
+        "_UVParticleControl": 0.0,
+        "_U_Mirror": 0.0,
+        "_Uscroll": 0.0,
+        "_UsePolar": 0.0,
+        "_UseTODColor": 0.0,
+        "_V_Mirror": 0.0,
+        "_VertexAnimLerp": 0.0,
+        "_VertexAnimParticleSystemControl": 0.0,
+        "_VertexAnimStrength": 0.5,
+        "_VertexAnimStrengthB": 0.5,
+        "_ViewStrength": 1.0,
+        "_Vscroll": 0.0,
+        "_ZTest": 4.0,
+        "_ZWrite": 0.0
+      },
+      "integers": {},
+      "colors": {
+        "_BackColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_BackColor1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_Color": [
+          11.98431396484375,
+          5.709804058074951,
+          1.1921569108963013,
+          1.0
+        ],
+        "_Color1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_DistRGBA": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_EdageColor": [
+          1.7176469564437866,
+          1.1551299095153809,
+          0.17348235845565796,
+          1.0
+        ],
+        "_MaskRGBA": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_MaskSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_MaskTilingOffset": [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "_RimLightColor": [
+          1.0,
+          1.0,
+          0.0,
+          1.0
+        ],
+        "_VertexAnimSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_VertexAnimSpeedB": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "textures": {
+        "_DissolveTex": {
+          "asset": {
+            "name": "qm_vfx_t_noise_m_36",
+            "file": "Textures/qm_vfx_t_noise_m_36_6142912490609273207.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "6142912490609273207"
+          },
+          "pathID": "6142912490609273207",
+          "scale": [
+            1.0,
+            1.600000023841858
+          ],
+          "offset": [
+            0.0,
+            0.550000011920929
+          ]
+        },
+        "_DissolveTexDetail": {
+          "asset": {
+            "name": "qm_vfx_t_mask_m_03",
+            "file": "Textures/qm_vfx_t_mask_m_03_7094365346108799600.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "7094365346108799600"
+          },
+          "pathID": "7094365346108799600",
+          "scale": [
+            1.0,
+            -1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_Texture": {
+          "asset": {
+            "name": "Menpai_08",
+            "file": "Textures/Menpai_08_-6045311816826624579.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "-6045311816826624579"
+          },
+          "pathID": "-6045311816826624579",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "instancing": false,
+      "disabledPasses": []
+    },
+    {
+      "name": "vfx_m_liuxingjianyu10",
+      "bundle": "resourcesab/prefabs/effect/character/liuxingjianyu.ab",
+      "pathID": "-5365380447276581032",
+      "shader": "RhinoX/Effect/FX_Standard",
+      "shaderPathID": "-7662726360800107545",
+      "shaderBundle": "resourcesab/shaders.ab",
+      "renderQueue": -1,
+      "keywords": [
+        "_USE_CUTOUT",
+        "_USE_CUTOUT_DETAILTEX",
+        "_USE_CUTOUT_TEX",
+        "_USE_CUTOUT_THRESHOLD"
+      ],
+      "invalidKeywords": [],
+      "floats": {
+        "_AlphaAdjust": 1.0,
+        "_AlphaClip": 0.2540000081062317,
+        "_Brightness": 1.0,
+        "_ColorControlPolar": 0.0,
+        "_ColorControlTexIndependentTiling": 0.0,
+        "_ColorControlTexUscroll": 0.0,
+        "_ColorControlTexVscroll": 0.0,
+        "_Contrast": 1.0,
+        "_DetailAddorMultiply": 0.0,
+        "_DetailAlphaIgnore": 0.0,
+        "_DetailChoiceRGB": 0.0,
+        "_DetailPolar": 0.0,
+        "_DetailTexAngle": 0.0,
+        "_DetailTexRotSpeed": 0.0,
+        "_DetailTexSpeed_U": 0.0,
+        "_DetailTexSpeed_V": 0.0,
+        "_DetailTexStrength": 1.0,
+        "_DifferentFaceColor": 0.0,
+        "_DissipateDetailPolar": 0.0,
+        "_DissipatePolar": 0.0,
+        "_DissipateSoftCutout": 0.0,
+        "_DissloveTexRotSpeed": 0.0,
+        "_Dissolve": 0.09700000286102295,
+        "_DissolveEdageWidth": 0.019999999552965164,
+        "_DissolveTailControl": 0.0,
+        "_DissolveTexAngle": 0.0,
+        "_DissolveTexDetailRotSpeed": 0.0,
+        "_DissolveTexDetailUscroll": 0.0,
+        "_DissolveTexDetailVscroll": 0.0,
+        "_DissolveTexLerp": 0.4819999933242798,
+        "_DissolveTexUscroll": 0.0,
+        "_DissolveTexVscroll": 0.0,
+        "_DistForceU": 1.0,
+        "_DistForceV": 1.0,
+        "_DistTime": 0.10000000149011612,
+        "_DistTime1": 0.10000000149011612,
+        "_DistortParticleSystemControl": 0.0,
+        "_DistortPolar": 0.0,
+        "_FlowDeadZone": 0.05000000074505806,
+        "_FlowMapDistForceU": 1.0,
+        "_FlowMapDistForceV": 1.0,
+        "_FlowMapDistSpeedX": 0.10000000149011612,
+        "_FlowMapDistSpeedY": 0.10000000149011612,
+        "_FlowMapRate": 1.0,
+        "_FlowMapSpeed": 1.0,
+        "_FlowMapStrength": 0.5,
+        "_FxCullMode": 0.0,
+        "_FxDstBlend": 10.0,
+        "_FxSrcBlend": 5.0,
+        "_Gradian": 0.009999999776482582,
+        "_GradianPow": 1.0,
+        "_Hue": 0.0,
+        "_IgnoreShadow": 1.0,
+        "_MainTexAngle": 0.0,
+        "_MainTexAngleSpeed": 0.0,
+        "_MainTexStrength": 1.0,
+        "_MaskParticleSystemControl": 0.0,
+        "_MaskPolar": 0.0,
+        "_MaskTexAngle": 0.0,
+        "_MaskU": 0.0,
+        "_MaskV": 0.0,
+        "_ParticleControl": 1.0,
+        "_RimLightAlpha": 1.0,
+        "_RimLightCenterAlpha": 1.0,
+        "_RimLightIntensity": 1.0,
+        "_RimLightPower": 1.0,
+        "_Saturation": 1.0,
+        "_SequenceColCount": 1.0,
+        "_SequenceRowCount": 1.0,
+        "_SequenceSpeed": 1.0,
+        "_Stencil": 0.0,
+        "_StencilComp": 8.0,
+        "_StencilOp": 0.0,
+        "_UVParticleControl": 0.0,
+        "_U_Mirror": 0.0,
+        "_Uscroll": 0.0,
+        "_UsePolar": 0.0,
+        "_UseTODColor": 0.0,
+        "_V_Mirror": 0.0,
+        "_VertexAnimLerp": 0.0,
+        "_VertexAnimParticleSystemControl": 0.0,
+        "_VertexAnimStrength": 0.5,
+        "_VertexAnimStrengthB": 0.5,
+        "_ViewStrength": 1.0,
+        "_Vscroll": 0.0,
+        "_ZTest": 4.0,
+        "_ZWrite": 0.0
+      },
+      "integers": {},
+      "colors": {
+        "_BackColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_BackColor1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_Color": [
+          3.1372549533843994,
+          1.4810458421707153,
+          0.29803934693336487,
+          1.0
+        ],
+        "_Color1": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "_DistRGBA": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_EdageColor": [
+          0.056999996304512024,
+          0.03939266875386238,
+          0.008356019854545593,
+          1.0
+        ],
+        "_MaskRGBA": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_MaskSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_MaskTilingOffset": [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "_RimLightColor": [
+          1.0,
+          1.0,
+          0.0,
+          1.0
+        ],
+        "_VertexAnimSpeed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "_VertexAnimSpeedB": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "textures": {
+        "_DissolveTex": {
+          "asset": {
+            "name": "qm_vfx_t_noise_m_36",
+            "file": "Textures/qm_vfx_t_noise_m_36_6142912490609273207.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "6142912490609273207"
+          },
+          "pathID": "6142912490609273207",
+          "scale": [
+            1.0,
+            1.600000023841858
+          ],
+          "offset": [
+            0.0,
+            0.550000011920929
+          ]
+        },
+        "_DissolveTexDetail": {
+          "asset": {
+            "name": "t_glow05",
+            "file": "Textures/t_glow05_-2184300011497420546.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "-2184300011497420546"
+          },
+          "pathID": "-2184300011497420546",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "_Texture": {
+          "asset": {
+            "name": "vfx_t_liuxingjianyu02",
+            "file": "Textures/vfx_t_liuxingjianyu02_-5195119404875803169.png",
+            "size": [
+              128,
+              128
+            ],
+            "unityFormat": 50,
+            "bundle": "artres/art_vfx/vfx_texture.ab",
+            "pathID": "-5195119404875803169"
+          },
+          "pathID": "-5195119404875803169",
+          "scale": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "instancing": false,
+      "disabledPasses": []
+    }
+  ],
+  "dependencies": [
+    "artres/art_vfx/vfx_mesh.ab",
+    "artres/art_vfx/vfx_texture.ab",
+    "artres/art_vx/vx_texture/noise.ab",
+    "artres/shader/dynamicfogurp/demo/environment/water/textures.ab",
+    "artres/shader/fog/textures.ab",
+    "artres/shader/starfield.ab",
+    "artres/shader/testure.ab",
+    "atlas/activitymsj.ab",
+    "packages/com.unity.render-pipelines.universal.ab",
+    "resourcesab/prefabs/effect/character/liuxingjianyu.ab",
+    "resourcesab/shaders.ab"
+  ]
+}
