@@ -28,6 +28,12 @@ namespace SoftKitty
 
             GUILayout.BeginHorizontal();
             GUI.backgroundColor = new Color(0F, 0.8F, 1F);
+            if (GUILayout.Button(new GUIContent("打开技能工作台", "以时间轴和表单编辑当前图资产。")))
+            {
+                SkillWorkbench.Open(myTarget);
+            }
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
             if (GUILayout.Button(new GUIContent("打开技能图编辑器", "编辑当前技能图的节点和连线。")))
             {
                 MasterGraphWindow.OpenWindow(myTarget);

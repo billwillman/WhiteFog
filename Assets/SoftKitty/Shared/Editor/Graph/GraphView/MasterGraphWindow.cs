@@ -24,6 +24,13 @@ namespace SoftKitty
         }
 
         private static MasterGraphWindow wnd;
+        internal static bool IsEditing(GraphObject graph) => wnd != null && wnd.graphObject == graph;
+
+        internal static void CloseIfEditing(GraphObject graph)
+        {
+            if (IsEditing(graph)) wnd.Close();
+        }
+
         private GraphObject graphObject;
         private GraphObject openingSnapshot;
         private MasterGraphView graphView;
