@@ -1,0 +1,4 @@
+View the official Master Combat Core documentation, including guides, node reference, and examples at:
+https://www.soft-kitty.com/
+For feedback, questions, bug report, feature request, please post in:
+https://github.com/blakeseow-cloud/Soft-Kitty-Documentation/discussions

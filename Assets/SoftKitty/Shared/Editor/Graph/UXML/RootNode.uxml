@@ -1,0 +1,6 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/SoftKitty/Shared/Editor/Graph/Style/Node.uss?fileID=7433441132597879392&amp;guid=e09e757ca5a251142b749eebf4515fd2&amp;type=3#Node" />
+    <engine:VisualElement name="Root" style="flex-grow: 1; -unity-background-image-tint-color: rgb(38, 38, 38); background-image: url(&quot;project://database/Assets/SoftKitty/Shared/Sprites/Shared_ui.png?fileID=-904435991&amp;guid=cec9663a2fad9b64abe1c9eb3d3def57&amp;type=3#Rect&quot;); padding-top: 5px;">
+        <engine:DropdownField label="类型" choices="Damage" index="0" name="Type" data-source-type="SoftKitty.Action, Assembly-CSharp" data-source-path="Type" tooltip="实体来源类型。" style="width: 300px; left: 0; position: relative; align-self: flex-end; height: 30px;" />
+    </engine:VisualElement>
+</engine:UXML>

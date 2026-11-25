@@ -1,0 +1,1 @@
+﻿{"Elements":[{"Uid":"Element2","Label":"","ToolTips":"","Type":6,"Index":0,"VisibleBind":"","EnumOptions":[]},{"Uid":"Element0","Label":"When the conditions matchs,","ToolTips":"","Type":5,"Index":0,"VisibleBind":"","EnumOptions":[]},{"Uid":"Element1","Label":"The actions will be performed.","ToolTips":"","Type":5,"Index":1,"VisibleBind":"","EnumOptions":[]}]}

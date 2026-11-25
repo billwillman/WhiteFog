@@ -1,0 +1,188 @@
+.unity-base-field {
+    color: rgb(111, 111, 111);
+    -unity-background-image-tint-color: rgba(255, 255, 255, 0);
+    font-size: 12px;
+}
+
+.unity-base-popup-field {
+    color: rgb(99, 99, 99);
+    width: 392px;
+    left: -164px;
+    -unity-text-align: upper-right;
+    font-size: 12px;
+    height: 33px;
+    background-image: none;
+    -unity-background-image-tint-color: rgba(255, 255, 255, 0);
+}
+
+.unity-popup-field {
+    padding-left: 0;
+    color: rgb(109, 109, 109);
+    background-image: none;
+    -unity-background-image-tint-color: rgba(255, 255, 255, 0);
+    font-size: 12px;
+}
+
+.unity-base-popup-field__input {
+    background-image: url("project://database/Assets/SoftKitty/Shared/Sprites/Shared_ui.png?fileID=72042407&guid=cec9663a2fad9b64abe1c9eb3d3def57&type=3#Bar");
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    background-color: rgba(0, 0, 0, 0);
+    justify-content: flex-start;
+    align-items: auto;
+    align-content: auto;
+    -unity-background-image-tint-color: rgb(21, 21, 21);
+    font-size: 12px;
+}
+
+.unity-base-popup-field__text {
+    color: rgb(159, 159, 159);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    align-self: center;
+    justify-content: flex-start;
+    margin-right: 8px;
+    font-size: 12px;
+    -unity-text-align: middle-left;
+    margin-bottom: 0;
+    align-items: center;
+    align-content: center;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.unity-base-popup-field__arrow {
+    -unity-background-image-tint-color: rgb(181, 181, 181);
+    height: 15px;
+    width: 15px;
+    right: 3px;
+}
+
+.unity-base-text-field__input--single-line {
+    background-image: url("project://database/Assets/SoftKitty/Shared/Sprites/Shared_ui.png?fileID=72042407&guid=cec9663a2fad9b64abe1c9eb3d3def57&type=3#Bar");
+    -unity-background-image-tint-color: rgb(21, 21, 21);
+    background-color: rgba(0, 0, 0, 0);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    color: rgb(156, 156, 156);
+    -unity-text-align: upper-center;
+    font-size: 12px;
+}
+
+.unity-base-field__label {
+    color: rgb(202, 202, 202);
+    -unity-text-align: upper-right;
+    text-shadow: 3px 4px 1px rgb(0, 0, 0);
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    font-size: 12px;
+}
+
+.unity-label {
+    font-size: 12px;
+}
+
+.unity-text-element--inner-input-field-component {
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    align-content: center;
+    font-size: 12px;
+}
+
+.unity-button {
+    background-color: rgba(0, 0, 0, 0);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    opacity: 0.24;
+}
+
+.unity-button:hover {
+    background-color: rgba(0, 0, 0, 0);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    opacity: 0.57;
+}
+
+.unity-base-text-field__input {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-bottom: 5px;
+    padding-top: 3px;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.unity-toggle__input {
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    padding-right: 1px;
+    padding-left: 1px;
+}
+
+.unity-toggle__checkmark {
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    margin-left: 1px;
+    margin-right: 1px;
+}

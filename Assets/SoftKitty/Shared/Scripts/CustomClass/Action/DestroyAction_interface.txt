@@ -1,0 +1,1 @@
+﻿{"Elements":[{"Uid":"entity","Label":"Entity","ToolTips":"Entity to destroy.","Type":8,"Index":0,"VisibleBind":"","EnumOptions":[]},{"Uid":"wait","Label":"Wait Time","ToolTips":"Destroy after 'Wait Time' in seconds.","Type":2,"Index":0,"VisibleBind":"","EnumOptions":[]}]}

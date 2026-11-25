@@ -1,0 +1,4 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/SoftKitty/Shared/Editor/Graph/Style/Node.uss?fileID=7433441132597879392&amp;guid=e09e757ca5a251142b749eebf4515fd2&amp;type=3#Node" />
+    <engine:DropdownField label="下拉选项" name="Item" style="left: 0; width: 341px; right: 0; padding-right: 97px; height: 28px; max-height: 28px; min-height: 28px;" />
+</engine:UXML>

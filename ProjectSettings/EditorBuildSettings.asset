@@ -12,7 +12,8 @@ EditorBuildSettings:
     path: Assets/Scenes/WhiteFog_WeChat.unity
     guid: 205658f27c534b82acb3ab83a73ad549
   m_BuildProfiles: []
-  m_configObjects: {}
+  m_configObjects:
+    com.SoftKitty.settings: {fileID: 11400000, guid: 167271498f7b6ec469c40c692f3aff46, type: 2}
   m_SlimFeaturesWeixinMiniGame:
     ACLDecompression: 0
     AllocateOverhead: 1

@@ -1,0 +1,2418 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fe0be65fc07ae641aa26c8a82c52614, type: 3}
+  m_Name: DoT_Frost
+  m_EditorClassIdentifier: Assembly-CSharp::SoftKitty.GraphObject
+  RootSet:
+    mType: 0
+    Name: Root
+    Uid: Node0
+    Position: {x: 0.5714286, y: 362.28574}
+    NodeIndex: 0
+    inputPort:
+    - Name: Trigger
+      Type: RootIn
+      acceptedTypes:
+      - TriggerOut
+      uid:
+      - Node18#0
+      connectedNodes: []
+      allowMutipleConnection: 1
+      createByDefault: 1
+    outputPort:
+    - Name: Action
+      Type: RootOut
+      acceptedTypes:
+      - ActionIn
+      - BranchInAction
+      uid:
+      - Node3#1
+      connectedNodes: []
+      allowMutipleConnection: 1
+      createByDefault: 1
+    minimized: 0
+    InstanceCache: 0
+    mRoot:
+      rid: -2
+    ClassName: Combat
+    IntValues: 
+    FloatValues: []
+    StringValues: []
+    BoolValues: 
+    CustomInterface:
+      Elements:
+      - Uid: Element2
+        Label: 
+        ToolTips: 
+        Type: 6
+        Index: 0
+        VisibleBind: 
+        EnumOptions: []
+      - Uid: Element0
+        Label: When the conditions matchs,
+        ToolTips: 
+        Type: 5
+        Index: 0
+        VisibleBind: 
+        EnumOptions: []
+      - Uid: Element1
+        Label: The actions will be performed.
+        ToolTips: 
+        Type: 5
+        Index: 1
+        VisibleBind: 
+        EnumOptions: []
+    Actions:
+    - mType: 0
+      Name: Action
+      Uid: Node1
+      Position: {x: 918.2857, y: -10.857143}
+      NodeIndex: 0
+      inputPort:
+      - Name: Action
+        Type: ActionIn
+        acceptedTypes:
+        - RootOut
+        - BranchOutAction
+        uid:
+        - Node3#0
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      - Name: 1
+        Type: EntityIn
+        acceptedTypes:
+        - EntityOut
+        uid:
+        - Node2#0
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      - Name: 2
+        Type: CustomVariable
+        acceptedTypes:
+        - Variable
+        uid:
+        - Node13#0
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      outputPort: []
+      minimized: 0
+      InstanceCache: 0
+      mRoot:
+        rid: 7980705436704440630
+      ClassName: TempAttributeChange
+      IntValues: 02000000
+      FloatValues:
+      - 3
+      StringValues:
+      - forzen
+      BoolValues: 
+      CustomInterface:
+        Elements:
+        - Uid: entity
+          Label: Entity
+          ToolTips: The entity to change the attribute.
+          Type: 8
+          Index: 0
+          VisibleBind: 
+          EnumOptions: []
+        - Uid: uid
+          Label: Attribute Key
+          ToolTips: The script key of the attribute.
+          Type: 1
+          Index: 0
+          VisibleBind: 
+          EnumOptions: []
+        - Uid: operation
+          Label: Operation
+          ToolTips: operation of the input value and existing value.
+          Type: 7
+          Index: 0
+          VisibleBind: 
+          EnumOptions:
+          - Add
+          - Multiply
+          - Override
+          - Max
+          - Min
+        - Uid: value
+          Label: Attribute Value
+          ToolTips: The input value to calculate with the existing value.
+          Type: 4
+          Index: 1
+          VisibleBind: 
+          EnumOptions: []
+        - Uid: Element3
+          Label: Add to the existing value.
+          ToolTips: 
+          Type: 5
+          Index: 0
+          VisibleBind: operation#0
+          EnumOptions: []
+        - Uid: Element4
+          Label: Replace the existing value.
+          ToolTips: 
+          Type: 5
+          Index: 1
+          VisibleBind: operation#2
+          EnumOptions: []
+        - Uid: Element5
+          Label: Multiply the existing value.
+          ToolTips: 
+          Type: 5
+          Index: 2
+          VisibleBind: operation#1
+          EnumOptions: []
+        - Uid: Element7
+          Label: Override if this value is biger than the existing value.
+          ToolTips: 
+          Type: 5
+          Index: 3
+          VisibleBind: operation#3
+          EnumOptions: []
+        - Uid: Element8
+          Label: Override if this value is smaller than the existing value.
+          ToolTips: 
+          Type: 5
+          Index: 4
+          VisibleBind: operation#4
+          EnumOptions: []
+        - Uid: duration
+          Label: Duration
+          ToolTips: How long (in seconds) this temporary change will take effect.
+          Type: 2
+          Index: 0
+          VisibleBind: 
+          EnumOptions: []
+      Type: 0
+      Count: 1
+      WaitTime: 0
+      KeepTime: 0
+      Interval: 0
+    - mType: 0
+      Name: Action
+      Uid: Node7
+      Position: {x: 918.2857, y: 429.7143}
+      NodeIndex: 0
+      inputPort:
+      - Name: Action
+        Type: ActionIn
+        acceptedTypes:
+        - RootOut
+        - BranchOutAction
+        uid:
+        - Node3#1
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      - Name: 1
+        Type: EntityIn
+        acceptedTypes:
+        - EntityOut
+        uid:
+        - Node2#0
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      - Name: 2
+        Type: CustomVariable
+        acceptedTypes:
+        - Variable
+        uid:
+        - Node11#0
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      outputPort: []
+      minimized: 0
+      InstanceCache: 0
+      mRoot:
+        rid: -2
+      ClassName: TempAttributeChange
+      IntValues: 02000000
+      FloatValues:
+      - 1.1
+      StringValues:
+      - agi
+      BoolValues: 
+      CustomInterface:
+        Elements:
+        - Uid: entity
+          Label: Entity
+          ToolTips: The entity to change the attribute.
+          Type: 8
+          Index: 0
+          VisibleBind: 
+          EnumOptions: []
+        - Uid: uid
+          Label: Attribute Key
+          ToolTips: The script key of the attribute.
+          Type: 1
+          Index: 0
+          VisibleBind: 
+          EnumOptions: []
+        - Uid: operation
+          Label: Operation
+          ToolTips: operation of the input value and existing value.
+          Type: 7
+          Index: 0
+          VisibleBind: 
+          EnumOptions:
+          - Add
+          - Multiply
+          - Override
+          - Max
+          - Min
+        - Uid: value
+          Label: Attribute Value
+          ToolTips: The input value to calculate with the existing value.
+          Type: 4
+          Index: 1
+          VisibleBind: 
+          EnumOptions: []
+        - Uid: Element3
+          Label: Add to the existing value.
+          ToolTips: 
+          Type: 5
+          Index: 0
+          VisibleBind: operation#0
+          EnumOptions: []
+        - Uid: Element4
+          Label: Replace the existing value.
+          ToolTips: 
+          Type: 5
+          Index: 1
+          VisibleBind: operation#2
+          EnumOptions: []
+        - Uid: Element5
+          Label: Multiply the existing value.
+          ToolTips: 
+          Type: 5
+          Index: 2
+          VisibleBind: operation#1
+          EnumOptions: []
+        - Uid: Element7
+          Label: Override if this value is biger than the existing value.
+          ToolTips: 
+          Type: 5
+          Index: 3
+          VisibleBind: operation#3
+          EnumOptions: []
+        - Uid: Element8
+          Label: Override if this value is smaller than the existing value.
+          ToolTips: 
+          Type: 5
+          Index: 4
+          VisibleBind: operation#4
+          EnumOptions: []
+        - Uid: duration
+          Label: Duration
+          ToolTips: How long (in seconds) this temporary change will take effect.
+          Type: 2
+          Index: 0
+          VisibleBind: 
+          EnumOptions: []
+      Type: 0
+      Count: 1
+      WaitTime: 0
+      KeepTime: 0
+      Interval: 0
+    - mType: 0
+      Name: Action
+      Uid: Node14
+      Position: {x: 1493.7142, y: -256.57144}
+      NodeIndex: 0
+      inputPort:
+      - Name: Action
+        Type: ActionIn
+        acceptedTypes:
+        - RootOut
+        - BranchOutAction
+        uid:
+        - Node3#0
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      - Name: 1
+        Type: EntityIn
+        acceptedTypes:
+        - EntityOut
+        uid:
+        - Node2#0
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      - Name: 2
+        Type: CustomVariable
+        acceptedTypes:
+        - Variable
+        uid:
+        - Node15#0
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      outputPort: []
+      minimized: 0
+      InstanceCache: 0
+      mRoot:
+        rid: 7980705436704440630
+      ClassName: OverTimeEffect
+      IntValues: 02000000
+      FloatValues: []
+      StringValues:
+      - 
+      BoolValues: 
+      CustomInterface:
+        Elements:
+        - Uid: entity
+          Label: Entity
+          ToolTips: The target entity.
+          Type: 8
+          Index: 0
+          VisibleBind: 
+          EnumOptions: []
+        - Uid: id
+          Label: Effect id
+          ToolTips: The int id of the over time effect.
+          Type: 4
+          Index: 1
+          VisibleBind: 
+          EnumOptions: []
+        - Uid: action
+          Label: Action Type
+          ToolTips: The type of the action.
+          Type: 7
+          Index: 0
+          VisibleBind: 
+          EnumOptions:
+          - Add Effect
+          - Dispell Effect
+          - Remove Effect
+      Type: 0
+      Count: 4
+      WaitTime: 0.3
+      KeepTime: 0
+      Interval: 0
+    - mType: 0
+      Name: Action
+      Uid: Node19
+      Position: {x: 918.2857, y: -451.42856}
+      NodeIndex: 0
+      inputPort:
+      - Name: Action
+        Type: ActionIn
+        acceptedTypes:
+        - RootOut
+        - BranchOutAction
+        uid:
+        - Node3#0
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      - Name: 1
+        Type: EntityIn
+        acceptedTypes:
+        - EntityOut
+        uid:
+        - Node2#0
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      - Name: 2
+        Type: CustomVariable
+        acceptedTypes:
+        - Variable
+        uid:
+        - Node20#0
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      outputPort: []
+      minimized: 0
+      InstanceCache: 0
+      mRoot:
+        rid: -2
+      ClassName: TempAttributeChange
+      IntValues: 02000000
+      FloatValues:
+      - 4
+      StringValues:
+      - resist
+      BoolValues: 
+      CustomInterface:
+        Elements:
+        - Uid: entity
+          Label: Entity
+          ToolTips: The entity to change the attribute.
+          Type: 8
+          Index: 0
+          VisibleBind: 
+          EnumOptions: []
+        - Uid: uid
+          Label: Attribute Key
+          ToolTips: The script key of the attribute.
+          Type: 1
+          Index: 0
+          VisibleBind: 
+          EnumOptions: []
+        - Uid: operation
+          Label: Operation
+          ToolTips: operation of the input value and existing value.
+          Type: 7
+          Index: 0
+          VisibleBind: 
+          EnumOptions:
+          - Add
+          - Multiply
+          - Override
+          - Max
+          - Min
+        - Uid: value
+          Label: Attribute Value
+          ToolTips: The input value to calculate with the existing value.
+          Type: 4
+          Index: 1
+          VisibleBind: 
+          EnumOptions: []
+        - Uid: Element3
+          Label: Add to the existing value.
+          ToolTips: 
+          Type: 5
+          Index: 0
+          VisibleBind: operation#0
+          EnumOptions: []
+        - Uid: Element4
+          Label: Replace the existing value.
+          ToolTips: 
+          Type: 5
+          Index: 1
+          VisibleBind: operation#2
+          EnumOptions: []
+        - Uid: Element5
+          Label: Multiply the existing value.
+          ToolTips: 
+          Type: 5
+          Index: 2
+          VisibleBind: operation#1
+          EnumOptions: []
+        - Uid: Element7
+          Label: Override if this value is biger than the existing value.
+          ToolTips: 
+          Type: 5
+          Index: 3
+          VisibleBind: operation#3
+          EnumOptions: []
+        - Uid: Element8
+          Label: Override if this value is smaller than the existing value.
+          ToolTips: 
+          Type: 5
+          Index: 4
+          VisibleBind: operation#4
+          EnumOptions: []
+        - Uid: duration
+          Label: Duration
+          ToolTips: How long (in seconds) this temporary change will take effect.
+          Type: 2
+          Index: 0
+          VisibleBind: 
+          EnumOptions: []
+      Type: 0
+      Count: 1
+      WaitTime: 0
+      KeepTime: 0
+      Interval: 0
+    Triggers:
+    - mType: 0
+      Name: Trigger
+      Uid: Node18
+      Position: {x: -413.7143, y: 362.28574}
+      NodeIndex: 0
+      inputPort:
+      - Name: Conditions To Trigger
+        Type: TriggerIn
+        acceptedTypes:
+        - ConditionOut
+        uid:
+        - Node16#0
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 1
+      - Name: Conditions To Reset
+        Type: TriggerIn
+        acceptedTypes:
+        - ConditionOut
+        uid: []
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 0
+      outputPort:
+      - Name: Trigger
+        Type: TriggerOut
+        acceptedTypes:
+        - RootIn
+        uid:
+        - Node0#0
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      minimized: 0
+      InstanceCache: 0
+      mRoot:
+        rid: 7980705436704440630
+      TriggerConditions: []
+      ResetConditions: []
+      AutoReset: 1
+    ConditionGroups: []
+    Handlers:
+    - mType: 0
+      Name: Condition
+      Uid: Node4
+      Position: {x: 0.5714286, y: -22.857143}
+      NodeIndex: 0
+      inputPort:
+      - Name: 0
+        Type: CustomVariable
+        acceptedTypes:
+        - Variable
+        uid:
+        - Node5#0
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      - Name: 1
+        Type: CustomVariable
+        acceptedTypes:
+        - Variable
+        uid:
+        - Node6#0
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      outputPort:
+      - Name: Condition
+        Type: ConditionOut
+        acceptedTypes:
+        - TriggerIn
+        - ConditionIn
+        - BranchIn
+        uid:
+        - Node3#0
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 1
+      minimized: 0
+      InstanceCache: 0
+      mRoot:
+        rid: 7980705436704440630
+      ClassName: VariableCompare
+      IntValues: 01000000
+      FloatValues: []
+      StringValues:
+      - 
+      BoolValues: 
+      CustomInterface:
+        Elements:
+        - Uid: var1
+          Label: Variable A
+          ToolTips: Variable for comparison.
+          Type: 4
+          Index: 0
+          VisibleBind: 
+          EnumOptions: []
+        - Uid: var2
+          Label: Variable B
+          ToolTips: Variable for comparison.
+          Type: 4
+          Index: 1
+          VisibleBind: 
+          EnumOptions: []
+        - Uid: logic
+          Label: Comparison Method
+          ToolTips: Comparison logic for A xxx B.
+          Type: 7
+          Index: 0
+          VisibleBind: 
+          EnumOptions:
+          - Greater
+          - Greater Or Equal
+          - Equal
+          - Less Or Equal
+          - Less
+          - Different
+      ClassType: 0
+      StateType: 0
+      xTimeCount: 1
+      HandlerIndex: 0
+    - mType: 0
+      Name: Condition
+      Uid: Node16
+      Position: {x: -789.1429, y: 362.28574}
+      NodeIndex: 0
+      inputPort:
+      - Name: 0
+        Type: EntityIn
+        acceptedTypes:
+        - EntityOut
+        uid:
+        - Node2#0
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      - Name: 1
+        Type: CustomVariable
+        acceptedTypes:
+        - Variable
+        uid:
+        - Node17#0
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      outputPort:
+      - Name: Condition
+        Type: ConditionOut
+        acceptedTypes:
+        - TriggerIn
+        - ConditionIn
+        - BranchIn
+        uid:
+        - Node18#0
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 1
+      minimized: 0
+      InstanceCache: 0
+      mRoot:
+        rid: 7980705436704440630
+      ClassName: AttributeValue
+      IntValues: 04000000
+      FloatValues: []
+      StringValues:
+      - resist
+      BoolValues: 
+      CustomInterface:
+        Elements:
+        - Uid: entity
+          Label: Entity
+          ToolTips: The owner of the attribute.
+          Type: 8
+          Index: 0
+          VisibleBind: 
+          EnumOptions: []
+        - Uid: uid
+          Label: Attribute UID
+          ToolTips: The UID of the attribute
+          Type: 1
+          Index: 0
+          VisibleBind: 
+          EnumOptions: []
+        - Uid: logic
+          Label: Comparison
+          ToolTips: The logic type of the comparison.
+          Type: 7
+          Index: 0
+          VisibleBind: 
+          EnumOptions:
+          - Greater
+          - Greater Or Equal
+          - Equal
+          - Less Or Equal
+          - Less
+        - Uid: value
+          Label: Compare Value
+          ToolTips: The value to compare with.
+          Type: 4
+          Index: 1
+          VisibleBind: 
+          EnumOptions: []
+      ClassType: 0
+      StateType: 0
+      xTimeCount: 1
+      HandlerIndex: 0
+    Maths:
+    - mType: 0
+      Name: Math (Multiply)
+      Uid: Node9
+      Position: {x: -103.42857, y: -354.85715}
+      NodeIndex: 0
+      inputPort:
+      - Name: A
+        Type: MathIn
+        acceptedTypes:
+        - Variable
+        uid:
+        - Node8#0
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      - Name: B
+        Type: MathIn
+        acceptedTypes:
+        - Variable
+        uid:
+        - Node5#0
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      - Name: C
+        Type: MathIn
+        acceptedTypes:
+        - Variable
+        uid: []
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      outputPort:
+      - Name: Result
+        Type: Variable
+        acceptedTypes:
+        - MathIn
+        - Variable
+        - CustomVariable
+        - BranchInValue
+        uid:
+        - Node10#0
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 1
+      minimized: 0
+      InstanceCache: 0
+      mRoot:
+        rid: 7980705436704440630
+      Type: 2
+    - mType: 0
+      Name: Math (OneMinus)
+      Uid: Node10
+      Position: {x: 178.28572, y: -354.85715}
+      NodeIndex: 0
+      inputPort:
+      - Name: A
+        Type: MathIn
+        acceptedTypes:
+        - Variable
+        uid:
+        - Node9#0
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      - Name: B
+        Type: MathIn
+        acceptedTypes:
+        - Variable
+        uid: []
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      - Name: C
+        Type: MathIn
+        acceptedTypes:
+        - Variable
+        uid: []
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      outputPort:
+      - Name: Result
+        Type: Variable
+        acceptedTypes:
+        - MathIn
+        - Variable
+        - CustomVariable
+        - BranchInValue
+        uid:
+        - Node11#0
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 1
+      minimized: 0
+      InstanceCache: 0
+      mRoot:
+        rid: 7980705436704440630
+      Type: 6
+    - mType: 0
+      Name: Math (Multiply)
+      Uid: Node11
+      Position: {x: 461.14285, y: -319.42856}
+      NodeIndex: 0
+      inputPort:
+      - Name: A
+        Type: MathIn
+        acceptedTypes:
+        - Variable
+        uid:
+        - Node10#0
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      - Name: B
+        Type: MathIn
+        acceptedTypes:
+        - Variable
+        uid:
+        - Node12#0
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      - Name: C
+        Type: MathIn
+        acceptedTypes:
+        - Variable
+        uid: []
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      outputPort:
+      - Name: Result
+        Type: Variable
+        acceptedTypes:
+        - MathIn
+        - Variable
+        - CustomVariable
+        - BranchInValue
+        uid:
+        - Node7#2
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 1
+      minimized: 0
+      InstanceCache: 0
+      mRoot:
+        rid: 7980705436704440630
+      Type: 2
+    Variables:
+    - mType: 0
+      Name: Variable (DynamicVariable)
+      Uid: Node5
+      Position: {x: -403.42856, y: -71.42857}
+      NodeIndex: 0
+      inputPort:
+      - Name: Entity
+        Type: EntityIn
+        acceptedTypes:
+        - EntityOut
+        uid: []
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 0
+      outputPort:
+      - Name: Variable
+        Type: Variable
+        acceptedTypes:
+        - Variable
+        - MathIn
+        - CustomVariable
+        - BranchInValue
+        uid:
+        - Node4#0
+        - Node9#1
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 1
+      minimized: 0
+      InstanceCache: 0
+      mRoot:
+        rid: 7980705436704440630
+      Type: 2
+      Constant: 0
+      AttributeKey: Attack
+      VariableUid: Layer
+      Max: 1
+    - mType: 0
+      Name: Variable (Constant)
+      Uid: Node6
+      Position: {x: -383.42856, y: 118.85714}
+      NodeIndex: 0
+      inputPort:
+      - Name: Entity
+        Type: EntityIn
+        acceptedTypes:
+        - EntityOut
+        uid: []
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 0
+      outputPort:
+      - Name: Variable
+        Type: Variable
+        acceptedTypes:
+        - Variable
+        - MathIn
+        - CustomVariable
+        - BranchInValue
+        uid:
+        - Node4#1
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 1
+      minimized: 0
+      InstanceCache: 0
+      mRoot:
+        rid: 7980705436704440630
+      Type: 0
+      Constant: 3
+      AttributeKey: Attack
+      VariableUid: 
+      Max: 1
+    - mType: 0
+      Name: Variable (Constant)
+      Uid: Node8
+      Position: {x: -383.42856, y: -455.42856}
+      NodeIndex: 0
+      inputPort:
+      - Name: Entity
+        Type: EntityIn
+        acceptedTypes:
+        - EntityOut
+        uid: []
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 0
+      outputPort:
+      - Name: Variable
+        Type: Variable
+        acceptedTypes:
+        - Variable
+        - MathIn
+        - CustomVariable
+        - BranchInValue
+        uid:
+        - Node9#0
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 1
+      minimized: 0
+      InstanceCache: 0
+      mRoot:
+        rid: 7980705436704440630
+      Type: 0
+      Constant: 0.25
+      AttributeKey: Attack
+      VariableUid: 
+      Max: 1
+    - mType: 4
+      Name: Variable (Constant)
+      Uid: Node12
+      Position: {x: 178.28572, y: -230.85715}
+      NodeIndex: 0
+      inputPort:
+      - Name: Entity
+        Type: EntityIn
+        acceptedTypes:
+        - EntityOut
+        uid: []
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 0
+      outputPort:
+      - Name: Variable
+        Type: Variable
+        acceptedTypes:
+        - Variable
+        - MathIn
+        - CustomVariable
+        - BranchInValue
+        uid:
+        - Node11#1
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 1
+      minimized: 0
+      InstanceCache: 0
+      mRoot:
+        rid: 7980705436704440630
+      Type: 0
+      Constant: 100
+      AttributeKey: Attack
+      VariableUid: 
+      Max: 1
+    - mType: 0
+      Name: Variable (Constant)
+      Uid: Node13
+      Position: {x: 469.7143, y: 23.428572}
+      NodeIndex: 0
+      inputPort:
+      - Name: Entity
+        Type: EntityIn
+        acceptedTypes:
+        - EntityOut
+        uid: []
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 0
+      outputPort:
+      - Name: Variable
+        Type: Variable
+        acceptedTypes:
+        - Variable
+        - MathIn
+        - CustomVariable
+        - BranchInValue
+        uid:
+        - Node1#2
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 1
+      minimized: 0
+      InstanceCache: 0
+      mRoot:
+        rid: 7980705436704440630
+      Type: 0
+      Constant: 1
+      AttributeKey: Attack
+      VariableUid: 
+      Max: 1
+    - mType: 0
+      Name: Variable (Constant)
+      Uid: Node15
+      Position: {x: 1209.1428, y: 138.85713}
+      NodeIndex: 0
+      inputPort:
+      - Name: Entity
+        Type: EntityIn
+        acceptedTypes:
+        - EntityOut
+        uid: []
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 0
+      outputPort:
+      - Name: Variable
+        Type: Variable
+        acceptedTypes:
+        - Variable
+        - MathIn
+        - CustomVariable
+        - BranchInValue
+        uid:
+        - Node14#2
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 1
+      minimized: 0
+      InstanceCache: 0
+      mRoot:
+        rid: 7980705436704440630
+      Type: 0
+      Constant: 2
+      AttributeKey: Attack
+      VariableUid: 
+      Max: 1
+    - mType: 0
+      Name: Variable (Random)
+      Uid: Node17
+      Position: {x: -1161.1428, y: 633.7143}
+      NodeIndex: 0
+      inputPort:
+      - Name: Entity
+        Type: EntityIn
+        acceptedTypes:
+        - EntityOut
+        uid: []
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 0
+      outputPort:
+      - Name: Variable
+        Type: Variable
+        acceptedTypes:
+        - Variable
+        - MathIn
+        - CustomVariable
+        - BranchInValue
+        uid:
+        - Node16#1
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 1
+      minimized: 0
+      InstanceCache: 0
+      mRoot:
+        rid: 7980705436704440630
+      Type: 3
+      Constant: 0
+      AttributeKey: Attack
+      VariableUid: 
+      Max: 100
+    - mType: 4
+      Name: Variable (Constant)
+      Uid: Node20
+      Position: {x: 469.7143, y: -136}
+      NodeIndex: 0
+      inputPort:
+      - Name: Entity
+        Type: EntityIn
+        acceptedTypes:
+        - EntityOut
+        uid: []
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 0
+      outputPort:
+      - Name: Variable
+        Type: Variable
+        acceptedTypes:
+        - Variable
+        - MathIn
+        - CustomVariable
+        - BranchInValue
+        uid:
+        - Node19#2
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 1
+      minimized: 0
+      InstanceCache: 0
+      mRoot:
+        rid: 7980705436704440630
+      Type: 0
+      Constant: 100
+      AttributeKey: Attack
+      VariableUid: 
+      Max: 1
+    Entities:
+    - mType: 0
+      Name: Entity (Target)
+      Uid: Node2
+      Position: {x: -1090.8572, y: -136.57143}
+      NodeIndex: 0
+      inputPort: []
+      outputPort:
+      - Name: Entity
+        Type: EntityOut
+        acceptedTypes:
+        - EntityIn
+        - BranchInEntity
+        uid:
+        - Node14#1
+        - Node16#0
+        - Node7#1
+        - Node1#1
+        - Node19#1
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 1
+      minimized: 0
+      InstanceCache: 0
+      mRoot:
+        rid: 7980705436704440630
+      Type: 2
+      EntityUid: 
+    Notes:
+    - Uid: 81191886
+      Name: Summary
+      Text: "This Frost DoT is a <color=#FFFF22>hard control</color> effect.\n\nThe
+        victim\u2019s <color=#22FFFF>resistance</color> attribute has a chance to
+        completely negate the effect, implemented using an <color=#22FF66>AttributeValue
+        Condition</color> as the trigger.\n\nThe Frost DoT supports stacking.\nIts
+        current stack count is automatically written into a Dynamic Variable: '<color=#FFFF22>Layer</color>'
+        by the OverTimeEffect system.\n\n<color=#FFFF22>Layer</color> < 3: Each layer
+        reduces movement speed by 25%\n\n<color=#FFFF22>Layer</color> \u2265 3: The
+        target is Frozen for 3 seconds\n\nWhen Frozen is applied, the Frost DoT is
+        removed, and the target\u2019s <color=#22FFFF>resistance</color> is temporarily
+        set to 100 for 4 seconds, preventing repeated <color=#FFFF22>hard control</color>
+        chains."
+      Position: {x: 3.4285715, y: -967.4286}
+      Size: {x: 877.1428, y: 577.1429}
+      FontSize: 1
+      Theme: 1
+    Groups: []
+    Branchs:
+    - mType: 0
+      Name: Branch (Action)
+      Uid: Node3
+      Position: {x: 469.7143, y: 217.71428}
+      NodeIndex: 0
+      inputPort:
+      - Name: Conditions
+        Type: BranchIn
+        acceptedTypes:
+        - ConditionOut
+        uid:
+        - Node4#0
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 1
+      - Name: Action
+        Type: BranchInAction
+        acceptedTypes:
+        - RootOut
+        - BranchOutAction
+        uid:
+        - Node0#0
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      - Name: False
+        Type: BranchInAction
+        acceptedTypes:
+        - RootOut
+        - BranchOutAction
+        uid: []
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      outputPort:
+      - Name: True
+        Type: BranchOutAction
+        acceptedTypes:
+        - ActionIn
+        - BranchInAction
+        uid:
+        - Node1#0
+        - Node14#0
+        - Node19#0
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 1
+      - Name: False
+        Type: BranchOutAction
+        acceptedTypes:
+        - ActionIn
+        - BranchInAction
+        uid:
+        - Node7#0
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 1
+      minimized: 0
+      InstanceCache: 0
+      mRoot:
+        rid: 7980705436704440630
+      Type: 2
+      Handlers: []
+    ActiveTriggers: []
+  autoSave: 0
+  NodeIconSprites:
+  - {fileID: 580834057, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  - {fileID: 1828930907, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  - {fileID: -450080446, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  - {fileID: 936707919, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  - {fileID: -910347496, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  - {fileID: 2009228480, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  - {fileID: -787081704, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  ActionClassNames:
+  - Animation
+  - AttributeChange
+  - Destroy
+  - Event
+  - Instantiate
+  - OverTimeEffect
+  - PlaySound
+  - SendMessage
+  - Teleport
+  - TempAttributeChange
+  - Transform
+  HandlerClassNames:
+  - AngleDifference
+  - AttributeValue
+  - Distance
+  - EntityExist
+  - HeightDifference
+  - OverTimeEffect
+  - Raycast
+  - TagCompare
+  - Tag
+  - VariableCompare
+  RootClassNames:
+  - Combat
+  pendingSave: 0
+  summaryNoteId: 81191886
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 7980705436704440630
+      type: {class: Root, ns: SoftKitty, asm: Assembly-CSharp}
+      data:
+        mType: 0
+        Name: Root
+        Uid: Node0
+        Position: {x: 0.5714286, y: 362.28574}
+        NodeIndex: 0
+        inputPort:
+        - Name: Trigger
+          Type: RootIn
+          acceptedTypes:
+          - TriggerOut
+          uid:
+          - Node18#0
+          connectedNodes: []
+          allowMutipleConnection: 1
+          createByDefault: 1
+        outputPort:
+        - Name: Action
+          Type: RootOut
+          acceptedTypes:
+          - ActionIn
+          - BranchInAction
+          uid:
+          - Node3#1
+          connectedNodes: []
+          allowMutipleConnection: 1
+          createByDefault: 1
+        minimized: 0
+        InstanceCache: 0
+        mRoot:
+          rid: -2
+        ClassName: Combat
+        IntValues: 
+        FloatValues: []
+        StringValues: []
+        BoolValues: 
+        CustomInterface:
+          Elements:
+          - Uid: Element2
+            Label: 
+            ToolTips: 
+            Type: 6
+            Index: 0
+            VisibleBind: 
+            EnumOptions: []
+          - Uid: Element0
+            Label: When the conditions matchs,
+            ToolTips: 
+            Type: 5
+            Index: 0
+            VisibleBind: 
+            EnumOptions: []
+          - Uid: Element1
+            Label: The actions will be performed.
+            ToolTips: 
+            Type: 5
+            Index: 1
+            VisibleBind: 
+            EnumOptions: []
+        Actions:
+        - mType: 0
+          Name: Action
+          Uid: Node1
+          Position: {x: 918.2857, y: -10.857143}
+          NodeIndex: 0
+          inputPort:
+          - Name: Action
+            Type: ActionIn
+            acceptedTypes:
+            - RootOut
+            - BranchOutAction
+            uid:
+            - Node3#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: 1
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid:
+            - Node2#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: 2
+            Type: CustomVariable
+            acceptedTypes:
+            - Variable
+            uid:
+            - Node13#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          outputPort: []
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 7980705436704440630
+          ClassName: AttributeChange
+          IntValues: 00000000
+          FloatValues: []
+          StringValues:
+          - forzen
+          BoolValues: 
+          CustomInterface:
+            Elements:
+            - Uid: entity
+              Label: Entity
+              ToolTips: The entity to change the attribute.
+              Type: 8
+              Index: 0
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: uid
+              Label: Attribute Key
+              ToolTips: The script key of the attribute.
+              Type: 1
+              Index: 0
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: operation
+              Label: Operation
+              ToolTips: operation of the input value and existing value.
+              Type: 7
+              Index: 0
+              VisibleBind: 
+              EnumOptions:
+              - Override
+              - Add
+              - Multiply
+              - Substract
+            - Uid: value
+              Label: Attribute Value
+              ToolTips: The input value to calculate with the existing value.
+              Type: 4
+              Index: 1
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: Element3
+              Label: Add to the existing value.
+              ToolTips: 
+              Type: 5
+              Index: 0
+              VisibleBind: operation#1
+              EnumOptions: []
+            - Uid: Element4
+              Label: Replace the existing value.
+              ToolTips: 
+              Type: 5
+              Index: 1
+              VisibleBind: operation#0
+              EnumOptions: []
+            - Uid: Element5
+              Label: Multiply the existing value.
+              ToolTips: 
+              Type: 5
+              Index: 2
+              VisibleBind: operation#2
+              EnumOptions: []
+            - Uid: Element7
+              Label: Use the existing value to substract the input value.
+              ToolTips: 
+              Type: 5
+              Index: 3
+              VisibleBind: operation#3
+              EnumOptions: []
+          Type: 0
+          Count: 1
+          WaitTime: 0
+          KeepTime: 0
+          Interval: 0
+        - mType: 0
+          Name: Action
+          Uid: Node7
+          Position: {x: 918.2857, y: 397.7143}
+          NodeIndex: 0
+          inputPort:
+          - Name: Action
+            Type: ActionIn
+            acceptedTypes:
+            - RootOut
+            - BranchOutAction
+            uid:
+            - Node3#1
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: 1
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid:
+            - Node2#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: 2
+            Type: CustomVariable
+            acceptedTypes:
+            - Variable
+            uid:
+            - Node11#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          outputPort: []
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: -2
+          ClassName: AttributeChange
+          IntValues: 00000000
+          FloatValues: []
+          StringValues:
+          - speed
+          BoolValues: 
+          CustomInterface:
+            Elements:
+            - Uid: entity
+              Label: Entity
+              ToolTips: The entity to change the attribute.
+              Type: 8
+              Index: 0
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: uid
+              Label: Attribute Key
+              ToolTips: The script key of the attribute.
+              Type: 1
+              Index: 0
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: operation
+              Label: Operation
+              ToolTips: operation of the input value and existing value.
+              Type: 7
+              Index: 0
+              VisibleBind: 
+              EnumOptions:
+              - Override
+              - Add
+              - Multiply
+              - Substract
+            - Uid: value
+              Label: Attribute Value
+              ToolTips: The input value to calculate with the existing value.
+              Type: 4
+              Index: 1
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: Element3
+              Label: Add to the existing value.
+              ToolTips: 
+              Type: 5
+              Index: 0
+              VisibleBind: operation#1
+              EnumOptions: []
+            - Uid: Element4
+              Label: Replace the existing value.
+              ToolTips: 
+              Type: 5
+              Index: 1
+              VisibleBind: operation#0
+              EnumOptions: []
+            - Uid: Element5
+              Label: Multiply the existing value.
+              ToolTips: 
+              Type: 5
+              Index: 2
+              VisibleBind: operation#2
+              EnumOptions: []
+            - Uid: Element7
+              Label: Use the existing value to substract the input value.
+              ToolTips: 
+              Type: 5
+              Index: 3
+              VisibleBind: operation#3
+              EnumOptions: []
+          Type: 0
+          Count: 1
+          WaitTime: 0
+          KeepTime: 0
+          Interval: 0
+        - mType: 0
+          Name: Action
+          Uid: Node14
+          Position: {x: 1493.7142, y: -256.57144}
+          NodeIndex: 0
+          inputPort:
+          - Name: Action
+            Type: ActionIn
+            acceptedTypes:
+            - RootOut
+            - BranchOutAction
+            uid: []
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: 1
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid:
+            - Node2#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: 2
+            Type: CustomVariable
+            acceptedTypes:
+            - Variable
+            uid:
+            - Node15#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          outputPort: []
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 7980705436704440630
+          ClassName: OverTimeEffect
+          IntValues: 01000000
+          FloatValues: []
+          StringValues:
+          - 
+          BoolValues: 
+          CustomInterface:
+            Elements:
+            - Uid: entity
+              Label: Entity
+              ToolTips: The target entity.
+              Type: 8
+              Index: 0
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: index
+              Label: Effect Index
+              ToolTips: The index of the over time effect.
+              Type: 4
+              Index: 1
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: action
+              Label: Action Type
+              ToolTips: The type of the action.
+              Type: 7
+              Index: 0
+              VisibleBind: 
+              EnumOptions:
+              - Add Effect
+              - Dispell Effect
+          Type: 1
+          Count: 4
+          WaitTime: 0.1
+          KeepTime: 0
+          Interval: 0
+        Triggers:
+        - mType: 0
+          Name: Trigger
+          Uid: Node18
+          Position: {x: -413.7143, y: 362.28574}
+          NodeIndex: 0
+          inputPort:
+          - Name: Conditions To Trigger
+            Type: TriggerIn
+            acceptedTypes:
+            - ConditionOut
+            uid:
+            - Node16#0
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          - Name: Conditions To Reset
+            Type: TriggerIn
+            acceptedTypes:
+            - ConditionOut
+            uid: []
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 0
+          outputPort:
+          - Name: Trigger
+            Type: TriggerOut
+            acceptedTypes:
+            - RootIn
+            uid:
+            - Node0#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 7980705436704440630
+          TriggerConditions: []
+          ResetConditions: []
+          AutoReset: 1
+        ConditionGroups: []
+        Handlers:
+        - mType: 0
+          Name: Condition
+          Uid: Node4
+          Position: {x: 0.5714286, y: -22.857143}
+          NodeIndex: 0
+          inputPort:
+          - Name: 0
+            Type: CustomVariable
+            acceptedTypes:
+            - Variable
+            uid:
+            - Node5#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: 1
+            Type: CustomVariable
+            acceptedTypes:
+            - Variable
+            uid:
+            - Node6#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          outputPort:
+          - Name: Condition
+            Type: ConditionOut
+            acceptedTypes:
+            - TriggerIn
+            - ConditionIn
+            - BranchIn
+            uid:
+            - Node3#0
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 7980705436704440630
+          ClassName: VariableCompare
+          IntValues: 01000000
+          FloatValues: []
+          StringValues:
+          - 
+          BoolValues: 
+          CustomInterface:
+            Elements:
+            - Uid: var1
+              Label: Variable A
+              ToolTips: Variable for comparison.
+              Type: 4
+              Index: 0
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: var2
+              Label: Variable B
+              ToolTips: Variable for comparison.
+              Type: 4
+              Index: 1
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: logic
+              Label: Comparison Method
+              ToolTips: Comparison logic for A xxx B.
+              Type: 7
+              Index: 0
+              VisibleBind: 
+              EnumOptions:
+              - Greater
+              - Greater Or Equal
+              - Equal
+              - Less Or Equal
+              - Less
+              - Different
+          ClassType: 0
+          StateType: 0
+          xTimeCount: 1
+          HandlerIndex: 0
+        - mType: 0
+          Name: Condition
+          Uid: Node16
+          Position: {x: -789.1429, y: 362.28574}
+          NodeIndex: 0
+          inputPort:
+          - Name: 0
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid:
+            - Node2#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: 1
+            Type: CustomVariable
+            acceptedTypes:
+            - Variable
+            uid:
+            - Node17#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          outputPort:
+          - Name: Condition
+            Type: ConditionOut
+            acceptedTypes:
+            - TriggerIn
+            - ConditionIn
+            - BranchIn
+            uid:
+            - Node18#0
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 7980705436704440630
+          ClassName: AttributeValue
+          IntValues: 04000000
+          FloatValues: []
+          StringValues:
+          - resist
+          BoolValues: 
+          CustomInterface:
+            Elements:
+            - Uid: entity
+              Label: Entity
+              ToolTips: The owner of the attribute.
+              Type: 8
+              Index: 0
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: key
+              Label: Attribute Key
+              ToolTips: The script key of the attribute
+              Type: 1
+              Index: 0
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: logic
+              Label: Comparison
+              ToolTips: The logic type of the comparison.
+              Type: 7
+              Index: 0
+              VisibleBind: 
+              EnumOptions:
+              - Greater
+              - Greater Or Equal
+              - Equal
+              - Less Or Equal
+              - Less
+            - Uid: value
+              Label: Compare Value
+              ToolTips: The value to compare with.
+              Type: 4
+              Index: 1
+              VisibleBind: 
+              EnumOptions: []
+          ClassType: 0
+          StateType: 0
+          xTimeCount: 1
+          HandlerIndex: 0
+        Maths:
+        - mType: 0
+          Name: Math (Multiply)
+          Uid: Node9
+          Position: {x: -103.42857, y: -354.85715}
+          NodeIndex: 0
+          inputPort:
+          - Name: A
+            Type: MathIn
+            acceptedTypes:
+            - Variable
+            uid:
+            - Node8#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: B
+            Type: MathIn
+            acceptedTypes:
+            - Variable
+            uid:
+            - Node5#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: C
+            Type: MathIn
+            acceptedTypes:
+            - Variable
+            uid: []
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          outputPort:
+          - Name: Result
+            Type: Variable
+            acceptedTypes:
+            - MathIn
+            - Variable
+            - CustomVariable
+            - BranchInValue
+            uid:
+            - Node10#0
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 7980705436704440630
+          Type: 2
+        - mType: 0
+          Name: Math (OneMinus)
+          Uid: Node10
+          Position: {x: 178.28572, y: -354.85715}
+          NodeIndex: 0
+          inputPort:
+          - Name: A
+            Type: MathIn
+            acceptedTypes:
+            - Variable
+            uid:
+            - Node9#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: B
+            Type: MathIn
+            acceptedTypes:
+            - Variable
+            uid: []
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: C
+            Type: MathIn
+            acceptedTypes:
+            - Variable
+            uid: []
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          outputPort:
+          - Name: Result
+            Type: Variable
+            acceptedTypes:
+            - MathIn
+            - Variable
+            - CustomVariable
+            - BranchInValue
+            uid:
+            - Node11#0
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 7980705436704440630
+          Type: 6
+        - mType: 0
+          Name: Math (Multiply)
+          Uid: Node11
+          Position: {x: 461.14285, y: -319.42856}
+          NodeIndex: 0
+          inputPort:
+          - Name: A
+            Type: MathIn
+            acceptedTypes:
+            - Variable
+            uid:
+            - Node10#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: B
+            Type: MathIn
+            acceptedTypes:
+            - Variable
+            uid:
+            - Node12#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: C
+            Type: MathIn
+            acceptedTypes:
+            - Variable
+            uid: []
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          outputPort:
+          - Name: Result
+            Type: Variable
+            acceptedTypes:
+            - MathIn
+            - Variable
+            - CustomVariable
+            - BranchInValue
+            uid:
+            - Node7#2
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 7980705436704440630
+          Type: 2
+        Variables:
+        - mType: 0
+          Name: Variable (DynamicVariable)
+          Uid: Node5
+          Position: {x: -413.7143, y: -71.42857}
+          NodeIndex: 0
+          inputPort:
+          - Name: Entity
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid: []
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 0
+          outputPort:
+          - Name: Variable
+            Type: Variable
+            acceptedTypes:
+            - Variable
+            - MathIn
+            - CustomVariable
+            - BranchInValue
+            uid:
+            - Node4#0
+            - Node9#1
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 7980705436704440630
+          Type: 2
+          Constant: 0
+          AttributeKey: Attack
+          VariableUid: Layer
+          Max: 1
+        - mType: 0
+          Name: Variable (Constant)
+          Uid: Node6
+          Position: {x: -383.42856, y: 118.85714}
+          NodeIndex: 0
+          inputPort:
+          - Name: Entity
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid: []
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 0
+          outputPort:
+          - Name: Variable
+            Type: Variable
+            acceptedTypes:
+            - Variable
+            - MathIn
+            - CustomVariable
+            - BranchInValue
+            uid:
+            - Node4#1
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 7980705436704440630
+          Type: 0
+          Constant: 3
+          AttributeKey: Attack
+          VariableUid: 
+          Max: 1
+        - mType: 0
+          Name: Variable (Constant)
+          Uid: Node8
+          Position: {x: -383.42856, y: -455.42856}
+          NodeIndex: 0
+          inputPort:
+          - Name: Entity
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid: []
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 0
+          outputPort:
+          - Name: Variable
+            Type: Variable
+            acceptedTypes:
+            - Variable
+            - MathIn
+            - CustomVariable
+            - BranchInValue
+            uid:
+            - Node9#0
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 7980705436704440630
+          Type: 0
+          Constant: 0.25
+          AttributeKey: Attack
+          VariableUid: 
+          Max: 1
+        - mType: 4
+          Name: Variable (Constant)
+          Uid: Node12
+          Position: {x: 178.28572, y: -230.85715}
+          NodeIndex: 0
+          inputPort:
+          - Name: Entity
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid: []
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 0
+          outputPort:
+          - Name: Variable
+            Type: Variable
+            acceptedTypes:
+            - Variable
+            - MathIn
+            - CustomVariable
+            - BranchInValue
+            uid:
+            - Node11#1
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 7980705436704440630
+          Type: 0
+          Constant: 100
+          AttributeKey: Attack
+          VariableUid: 
+          Max: 1
+        - mType: 0
+          Name: Variable (Constant)
+          Uid: Node13
+          Position: {x: 469.7143, y: -0.5714302}
+          NodeIndex: 0
+          inputPort:
+          - Name: Entity
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid: []
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 0
+          outputPort:
+          - Name: Variable
+            Type: Variable
+            acceptedTypes:
+            - Variable
+            - MathIn
+            - CustomVariable
+            - BranchInValue
+            uid:
+            - Node1#2
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 7980705436704440630
+          Type: 0
+          Constant: 3
+          AttributeKey: Attack
+          VariableUid: 
+          Max: 1
+        - mType: 0
+          Name: Variable (Constant)
+          Uid: Node15
+          Position: {x: 1209.1428, y: 138.85713}
+          NodeIndex: 0
+          inputPort:
+          - Name: Entity
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid: []
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 0
+          outputPort:
+          - Name: Variable
+            Type: Variable
+            acceptedTypes:
+            - Variable
+            - MathIn
+            - CustomVariable
+            - BranchInValue
+            uid:
+            - Node14#2
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 7980705436704440630
+          Type: 0
+          Constant: 2
+          AttributeKey: Attack
+          VariableUid: 
+          Max: 1
+        - mType: 0
+          Name: Variable (Random)
+          Uid: Node17
+          Position: {x: -1161.1428, y: 633.7143}
+          NodeIndex: 0
+          inputPort:
+          - Name: Entity
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid: []
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 0
+          outputPort:
+          - Name: Variable
+            Type: Variable
+            acceptedTypes:
+            - Variable
+            - MathIn
+            - CustomVariable
+            - BranchInValue
+            uid:
+            - Node16#1
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 7980705436704440630
+          Type: 3
+          Constant: 0
+          AttributeKey: Attack
+          VariableUid: 
+          Max: 100
+        Entities:
+        - mType: 0
+          Name: Entity (Target)
+          Uid: Node2
+          Position: {x: -1090.8572, y: -136.57143}
+          NodeIndex: 0
+          inputPort: []
+          outputPort:
+          - Name: Entity
+            Type: EntityOut
+            acceptedTypes:
+            - EntityIn
+            - BranchInEntity
+            uid:
+            - Node1#1
+            - Node7#1
+            - Node14#1
+            - Node16#0
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 7980705436704440630
+          Type: 2
+          EntityUid: 
+        Notes:
+        - Uid: 81191886
+          Name: Summary
+          Text: 'This is a frost DoT example.
+
+
+            Because this is a hard
+            control DoT, the resistance attribute of the victim can help immune to
+            this effect randomly. We used a AttributeValue condition as trigger to
+            achieve this.
+
+
+            The forst DoT can be layered, the layer count
+            will be auto wrote into a Dynamic Variable called ''Layer'' by the OverTimeEffect
+            system,  So we read this layer count in this graph, when it is less than
+            3, we reduce the moving speed of the victim by 25% each layer. When it
+            is greater or equal than 3, we put the victim in forzen state for 3 seconds
+            and remove this DoT from the victim.'
+          Position: {x: 142.28572, y: -845.7143}
+          Size: {x: 853.1429, y: 452.00003}
+          FontSize: 1
+          Theme: 1
+        Groups: []
+        Branchs:
+        - mType: 0
+          Name: Branch (Action)
+          Uid: Node3
+          Position: {x: 469.7143, y: 217.71428}
+          NodeIndex: 0
+          inputPort:
+          - Name: Conditions
+            Type: BranchIn
+            acceptedTypes:
+            - ConditionOut
+            uid:
+            - Node4#0
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          - Name: Action
+            Type: BranchInAction
+            acceptedTypes:
+            - RootOut
+            - BranchOutAction
+            uid:
+            - Node0#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: False
+            Type: BranchInAction
+            acceptedTypes:
+            - RootOut
+            - BranchOutAction
+            uid: []
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          outputPort:
+          - Name: True
+            Type: BranchOutAction
+            acceptedTypes:
+            - ActionIn
+            - BranchInAction
+            uid:
+            - Node1#0
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          - Name: False
+            Type: BranchOutAction
+            acceptedTypes:
+            - ActionIn
+            - BranchInAction
+            uid:
+            - Node7#0
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 7980705436704440630
+          Type: 2
+          Handlers: []
+        ActiveTriggers: []

@@ -1,0 +1,4 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/SoftKitty/Shared/Editor/Graph/Style/Node.uss?fileID=7433441132597879392&amp;guid=e09e757ca5a251142b749eebf4515fd2&amp;type=3#Node" />
+    <engine:VisualElement name="Item" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/SoftKitty/Shared/Sprites/Shared_ui.png?fileID=974481679&amp;guid=cec9663a2fad9b64abe1c9eb3d3def57&amp;type=3#LineH&quot;); height: 4px; max-height: 4px; min-height: 4px; -unity-background-scale-mode: stretch-to-fill; margin-left: 13px; margin-right: 13px; margin-top: 8px; margin-bottom: 8px; -unity-background-image-tint-color: rgb(104, 104, 104); display: flex;" />
+</engine:UXML>

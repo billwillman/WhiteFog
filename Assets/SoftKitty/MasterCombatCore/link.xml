@@ -1,0 +1,29 @@
+<linker>
+  <!-- Built-in graph classes are resolved from serialized class names at runtime. -->
+  <assembly fullname="Assembly-CSharp">
+    <type fullname="SoftKitty.CombatRoot" preserve="all" />
+    <type fullname="SoftKitty.AnimationAction" preserve="all" />
+    <type fullname="SoftKitty.AttributeChangeAction" preserve="all" />
+    <type fullname="SoftKitty.CustomDataAction" preserve="all" />
+    <type fullname="SoftKitty.DestroyAction" preserve="all" />
+    <type fullname="SoftKitty.EventAction" preserve="all" />
+    <type fullname="SoftKitty.InstantiateAction" preserve="all" />
+    <type fullname="SoftKitty.OverTimeEffectAction" preserve="all" />
+    <type fullname="SoftKitty.PlaySoundAction" preserve="all" />
+    <type fullname="SoftKitty.SendMessageAction" preserve="all" />
+    <type fullname="SoftKitty.TeleportAction" preserve="all" />
+    <type fullname="SoftKitty.TempAttributeChangeAction" preserve="all" />
+    <type fullname="SoftKitty.TransformAction" preserve="all" />
+    <type fullname="SoftKitty.AngleDifferenceHandler" preserve="all" />
+    <type fullname="SoftKitty.AttributeValueHandler" preserve="all" />
+    <type fullname="SoftKitty.CustomDataHandler" preserve="all" />
+    <type fullname="SoftKitty.DistanceHandler" preserve="all" />
+    <type fullname="SoftKitty.EntityExistHandler" preserve="all" />
+    <type fullname="SoftKitty.HeightDifferenceHandler" preserve="all" />
+    <type fullname="SoftKitty.OverTimeEffectHandler" preserve="all" />
+    <type fullname="SoftKitty.RaycastHandler" preserve="all" />
+    <type fullname="SoftKitty.TagCompareHandler" preserve="all" />
+    <type fullname="SoftKitty.TagHandler" preserve="all" />
+    <type fullname="SoftKitty.VariableCompareHandler" preserve="all" />
+  </assembly>
+</linker>

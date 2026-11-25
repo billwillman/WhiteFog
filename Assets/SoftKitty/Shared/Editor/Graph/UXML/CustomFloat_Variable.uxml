@@ -1,0 +1,4 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/SoftKitty/Shared/Editor/Graph/Style/Node.uss?fileID=7433441132597879392&amp;guid=e09e757ca5a251142b749eebf4515fd2&amp;type=3#Node" />
+    <engine:FloatField label="浮点数" value="0" name="Item" data-source-type="SoftKitty.Action, Assembly-CSharp" data-source-path="WaitTime" tooltip="动作开始前要等待的秒数。" max-length="8" style="height: 30px; display: flex;" />
+</engine:UXML>

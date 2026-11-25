@@ -1,0 +1,38 @@
+using UnityEngine;
+using System.Collections.Generic;
+
+namespace SoftKitty
+{
+    [CreateAssetMenu(fileName = "GraphObject", menuName = "Soft Kitty/技能图")]
+    public class GraphObject : GraphBase
+    {
+        public Root RootSet;
+        public bool autoSave = false;
+        [HideInInspector]
+        public List<Sprite> NodeIconSprites = new List<Sprite>();//0-Root 1-Node 2-Logic 3-Math 4-Variable 5-Entity
+        [HideInInspector]
+        public List<string> ActionClassNames = new List<string>();
+        [HideInInspector]
+        public List<string> HandlerClassNames = new List<string>();
+        [HideInInspector]
+        public List<string> RootClassNames = new List<string>();
+        [HideInInspector]
+        public bool pendingSave = false;
+        [HideInInspector]
+        public string summaryNoteId = "";
+
+        [HideInInspector]
+        public string GetSummary
+        {
+            get
+            {
+                if (RootSet == null || string.IsNullOrEmpty(summaryNoteId)) return "";
+                foreach (var obj in RootSet.Notes) {
+                    if (obj.Uid == summaryNoteId) return obj.Text;
+                }
+                return "";
+            }
+        }
+
+    }
+}

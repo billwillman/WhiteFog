@@ -1,0 +1,1 @@
+﻿{"Elements":[{"Uid":"entity","Label":"Entity","ToolTips":"The entity to check existence.","Type":8,"Index":0,"VisibleBind":"","EnumOptions":[]},{"Uid":"logic","Label":"Logic","ToolTips":"The logic for verification.","Type":7,"Index":0,"VisibleBind":"","EnumOptions":["Existent","Nonexistent"]}]}
