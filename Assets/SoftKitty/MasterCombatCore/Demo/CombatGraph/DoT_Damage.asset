@@ -1,0 +1,1596 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fe0be65fc07ae641aa26c8a82c52614, type: 3}
+  m_Name: DoT_Damage
+  m_EditorClassIdentifier: Assembly-CSharp::SoftKitty.GraphObject
+  RootSet:
+    mType: 0
+    Name: Root
+    Uid: Node0
+    Position: {x: 0, y: -29.714287}
+    NodeIndex: 0
+    inputPort:
+    - Name: Trigger
+      Type: RootIn
+      acceptedTypes:
+      - TriggerOut
+      uid: []
+      connectedNodes: []
+      allowMutipleConnection: 1
+      createByDefault: 1
+    outputPort:
+    - Name: Action
+      Type: RootOut
+      acceptedTypes:
+      - ActionIn
+      - BranchInAction
+      uid:
+      - Node1#0
+      - Node4#0
+      connectedNodes: []
+      allowMutipleConnection: 1
+      createByDefault: 1
+    minimized: 0
+    InstanceCache: 0
+    mRoot:
+      rid: -2
+    ClassName: Combat
+    IntValues: 
+    FloatValues: []
+    StringValues: []
+    BoolValues: 
+    CustomInterface:
+      Elements:
+      - Uid: Element2
+        Label: 
+        ToolTips: 
+        Type: 6
+        Index: 0
+        VisibleBind: 
+        EnumOptions: []
+      - Uid: Element0
+        Label: When the conditions matchs,
+        ToolTips: 
+        Type: 5
+        Index: 0
+        VisibleBind: 
+        EnumOptions: []
+      - Uid: Element1
+        Label: The actions will be performed.
+        ToolTips: 
+        Type: 5
+        Index: 1
+        VisibleBind: 
+        EnumOptions: []
+    Actions:
+    - mType: 0
+      Name: Action
+      Uid: Node1
+      Position: {x: 465.14285, y: -29.714287}
+      NodeIndex: 0
+      inputPort:
+      - Name: Action
+        Type: ActionIn
+        acceptedTypes:
+        - RootOut
+        - BranchOutAction
+        uid:
+        - Node0#0
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      - Name: 1
+        Type: EntityIn
+        acceptedTypes:
+        - EntityOut
+        uid:
+        - Node2#0
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      - Name: 2
+        Type: CustomVariable
+        acceptedTypes:
+        - Variable
+        uid:
+        - Node6#0
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      outputPort: []
+      minimized: 0
+      InstanceCache: 0
+      mRoot:
+        rid: 7980705436704440629
+      ClassName: AttributeChange
+      IntValues: 03000000
+      FloatValues: []
+      StringValues:
+      - chp
+      BoolValues: 
+      CustomInterface:
+        Elements:
+        - Uid: entity
+          Label: Entity
+          ToolTips: The entity to change the attribute.
+          Type: 8
+          Index: 0
+          VisibleBind: 
+          EnumOptions: []
+        - Uid: uid
+          Label: Attribute UID
+          ToolTips: The uid of the attribute.
+          Type: 1
+          Index: 0
+          VisibleBind: 
+          EnumOptions: []
+        - Uid: operation
+          Label: Operation
+          ToolTips: operation of the input value and existing value.
+          Type: 7
+          Index: 0
+          VisibleBind: 
+          EnumOptions:
+          - Override
+          - Add
+          - Multiply
+          - Substract
+        - Uid: value
+          Label: Attribute Value
+          ToolTips: The input value to calculate with the existing value.
+          Type: 4
+          Index: 1
+          VisibleBind: 
+          EnumOptions: []
+        - Uid: Element3
+          Label: Add to the existing value.
+          ToolTips: 
+          Type: 5
+          Index: 0
+          VisibleBind: operation#1
+          EnumOptions: []
+        - Uid: Element4
+          Label: Replace the existing value.
+          ToolTips: 
+          Type: 5
+          Index: 1
+          VisibleBind: operation#0
+          EnumOptions: []
+        - Uid: Element5
+          Label: Multiply the existing value.
+          ToolTips: 
+          Type: 5
+          Index: 2
+          VisibleBind: operation#2
+          EnumOptions: []
+        - Uid: Element7
+          Label: Use the existing value to substract the input value.
+          ToolTips: 
+          Type: 5
+          Index: 3
+          VisibleBind: operation#3
+          EnumOptions: []
+      Type: 0
+      Count: 1
+      WaitTime: 0
+      KeepTime: 0
+      Interval: 0
+    - mType: 0
+      Name: Action
+      Uid: Node4
+      Position: {x: 465.14285, y: 397.7143}
+      NodeIndex: 0
+      inputPort:
+      - Name: Action
+        Type: ActionIn
+        acceptedTypes:
+        - RootOut
+        - BranchOutAction
+        uid:
+        - Node0#0
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      - Name: 1
+        Type: EntityIn
+        acceptedTypes:
+        - EntityOut
+        uid:
+        - Node2#0
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      - Name: 2
+        Type: CustomVariable
+        acceptedTypes:
+        - Variable
+        uid:
+        - Node6#0
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      - Name: 3
+        Type: EntityIn
+        acceptedTypes:
+        - EntityOut
+        uid: []
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      outputPort: []
+      minimized: 0
+      InstanceCache: 0
+      mRoot:
+        rid: 7980705436704441121
+      ClassName: Event
+      IntValues: 00000000
+      FloatValues: []
+      StringValues:
+      - Damage
+      BoolValues: 01000100
+      CustomInterface:
+        Elements:
+        - Uid: entity
+          Label: Entity to recieve event
+          ToolTips: Entity to recieve the event.
+          Type: 8
+          Index: 0
+          VisibleBind: 
+          EnumOptions: []
+        - Uid: eventUid
+          Label: Event Unique Name
+          ToolTips: The unique name of the event, please not to include space and
+            special characters.
+          Type: 1
+          Index: 0
+          VisibleBind: 
+          EnumOptions: []
+        - Uid: enableFloatArg
+          Label: Enable Float Arg
+          ToolTips: Call the event with connected float value as arg.
+          Type: 0
+          Index: 0
+          VisibleBind: 
+          EnumOptions: []
+        - Uid: floatArg
+          Label: <Arg> Float
+          ToolTips: Call the event with connected float value as arg.
+          Type: 4
+          Index: 1
+          VisibleBind: enableFloatArg
+          EnumOptions: []
+        - Uid: enableEntityArg
+          Label: Enable Entity Arg
+          ToolTips: Call the event with connected entity as arg.
+          Type: 0
+          Index: 1
+          VisibleBind: 
+          EnumOptions: []
+        - Uid: entityArg
+          Label: <Arg> Entity
+          ToolTips: Call the event with connected entity as arg.
+          Type: 8
+          Index: 2
+          VisibleBind: enableEntityArg
+          EnumOptions: []
+        - Uid: enableBoolArg
+          Label: Enable Bool Arg
+          ToolTips: Call the event with a bool value as arg.
+          Type: 0
+          Index: 2
+          VisibleBind: 
+          EnumOptions: []
+        - Uid: boolArg
+          Label: <Arg> Bool
+          ToolTips: Call the event with a bool value as arg.
+          Type: 0
+          Index: 3
+          VisibleBind: enableBoolArg
+          EnumOptions: []
+      Type: 0
+      Count: 1
+      WaitTime: 0
+      KeepTime: 0
+      Interval: 0
+    Triggers: []
+    ConditionGroups: []
+    Handlers: []
+    Maths:
+    - mType: 0
+      Name: Math (Multiply)
+      Uid: Node6
+      Position: {x: 36.57143, y: 444.57144}
+      NodeIndex: 0
+      inputPort:
+      - Name: A
+        Type: MathIn
+        acceptedTypes:
+        - Variable
+        uid:
+        - Node3#0
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      - Name: B
+        Type: MathIn
+        acceptedTypes:
+        - Variable
+        uid:
+        - Node5#0
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      - Name: C
+        Type: MathIn
+        acceptedTypes:
+        - Variable
+        uid: []
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      outputPort:
+      - Name: Result
+        Type: Variable
+        acceptedTypes:
+        - MathIn
+        - Variable
+        - CustomVariable
+        - BranchInValue
+        uid:
+        - Node1#2
+        - Node4#2
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 1
+      minimized: 0
+      InstanceCache: 0
+      mRoot:
+        rid: 7980705490982142377
+      Type: 2
+    Variables:
+    - mType: 0
+      Name: Variable (DynamicVariable)
+      Uid: Node3
+      Position: {x: -280, y: 329.7143}
+      NodeIndex: 0
+      inputPort:
+      - Name: Entity
+        Type: EntityIn
+        acceptedTypes:
+        - EntityOut
+        uid: []
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 0
+      outputPort:
+      - Name: Variable
+        Type: Variable
+        acceptedTypes:
+        - Variable
+        - MathIn
+        - CustomVariable
+        - BranchInValue
+        uid:
+        - Node6#0
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 1
+      minimized: 0
+      InstanceCache: 0
+      mRoot:
+        rid: 7980705436704440629
+      Type: 2
+      Constant: 1
+      AttributeKey: Attack
+      VariableUid: damage
+      Max: 1
+    - mType: 0
+      Name: Variable (Constant)
+      Uid: Node5
+      Position: {x: -280, y: 533.1429}
+      NodeIndex: 0
+      inputPort:
+      - Name: Entity
+        Type: EntityIn
+        acceptedTypes:
+        - EntityOut
+        uid: []
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 0
+      outputPort:
+      - Name: Variable
+        Type: Variable
+        acceptedTypes:
+        - Variable
+        - MathIn
+        - CustomVariable
+        - BranchInValue
+        uid:
+        - Node6#1
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 1
+      minimized: 0
+      InstanceCache: 0
+      mRoot:
+        rid: 7980705490982142377
+      Type: 2
+      Constant: 0
+      AttributeKey: Attack
+      VariableUid: Layer
+      Max: 1
+    Entities:
+    - mType: 0
+      Name: Entity (Target)
+      Uid: Node2
+      Position: {x: 0, y: 200.57143}
+      NodeIndex: 0
+      inputPort: []
+      outputPort:
+      - Name: Entity
+        Type: EntityOut
+        acceptedTypes:
+        - EntityIn
+        - BranchInEntity
+        uid:
+        - Node1#1
+        - Node4#1
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 1
+      minimized: 0
+      InstanceCache: 0
+      mRoot:
+        rid: 7980705436704440629
+      Type: 2
+      EntityUid: 
+    Notes:
+    - Uid: 37261170
+      Name: Summary
+      Text: 'This is a simple damage DoT example.
+
+        It reduce the Target''s
+        health value every tick by the value set by [Dynamic Variable]  ''damage''
+        .'
+      Position: {x: -38.857143, y: -297.71426}
+      Size: {x: 779.4285, y: 237.14285}
+      FontSize: 1
+      Theme: 1
+    Groups: []
+    Branchs: []
+    ActiveTriggers: []
+  autoSave: 0
+  NodeIconSprites:
+  - {fileID: 580834057, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  - {fileID: 1828930907, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  - {fileID: -450080446, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  - {fileID: 936707919, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  - {fileID: -910347496, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  - {fileID: 2009228480, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  - {fileID: -787081704, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  ActionClassNames:
+  - Animation
+  - AttributeChange
+  - Destroy
+  - Event
+  - Instantiate
+  - OverTimeEffect
+  - PlaySound
+  - SendMessage
+  - Teleport
+  - TempAttributeChange
+  - Transform
+  HandlerClassNames:
+  - AngleDifference
+  - AttributeValue
+  - Distance
+  - EntityExist
+  - HeightDifference
+  - OverTimeEffect
+  - Raycast
+  - TagCompare
+  - Tag
+  - VariableCompare
+  RootClassNames:
+  - Combat
+  pendingSave: 0
+  summaryNoteId: 37261170
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 7980705436704440629
+      type: {class: Root, ns: SoftKitty, asm: Assembly-CSharp}
+      data:
+        mType: 0
+        Name: Root
+        Uid: Node0
+        Position: {x: 0, y: -29.714287}
+        NodeIndex: 0
+        inputPort:
+        - Name: Trigger
+          Type: RootIn
+          acceptedTypes:
+          - TriggerOut
+          uid: []
+          connectedNodes: []
+          allowMutipleConnection: 1
+          createByDefault: 1
+        outputPort:
+        - Name: Action
+          Type: RootOut
+          acceptedTypes:
+          - ActionIn
+          - BranchInAction
+          uid:
+          - Node1#0
+          connectedNodes: []
+          allowMutipleConnection: 1
+          createByDefault: 1
+        minimized: 0
+        InstanceCache: 0
+        mRoot:
+          rid: -2
+        ClassName: Combat
+        IntValues: 
+        FloatValues: []
+        StringValues: []
+        BoolValues: 
+        CustomInterface:
+          Elements:
+          - Uid: Element2
+            Label: 
+            ToolTips: 
+            Type: 6
+            Index: 0
+            VisibleBind: 
+            EnumOptions: []
+          - Uid: Element0
+            Label: When the conditions matchs,
+            ToolTips: 
+            Type: 5
+            Index: 0
+            VisibleBind: 
+            EnumOptions: []
+          - Uid: Element1
+            Label: The actions will be performed.
+            ToolTips: 
+            Type: 5
+            Index: 1
+            VisibleBind: 
+            EnumOptions: []
+        Actions:
+        - mType: 0
+          Name: Action
+          Uid: Node1
+          Position: {x: 465.14285, y: -29.714287}
+          NodeIndex: 0
+          inputPort:
+          - Name: Action
+            Type: ActionIn
+            acceptedTypes:
+            - RootOut
+            - BranchOutAction
+            uid:
+            - Node0#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: 1
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid:
+            - Node2#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: 2
+            Type: CustomVariable
+            acceptedTypes:
+            - Variable
+            uid:
+            - Node3#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          outputPort: []
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 7980705436704440629
+          ClassName: AttributeChange
+          IntValues: 03000000
+          FloatValues: []
+          StringValues:
+          - chp
+          BoolValues: 
+          CustomInterface:
+            Elements:
+            - Uid: entity
+              Label: Entity
+              ToolTips: The entity to change the attribute.
+              Type: 8
+              Index: 0
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: uid
+              Label: Attribute Key
+              ToolTips: The script key of the attribute.
+              Type: 1
+              Index: 0
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: operation
+              Label: Operation
+              ToolTips: operation of the input value and existing value.
+              Type: 7
+              Index: 0
+              VisibleBind: 
+              EnumOptions:
+              - Override
+              - Add
+              - Multiply
+              - Substract
+            - Uid: value
+              Label: Attribute Value
+              ToolTips: The input value to calculate with the existing value.
+              Type: 4
+              Index: 1
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: Element3
+              Label: Add to the existing value.
+              ToolTips: 
+              Type: 5
+              Index: 0
+              VisibleBind: operation#1
+              EnumOptions: []
+            - Uid: Element4
+              Label: Replace the existing value.
+              ToolTips: 
+              Type: 5
+              Index: 1
+              VisibleBind: operation#0
+              EnumOptions: []
+            - Uid: Element5
+              Label: Multiply the existing value.
+              ToolTips: 
+              Type: 5
+              Index: 2
+              VisibleBind: operation#2
+              EnumOptions: []
+            - Uid: Element7
+              Label: Use the existing value to substract the input value.
+              ToolTips: 
+              Type: 5
+              Index: 3
+              VisibleBind: operation#3
+              EnumOptions: []
+          Type: 0
+          Count: 1
+          WaitTime: 0
+          KeepTime: 0
+          Interval: 0
+        Triggers: []
+        ConditionGroups: []
+        Handlers: []
+        Maths: []
+        Variables:
+        - mType: 0
+          Name: Variable (DynamicVariable)
+          Uid: Node3
+          Position: {x: -30.285715, y: 329.7143}
+          NodeIndex: 0
+          inputPort:
+          - Name: Entity
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid: []
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 0
+          outputPort:
+          - Name: Variable
+            Type: Variable
+            acceptedTypes:
+            - Variable
+            - MathIn
+            - CustomVariable
+            - BranchInValue
+            uid:
+            - Node1#2
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 7980705436704440629
+          Type: 2
+          Constant: 1
+          AttributeKey: Attack
+          VariableUid: damage
+          Max: 1
+        Entities:
+        - mType: 0
+          Name: Entity (Target)
+          Uid: Node2
+          Position: {x: 0, y: 200.57143}
+          NodeIndex: 0
+          inputPort: []
+          outputPort:
+          - Name: Entity
+            Type: EntityOut
+            acceptedTypes:
+            - EntityIn
+            - BranchInEntity
+            uid:
+            - Node1#1
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 7980705436704440629
+          Type: 2
+          EntityUid: 
+        Notes:
+        - Uid: 37261170
+          Name: Summary
+          Text: 'This is a simple damage DoT example.
+
+            It reduce the
+            Target''s health value every tick by the value set by [Dynamic Variable] 
+            ''damage'' .'
+          Position: {x: -38.857143, y: -297.71426}
+          Size: {x: 779.4285, y: 237.14285}
+          FontSize: 1
+          Theme: 1
+        Groups: []
+        Branchs: []
+        ActiveTriggers: []
+    - rid: 7980705436704441121
+      type: {class: Root, ns: SoftKitty, asm: Assembly-CSharp}
+      data:
+        mType: 0
+        Name: Root
+        Uid: Node0
+        Position: {x: 0, y: -29.714287}
+        NodeIndex: 0
+        inputPort:
+        - Name: Trigger
+          Type: RootIn
+          acceptedTypes:
+          - TriggerOut
+          uid: []
+          connectedNodes: []
+          allowMutipleConnection: 1
+          createByDefault: 1
+        outputPort:
+        - Name: Action
+          Type: RootOut
+          acceptedTypes:
+          - ActionIn
+          - BranchInAction
+          uid:
+          - Node1#0
+          - Node4#0
+          connectedNodes: []
+          allowMutipleConnection: 1
+          createByDefault: 1
+        minimized: 0
+        InstanceCache: 0
+        mRoot:
+          rid: -2
+        ClassName: Combat
+        IntValues: 
+        FloatValues: []
+        StringValues: []
+        BoolValues: 
+        CustomInterface:
+          Elements:
+          - Uid: Element2
+            Label: 
+            ToolTips: 
+            Type: 6
+            Index: 0
+            VisibleBind: 
+            EnumOptions: []
+          - Uid: Element0
+            Label: When the conditions matchs,
+            ToolTips: 
+            Type: 5
+            Index: 0
+            VisibleBind: 
+            EnumOptions: []
+          - Uid: Element1
+            Label: The actions will be performed.
+            ToolTips: 
+            Type: 5
+            Index: 1
+            VisibleBind: 
+            EnumOptions: []
+        Actions:
+        - mType: 0
+          Name: Action
+          Uid: Node1
+          Position: {x: 465.14285, y: -29.714287}
+          NodeIndex: 0
+          inputPort:
+          - Name: Action
+            Type: ActionIn
+            acceptedTypes:
+            - RootOut
+            - BranchOutAction
+            uid:
+            - Node0#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: 1
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid:
+            - Node2#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: 2
+            Type: CustomVariable
+            acceptedTypes:
+            - Variable
+            uid:
+            - Node3#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          outputPort: []
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 7980705436704440629
+          ClassName: AttributeChange
+          IntValues: 03000000
+          FloatValues: []
+          StringValues:
+          - chp
+          BoolValues: 
+          CustomInterface:
+            Elements:
+            - Uid: entity
+              Label: Entity
+              ToolTips: The entity to change the attribute.
+              Type: 8
+              Index: 0
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: uid
+              Label: Attribute Key
+              ToolTips: The script key of the attribute.
+              Type: 1
+              Index: 0
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: operation
+              Label: Operation
+              ToolTips: operation of the input value and existing value.
+              Type: 7
+              Index: 0
+              VisibleBind: 
+              EnumOptions:
+              - Override
+              - Add
+              - Multiply
+              - Substract
+            - Uid: value
+              Label: Attribute Value
+              ToolTips: The input value to calculate with the existing value.
+              Type: 4
+              Index: 1
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: Element3
+              Label: Add to the existing value.
+              ToolTips: 
+              Type: 5
+              Index: 0
+              VisibleBind: operation#1
+              EnumOptions: []
+            - Uid: Element4
+              Label: Replace the existing value.
+              ToolTips: 
+              Type: 5
+              Index: 1
+              VisibleBind: operation#0
+              EnumOptions: []
+            - Uid: Element5
+              Label: Multiply the existing value.
+              ToolTips: 
+              Type: 5
+              Index: 2
+              VisibleBind: operation#2
+              EnumOptions: []
+            - Uid: Element7
+              Label: Use the existing value to substract the input value.
+              ToolTips: 
+              Type: 5
+              Index: 3
+              VisibleBind: operation#3
+              EnumOptions: []
+          Type: 0
+          Count: 1
+          WaitTime: 0
+          KeepTime: 0
+          Interval: 0
+        - mType: 0
+          Name: Action
+          Uid: Node4
+          Position: {x: 465.14285, y: 397.7143}
+          NodeIndex: 0
+          inputPort:
+          - Name: Action
+            Type: ActionIn
+            acceptedTypes:
+            - RootOut
+            - BranchOutAction
+            uid: []
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: 1
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid:
+            - Node2#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: 2
+            Type: CustomVariable
+            acceptedTypes:
+            - Variable
+            uid:
+            - Node3#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: 3
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid: []
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          outputPort: []
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 7980705436704441121
+          ClassName: Event
+          IntValues: 00000000
+          FloatValues: []
+          StringValues:
+          - Damage
+          BoolValues: 01000100
+          CustomInterface:
+            Elements:
+            - Uid: entity
+              Label: Entity to recieve event
+              ToolTips: Entity to recieve the event.
+              Type: 8
+              Index: 0
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: eventUid
+              Label: Event Unique Name
+              ToolTips: The unique name of the event, please not to include space
+                and special characters.
+              Type: 1
+              Index: 0
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: enableFloatArg
+              Label: Enable Float Arg
+              ToolTips: Call the event with connected float value as arg.
+              Type: 0
+              Index: 0
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: floatArg
+              Label: <Arg> Float
+              ToolTips: Call the event with connected float value as arg.
+              Type: 4
+              Index: 1
+              VisibleBind: enableFloatArg
+              EnumOptions: []
+            - Uid: enableEntityArg
+              Label: Enable Entity Arg
+              ToolTips: Call the event with connected entity as arg.
+              Type: 0
+              Index: 1
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: entityArg
+              Label: <Arg> Entity
+              ToolTips: Call the event with connected entity as arg.
+              Type: 8
+              Index: 2
+              VisibleBind: enableEntityArg
+              EnumOptions: []
+            - Uid: enableBoolArg
+              Label: Enable Bool Arg
+              ToolTips: Call the event with a bool value as arg.
+              Type: 0
+              Index: 2
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: boolArg
+              Label: <Arg> Bool
+              ToolTips: Call the event with a bool value as arg.
+              Type: 0
+              Index: 3
+              VisibleBind: enableBoolArg
+              EnumOptions: []
+          Type: 0
+          Count: 1
+          WaitTime: 0
+          KeepTime: 0
+          Interval: 0
+        Triggers: []
+        ConditionGroups: []
+        Handlers: []
+        Maths: []
+        Variables:
+        - mType: 0
+          Name: Variable (DynamicVariable)
+          Uid: Node3
+          Position: {x: -30.285715, y: 329.7143}
+          NodeIndex: 0
+          inputPort:
+          - Name: Entity
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid: []
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 0
+          outputPort:
+          - Name: Variable
+            Type: Variable
+            acceptedTypes:
+            - Variable
+            - MathIn
+            - CustomVariable
+            - BranchInValue
+            uid:
+            - Node1#2
+            - Node4#2
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 7980705436704440629
+          Type: 2
+          Constant: 1
+          AttributeKey: Attack
+          VariableUid: damage
+          Max: 1
+        Entities:
+        - mType: 0
+          Name: Entity (Target)
+          Uid: Node2
+          Position: {x: 0, y: 200.57143}
+          NodeIndex: 0
+          inputPort: []
+          outputPort:
+          - Name: Entity
+            Type: EntityOut
+            acceptedTypes:
+            - EntityIn
+            - BranchInEntity
+            uid:
+            - Node1#1
+            - Node4#1
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 7980705436704440629
+          Type: 2
+          EntityUid: 
+        Notes:
+        - Uid: 37261170
+          Name: Summary
+          Text: 'This is a simple damage DoT example.
+
+            It reduce the
+            Target''s health value every tick by the value set by [Dynamic Variable] 
+            ''damage'' .'
+          Position: {x: -38.857143, y: -297.71426}
+          Size: {x: 779.4285, y: 237.14285}
+          FontSize: 1
+          Theme: 1
+        Groups: []
+        Branchs: []
+        ActiveTriggers: []
+    - rid: 7980705490982142377
+      type: {class: Root, ns: SoftKitty, asm: Assembly-CSharp}
+      data:
+        mType: 0
+        Name: Root
+        Uid: Node0
+        Position: {x: 0, y: -29.714287}
+        NodeIndex: 0
+        inputPort:
+        - Name: Trigger
+          Type: RootIn
+          acceptedTypes:
+          - TriggerOut
+          uid: []
+          connectedNodes: []
+          allowMutipleConnection: 1
+          createByDefault: 1
+        outputPort:
+        - Name: Action
+          Type: RootOut
+          acceptedTypes:
+          - ActionIn
+          - BranchInAction
+          uid:
+          - Node1#0
+          - Node4#0
+          connectedNodes: []
+          allowMutipleConnection: 1
+          createByDefault: 1
+        minimized: 0
+        InstanceCache: 0
+        mRoot:
+          rid: -2
+        ClassName: Combat
+        IntValues: 
+        FloatValues: []
+        StringValues: []
+        BoolValues: 
+        CustomInterface:
+          Elements:
+          - Uid: Element2
+            Label: 
+            ToolTips: 
+            Type: 6
+            Index: 0
+            VisibleBind: 
+            EnumOptions: []
+          - Uid: Element0
+            Label: When the conditions matchs,
+            ToolTips: 
+            Type: 5
+            Index: 0
+            VisibleBind: 
+            EnumOptions: []
+          - Uid: Element1
+            Label: The actions will be performed.
+            ToolTips: 
+            Type: 5
+            Index: 1
+            VisibleBind: 
+            EnumOptions: []
+        Actions:
+        - mType: 0
+          Name: Action
+          Uid: Node1
+          Position: {x: 465.14285, y: -29.714287}
+          NodeIndex: 0
+          inputPort:
+          - Name: Action
+            Type: ActionIn
+            acceptedTypes:
+            - RootOut
+            - BranchOutAction
+            uid:
+            - Node0#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: 1
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid:
+            - Node2#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: 2
+            Type: CustomVariable
+            acceptedTypes:
+            - Variable
+            uid:
+            - Node6#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          outputPort: []
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 7980705436704440629
+          ClassName: AttributeChange
+          IntValues: 03000000
+          FloatValues: []
+          StringValues:
+          - chp
+          BoolValues: 
+          CustomInterface:
+            Elements:
+            - Uid: entity
+              Label: Entity
+              ToolTips: The entity to change the attribute.
+              Type: 8
+              Index: 0
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: uid
+              Label: Attribute Key
+              ToolTips: The script key of the attribute.
+              Type: 1
+              Index: 0
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: operation
+              Label: Operation
+              ToolTips: operation of the input value and existing value.
+              Type: 7
+              Index: 0
+              VisibleBind: 
+              EnumOptions:
+              - Override
+              - Add
+              - Multiply
+              - Substract
+            - Uid: value
+              Label: Attribute Value
+              ToolTips: The input value to calculate with the existing value.
+              Type: 4
+              Index: 1
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: Element3
+              Label: Add to the existing value.
+              ToolTips: 
+              Type: 5
+              Index: 0
+              VisibleBind: operation#1
+              EnumOptions: []
+            - Uid: Element4
+              Label: Replace the existing value.
+              ToolTips: 
+              Type: 5
+              Index: 1
+              VisibleBind: operation#0
+              EnumOptions: []
+            - Uid: Element5
+              Label: Multiply the existing value.
+              ToolTips: 
+              Type: 5
+              Index: 2
+              VisibleBind: operation#2
+              EnumOptions: []
+            - Uid: Element7
+              Label: Use the existing value to substract the input value.
+              ToolTips: 
+              Type: 5
+              Index: 3
+              VisibleBind: operation#3
+              EnumOptions: []
+          Type: 0
+          Count: 1
+          WaitTime: 0
+          KeepTime: 0
+          Interval: 0
+        - mType: 0
+          Name: Action
+          Uid: Node4
+          Position: {x: 465.14285, y: 397.7143}
+          NodeIndex: 0
+          inputPort:
+          - Name: Action
+            Type: ActionIn
+            acceptedTypes:
+            - RootOut
+            - BranchOutAction
+            uid:
+            - Node0#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: 1
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid:
+            - Node2#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: 2
+            Type: CustomVariable
+            acceptedTypes:
+            - Variable
+            uid:
+            - Node6#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: 3
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid: []
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          outputPort: []
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 7980705436704441121
+          ClassName: Event
+          IntValues: 00000000
+          FloatValues: []
+          StringValues:
+          - Damage
+          BoolValues: 01000100
+          CustomInterface:
+            Elements:
+            - Uid: entity
+              Label: Entity to recieve event
+              ToolTips: Entity to recieve the event.
+              Type: 8
+              Index: 0
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: eventUid
+              Label: Event Unique Name
+              ToolTips: The unique name of the event, please not to include space
+                and special characters.
+              Type: 1
+              Index: 0
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: enableFloatArg
+              Label: Enable Float Arg
+              ToolTips: Call the event with connected float value as arg.
+              Type: 0
+              Index: 0
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: floatArg
+              Label: <Arg> Float
+              ToolTips: Call the event with connected float value as arg.
+              Type: 4
+              Index: 1
+              VisibleBind: enableFloatArg
+              EnumOptions: []
+            - Uid: enableEntityArg
+              Label: Enable Entity Arg
+              ToolTips: Call the event with connected entity as arg.
+              Type: 0
+              Index: 1
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: entityArg
+              Label: <Arg> Entity
+              ToolTips: Call the event with connected entity as arg.
+              Type: 8
+              Index: 2
+              VisibleBind: enableEntityArg
+              EnumOptions: []
+            - Uid: enableBoolArg
+              Label: Enable Bool Arg
+              ToolTips: Call the event with a bool value as arg.
+              Type: 0
+              Index: 2
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: boolArg
+              Label: <Arg> Bool
+              ToolTips: Call the event with a bool value as arg.
+              Type: 0
+              Index: 3
+              VisibleBind: enableBoolArg
+              EnumOptions: []
+          Type: 0
+          Count: 1
+          WaitTime: 0
+          KeepTime: 0
+          Interval: 0
+        Triggers: []
+        ConditionGroups: []
+        Handlers: []
+        Maths:
+        - mType: 0
+          Name: Math (Multiply)
+          Uid: Node6
+          Position: {x: 36.57143, y: 444.57144}
+          NodeIndex: 0
+          inputPort:
+          - Name: A
+            Type: MathIn
+            acceptedTypes:
+            - Variable
+            uid:
+            - Node3#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: B
+            Type: MathIn
+            acceptedTypes:
+            - Variable
+            uid:
+            - Node5#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: C
+            Type: MathIn
+            acceptedTypes:
+            - Variable
+            uid: []
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          outputPort:
+          - Name: Result
+            Type: Variable
+            acceptedTypes:
+            - MathIn
+            - Variable
+            - CustomVariable
+            - BranchInValue
+            uid:
+            - Node1#2
+            - Node4#2
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 7980705490982142377
+          Type: 2
+        Variables:
+        - mType: 0
+          Name: Variable (DynamicVariable)
+          Uid: Node3
+          Position: {x: -280, y: 329.7143}
+          NodeIndex: 0
+          inputPort:
+          - Name: Entity
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid: []
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 0
+          outputPort:
+          - Name: Variable
+            Type: Variable
+            acceptedTypes:
+            - Variable
+            - MathIn
+            - CustomVariable
+            - BranchInValue
+            uid:
+            - Node6#0
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 7980705436704440629
+          Type: 2
+          Constant: 1
+          AttributeKey: Attack
+          VariableUid: damage
+          Max: 1
+        - mType: 0
+          Name: Variable (Constant)
+          Uid: Node5
+          Position: {x: -280, y: 533.1429}
+          NodeIndex: 0
+          inputPort:
+          - Name: Entity
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid: []
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 0
+          outputPort:
+          - Name: Variable
+            Type: Variable
+            acceptedTypes:
+            - Variable
+            - MathIn
+            - CustomVariable
+            - BranchInValue
+            uid:
+            - Node6#1
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 7980705490982142377
+          Type: 2
+          Constant: 0
+          AttributeKey: Attack
+          VariableUid: Layer
+          Max: 1
+        Entities:
+        - mType: 0
+          Name: Entity (Target)
+          Uid: Node2
+          Position: {x: 0, y: 200.57143}
+          NodeIndex: 0
+          inputPort: []
+          outputPort:
+          - Name: Entity
+            Type: EntityOut
+            acceptedTypes:
+            - EntityIn
+            - BranchInEntity
+            uid:
+            - Node1#1
+            - Node4#1
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 7980705436704440629
+          Type: 2
+          EntityUid: 
+        Notes:
+        - Uid: 37261170
+          Name: Summary
+          Text: 'This is a simple damage DoT example.
+
+            It reduce the
+            Target''s health value every tick by the value set by [Dynamic Variable] 
+            ''damage'' .'
+          Position: {x: -38.857143, y: -297.71426}
+          Size: {x: 779.4285, y: 237.14285}
+          FontSize: 1
+          Theme: 1
+        Groups: []
+        Branchs: []
+        ActiveTriggers: []

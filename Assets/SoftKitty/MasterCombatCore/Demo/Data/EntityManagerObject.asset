@@ -1,0 +1,1696 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff6002efa7c07d34184f04325fbac21d, type: 3}
+  m_Name: EntityManagerObject
+  m_EditorClassIdentifier: Assembly-CSharp::SoftKitty.EntityManagerObject
+  Hash: 4cb6862c0253e9a73ad80a7cf54c9aa4
+  EntityData:
+    EntityList:
+    - uid: player
+      Attributes:
+      - uid: name
+        stringValue: player
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: lvl
+        stringValue: 1
+        floatValue: 1
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: atk
+        stringValue: 10
+        floatValue: 10
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: def
+        stringValue: 5
+        floatValue: 5
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: resist
+        stringValue: 5
+        floatValue: 5
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: hp
+        stringValue: 100
+        floatValue: 100
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: sp
+        stringValue: 100
+        floatValue: 100
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: agi
+        stringValue: 10
+        floatValue: 10
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: crit
+        stringValue: 5
+        floatValue: 5
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: luck
+        stringValue: 5
+        floatValue: 5
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: steal
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: stunrate
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: mxp
+        stringValue: 100
+        floatValue: 100
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: xp
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: chp
+        stringValue: 100
+        floatValue: 100
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: shield
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: reflect
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: dmgrange
+        stringValue: 100
+        floatValue: 100
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: kockback
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: death
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: speed
+        stringValue: 100
+        floatValue: 100
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: invincible
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: stun
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: chaos
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: forzen
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: hyperarmor
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: block
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      AttributesUpgradeLevel: 0
+      Position: {x: 0, y: 3.76, z: 0}
+      Forward: {x: 0, y: 0, z: 1}
+      Scale: {x: 1, y: 1, z: 1}
+      Tags:
+      - friendly
+      - character
+      AvailableForInteraction: 1
+      CustomFloat:
+      - 0
+      CustomInt: ffffffffffffffffffffffffffffffff
+      CustomBool: 
+      CustomString: []
+      CustomIntList: []
+      CustomIdIntList: []
+      CustomIdFloatList: []
+    - uid: EnemyBot01
+      Attributes:
+      - uid: name
+        stringValue: Enemy Bot
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: lvl
+        stringValue: 1
+        floatValue: 1
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: atk
+        stringValue: 10
+        floatValue: 20
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: def
+        stringValue: 5
+        floatValue: 1
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: resist
+        stringValue: 5
+        floatValue: 1
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: hp
+        stringValue: 100
+        floatValue: 100
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: sp
+        stringValue: 100
+        floatValue: 100
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: agi
+        stringValue: 10
+        floatValue: 2
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: crit
+        stringValue: 5
+        floatValue: 5
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: luck
+        stringValue: 5
+        floatValue: 5
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: steal
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: stunrate
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: mxp
+        stringValue: 100
+        floatValue: 80
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: xp
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: chp
+        stringValue: 100
+        floatValue: 80
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: shield
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: reflect
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: dmgrange
+        stringValue: 100
+        floatValue: 100
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: kockback
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: death
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: speed
+        stringValue: 100
+        floatValue: 100
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: invincible
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: stun
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: chaos
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: forzen
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: hyperarmor
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: block
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      AttributesUpgradeLevel: 0
+      Position: {x: -28.626177, y: 6.8913016, z: 29.558058}
+      Forward: {x: -0.29719222, y: 0.000085242034, z: -0.9548178}
+      Scale: {x: 1, y: 1, z: 1}
+      Tags:
+      - hostile
+      - character
+      AvailableForInteraction: 1
+      CustomFloat:
+      - 0
+      CustomInt: ffffffffffffffffffffffffffffffff
+      CustomBool: 
+      CustomString: []
+      CustomIntList: []
+      CustomIdIntList: []
+      CustomIdFloatList: []
+    - uid: EnemyBot02
+      Attributes:
+      - uid: name
+        stringValue: Enemy Bot
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: lvl
+        stringValue: 1
+        floatValue: 1
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: atk
+        stringValue: 10
+        floatValue: 7
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: def
+        stringValue: 5
+        floatValue: 20
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: resist
+        stringValue: 5
+        floatValue: 20
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: hp
+        stringValue: 100
+        floatValue: 100
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: sp
+        stringValue: 100
+        floatValue: 100
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: agi
+        stringValue: 10
+        floatValue: 5
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: crit
+        stringValue: 5
+        floatValue: 5
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: luck
+        stringValue: 5
+        floatValue: 5
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: steal
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: stunrate
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: mxp
+        stringValue: 100
+        floatValue: 150
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: xp
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: chp
+        stringValue: 100
+        floatValue: 150
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: shield
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: reflect
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: dmgrange
+        stringValue: 100
+        floatValue: 100
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: kockback
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: death
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: speed
+        stringValue: 100
+        floatValue: 100
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: invincible
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: stun
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: chaos
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: forzen
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: hyperarmor
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: block
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      AttributesUpgradeLevel: 0
+      Position: {x: -28.626177, y: 6.8913016, z: 29.558058}
+      Forward: {x: -0.29719222, y: 0.000085242034, z: -0.9548178}
+      Scale: {x: 1, y: 1, z: 1}
+      Tags:
+      - hostile
+      - character
+      AvailableForInteraction: 1
+      CustomFloat:
+      - 0
+      CustomInt: ffffffffffffffffffffffffffffffff
+      CustomBool: 
+      CustomString: []
+      CustomIntList: []
+      CustomIdIntList: []
+      CustomIdFloatList: []
+    - uid: EnemyBot03
+      Attributes:
+      - uid: name
+        stringValue: Enemy Bot
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: lvl
+        stringValue: 1
+        floatValue: 1
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: atk
+        stringValue: 10
+        floatValue: 10
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: def
+        stringValue: 5
+        floatValue: 5
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: resist
+        stringValue: 5
+        floatValue: 5
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: hp
+        stringValue: 100
+        floatValue: 100
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: sp
+        stringValue: 100
+        floatValue: 100
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: agi
+        stringValue: 10
+        floatValue: 10
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: crit
+        stringValue: 5
+        floatValue: 5
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: luck
+        stringValue: 5
+        floatValue: 5
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: steal
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: stunrate
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: mxp
+        stringValue: 100
+        floatValue: 100
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: xp
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: chp
+        stringValue: 100
+        floatValue: 100
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: shield
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: reflect
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: dmgrange
+        stringValue: 100
+        floatValue: 100
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: kockback
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: death
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: speed
+        stringValue: 100
+        floatValue: 100
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: invincible
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: stun
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: chaos
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: forzen
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: hyperarmor
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: block
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      AttributesUpgradeLevel: 0
+      Position: {x: -28.626177, y: 6.8913016, z: 29.558058}
+      Forward: {x: -0.29719222, y: 0.000085242034, z: -0.9548178}
+      Scale: {x: 1, y: 1, z: 1}
+      Tags:
+      - hostile
+      - character
+      AvailableForInteraction: 1
+      CustomFloat:
+      - 0
+      CustomInt: ffffffffffffffffffffffffffffffff
+      CustomBool: 
+      CustomString: []
+      CustomIntList: []
+      CustomIdIntList: []
+      CustomIdFloatList: []
+    - uid: EnemyBot04
+      Attributes:
+      - uid: name
+        stringValue: Enemy Bot
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: lvl
+        stringValue: 1
+        floatValue: 1
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: atk
+        stringValue: 10
+        floatValue: 12
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: def
+        stringValue: 5
+        floatValue: 5
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: resist
+        stringValue: 5
+        floatValue: 5
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: hp
+        stringValue: 100
+        floatValue: 100
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: sp
+        stringValue: 100
+        floatValue: 100
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: agi
+        stringValue: 10
+        floatValue: 35
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: crit
+        stringValue: 5
+        floatValue: 35
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: luck
+        stringValue: 5
+        floatValue: 5
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: steal
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: stunrate
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: mxp
+        stringValue: 100
+        floatValue: 80
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: xp
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: chp
+        stringValue: 100
+        floatValue: 80
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: shield
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: reflect
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: dmgrange
+        stringValue: 100
+        floatValue: 100
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: kockback
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: death
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: speed
+        stringValue: 100
+        floatValue: 130
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: invincible
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: stun
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: chaos
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: forzen
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: hyperarmor
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: block
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      AttributesUpgradeLevel: 0
+      Position: {x: -28.626177, y: 6.8913016, z: 29.558058}
+      Forward: {x: -0.29719222, y: 0.000085242034, z: -0.9548178}
+      Scale: {x: 1, y: 1, z: 1}
+      Tags:
+      - hostile
+      - character
+      AvailableForInteraction: 1
+      CustomFloat:
+      - 0
+      CustomInt: ffffffffffffffffffffffffffffffff
+      CustomBool: 
+      CustomString: []
+      CustomIntList: []
+      CustomIdIntList: []
+      CustomIdFloatList: []
+    - uid: EnemyBot05
+      Attributes:
+      - uid: name
+        stringValue: Enemy Bot
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: lvl
+        stringValue: 1
+        floatValue: 1
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: atk
+        stringValue: 10
+        floatValue: 12
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: def
+        stringValue: 5
+        floatValue: 10
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: resist
+        stringValue: 5
+        floatValue: 5
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: hp
+        stringValue: 100
+        floatValue: 100
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: sp
+        stringValue: 100
+        floatValue: 100
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: agi
+        stringValue: 10
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: crit
+        stringValue: 5
+        floatValue: 20
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: luck
+        stringValue: 5
+        floatValue: 5
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: steal
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: stunrate
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: mxp
+        stringValue: 100
+        floatValue: 110
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: xp
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: chp
+        stringValue: 100
+        floatValue: 110
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: shield
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: reflect
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: dmgrange
+        stringValue: 100
+        floatValue: 100
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: kockback
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: death
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: speed
+        stringValue: 100
+        floatValue: 80
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: invincible
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: stun
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: chaos
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: forzen
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: hyperarmor
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: block
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      AttributesUpgradeLevel: 0
+      Position: {x: -28.626177, y: 6.8913016, z: 29.558058}
+      Forward: {x: -0.29719222, y: 0.000085242034, z: -0.9548178}
+      Scale: {x: 1, y: 1, z: 1}
+      Tags:
+      - hostile
+      - character
+      AvailableForInteraction: 1
+      CustomFloat:
+      - 0
+      CustomInt: ffffffffffffffffffffffffffffffff
+      CustomBool: 
+      CustomString: []
+      CustomIntList: []
+      CustomIdIntList: []
+      CustomIdFloatList: []
+    - uid: EnemyBot06
+      Attributes:
+      - uid: name
+        stringValue: Enemy Bot
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: lvl
+        stringValue: 1
+        floatValue: 1
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: atk
+        stringValue: 10
+        floatValue: 20
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: def
+        stringValue: 5
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: resist
+        stringValue: 5
+        floatValue: 5
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: hp
+        stringValue: 100
+        floatValue: 80
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: sp
+        stringValue: 100
+        floatValue: 70
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: agi
+        stringValue: 10
+        floatValue: 15
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: crit
+        stringValue: 5
+        floatValue: 5
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: luck
+        stringValue: 5
+        floatValue: 5
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: steal
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: stunrate
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: mxp
+        stringValue: 100
+        floatValue: 100
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: xp
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: chp
+        stringValue: 100
+        floatValue: 80
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: shield
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: reflect
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: dmgrange
+        stringValue: 100
+        floatValue: 100
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: kockback
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: death
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: speed
+        stringValue: 100
+        floatValue: 120
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: invincible
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: stun
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: chaos
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: forzen
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: hyperarmor
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: block
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      AttributesUpgradeLevel: 0
+      Position: {x: -28.626177, y: 6.8913016, z: 29.558058}
+      Forward: {x: -0.29719222, y: 0.000085242034, z: -0.9548178}
+      Scale: {x: 1, y: 1, z: 1}
+      Tags:
+      - hostile
+      - character
+      AvailableForInteraction: 1
+      CustomFloat:
+      - 0
+      CustomInt: 00000000ffffffffffffffffffffffff
+      CustomBool: 
+      CustomString: []
+      CustomIntList: []
+      CustomIdIntList: []
+      CustomIdFloatList: []
+    - uid: EnemyBot07
+      Attributes:
+      - uid: name
+        stringValue: Enemy Bot
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: lvl
+        stringValue: 1
+        floatValue: 1
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: atk
+        stringValue: 10
+        floatValue: 10
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: def
+        stringValue: 5
+        floatValue: 5
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: resist
+        stringValue: 5
+        floatValue: 5
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: hp
+        stringValue: 100
+        floatValue: 80
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: sp
+        stringValue: 100
+        floatValue: 100
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: agi
+        stringValue: 10
+        floatValue: 10
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: crit
+        stringValue: 5
+        floatValue: 5
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: luck
+        stringValue: 5
+        floatValue: 5
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: steal
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: stunrate
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: mxp
+        stringValue: 100
+        floatValue: 100
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: xp
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: chp
+        stringValue: 100
+        floatValue: 80
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: shield
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: reflect
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: dmgrange
+        stringValue: 100
+        floatValue: 100
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: kockback
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: death
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: speed
+        stringValue: 100
+        floatValue: 100
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: invincible
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: stun
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: chaos
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: forzen
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: hyperarmor
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: block
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      AttributesUpgradeLevel: 0
+      Position: {x: -28.626177, y: 6.8913016, z: 29.558058}
+      Forward: {x: -0.29719222, y: 0.000085242034, z: -0.9548178}
+      Scale: {x: 1, y: 1, z: 1}
+      Tags:
+      - hostile
+      - character
+      AvailableForInteraction: 1
+      CustomFloat:
+      - 0
+      CustomInt: 01000000ffffffffffffffffffffffff
+      CustomBool: 
+      CustomString: []
+      CustomIntList: []
+      CustomIdIntList: []
+      CustomIdFloatList: []
+    - uid: EnemyBot08
+      Attributes:
+      - uid: name
+        stringValue: Enemy Bot
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: lvl
+        stringValue: 1
+        floatValue: 1
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: atk
+        stringValue: 10
+        floatValue: 8
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: def
+        stringValue: 5
+        floatValue: 5
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: resist
+        stringValue: 5
+        floatValue: 5
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: hp
+        stringValue: 100
+        floatValue: 80
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: sp
+        stringValue: 100
+        floatValue: 100
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: agi
+        stringValue: 10
+        floatValue: 10
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: crit
+        stringValue: 5
+        floatValue: 5
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: luck
+        stringValue: 5
+        floatValue: 5
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: steal
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: stunrate
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: mxp
+        stringValue: 100
+        floatValue: 100
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: xp
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: chp
+        stringValue: 100
+        floatValue: 80
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: shield
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: reflect
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: dmgrange
+        stringValue: 100
+        floatValue: 100
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: kockback
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: death
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: speed
+        stringValue: 100
+        floatValue: 100
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: invincible
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: stun
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: chaos
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: forzen
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: hyperarmor
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: block
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      AttributesUpgradeLevel: 0
+      Position: {x: -28.626177, y: 6.8913016, z: 29.558058}
+      Forward: {x: -0.29719222, y: 0.000085242034, z: -0.9548178}
+      Scale: {x: 1, y: 1, z: 1}
+      Tags:
+      - hostile
+      - character
+      AvailableForInteraction: 1
+      CustomFloat:
+      - 0
+      CustomInt: 02000000ffffffffffffffffffffffff
+      CustomBool: 
+      CustomString: []
+      CustomIntList: []
+      CustomIdIntList: []
+      CustomIdFloatList: []
+    ExtraInfo: 
+  IdManager:
+    idToKey:
+    - id: 0
+      key: player
+    - id: 1
+      key: EnemyBot01
+    - id: 2
+      key: EnemyBot02
+    - id: 3
+      key: EnemyBot03
+    - id: 4
+      key: EnemyBot04
+    - id: 5
+      key: EnemyBot05
+    - id: 6
+      key: EnemyBot06
+    - id: 7
+      key: EnemyBot07
+    - id: 8
+      key: EnemyBot08
+    uiFold: 0
+  CustomDataSetting:
+  - uid: hit_dot
+    type: 1
+    index: 0
+  - uid: hit_buff
+    type: 1
+    index: 1
+  - uid: animation
+    type: 1
+    index: 2
+  - uid: ani_time
+    type: 0
+    index: 0
+  - uid: specskill
+    type: 1
+    index: 3
+  CustomFloat: 1
+  CustomInt: 4
+  CustomBool: 0
+  CustomString: 0
+  CustomIntList: 0
+  CustomIdIntList: 0
+  CustomIdFloatList: 0
+  SearchText: 
+  SearchType: 0
+  SearchOptions:
+  - uid
+  - Tag
+  - name
+  SearchOptionHash: 81bb4c78e0586e1e7b8ea3dbae8950e0
+  CustomFold: 0
+  ToolFold: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }

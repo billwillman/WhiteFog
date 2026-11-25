@@ -1,0 +1,134 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85580513fbe664641962ea038e27d0dd, type: 3}
+  m_Name: OverTimeEffectObject
+  m_EditorClassIdentifier: Assembly-CSharp::SoftKitty.OverTimeEffectObj
+  Hash: 238e7415ba88713e98ba465aa9b26f7a
+  overTimeEffects:
+  - uid: burn
+    name: Burn
+    iconPath: 
+    category: DoT
+    directRefIcon: {fileID: 2800000, guid: b9cbaa1ca01616346a5bb05252441bfe, type: 3}
+    iconLoadMethod: 0
+    permanent: 0
+    duration: 5
+    layered: 0
+    maxLayer: 1
+    canBeExtended: 0
+    canBeRefreshed: 1
+    canBeDispelled: 1
+    backGroundColor: {r: 0.23989207, g: 0, b: 0, a: 1}
+    frameColor: {r: 0.7789757, g: 0.42657033, b: 0.07033874, a: 1}
+    DesignGraph: {fileID: 11400000, guid: a40abf6f79c5567488673bfa0cafc177, type: 2}
+    DynamicVariables:
+    - uid: damage
+      value: 3
+    - uid: Layer
+      value: 0
+    mCustomField:
+    - key: vfx
+      loadMethod: 0
+      loadPath: 
+      value: {fileID: 4575691168282359981, guid: fffb8a1d80f06e9478ffe4e831f4c692, type: 3}
+      fold: 0
+    fold: 0
+  - uid: poison
+    name: Poison
+    iconPath: 
+    category: DoT
+    directRefIcon: {fileID: 2800000, guid: 31c6e3a0a78eb0443a533934b83ec309, type: 3}
+    iconLoadMethod: 0
+    permanent: 0
+    duration: 10
+    layered: 1
+    maxLayer: 99
+    canBeExtended: 0
+    canBeRefreshed: 1
+    canBeDispelled: 1
+    backGroundColor: {r: 0, g: 0.30980393, b: 0.12173836, a: 1}
+    frameColor: {r: 0.07058823, g: 0.78039217, b: 0.14953102, a: 1}
+    DesignGraph: {fileID: 11400000, guid: a40abf6f79c5567488673bfa0cafc177, type: 2}
+    DynamicVariables:
+    - uid: damage
+      value: 1
+    - uid: Layer
+      value: 0
+    mCustomField:
+    - key: vfx
+      loadMethod: 0
+      loadPath: 
+      value: {fileID: 6681602249235014028, guid: f8823a78de6923c41a0787a45e4d482c, type: 3}
+      fold: 1
+    fold: 0
+  - uid: frost
+    name: Frost
+    iconPath: 
+    category: DoT
+    directRefIcon: {fileID: 2800000, guid: 1062297078715dc4fb8e7690aaa9a11f, type: 3}
+    iconLoadMethod: 0
+    permanent: 0
+    duration: 5
+    layered: 1
+    maxLayer: 3
+    canBeExtended: 0
+    canBeRefreshed: 1
+    canBeDispelled: 1
+    backGroundColor: {r: 0, g: 0.22758877, b: 0.35309958, a: 1}
+    frameColor: {r: 0.21164106, g: 0.5059384, b: 0.7735849, a: 1}
+    DesignGraph: {fileID: 11400000, guid: 329a2bfe232839243ae6c9d0410b7280, type: 2}
+    DynamicVariables:
+    - uid: Layer
+      value: 0
+    mCustomField:
+    - key: vfx
+      loadMethod: 0
+      loadPath: 
+      value: {fileID: 5119334301805261912, guid: 7d679057975b67e48b53b7f39f40465a, type: 3}
+      fold: 1
+    fold: 0
+  - uid: berserker
+    name: Berserker
+    iconPath: 
+    category: Buff
+    directRefIcon: {fileID: 2800000, guid: 5034657c6f5b0cd4db0a25033fed7014, type: 3}
+    iconLoadMethod: 0
+    permanent: 0
+    duration: 3
+    layered: 1
+    maxLayer: 50
+    canBeExtended: 0
+    canBeRefreshed: 1
+    canBeDispelled: 1
+    backGroundColor: {r: 1, g: 0, b: 0, a: 1}
+    frameColor: {r: 1, g: 0.1997328, b: 0, a: 1}
+    DesignGraph: {fileID: 11400000, guid: ad9447ede2646914ab5039b530312dde, type: 2}
+    DynamicVariables:
+    - uid: Layer
+      value: 0
+    mCustomField: []
+    fold: 0
+  OverTimeEffectInterval: 1
+  SearchText: 
+  SearchType: 0
+  CategoryHash: 238e7415ba88713e98ba465aa9b26f7a
+  IdManager:
+    idToKey:
+    - id: 0
+      key: burn
+    - id: 1
+      key: poison
+    - id: 2
+      key: frost
+    - id: 3
+      key: berserker
+    uiFold: 0

@@ -1,0 +1,543 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79f0368567dc105439df6e64ea082034, type: 3}
+  m_Name: AttributeObject
+  m_EditorClassIdentifier: 
+  Hash: 81bb4c78e0586e1e7b8ea3dbae8950e0
+  AttributeList:
+  - uid: name
+    name: Character Name
+    stringValue: 1
+    upgradeIncrement: 0
+    coreStats: 1
+    visible: 0
+    visibleInStatsPanel: 1
+    displayFormat: 1
+    suffixes: 
+    compareInfo: 0
+    randomChange: 100
+    isFixed: 1
+    minValue: 0
+    maxValue: 0
+    defaultValue: unnamed
+    fold: 0
+  - uid: lvl
+    name: Level
+    stringValue: 0
+    upgradeIncrement: 0
+    coreStats: 1
+    visible: 0
+    visibleInStatsPanel: 1
+    displayFormat: 0
+    suffixes: 
+    compareInfo: 0
+    randomChange: 100
+    isFixed: 1
+    minValue: 0
+    maxValue: 0
+    defaultValue: 1
+    fold: 0
+  - uid: atk
+    name: Attack
+    stringValue: 0
+    upgradeIncrement: 2
+    coreStats: 1
+    visible: 1
+    visibleInStatsPanel: 1
+    displayFormat: 0
+    suffixes: 
+    compareInfo: 1
+    randomChange: 100
+    isFixed: 1
+    minValue: 0
+    maxValue: 0
+    defaultValue: 10
+    fold: 0
+  - uid: def
+    name: Defence
+    stringValue: 0
+    upgradeIncrement: 2
+    coreStats: 1
+    visible: 1
+    visibleInStatsPanel: 1
+    displayFormat: 0
+    suffixes: 
+    compareInfo: 1
+    randomChange: 100
+    isFixed: 1
+    minValue: 0
+    maxValue: 0
+    defaultValue: 5
+    fold: 0
+  - uid: resist
+    name: Resistance
+    stringValue: 0
+    upgradeIncrement: 1
+    coreStats: 1
+    visible: 1
+    visibleInStatsPanel: 1
+    displayFormat: 0
+    suffixes: 
+    compareInfo: 1
+    randomChange: 100
+    isFixed: 1
+    minValue: 0
+    maxValue: 0
+    defaultValue: 5
+    fold: 1
+  - uid: hp
+    name: Max Health
+    stringValue: 0
+    upgradeIncrement: 20
+    coreStats: 1
+    visible: 1
+    visibleInStatsPanel: 1
+    displayFormat: 0
+    suffixes: 
+    compareInfo: 1
+    randomChange: 100
+    isFixed: 1
+    minValue: 0
+    maxValue: 0
+    defaultValue: 100
+    fold: 0
+  - uid: sp
+    name: Stamina
+    stringValue: 0
+    upgradeIncrement: 10
+    coreStats: 1
+    visible: 1
+    visibleInStatsPanel: 0
+    displayFormat: 0
+    suffixes: 
+    compareInfo: 1
+    randomChange: 100
+    isFixed: 1
+    minValue: 0
+    maxValue: 0
+    defaultValue: 100
+    fold: 0
+  - uid: agi
+    name: Agility
+    stringValue: 0
+    upgradeIncrement: 1
+    coreStats: 1
+    visible: 1
+    visibleInStatsPanel: 1
+    displayFormat: 0
+    suffixes: 
+    compareInfo: 1
+    randomChange: 100
+    isFixed: 1
+    minValue: 0
+    maxValue: 0
+    defaultValue: 10
+    fold: 0
+  - uid: crit
+    name: Critical Chance
+    stringValue: 0
+    upgradeIncrement: 3
+    coreStats: 1
+    visible: 1
+    visibleInStatsPanel: 1
+    displayFormat: 0
+    suffixes: '%'
+    compareInfo: 1
+    randomChange: 100
+    isFixed: 1
+    minValue: 0
+    maxValue: 0
+    defaultValue: 5
+    fold: 0
+  - uid: luck
+    name: Luck
+    stringValue: 0
+    upgradeIncrement: 1
+    coreStats: 1
+    visible: 1
+    visibleInStatsPanel: 1
+    displayFormat: 0
+    suffixes: 
+    compareInfo: 1
+    randomChange: 100
+    isFixed: 1
+    minValue: 0
+    maxValue: 0
+    defaultValue: 5
+    fold: 0
+  - uid: steal
+    name: Health Steal
+    stringValue: 0
+    upgradeIncrement: 0
+    coreStats: 1
+    visible: 1
+    visibleInStatsPanel: 1
+    displayFormat: 0
+    suffixes: 
+    compareInfo: 1
+    randomChange: 100
+    isFixed: 1
+    minValue: 0
+    maxValue: 0
+    defaultValue: 0
+    fold: 0
+  - uid: cd
+    name: Cool Down
+    stringValue: 0
+    upgradeIncrement: -0.3
+    coreStats: 0
+    visible: 1
+    visibleInStatsPanel: 0
+    displayFormat: 1
+    suffixes: ' sec'
+    compareInfo: 1
+    randomChange: 100
+    isFixed: 1
+    minValue: 0
+    maxValue: 0
+    defaultValue: 0
+    fold: 0
+  - uid: spcost
+    name: SP Cost
+    stringValue: 0
+    upgradeIncrement: 0
+    coreStats: 0
+    visible: 1
+    visibleInStatsPanel: 0
+    displayFormat: 1
+    suffixes: 
+    compareInfo: 0
+    randomChange: 100
+    isFixed: 1
+    minValue: 0
+    maxValue: 0
+    defaultValue: 0
+    fold: 0
+  - uid: stunrate
+    name: Stun Chance
+    stringValue: 0
+    upgradeIncrement: 0
+    coreStats: 1
+    visible: 1
+    visibleInStatsPanel: 0
+    displayFormat: 0
+    suffixes: 
+    compareInfo: 0
+    randomChange: 100
+    isFixed: 1
+    minValue: 0
+    maxValue: 0
+    defaultValue: 0
+    fold: 0
+  - uid: mxp
+    name: Max XP
+    stringValue: 0
+    upgradeIncrement: 0
+    coreStats: 1
+    visible: 0
+    visibleInStatsPanel: 0
+    displayFormat: 1
+    suffixes: 
+    compareInfo: 0
+    randomChange: 100
+    isFixed: 1
+    minValue: 0
+    maxValue: 0
+    defaultValue: 100
+    fold: 0
+  - uid: xp
+    name: XP
+    stringValue: 0
+    upgradeIncrement: 0
+    coreStats: 1
+    visible: 0
+    visibleInStatsPanel: 0
+    displayFormat: 1
+    suffixes: 
+    compareInfo: 0
+    randomChange: 100
+    isFixed: 1
+    minValue: 0
+    maxValue: 0
+    defaultValue: 0
+    fold: 0
+  - uid: chp
+    name: Current HP
+    stringValue: 0
+    upgradeIncrement: 0
+    coreStats: 1
+    visible: 0
+    visibleInStatsPanel: 0
+    displayFormat: 1
+    suffixes: 
+    compareInfo: 0
+    randomChange: 100
+    isFixed: 1
+    minValue: 0
+    maxValue: 0
+    defaultValue: 100
+    fold: 0
+  - uid: shield
+    name: Shield
+    stringValue: 0
+    upgradeIncrement: 0
+    coreStats: 1
+    visible: 0
+    visibleInStatsPanel: 1
+    displayFormat: 0
+    suffixes: '%'
+    compareInfo: 0
+    randomChange: 100
+    isFixed: 1
+    minValue: 0
+    maxValue: 0
+    defaultValue: 0
+    fold: 0
+  - uid: reflect
+    name: Reflect Damage
+    stringValue: 0
+    upgradeIncrement: 0
+    coreStats: 1
+    visible: 1
+    visibleInStatsPanel: 1
+    displayFormat: 0
+    suffixes: '%'
+    compareInfo: 1
+    randomChange: 100
+    isFixed: 1
+    minValue: 0
+    maxValue: 0
+    defaultValue: 0
+    fold: 0
+  - uid: dmgrange
+    name: Damage Range
+    stringValue: 0
+    upgradeIncrement: 0
+    coreStats: 1
+    visible: 1
+    visibleInStatsPanel: 1
+    displayFormat: 0
+    suffixes: '%'
+    compareInfo: 1
+    randomChange: 100
+    isFixed: 1
+    minValue: 0
+    maxValue: 0
+    defaultValue: 100
+    fold: 0
+  - uid: kockback
+    name: Knockback
+    stringValue: 0
+    upgradeIncrement: 0
+    coreStats: 1
+    visible: 1
+    visibleInStatsPanel: 1
+    displayFormat: 0
+    suffixes: 
+    compareInfo: 1
+    randomChange: 100
+    isFixed: 1
+    minValue: 0
+    maxValue: 0
+    defaultValue: 0
+    fold: 0
+  - uid: death
+    name: Death Rate
+    stringValue: 0
+    upgradeIncrement: 0
+    coreStats: 1
+    visible: 1
+    visibleInStatsPanel: 1
+    displayFormat: 0
+    suffixes: '%'
+    compareInfo: 1
+    randomChange: 100
+    isFixed: 1
+    minValue: 0
+    maxValue: 0
+    defaultValue: 0
+    fold: 0
+  - uid: speed
+    name: Moving Speed
+    stringValue: 0
+    upgradeIncrement: 0
+    coreStats: 1
+    visible: 1
+    visibleInStatsPanel: 1
+    displayFormat: 0
+    suffixes: '%'
+    compareInfo: 1
+    randomChange: 100
+    isFixed: 1
+    minValue: 0
+    maxValue: 0
+    defaultValue: 100
+    fold: 0
+  - uid: invincible
+    name: Invincible State
+    stringValue: 0
+    upgradeIncrement: 0
+    coreStats: 1
+    visible: 0
+    visibleInStatsPanel: 0
+    displayFormat: 1
+    suffixes: sec
+    compareInfo: 0
+    randomChange: 100
+    isFixed: 1
+    minValue: 0
+    maxValue: 0
+    defaultValue: 0
+    fold: 0
+  - uid: stun
+    name: Stun State
+    stringValue: 0
+    upgradeIncrement: 0
+    coreStats: 1
+    visible: 0
+    visibleInStatsPanel: 0
+    displayFormat: 1
+    suffixes: sec
+    compareInfo: 0
+    randomChange: 100
+    isFixed: 1
+    minValue: 0
+    maxValue: 0
+    defaultValue: 0
+    fold: 0
+  - uid: chaos
+    name: Chaos State
+    stringValue: 0
+    upgradeIncrement: 0
+    coreStats: 1
+    visible: 0
+    visibleInStatsPanel: 0
+    displayFormat: 1
+    suffixes: sec
+    compareInfo: 0
+    randomChange: 100
+    isFixed: 1
+    minValue: 0
+    maxValue: 0
+    defaultValue: 0
+    fold: 0
+  - uid: forzen
+    name: Forzen State
+    stringValue: 0
+    upgradeIncrement: 0
+    coreStats: 1
+    visible: 0
+    visibleInStatsPanel: 0
+    displayFormat: 1
+    suffixes: sec
+    compareInfo: 0
+    randomChange: 100
+    isFixed: 1
+    minValue: 0
+    maxValue: 0
+    defaultValue: 0
+    fold: 0
+  - uid: hyperarmor
+    name: Hyper Armor State
+    stringValue: 0
+    upgradeIncrement: 0
+    coreStats: 1
+    visible: 0
+    visibleInStatsPanel: 0
+    displayFormat: 1
+    suffixes: sec
+    compareInfo: 0
+    randomChange: 100
+    isFixed: 1
+    minValue: 0
+    maxValue: 0
+    defaultValue: 0
+    fold: 0
+  - uid: block
+    name: Blocking State
+    stringValue: 0
+    upgradeIncrement: 0
+    coreStats: 1
+    visible: 0
+    visibleInStatsPanel: 0
+    displayFormat: 1
+    suffixes: degrees
+    compareInfo: 0
+    randomChange: 100
+    isFixed: 1
+    minValue: 0
+    maxValue: 0
+    defaultValue: 0
+    fold: 0
+  IdManager:
+    idToKey:
+    - id: 0
+      key: name
+    - id: 1
+      key: lvl
+    - id: 2
+      key: atk
+    - id: 3
+      key: def
+    - id: 4
+      key: resist
+    - id: 5
+      key: hp
+    - id: 6
+      key: sp
+    - id: 7
+      key: agi
+    - id: 8
+      key: crit
+    - id: 9
+      key: luck
+    - id: 10
+      key: steal
+    - id: 11
+      key: cd
+    - id: 12
+      key: spcost
+    - id: 13
+      key: stunrate
+    - id: 14
+      key: mxp
+    - id: 15
+      key: xp
+    - id: 16
+      key: chp
+    - id: 17
+      key: shield
+    - id: 18
+      key: reflect
+    - id: 19
+      key: dmgrange
+    - id: 20
+      key: kockback
+    - id: 21
+      key: death
+    - id: 22
+      key: speed
+    - id: 23
+      key: invincible
+    - id: 24
+      key: stun
+    - id: 25
+      key: chaos
+    - id: 26
+      key: forzen
+    - id: 27
+      key: hyperarmor
+    - id: 28
+      key: block
+    - id: 29
+      key: 
+    uiFold: 0

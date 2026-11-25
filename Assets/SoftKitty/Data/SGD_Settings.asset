@@ -1,5 +1,5 @@
 %YAML 1.1
-%TAG !u! tag:unity3d.com,2011:
+%TAG !u! tag:yousandi.cn,2023:
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: SGD_Settings
   m_EditorClassIdentifier: Assembly-CSharp::SoftKitty.MasterCombatCore.CCS_Settings
   DebugLevel: 0
-  DataObjects: []
+  DataObjects:
+  - {fileID: 11400000, guid: d0788b3ccb7924b458c6f4af5e6557c2, type: 2}
+  - {fileID: 11400000, guid: 156a9c8fadb1eec4fb49afbfa24367b4, type: 2}
+  - {fileID: 11400000, guid: fa6c65455fcdf0e449abcf0a02c1f369, type: 2}
   VolumeMultiplier: 1
   AudioPriority: 128
   GraphDebugMode: 0
