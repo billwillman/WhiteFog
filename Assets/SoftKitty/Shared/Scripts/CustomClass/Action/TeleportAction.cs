@@ -20,6 +20,8 @@ namespace SoftKitty{
         public float positionX; //X axis of the target position.
         public float positionY; //Y axis of the target position.
         public float positionZ; //Z axis of the target position.
+        public const int InterruptIndex = 1;
+        private bool interruptOnMove;
         public bool stickGround; //Make sure the entity stick to ground after teleportation.
  
         public TeleportAction(){}
@@ -35,62 +37,37 @@ namespace SoftKitty{
             _newObj.positionX = _baseClass.FloatValues[3];
             _newObj.positionY = _baseClass.FloatValues[4];
             _newObj.positionZ = _baseClass.FloatValues[5];
+            _newObj.interruptOnMove = _baseClass.BoolValues.Count > InterruptIndex && _baseClass.BoolValues[InterruptIndex];
             _newObj.stickGround = _baseClass.BoolValues[0];
             return _newObj;
         }
  
-        public override void Execute(GraphRuntimeState _runtime){ //Execute this action once
-            if (entity(_runtime) != null)
+        public override void Execute(GraphRuntimeState state)
+        {
+            var recipient = entity(state);
+            if (recipient == null)
             {
-                if (GameManager.GetEntityInstance(entity(_runtime).uid) != null)
-                {
-                    if (positionType == positionTypes.Entity)
-                    {
-                        if (targetEntity(_runtime) != null)
-                        {
-                            GameManager.GetEntityInstance(entity(_runtime).uid).SetPosition(targetEntity(_runtime).Position+ new Vector3(offsetX, offsetY, offsetZ), stickGround);
-                            if (SGD_Settings.Instance.DebugLevel >= 3)
-                                Debug.Log("<TeleportAction> [Node:" + Uid + "] Executed() > Entity:" + entity(_runtime).uid + "  Teleported to:" + targetEntity(_runtime).uid);
-                        }
-                        else if (SGD_Settings.Instance.DebugLevel >= 1)
-                        {
-                            Debug.LogError("<TeleportAction> [Node:" + Uid + "] failed to Execute(), because the targetEntity is null");
-                        }
-                    }
-                    else
-                    {
-                        GameManager.GetEntityInstance(entity(_runtime).uid).SetPosition(new Vector3(positionX, positionY, positionZ), stickGround);
-                        if (SGD_Settings.Instance.DebugLevel >= 3)
-                            Debug.Log("<TeleportAction> [Node:" + Uid + "] Executed() > Entity:" + entity(_runtime).uid + "  Teleported to:" +(new Vector3(positionX, positionY, positionZ)).ToString() );
-                    }
-                }
-                else
-                {
-                    if (positionType == positionTypes.Entity)
-                    {
-                        if (targetEntity(_runtime) != null)
-                        {
-                            entity(_runtime).SetPosition(targetEntity(_runtime).Position + new Vector3(offsetX, offsetY, offsetZ), stickGround);
-                            if (SGD_Settings.Instance.DebugLevel >= 3)
-                                Debug.Log("<TeleportAction> [Node:" + Uid + "] Executed() > Entity:" + entity(_runtime).uid + "  Teleported to:" + targetEntity(_runtime).uid);
-                        }
-                        else if (SGD_Settings.Instance.DebugLevel >= 1)
-                        {
-                            Debug.LogError("<TeleportAction> [Node:" + Uid + "] failed to Execute(), because the targetEntity is null");
-                        }
-                    }
-                    else
-                    {
-                        entity(_runtime).SetPosition(new Vector3(positionX, positionY, positionZ), stickGround);
-                        if (SGD_Settings.Instance.DebugLevel >= 3)
-                            Debug.Log("<TeleportAction> [Node:" + Uid + "] Executed() > Entity:" + entity(_runtime).uid + "  Teleported to:" + (new Vector3(positionX, positionY, positionZ)).ToString());
-                    }
-                }
+                if (SGD_Settings.Instance.DebugLevel >= 1) Debug.LogError("<TeleportAction> [" + Uid + "] entity is null.");
+                return;
             }
-            else if (SGD_Settings.Instance.DebugLevel >= 1)
+            var destination = new Vector3(positionX, positionY, positionZ);
+            if (positionType == positionTypes.Entity)
             {
-                Debug.LogError("<TeleportAction> [Node:" + Uid + "] failed to Execute(), because the entity is null");
+                var anchor = targetEntity(state);
+                if (anchor == null)
+                {
+                    if (SGD_Settings.Instance.DebugLevel >= 1) Debug.LogError("<TeleportAction> [" + Uid + "] targetEntity is null.");
+                    return;
+                }
+                destination = anchor.Position + new Vector3(offsetX, offsetY, offsetZ);
             }
+            var actor = GameManager.FindEntityInstance(recipient);
+            var before = actor ? actor.Position : recipient.Position;
+            if (actor) actor.SetPosition(destination, stickGround);
+            else recipient.SetPosition(destination, stickGround);
+            var after = actor ? actor.Position : recipient.Position;
+            if (interruptOnMove && after != before) recipient.InterruptCast();
+            if (SGD_Settings.Instance.DebugLevel >= 3) Debug.Log("<TeleportAction> [" + Uid + "] " + recipient.uid + " teleported to " + after);
         }
  
     }

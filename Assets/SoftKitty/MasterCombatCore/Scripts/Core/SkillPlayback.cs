@@ -7,6 +7,21 @@ namespace SoftKitty
 {
     public sealed class SkillPlayback : MonoBehaviour
     {
+        // Capture this handler per launch so an in-flight projectile keeps its own cast result.
+        public System.Action<Entity, Entity> OriginalProjectileImpact { get; set; }
+
+        public static void ApplyIncomingDamage(Entity source, Entity target, float amount)
+        {
+            if (target == null || !target.AvailableForInteraction || amount <= 0) return;
+            var health = target.GetAttributeData("chp");
+            if (health == null) return;
+            float hp = target.GetAttributeFloat("chp");
+            float loss = Mathf.Clamp(SkillDefence.Incoming(health, amount), 0, Mathf.Max(0, hp));
+            if (loss <= 0) return;
+            health.SetValue(hp - loss, source);
+            target.OnEntityEvent("Damage", loss, source, false);
+        }
+
         public enum Style { Direct, Sword, Orb, Mist }
         private int running;
         private float retireAt = float.PositiveInfinity;

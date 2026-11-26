@@ -92,7 +92,7 @@ namespace SoftKitty
             }
 
             var label = labels[next];
-            label.lane = next % 3 == 0 ? 0 : next % 3 == 1 ? -24 : 24;
+            label.lane = next % 3 == 0 ? 0 : next % 3 == 1 ? -64f : 64f;
             next = (next + 1) % Capacity;
             label.start = Time.time;
             label.visible = true;

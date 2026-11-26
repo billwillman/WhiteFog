@@ -195,18 +195,19 @@ namespace SoftKitty
         {
             filter = EditorGUILayout.TextField("查找技能", filter);
             if (library == null)
-                library = AssetDatabase.FindAssets("t:GraphObject").Select(x => AssetDatabase.LoadAssetAtPath<GraphObject>(AssetDatabase.GUIDToAssetPath(x))).Where(x => x && !(x is SkillFormula)).OrderBy(x => x.name).ToArray();
-            foreach (var group in library.Where(s => s.name.IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0)
-                .GroupBy(s => s is OriginalSkillGraph ? "宗师之上 · 原作表现" : AssetDatabase.GetAssetPath(s).StartsWith("Assets/WhiteFog/Skills/", StringComparison.Ordinal)
-                    ? (s.previewAsOpponent ? "怪物技能" : "主角技能") : "其他技能图")
-                .OrderBy(g => g.Key == "宗师之上 · 原作表现" ? -1 : g.Key == "主角技能" ? 0 : g.Key == "怪物技能" ? 1 : 2))
+                library = AssetDatabase.FindAssets("t:OriginalSkillGraph", new[] { "Assets/WhiteFog/Skills/宗师之上" })
+                    .Select(id => AssetDatabase.LoadAssetAtPath<OriginalSkillGraph>(AssetDatabase.GUIDToAssetPath(id)))
+                    .Where(skill => skill && skill.sourceId > 0 && !string.IsNullOrEmpty(skill.sourceVersion))
+                    .OrderBy(skill => skill.sourceId).ToArray();
+
+            EditorGUILayout.LabelField("宗师之上 · 原作表现", EditorStyles.boldLabel);
+            foreach (var skill in library)
             {
-                EditorGUILayout.LabelField(group.Key, EditorStyles.boldLabel);
-                foreach (var skill in group)
-                {
-                    string path = AssetDatabase.GetAssetPath(skill);
-                    if (GUILayout.Button(new GUIContent(group.Key == "其他技能图" ? path : skill.name, path), EditorStyles.miniButton)) SelectGraph(skill);
-                }
+                var original = (OriginalSkillGraph)skill;
+                string label = original.sourceId + "  " + original.name;
+                if (label.IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0 &&
+                    GUILayout.Button(new GUIContent(label, AssetDatabase.GetAssetPath(original)), EditorStyles.miniButton))
+                    SelectGraph(original);
             }
         }
 
@@ -413,6 +414,14 @@ namespace SoftKitty
             if (mode == ActionType.For_X_Seconds) Edit("持续时间（秒）", action.KeepTime, x => action.KeepTime = x);
             if (mode != ActionType.Only_Once) Edit("执行间隔（秒）", action.Interval, x => action.Interval = x);
             DrawFields(action, 1);
+            // Older graphs keep their original interface until opened in the node editor.
+            if (!action.CustomInterface.Elements.Any(f => f.Uid == "interruptOnMove"))
+            {
+                if (action.ClassName == "Teleport")
+                    EditValue(action.BoolValues, TeleportAction.InterruptIndex, false, v => EditorGUILayout.Toggle("位移时打断受术者施法", v));
+                else if (action.ClassName == "Transform" && action.BoolValues.ElementAtOrDefault(0))
+                    EditValue(action.BoolValues, TransformAction.InterruptIndex, false, v => EditorGUILayout.Toggle("位移时打断受术者施法", v));
+            }
             if (action.ClassName == "OverTimeEffect") DrawReferencedBuff(action);
             if (action.ClassName == "FormulaImpact") DrawAttackCalculation(action);
             if (GUILayout.Button("移除当前动作"))
@@ -529,6 +538,7 @@ namespace SoftKitty
 
         private void DrawPlayTest()
         {
+            DrawPreviewHitDamage();
             var picked = (CombatDamage)EditorGUILayout.ObjectField("伤害执行组件", executor, typeof(CombatDamage), true);
             if (picked != executor) Bind(picked);
             EditorGUILayout.BeginHorizontal();
@@ -575,9 +585,16 @@ namespace SoftKitty
                     lastCaster = dealer;
                     lastReceiver = target;
                     healthBefore = target.mData != null ? target.GetAttributeFloat("chp") : 0;
-                    CastActors(graph, dealer, target, demoSkillLevel, out message, executor);
+                    CastActors(graph, dealer, target, demoSkillLevel, out message, executor, previewHitDamage);
                 }
+            DrawInterruptButton(dealer, ref message);
             if (!string.IsNullOrEmpty(message)) EditorGUILayout.LabelField(message, EditorStyles.wordWrappedLabel);
+            if (Application.isPlaying && dealer && target && dealer.mData != null && target.mData != null)
+            {
+                if (lastCaster == dealer && lastReceiver == target)
+                    EditorGUILayout.LabelField("目标生命", target.name + "  " + healthBefore.ToString("0.##") + " → " + target.GetAttributeFloat("chp").ToString("0.##"));
+                DrawStageCamera(dealer, target);
+            }
         }
 
         private void Bind(CombatDamage damage)
@@ -585,14 +602,7 @@ namespace SoftKitty
             executor = damage;
             if (!damage) { dealer = null; target = null; return; }
             dealer = damage.DealerEntity ? damage.DealerEntity : damage.GetComponentInParent<EntityComponent>();
-            DrawInterruptButton(dealer, ref message);
             target = damage.TargetEntity;
-            if (Application.isPlaying && dealer && target && dealer.mData != null && target.mData != null)
-            {
-                if (lastCaster == dealer && lastReceiver == target)
-                    EditorGUILayout.LabelField("目标生命", target.name + "  " + healthBefore.ToString("0.##") + " → " + target.GetAttributeFloat("chp").ToString("0.##"));
-                DrawStageCamera(dealer, target);
-            }
             Repaint();
         }
     }

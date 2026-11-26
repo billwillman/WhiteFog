@@ -37,6 +37,14 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _RampLight:
+        m_Texture: {fileID: 2800000, guid: 6c48b026d2e5434cba6f9e743690b7a4, type: 3}
+        m_Scale: {x: 1.0, y: 1.0}
+        m_Offset: {x: 0.0, y: 0.0}
+    - _DissolveTex:
+        m_Texture: {fileID: 2800000, guid: 5dc46035261148ec83a064c6193535d4, type: 3}
+        m_Scale: {x: 1.0, y: 1.0}
+        m_Offset: {x: 0.0, y: 0.0}
     - _BaseMap:
         m_Texture: {fileID: 2800000, guid: 63e1e92eddb95794b8c442de4aa7655f, type: 3}
         m_Scale: {x: 1, y: 1}

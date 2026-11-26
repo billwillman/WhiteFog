@@ -89,13 +89,7 @@ namespace SoftKitty
                 if (!target.AvailableForInteraction || (victim && !victim.isActiveAndEnabled)) yield break;
                 if (style == SkillPlayback.Style.Direct && cast.CastInterrupted) yield break;
                 if (!TryEvaluate(calculation.settlement, context, host, out var defended)) yield break;
-                float hp = target.GetAttributeFloat("chp");
-                float loss = Mathf.Clamp(SkillDefence.Incoming(health, Mathf.Max(0, defended)), 0, Mathf.Max(0, hp));
-                if (loss > 0)
-                {
-                    health.SetValue(hp - loss, source);
-                    target.OnEntityEvent("Damage", loss, source, false);
-                }
+                SkillPlayback.ApplyIncomingDamage(source, target, Mathf.Max(0, defended));
                 host.Signal(victim, SkillPlayback.Position(target, victim), "命中", .18f, new Color(1f,.55f,.22f));
             }
         }

@@ -435,6 +435,7 @@ namespace SoftKitty.MasterCombatCore.Demo
             pushPower = _dir * 5F;
             hitLag = 0F;
             hitTimer = 0F;
+            EntityInstance.InterruptCast();
             mAnimator.SetTrigger("AttackFail");
         }
         #endregion
@@ -447,6 +448,7 @@ namespace SoftKitty.MasterCombatCore.Demo
             if(_hp> _mhp) EntityInstance.SetAttributeValue("chp", _mhp);
             if (EntityInstance.AvailableForInteraction && _hp <= 0)//Death
             {
+                EntityInstance.InterruptCast();
                 OnDeath(lastAttacker);
                 EntityInstance.AvailableForInteraction = false;
                 EntityInstance.SetAttributeValue("chp", 0F);

@@ -1,5 +1,5 @@
 %YAML 1.1
-%TAG !u! tag:unity3d.com,2011:
+%TAG !u! tag:yousandi.cn,2023:
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5777,6 +5777,7 @@ MonoBehaviour:
   ActionClassNames:
   - Animation
   - AttributeChange
+  - CustomData
   - Destroy
   - Event
   - Instantiate
@@ -5789,6 +5790,7 @@ MonoBehaviour:
   HandlerClassNames:
   - AngleDifference
   - AttributeValue
+  - CustomData
   - Distance
   - EntityExist
   - HeightDifference

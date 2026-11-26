@@ -77,6 +77,7 @@ namespace SoftKitty
         /// The total duration of the effect in seconds. This determines how long the effect lasts before it is removed.
         /// </summary>
         public float duration = 1F;
+        public bool interruptCastOnEnter;
         public bool layered = false;
         public int maxLayer = 99;
         public bool canBeExtended = false;
@@ -120,6 +121,7 @@ namespace SoftKitty
             _copy.iconLoadMethod = iconLoadMethod;
             _copy.permanent = permanent;
             _copy.duration = duration;
+            _copy.interruptCastOnEnter = interruptCastOnEnter;
             _copy.layered = layered;
             _copy.maxLayer = maxLayer;
             _copy.canBeExtended = canBeExtended;

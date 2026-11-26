@@ -299,6 +299,7 @@ namespace SoftKitty
                         EditorUtils.Toggle(ref myTarget.overTimeEffects[i].permanent, new GUIContent("Permanent Effect:", "Whether this effect has infinite duration."), 10, 130);
                         EditorUtils.Toggle(ref myTarget.overTimeEffects[i].canBeExtended, new GUIContent("Can be Extended:", "Whether the duration increases when the effect is applied again."), 10, 130);
                         EditorUtils.Toggle(ref myTarget.overTimeEffects[i].canBeRefreshed, new GUIContent("Can be Refreshed:", "Whether the duration resets to maximum when the effect is applied again."), 10, 130);
+                        EditorUtils.Toggle(ref myTarget.overTimeEffects[i].interruptCastOnEnter, new GUIContent("Interrupt Cast on Entry:", "Interrupt once when this status is newly applied."), 10, 130);
                         EditorUtils.Toggle(ref myTarget.overTimeEffects[i].canBeDispelled, new GUIContent("Can be Dispelled:", "Whether this effect can be dispelled."), 10, 130);
 
                         EditorUtils.Toggle(ref myTarget.overTimeEffects[i].layered, new GUIContent("Layered:", "Whether this effect can stack when applied multiple times."), 10, 130);

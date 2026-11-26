@@ -203,19 +203,23 @@ namespace SoftKitty
                 _timer += _duration * Time.deltaTime;
             }
         }
-        IEnumerator MoveCo(Vector3 _positionOffset, float _duration, bool _worldSpace, bool _stickToGround)
+        IEnumerator MoveCo(Vector3 _positionOffset, float _duration, bool _worldSpace, bool _stickToGround, Entity interruptOnMove)
         {
             float _timer = 0F;
+            var fixedStep = new WaitForFixedUpdate();
+            yield return fixedStep;
             while (_timer < _duration)
             {
-                yield return new WaitForFixedUpdate();
-                if (MyCharacterController)
+                var controller = MyCharacterController;
+                var body = controller ? null : MyRigidbody;
+                var before = body ? body.position : transform.position;
+                if (controller)
                 {
-                    MyCharacterController.Move((_worldSpace ? _positionOffset : transform.InverseTransformPoint(_positionOffset)) * Time.fixedDeltaTime / _duration);
+                    controller.Move((_worldSpace ? _positionOffset : transform.InverseTransformPoint(_positionOffset)) * Time.fixedDeltaTime / _duration);
                 }
-                else if (MyRigidbody)
+                else if (body)
                 {
-                    MyRigidbody.MovePosition(transform.position + (_worldSpace ? _positionOffset : transform.InverseTransformPoint(_positionOffset)) * Time.fixedDeltaTime / _duration);
+                    body.MovePosition(transform.position + (_worldSpace ? _positionOffset : transform.InverseTransformPoint(_positionOffset)) * Time.fixedDeltaTime / _duration);
                 }
                 else
                 {
@@ -230,7 +234,19 @@ namespace SoftKitty
                     }
                     transform.position = _pos;
                 }
-                yield return new WaitForEndOfFrame();
+                if (interruptOnMove != null && !body && transform.position != before)
+                {
+                    interruptOnMove.InterruptCast();
+                    interruptOnMove = null;
+                }
+
+                yield return fixedStep;
+                // Rigidbody.MovePosition is observable after physics has advanced.
+                if (interruptOnMove != null && body && body.position != before)
+                {
+                    interruptOnMove.InterruptCast();
+                    interruptOnMove = null;
+                }
                 _timer += _duration * Time.fixedDeltaTime;
             }
         }
@@ -469,7 +485,14 @@ namespace SoftKitty
         /// <param name="_stickToGround"></param>
         public void Move(Vector3 _positionOffset, float _duration,bool _worldSpace,bool _stickToGround=true)
         {
-            StartCoroutine(MoveCo(_positionOffset,Mathf.Max(Time.fixedDeltaTime, _duration), _worldSpace, _stickToGround));
+            Move(_positionOffset, _duration, _worldSpace, _stickToGround, false);
+        }
+
+        public void Move(Vector3 offset, float duration, bool worldSpace, bool stickToGround, bool interruptCast)
+        {
+            if (offset == Vector3.zero) return;
+            StartCoroutine(MoveCo(offset, Mathf.Max(Time.fixedDeltaTime, duration), worldSpace, stickToGround,
+                interruptCast ? mData : null));
         }
 
         /// <summary>

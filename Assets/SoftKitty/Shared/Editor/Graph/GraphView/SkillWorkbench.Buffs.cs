@@ -112,6 +112,7 @@ namespace SoftKitty
             EditorGUI.BeginChangeCheck();
             string label = EditorGUILayout.DelayedTextField("显示名", effect.name);
             float duration = Mathf.Max(.01f, EditorGUILayout.DelayedFloatField("持续时间（秒）", effect.duration));
+            bool interruptOnEnter = EditorGUILayout.Toggle("进入状态时打断施法", effect.interruptCastOnEnter);
             bool layered = EditorGUILayout.Toggle("允许叠层", effect.layered);
             int layers = layered ? Mathf.Max(1, EditorGUILayout.DelayedIntField("层数上限", effect.maxLayer)) : effect.maxLayer;
             bool refresh = EditorGUILayout.Toggle("重复施加时补回时长", effect.canBeRefreshed);
@@ -123,6 +124,7 @@ namespace SoftKitty
                 Undo.RegisterCompleteObjectUndo(db, "编辑 Buff 定义");
                 effect.name = label; effect.duration = duration; effect.layered = layered; effect.maxLayer = layers;
                 effect.canBeRefreshed = refresh; effect.canBeExtended = extend; effect.canBeDispelled = dispel;
+                effect.interruptCastOnEnter = interruptOnEnter;
                 effect.DesignGraph = effectGraph;
                 MarkBuffDirty(db);
             }

@@ -25,16 +25,17 @@ namespace SoftKitty
             if (caster == null || target == null || !graph) return;
             var host = SkillPlayback.On(instance);
             state.NodeStates[NodeIndex].lastBool = true;
+            var impact = host.OriginalProjectileImpact;
             host.ScheduleReleases(state, caster, WaitTime, FormulaImpactAction.SegmentCount(this), Interval,
-                () => Launch(host, graph, caster, target));
+                () => Launch(host, graph, caster, target, impact));
         }
 
-        private static void Launch(SkillPlayback host, OriginalSkillGraph graph, Entity source, Entity recipient)
+        private static void Launch(SkillPlayback host, OriginalSkillGraph graph, Entity source, Entity recipient, System.Action<Entity, Entity> impact)
         {
             var caster = SkillPlayback.FindActor(source);
             var target = SkillPlayback.FindActor(recipient);
             if (caster && target && target.AvailableForInteraction)
-                host.ProjectileHost().Schedule(Fly(graph, caster.transform, target.transform));
+                host.ProjectileHost().Schedule(Fly(graph, caster, target, impact));
         }
 
         public override void Execute(GraphRuntimeState state)
@@ -68,7 +69,8 @@ namespace SoftKitty
                     }
                     break;
                 case 3:
-                    Launch(SkillPlayback.On(instance), graph, caster.mData, target.mData);
+                    var host = SkillPlayback.On(instance);
+                    Launch(host, graph, caster.mData, target.mData, host.OriginalProjectileImpact);
                     break;
             }
         }
@@ -108,8 +110,12 @@ namespace SoftKitty
             }
         }
 
-        private static IEnumerator Fly(OriginalSkillGraph graph, Transform caster, Transform target)
+        private static IEnumerator Fly(OriginalSkillGraph graph, EntityComponent casterActor, EntityComponent targetActor, System.Action<Entity, Entity> impact)
         {
+            var caster = casterActor.transform;
+            var target = targetActor.transform;
+            var source = casterActor.mData;
+            var recipient = targetActor.mData;
             var releaseRoot = ActorRoot(caster);
             var hitRoot = ActorRoot(target);
             Vector3 start = releaseRoot.position + caster.rotation * graph.launchOffset;
@@ -129,8 +135,11 @@ namespace SoftKitty
                     yield return null;
                 }
                 if (bolt) bolt.transform.position = end;
-                if (hitRoot && target)
+                if (hitRoot && targetActor && targetActor.isActiveAndEnabled && targetActor.mData == recipient && recipient.AvailableForInteraction)
+                {
                     Spawn(graph.impact, hitRoot.position + target.rotation * graph.impactOffset, Quaternion.identity);
+                    impact?.Invoke(source, recipient);
+                }
                 if (tail)
                 {
                     tail.transform.position = end;

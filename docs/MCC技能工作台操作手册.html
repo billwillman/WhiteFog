@@ -7,15 +7,14 @@ body{margin:0;color:var(--ink);background:#f4f6f1;font:16px/1.75 "Microsoft YaHe
 @media(max-width:800px){main{grid-template-columns:minmax(0,1fr);gap:12px;padding-inline:12px}nav{position:static;display:flex;flex-wrap:wrap;gap:2px 8px}section{padding:17px 14px}.lane{grid-template-columns:5em minmax(0,1fr)}}@media print{body{background:white;font-size:10pt}main{display:block;padding:0}nav,header a,button{display:none}header{padding:5px 0;color:#183b30;background:white}header p{color:#384c45}section{border:0;padding:10px 0}tr,.flow,.times{break-inside:avoid}h2,h3{break-after:avoid}.table{overflow:visible}}
 .window-map{margin:14px 0 18px}.window-map div{padding:9px 12px;border:1px solid #d3e1da;border-top:0;background:#f7f9f5}.window-map div:first-child{background:#29453d;color:white;border-radius:6px 6px 0 0}.window-map strong{display:inline-block;min-width:8em}.window-map figcaption{color:var(--soft);font-size:14px}.bar-label{display:flex;justify-content:space-between;font-size:12px;color:var(--soft);margin-left:calc(7rem + 9px)}@media(max-width:800px){.bar-label{margin-left:calc(5rem + 9px)}}@media print{details{break-inside:avoid}.window-map div:first-child,.flow{background:white;color:#183b30}}
 </style></head><body>
-<header><div><small>WhiteFog · 团结 1.9.3 · Master Combat Core 1.03</small><h1>技能工作台操作手册</h1><p>从九张现成技能中选一张，在同一窗口改目标、时序和数值，保存后切到 Preview，让主角或怪物施放所选技能。</p><a href="#first">跟做一次飞剑试放</a><button onclick="window.print()">打印 / 另存 PDF</button></div></header>
-<main><nav aria-label="目录"><a href="#first">首次打开和试放</a><a href="#platform">Buff、公式与条件技能</a><a href="#workspace">窗口里的配置</a><a href="#timing">时间轴和节点</a><a href="#build">从空白制作飞剑</a><a href="#catalog">九个原生技能</a><a href="#edit">复制、修改、复测</a><a href="#preview">两种试放方式</a><a href="#status">护盾和易伤</a><a href="#trouble">常见问题</a><a href="#files">目录与交付</a></nav><article>
+<header><div><small>WhiteFog · 团结 1.9.3 · Master Combat Core 1.03</small><h1>技能工作台操作手册</h1><p>从原作技能库选择《破空剑法》，在工作台查看出手、飞剑抵达和试放扣血。</p><a href="#first">跟做一次飞剑试放</a><button onclick="window.print()">打印 / 另存 PDF</button></div></header>
+<main><nav aria-label="目录"><a href="#first">首次打开和试放</a><a href="#platform">Buff、公式与条件技能</a><a href="#workspace">窗口里的配置</a><a href="#timing">时间轴和节点</a><a href="#build">从空白制作飞剑</a><a href="#catalog">原作技能验证</a><a href="#edit">复制、修改、复测</a><a href="#preview">两种试放方式</a><a href="#status">护盾和易伤</a><a href="#trouble">常见问题</a><a href="#files">目录与交付</a></nav><article>
 <section id="first"><h2>首次打开和试放</h2>
 <ol><li>打开 <code>E:\Tuanjie19_WhiteFog</code>，等待团结完成脚本编译和资源导入。从菜单打开 <strong>Window → Soft Kitty → 技能工作台</strong>。已经在 Project 中选中技能图时，也可以点 Inspector 里的<strong>打开技能工作台</strong>。</li>
-<li>首次打开时可直接看到技能库。如果窗口已有选中的技能，点顶部<strong>技能库</strong>打开列表。在「主角技能」里点<strong>御剑穿云</strong>。搜索框按技能名称筛选，清空即可恢复全部。点选后，窗口上方显示当前图的名字和摘要。</li>
-<li>技能摘要下方直接显示<strong>技能等级表</strong>，每一级占一行。例如御剑穿云 2 级的攻击倍率为 <code>0.66</code>、基础命中率为 <code>95</code>（95%）。在格内输入数值，点顶部<strong>保存</strong>。在<strong>动作时间轴</strong>选<strong>分段命中与公式结算</strong>可查看三张公式图与各段占比。御剑穿云在 0.24 秒检查 16 米射程，飞剑速度 19 米/秒，第 1 段占比 100%。</li>
-<li>切到顶部 <strong>Preview</strong> 页签，选择<strong>快速试放</strong>。当前技能仍为御剑穿云，「本次施放方向」默认使用「主角 → 怪物」。确认显示「男角色 001 → 小雕」，将<strong>双方距离（米）</strong>设为 <code>8</code> 米。</li>
-<li>点<strong>打开角色预览并试放</strong>。团结进入独立的「角色预览」场景，工作台直接显示双方和技能表现。面板列出实际施放者、目标、试放等级和目标生命变化。</li>
-<li>先设「试放技能等级」为 1，在 8 米处试放。约 0.66 秒是预计抵达时刻，每段到时独立判命中。记录目标生命差，再换成等级 3 复测。血量差受防御、易伤和护盾影响，屏幕上的「命中」也可能对应零扣血。</li>
+<li>点<strong>技能库</strong>，按名字或编号搜索 <strong>25090 破空剑法</strong>。</li>
+<li>在动作时间轴检查 0 秒的动作和武器，以及 1.120、1.251、1.443 秒的三次飞剑发射。</li>
+<li>切到 <strong>Preview → 快速试放</strong>。使用默认的 8 米距离，点<strong>打开角色预览并试放</strong>。</li>
+<li>「每剑预览来伤」是本地试放输入，默认 10。每把飞剑抵达才结算，头顶数字显示实际扣血。改成 0 可单看动作和特效。</li>
 <li>Play 中可直接切到另一张图，点<strong>再次试放所选技能</strong>。要保存新的设计参数，先退出 Play，再改图、保存并重试。</li></ol>
 <p class="note">角色预览使用《宗师之上》男角色 001 与小雕。点「退出角色预览」回到之前的编辑场景。要用 Hierarchy 里的具体角色，请切换「当前场景试放」。</p></section>
 <section id="platform"><h2>从技能引用 Buff，查看它的数值来源</h2>
@@ -26,13 +25,13 @@ body{margin:0;color:var(--ink);background:#f4f6f1;font:16px/1.75 "Microsoft YaHe
 <li>切到 <strong>Preview → 快速试放</strong>。观察「施放者状态」「目标状态」里的 UID、层数与剩余时间，配合当前生命核对每跳。再次施加可验叠层和刷新；换练习技能可验驱散与移除。做回复实验时，先让受术者损失部分生命。</li></ol>
 <h3>按目标条件修改施法者</h3>
 <p>「新建技能 → 目标有状态时按攻击自疗」会按你选择的状态建立一张原生图。它从《宗师之上》流风回雪扇抽取一条制作路径：条件节点检查目标身上的状态，公式从施法者读取 <code>atk</code>，最后写回施法者的 <code>chp</code>。默认治疗倍率为 1.2，可以在公式页编辑。这个模板可用于主角或怪物。要实现原武学同时满足两项条件时的双份回复，需要另接第二条条件路径。</p>
-<p>「吸收护盾」模板入口打开 MCC 高级伤害图，可检查能量盾的扣减过程。八招已经支持独立等级表和跨图公式引用。多盾优先级和按护盾实例驱散的规则仍待确定。<a href="Tuanjie技能平台设计与MCC边界.md">技能平台设计与 MCC 边界</a></p>
+<p>「吸收护盾」模板入口打开 MCC 高级伤害图，可检查能量盾的扣减过程。公式结算动作支持独立等级表和跨图公式引用。多盾优先级和按护盾实例驱散的规则仍待确定。<a href="Tuanjie技能平台设计与MCC边界.md">技能平台设计与 MCC 边界</a></p>
 </section><section id="workspace"><h2>窗口里的配置</h2>
 <figure class="window-map" aria-label="技能工作台页签"><div><strong>技能编辑　｜　Buff 状态　｜　公式与数值　｜　Preview</strong></div><div><strong>技能编辑</strong>　选择技能 → 编辑等级表、触发条件与动作时间轴 → 保存</div><div><strong>Preview → 快速试放</strong>　选择本次的方向、距离和等级，进入预览场景观察结果</div><div><strong>Preview → 当前场景试放</strong>　指定当前场景的执行组件、施加者和目标</div><figcaption>编辑和预览共用当前选中的技能。可以直接切换页签，也可以在 Preview 的技能库里换招。</figcaption></figure>
 <div class="table"><table><thead><tr><th>位置</th><th>在这里做什么</th><th>何时使用</th></tr></thead><tbody>
-<tr><td>技能库 / 资产槽</td><td>按名字搜索，按主角、怪物、其他图选择，也可从 Project 拖入 GraphObject。</td><td>开始制作或在 Play 中切换试放技能。</td></tr>
+<tr><td>技能库 / 资产槽</td><td>按名字或原作 ID 搜索，也可从 Project 拖入正在制作的图。</td><td>开始制作或在 Play 中切换试放技能。</td></tr>
 <tr><td>新建 / 复制</td><td>新建可选空白、单次伤害、三段伤害或单体治疗。复制可保留现有节点、参数和连线。</td><td>想沿用现有飞剑、易伤或护盾配置时，用复制最快。</td></tr>
-<tr><td>触发配置</td><td>查看和修改实体存在、属性、距离等条件，或添加新的必需条件。</td><td>整张图的施放前提。八张攻击图的射程放在「分段命中与公式结算」步骤里，经过前摇后才检查。</td></tr>
+<tr><td>触发配置</td><td>查看和修改实体存在、属性、距离等条件，或添加新的必需条件。</td><td>整张图的施放前提。自定义动作的射程放在「分段命中与公式结算」步骤里，经过前摇后才检查。</td></tr>
 <tr><td>动作时间轴</td><td>选中动作，改变开始时间、执行模式、段数、间隔，或在游标处添加动作。</td><td>看一招有哪些步骤，调整起手和命中的节奏。</td></tr>
 <tr><td>动作表单</td><td>编辑当前节点的实体、数值、枚举、事件和命中后的行为。共享输入会标「共享」。</td><td>修改基础伤害、弹道、易伤、护盾或回复。</td></tr>
 <tr><td>Preview → 快速试放</td><td>选择本次施放方向、起始距离和等级，用预览场景的角色试放并观察实时生命值。</td><td>验收技能资产本身。</td></tr>
@@ -41,83 +40,58 @@ body{margin:0;color:var(--ink);background:#f4f6f1;font:16px/1.75 "Microsoft YaHe
 </tbody></table></div></section>
 <section id="timing"><h2>时间轴和节点怎么读</h2>
 <div class="flow" aria-label="执行关系"><b>检查施放条件</b>→<b>战斗根节点</b>→<b>按各动作的开始时间执行</b>→<b>表现和数值结算</b></div>
-<p>每行动作的<strong>开始时间</strong>以本次施放为零点。同一根节点可启动多行动作。要让第二步等到第一步完成，应填写合适的开始时间。飞行时间随距离变化。八招把判定接在抵达之后；缚影蚀脉在首段命中后先挂易伤，再等待配置的延迟才算防御。</p>
-<div class="times" role="img" aria-label="星弧连闪的固定目标试放时间示意，预计在 0.54、0.68、0.82 秒尝试三次结算">
-<div class="lane"><strong>施法提示</strong><div class="bar"><i style="left:0"></i></div></div>
-<div class="lane"><strong>飞剑在途</strong><div class="bar"><span style="left:25%;width:29%"></span></div></div>
-<div class="lane"><strong>预计结算</strong><div class="bar"><i style="left:54%"></i><i style="left:68%"></i><i style="left:82%"></i></div></div><div class="bar-label"><span>0 秒</span><span>0.5 秒</span><span>1 秒</span></div></div>
-<p class="caption">「星弧连闪」的固定目标预览在 8 米、速度 28 米/秒时，约于 0.54、0.68、0.82 秒尝试结算。协程有帧级误差。这张图描述计划时刻；快速试放已锁定一个目标，每到一个段时点会独立抽取命中结果。</p>
+<p>每行动作的<strong>开始时间</strong>以本次施放为零点。同一根节点可启动多行动作。要让第二步等到第一步完成，应填写合适的开始时间。飞行时间随距离变化。《破空剑法》在起手后分三次发射，飞剑的抵达时刻由发射距离、初速和加速度共同决定。</p>
 <h3>时间游标、横条与执行方式</h3><p>点左侧动作名称，游标会对齐其开始时间。点右侧轨道，会选中该行并把游标放到点击位置。游标决定下一次「添加动作」的起点。移动已有动作时，选中它，在下方改「开始时间（秒）」并按回车。</p>
 <p>「单次」执行一遍。「执行多次」填写次数和间隔，例如三段、间隔 0.14 秒，第一段到第三段相隔 0.28 秒。「持续执行」填写持续时间和执行间隔。行名末尾的「直接」表示连接根节点，「分支」表示经其他节点接入，「未连接」时应在节点图检查动作的执行输入。</p>
 <h3>动作类型</h3><ul>
-<li><strong>施法提示</strong>指定提示对象、事件名、显示时长及施法或敌对预警类型。事件会发给所连实体。比如雷鳞震翅把预警放在受术者，御剑穿云把起剑提示放在施加者。</li>
+<li><strong>施法提示</strong>指定提示对象、事件名、显示时长及施法或敌对预警类型。事件会发给所连实体。敌方预警可发给受术者，起手提示可发给施放者。</li>
 <li><strong>分段命中与公式结算</strong>接施加者、目标和技能等级。点动作可配置等级表、三个公式引用和各段占比。节点画布上的按钮可直接打开三个公式树。</li>
 <li>旧动作<strong>技能命中</strong>接三个输入：施加者、受术者和<strong>伤害输入（点）</strong>。最后一个端口读入上游已经算好的点数。选飞剑、光弹或毒雾时，飞行时长取出发距离除以速度，弧线高度控制轨迹。射程填 0 表示不限；超距会中止此次动作并可显示提示。</li>
-<li><strong>护盾与回复</strong>选择作用实体、效果类型和数值。护盾可设持续时间，回复以该实体的 <code>hp</code> 为上限，写入 <code>chp</code>。清罡护体的两行动作都接「施加者」。</li></ul>
+<li><strong>护盾与回复</strong>选择作用实体、效果类型和数值。护盾可设持续时间，回复以该实体的 <code>hp</code> 为上限，写入 <code>chp</code>。</li></ul>
 <p>「技能命中」勾选<strong>到达时施加易伤</strong>后可编辑百分比和时长。<strong>命中后到首段的延迟</strong>用于把减益与第一段伤害分开。工作台时间轴横条表示动作的计划重复区间，投射物的在途时间根据实战距离另算。</p></section>
 <section id="build"><h2>从空白制作一招公式飞剑</h2>
 <ol><li>新建空白技能，加「实体存在判断」，让条件检查目标。时间轴添加「分段命中与公式结算」，将施加者接 Dealer、受术者接 Target。技能等级端口使用动态变量 <code>skill.level</code>，默认 1；正式调用方可在施放前用 <code>CombatDamage.SetDynamicValue("skill.level", 等级)</code> 传入该角色掌握的技能等级。</li>
-<li>设置 0.30 秒开始、飞剑、射程 12 米、速度 20 米/秒。在动作上绑定「通用总伤害」「通用命中率」「通用防御结算」。在「技能等级表」选择自己的资产。可在 Project 复制「御剑穿云」等级表后改值；检查复制出的表已绑定到当前动作。</li>
+<li>设置 0.30 秒开始、飞剑、射程 12 米、速度 20 米/秒。在动作上绑定「通用总伤害」「通用命中率」「通用防御结算」。在「技能等级表」选择自己的资产。选择自建等级表后，确认动作引用正确。</li>
 <li>在技能摘要下方的<strong>技能等级表</strong>逐行编辑。攻击倍率填 <code>0.55</code> 表示最终攻击的 55%；固定加值填点数；基础命中率填 <code>95</code> 表示 95%；身法修正填 <code>0.5</code> 表示双方每相差 1 点身法，命中率变化 0.5 个百分点。点「新增一级」会复制当前最高等级的数值，新行可以单独修改。顶部「保存」同时保存技能图与绑定的等级表。若多个技能引用同一张表，保存的改动对这些技能都生效。</li>
 <li>单段填写 100。三段时选「执行多次」，次数 3，点「按当前 3 段均分 100%」生成三栏，再分别填 20、30、50。段数与占比数量必须一致，合计 100%。每段只处理自己的份额，落空的份额直接结束。</li>
 <li>在公式结算动作里选「公式试算等级」，再点「看公式」，即可使用这一级的表行试算，并调整模拟属性。Preview 的「试放技能等级」单独选择。用「用原生节点树编辑连线」改公式；若只想改这一招，先在该槽点「专用副本」。改了输出节点时，在公式页选新节点，再点「把当前节点设为运行时输出」并保存。</li></ol>
 <div class="flow"><b>施放：最终攻击 × 等级倍率 + 固定项</b>→<b>抵达：本段独立判命中</b>→<b>成功：分段伤害减去本段分摊的实时防御</b>→<b>易伤、护盾、剩余生命</b></div>
 <p>例如总伤害 200，三段占 20%、30%、50%，各分得 40、60、100。若目标当前防御 50，三段均命中且没有护盾或易伤，则实际扣 30、45、75。第二段落空时它扣 0，第三段仍只占原定的 50%。防御在段与段之间改变时，后续命中使用新值。</p></section>
-<section id="catalog"><h2>八张攻击图和一个辅助技能</h2><p>九张技能图均为本项目的工作台样例。名称、技能图和倍率没有《宗师之上》原版武学的逐招映射。《回风裂阵》是在提交 <code>fadf023</code> 中加入的两段攻击样例。八张攻击图各有独立的 1、2、3 级表，二级和三级的倍率分别为一级的 1.2 和 1.4 倍。固定项初始为 0。总伤害取施放时含模块加成的最终攻击；防御取各段命中时的目标属性。倍率及分段比例可改。</p>
-<div class="table"><table><thead><tr><th>技能</th><th>一级攻击倍率</th><th>各段占比（%）</th><th>表现与特例</th></tr></thead><tbody>
-<tr><td>御剑穿云</td><td>0.55</td><td>100</td><td>16 米射程，速度 19，单剑单段</td></tr>
-<tr><td>赤纹连灼</td><td>0.64</td><td>25 / 25 / 25 / 25</td><td>光弹抵达后四段，间隔 0.45 秒</td></tr>
-<tr><td>星弧连闪</td><td>0.66</td><td>20 / 30 / 50</td><td>一把飞剑，三次独立判定，间隔 0.14 秒</td></tr>
-<tr><td>缚影蚀脉</td><td>0.48</td><td>100</td><td>命中才挂 35% 易伤，0.20 秒后结算</td></tr>
-<tr><td>回风裂阵</td><td>0.70</td><td>40 / 60</td><td>10 米射程，两段间隔 0.32 秒</td></tr>
-<tr><td>雷鳞震翅</td><td>0.62</td><td>100</td><td>怪物预警 0.78 秒，14 米射程</td></tr>
-<tr><td>幽雾侵蚀</td><td>0.60</td><td>20 / 20 / 20 / 20 / 20</td><td>毒雾五段，间隔 0.35 秒</td></tr>
-<tr><td>裂石冲撞</td><td>0.46</td><td>100</td><td>地面预警，0.65 秒后检查 9 米射程</td></tr>
-<tr><td>清罡护体</td><td>辅助技能</td><td>—</td><td>0.18 秒后回复 28，获得 65 点盾，持续 3 秒</td></tr></tbody></table></div></section>
-<section id="edit"><h2>跟做一次复制、修改和复测</h2><ol>
-<li>在编辑模式选「星弧连闪」，点<strong>复制技能</strong>。选自己的目录，命名为 <code>星弧连闪_测试.asset</code>。工作台会切换到副本。</li>
-<li>选「分段命中与公式结算」行，记下原间隔 0.14 秒，在副本中改为 0.30 秒。保留执行次数 3 和原有的公式引用、段占比。按 <kbd>Enter</kbd> 并点<strong>保存</strong>。</li>
-<li>切去另一张图，再重新选择副本，核对间隔与次数。打开节点图可以看到，三次结算来自同一行动作。</li>
-<li>以 8 米试放，观察第一段到第三段的时间跨度是否从约 0.28 秒变成 0.60 秒。如果接下来要同时改整招的威力和分段权重，按<a href="#build">飞剑公式接线步骤</a>制作。</li>
-<li>要改成两段，修改<strong>执行次数</strong>，再调整两个占比并使合计为 100%。要拉开节奏，修改<strong>执行间隔</strong>。要延后整招的出剑时间，修改<strong>开始时间</strong>。三者对应不同的可见结果。</li></ol>
-<p>要增加表现，可把时间游标移到所需时刻，点<strong>添加动作 → 施法提示</strong>，选择作用实体、填写事件名和时长。移除动作时先选中该时间轴行，点<strong>移除当前动作</strong>。工作台支持团结编辑器的撤销操作。</p></section>
+<section id="catalog"><h2>原作技能验证</h2>
+<table><thead><tr><th>原作 ID</th><th>工作台技能图</th><th>团结试放核对项</th></tr></thead><tbody><tr><td>25090 · 1.3.0</td><td>破空剑法</td><td>角色动作、右手武器、起手、三次出剑、三次抵达。下方提供同一次试放的视频和分镜。</td></tr></tbody></table>
+<p>源事件取自还原目录的 <code>SkillReleaseStudy/Evidence/Tables/config/skill/25090.json</code>。起手、飞剑、拖尾、抵达四个预制体分别含 8、5、2、4 个粒子系统。逐层核对了渲染器、17 个材质及 75 处纹理绑定；42 张纹理与还原目录的 PNG 字节一致。桌面使用兼容着色器，原包保存的备用纹理槽一起保留。工作台技能库只列已接入的原作图。原包索引、网页原型和 Buff 模板不计作可试放的技能。</p>
+<p>本地预览将来伤送入角色生命和护盾结算。原作按战报确定各段伤害与目标；单凭三次飞剑事件无法推算三段实伤。</p></section>
+<section id="edit"><h2>复制、修改和复测</h2><ol><li>选中原作图，点「复制技能」，将试验副本保存到自己的工作目录。</li><li>选中一次发射并修改开始时间，按回车、保存。在 Preview 里保持双方距离相同，比较出手间隔。</li><li>在 Project 或工作台的资产槽中选择副本。正式原作清单与练习草稿分开管理。</li></ol></section>
 <section id="preview"><h2>Preview 页签</h2><h3>试放《宗师之上》破空剑法</h3>
-<ol><li>在工作台点 <strong>Preview → 快速试放</strong>。如果当前选中项目样例，点<strong>选择原作技能 · 破空剑法（25090）</strong>。也可以从技能库的「宗师之上 · 原作表现」分组选择。</li>
+<ol><li>在工作台点 <strong>Preview → 快速试放</strong>。如果当前选中自定义图，点<strong>选择原作技能 · 破空剑法（25090）</strong>。也可以从技能库的「宗师之上 · 原作表现」分组选择。</li>
 <li>核对来源为 <strong>1.3.0 · 25090</strong>，施放者为男角色 001，目标为小雕。双方距离建议先用 8 米。点<strong>打开角色预览并试放</strong>。</li>
 <li>默认只在工作台的 9∶16 镜头中显示。快速试放会进入 Play Mode 并加载独立的角色预览小场景。需要在 Game 窗口同步看画面时，勾选「同时在 Game 视图预览」，播放中也能切换。下方的男角色 001 踏在原包一级飞剑 <code>chr_com_flt_lys_level1_lod1</code> 上。待机用 <code>chr_male_lod1@idle_yj</code>，施法时切到 <code>chr_male_001@jian_pokong_25090</code>，右手另挂技能武器。上方小雕播放原包飞行动作。脚下的动态云海使用工程的双噪声、战斗遮罩与此前 HTML 战斗镜头的投影。</li>
 <li>点<strong>再次试放所选技能</strong>可重播。点<strong>退出角色预览</strong>回到之前的编辑场景。</li></ol>
 <table><thead><tr><th>原作事件时刻</th><th>工作台画面与原作资源</th></tr></thead><tbody>
 <tr><td>0 秒</td><td>角色起手，生成 <code>vfx_pokongjianfa_shifa</code>。<code>eff_cha_JianPugong_Weapon</code> 挂在 <code>Bip01 R Hand</code>，持续 1.10 秒。</td></tr>
 <tr><td>1.120、1.251、1.443 秒</td><td>三次发射，各使用 <code>vfx_pokongjianfa_trail</code> 与 <code>trail01</code>。初速 20，加速度 30，抵达时间随距离变化。</td></tr>
-<tr><td>各剑抵达</td><td>在目标处播放 <code>vfx_pokongjianfa_hit</code>。此图回放表现事件，抵达次数不能用于推断命中概率、段伤害或扣血。</td></tr></tbody></table>
-<p>源技能来自本地《宗师之上》1.3.0。角色、骨骼动作和粒子预制体取自对应原包，桌面端使用兼容材质。男角色 001 与小雕是此次预览的演员组合。项目中的六张主角样例、三张怪物样例可用来测试 MCC 的技能逻辑。</p>
+<tr><td>各剑抵达</td><td>在目标处播放 <code>vfx_pokongjianfa_hit</code>。预览在此时应用本地输入的来伤并显示生命差。</td></tr></tbody></table>
+<p>源技能来自本地《宗师之上》1.3.0。角色、骨骼动作和粒子预制体取自对应原包，桌面端使用兼容材质。男角色 001 与小雕是此次预览的演员组合。</p>
 <h3>对照实机看四个时刻</h3>
-<figure><img src="previews/破空剑法-分镜核对.jpg?v=54732dcc64" alt="工作台四帧，从左到右为御剑待机、转身起手、出剑与受击" style="display:block;max-width:100%;height:auto"><figcaption>团结实录四帧。从左至右看脚下飞剑、持剑起手、剑体与两侧拖尾、目标处的亮闪。四帧来自同一次试放。</figcaption></figure>
+<figure><img src="previews/破空剑法-分镜核对.jpg?v=3e8504c96d" alt="工作台四帧，从左到右为御剑待机、转身起手、出剑与受击" style="display:block;max-width:100%;height:auto"><figcaption>团结实录四帧。从左至右看脚下飞剑、持剑起手、剑体与两侧拖尾、目标处的亮闪。四帧来自同一次试放。</figcaption></figure>
 <p>看玩家测试视频约 3.1 到 4.6 秒：先看下方角色起手，再看前方两路剑光和敌人身上的亮闪。作者将破空剑法排在第一位，后面还接有其他武学。本工作台的八米试放只绑定一只小雕，三次发射会走同一路线。<a href="https://www.taptap.cn/moment/808369831463095290">玩家实录：「六武当」正文中「以下是测试视频」后的短片</a>。</p>
 <p>技能表 <code>25090</code> 指定动作、出剑时间与技能特效。坐骑外观随角色装备，此预览选用原包一级 <code>lys</code> 飞剑。原挂件在这一层级没有骑乘挂点，工作台以剑刃上表面对齐脚下。待机和施法时，坐骑剑尖朝向前方的小雕，剑柄在主角身后。角色用一个原动画采样帧衔接起手。桌面材质读取粒子 UV、逐粒子溶解和原材质队列。高光映射使用原包 <code>ACES0</code> 曲线，泛光按高画质默认配置（阈值 0.9、强度 0.6、散射 0.7）适配。</p>
-<h3>试放项目样例</h3><p>在技能库选中例如「御剑穿云」，再点 Preview。每次快速试放都会创建临时执行实例，通过原生 <code>CombatDamage.DealDamage</code> 执行当前图。工作台显示实际实体、技能等级表适用时的等级，以及双方的状态和生命变化。受击角色头顶的金色飘字显示本段实际扣血量，多段命中分别显示。未命中、护盾完全吸收和纯表现回放都不会产生伤害数字。</p><figure><img src="previews/回风裂阵-分段伤害.png" width="270" height="480" alt="回风裂阵试放时，小雕头顶先后显示两次负三十" style="max-width:100%;height:auto"><figcaption>「回风裂阵」试放实帧。本次测试中两段各扣 30 点生命，分别显示在小雕头顶。</figcaption></figure>
-<p>「技能编辑」里的「默认施放方」保存在技能图上，供技能库分类和快速试放使用。Preview 的「本次施放方向」可临时对调 Dealer 与 Target。试放等级选取已有的表行，切换技能后从 1 级开始。图内的实体输入再决定每步具体作用于谁。例如「清罡护体」的施放方向仍可为「主角 → 怪物」，盾和治疗却都作用于主角。正式玩法由调用方传入双方。</p>
-<figure><video controls playsinline preload="metadata" width="324" height="576" style="max-width:100%;height:auto" poster="previews/MCC角色预览.png?v=54732dcc64" src="previews/破空剑法-竖屏实录.mp4?v=54732dcc64"></video><figcaption>《破空剑法》工作台竖屏实录。男角色 001 御剑在下，小雕在上方迎向主角。双方相距 8 米，三把飞剑依次抵达。<a href="previews/破空剑法-竖屏实录.mp4?v=54732dcc64">打开本地 MP4</a></figcaption></figure><h3>打断施法与飞剑离手</h3><p>在 Preview 试放后点「打断施放者」。打断会结束本次施法的剩余时间轴。尚未触发的施法提示、特效、加状态、回复、直接攻击段和投射发射都取消。例如两次发射分别安排在 0.40 秒和 0.72 秒，若在 0.55 秒打断，第一把飞剑继续飞向目标并按原配置判定命中，第二把取消。一次投射后的多段判定仍属于同一个已发出的效果。需要两次独立出剑时，在时间轴配置两个发射动作。「回风裂阵」使用直接命中，在第一段后打断只会保留已结算的第一段。</p><p>控制技能可在「添加动作 → 打断施法」里选择接收事件的角色，默认是目标。角色控制器和动画事件也可调用 <code>EntityComponent.InterruptCast()</code>。普通扣血与施法打断独立。打断后重新施法可以正常出剑。</p><h3>试放自己指定的角色、执行器或武器</h3><ol>
+<h3>核对伤害飘字</h3><p>以 8 米试放。飞剑在途中，目标生命保持原值；抵达后，头顶飘字显示生命变化。试放前记录目标生命，结束后对照「目标生命」的前后读数。若每剑输入 10，目标生命充足且没有护盾、易伤，三剑合计扣 30。每剑来伤设为 0，或护盾完全吸收时，生命维持原值。</p>
+<figure><video controls playsinline preload="metadata" width="324" height="576" style="max-width:100%;height:auto" poster="previews/MCC角色预览.png?v=3e8504c96d" src="previews/破空剑法-竖屏实录.mp4?v=3e8504c96d"></video><figcaption>《破空剑法》工作台竖屏实录。男角色 001 御剑在下，小雕在上方迎向主角。双方相距 8 米，三把飞剑依次抵达，各扣 10 点生命。实录中小雕生命由 50 降至 20。<a href="previews/破空剑法-竖屏实录.mp4?v=3e8504c96d">打开本地 MP4</a></figcaption></figure><h3>打断施法与飞剑离手</h3><p>在 Preview 试放后点「打断施放者」。打断会结束本次施法的剩余时间轴。尚未触发的施法提示、特效、加状态、回复、直接攻击段和投射发射都取消。例如两次发射分别安排在 0.40 秒和 0.72 秒，若在 0.55 秒打断，第一把飞剑继续飞向目标并按原配置判定命中，第二把取消。一次投射后的多段判定仍属于同一个已发出的效果。需要两次独立出剑时，在时间轴配置两个发射动作。</p><p>控制技能可在「添加动作 → 打断施法」里选择接收事件的角色，默认是目标。角色控制器和动画事件也可调用 <code>EntityComponent.InterruptCast()</code>。「变换 → 移动」和「传送」动作可勾选「位移时打断受术者施法」；受术者产生位移时触发一次。「Buff 状态」定义可勾选「进入状态时打断施法」；首次施加或移除后再进入会触发，刷新、叠层和周期结算不会重复打断。两种来源调用同一个入口。若震退已经通过踉跄状态触发打断，仅在该状态配置即可。普通扣血与施法打断独立。打断后重新施法可以正常出剑。</p><h3>试放自己指定的角色、执行器或武器</h3><ol>
 <li>在要验收的场景选 <strong>Preview → 当前场景试放</strong>，进入 Play。把要出招的实例拖入「施加者」，把要受击的实例拖入「目标」。已有有效的 <code>EntityComponent</code> 即可，执行组件可留空。</li>
 <li>如要验收武器上现成的 <code>CombatDamage</code>，可用「查找使用此图的场景组件」绑定它，再展开「命中检测、投射物与动态变量」。</li>
 <li>选择试放技能等级，点<strong>试放当前技能</strong>。预览镜头对准所选对象，结果显示双方名称和实体 UID。手动试放通过指定目标调用图。要测试碰撞层、射线或实际命中体，请另用武器或角色的正常施法入口触发物理检测。</li>
 </ol><p class="note">MCC 原版多个延迟动作复用同一个执行器时可能串目标。快速试放为每次施放分配独立实例。接入正式角色时，并行施放也应保留独立的执行上下文和足够的存活时间。</p></section>
-<section id="status"><h2>验证护盾、易伤和未命中</h2><ul>
-<li><strong>护盾吸收。</strong>让主角先施放「清罡护体」，待护盾生效，让怪物施放「雷鳞震翅」。检查本段是否命中，再比较防御后伤害与当前盾量。65 点盾足以吸收本段时，生命维持原值。</li>
-<li><strong>回复封顶。</strong>记录施放前的当前生命与最大生命。例如生命 80/100，回复 28 后应为 100/100。如果 100/100 时施放，仅凭血条看不出回复，需要另验护盾吸收。</li>
-<li><strong>易伤与取整。</strong>缚影蚀脉命中先挂易伤，再将防御后伤害乘 1.35，按样例现有规则取整，最后扣盾。把专用命中公式调成 0 可复测落空，目标不应获得该次易伤。</li>
-<li><strong>射程失败。</strong>先用 8 米观察「御剑穿云」抵达后的判定，再改 20 米。射程在前摇结束时检查，实际角色仍在移动，观察当时的距离。未通过时不会发射飞剑或扣血。</li></ul>
-<p>九图使用生命属性 <code>chp</code> 和最大生命 <code>hp</code>。护盾和易伤同时作用于这些技能的命中及 MCC「修改属性 → 减法」对同一属性的伤害。其他游戏系统自行直接写生命时，需要按其伤害入口接入相同规则。</p></section>
+<section id="status"><h2>核对护盾和生命</h2><p>在「当前场景试放」选择带护盾的受术者，按受击前后的盾量和生命核对。来伤超过剩余护盾时，头顶数字等于实际生命损失。生命不足一段伤害时，扣血以当前剩余生命为限。</p></section>
 <section id="trouble"><h2>常见问题</h2>
-<details open><summary>技能库找不到某张图</summary><p>点顶部「技能库」，清空「查找技能」。分组标题下直接列出技能。工程内 <code>Assets/WhiteFog/Skills/</code> 下的图区分主角和怪物，分组由该图的「默认施放方」决定。保存在其他目录的副本列在「其他技能图」，列表显示完整资产路径。</p></details>
+<details open><summary>技能库找不到某张图</summary><p>点顶部「技能库」，清空「查找技能」。原作列表按技能 ID 排序。要编辑个人草稿，请从 Project 拖入资产槽。</p></details>
 <details open><summary>当前画面还是 DemoScene 或其他游戏场景</summary><p>要试放男角色 001 和小雕，先退出当前 Play，再点「打开角色预览并试放」。要使用正在运行的场景实例，直接选「当前场景试放」并指定双方。如果 Play 已暂停，先恢复播放。</p></details>
 <details open><summary>能看到特效，但伤害看起来偏少或偏多</summary><p>先查射程、技能等级表、各段占比、命中率、目标防御与当前生命，再查护盾或易伤，再确认次数、间隔与在途时间。血量不足时结算会受剩余生命限制。快速试放保留本轮双方生命、护盾和状态。要恢复初始条件，退出角色预览再进入。</p></details>
 <details><summary>编辑框变灰，或节点图和工作台显示不同</summary><p>先退出 Play。若节点图正在编辑同一资产，点「切回工作台编辑」。确认正在编辑原图还是副本，用路径核对同名技能。输入框按回车后再保存。</p></details>
 <details><summary>Console 出现找不到 SkillPlayback 或自定义动作</summary><p>检查 <code>Assets/SoftKitty/MasterCombatCore/Scripts/Core/SkillPlayback.cs</code>、动作脚本及其 <code>_interface.txt</code> 是否已导入。等待脚本编译结束，从 Console 第一条红色错误开始排查。运行时反射类型同时在插件 <code>link.xml</code> 中登记。</p></details>
 <details><summary>如何查看更复杂的条件和公式</summary><p>选中图后点「打开节点图」，从根节点的触发输入和动作输出追查连线。工作台中显示「来自节点」的端口说明它连接了公式或分支。原图使用方法见<a href="Tuanjie技能编辑器使用手册.html">团结技能节点编辑器手册</a>。</p></details>
 </section><section id="files"><h2>文件目录与交付</h2><p>工程根目录为 <code>E:\Tuanjie19_WhiteFog</code>。</p>
-<div class="table"><table><tbody><tr><td>主角技能</td><td><code>Assets/WhiteFog/Skills/主角/</code>，六张原生图。</td></tr>
-<tr><td>怪物技能</td><td><code>Assets/WhiteFog/Skills/怪物/</code>，三张原生图。</td></tr>
+<div class="table"><table><tbody><tr><td>原作技能图</td><td><code>Assets/WhiteFog/Skills/宗师之上/</code></td></tr>
 <tr><td>工作台角色预览场景</td><td><code>Assets/WhiteFog/SkillPreview/角色预览.unity</code></td></tr>
 <tr><td>共用表现材质</td><td><code>Assets/WhiteFog/Skills/Resources/MccSkillTrace.mat</code></td></tr>
 <tr><td>本手册</td><td><code>docs/MCC技能工作台操作手册.html</code>，可直接双击离线阅读，也可在工作台顶部点「使用手册」。</td></tr></tbody></table></div>

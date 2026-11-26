@@ -907,6 +907,7 @@ namespace SoftKitty
                 {
                     _newEffect = new OverTimeEffectData(_setting.uid, _setting.duration, _dealer.uid);
                     mOverTimeEffect.Add(_id, _newEffect);
+                    if (_setting.interruptCastOnEnter) InterruptCast(_dealer);
                     OnOverTimeChange(_setting.uid, _newEffect, OverTimeEffectEventType.Add);
                 }
             }

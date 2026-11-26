@@ -4,6 +4,8 @@ namespace SoftKitty{
         public Entity entity(GraphRuntimeState _runtime) { //The entity to be translate.
             return GetEntity(inputPort[1].connectedNodes[0],_runtime);
         }
+        public const int InterruptIndex = 5;
+        private bool interruptOnMove;
         public bool move; //Offset the position of the transform. 
         public float posX; //Position X
         public float posY; //Position Y
@@ -29,6 +31,7 @@ namespace SoftKitty{
  
         public TransformAction InitAction(Action _baseClass){
             TransformAction  _newObj =new TransformAction(_baseClass);
+            _newObj.interruptOnMove = _baseClass.BoolValues.Count > InterruptIndex && _baseClass.BoolValues[InterruptIndex];
             _newObj.move = _baseClass.BoolValues[0];
             _newObj.posX = _baseClass.FloatValues[0];
             _newObj.posY = _baseClass.FloatValues[1];
@@ -48,25 +51,27 @@ namespace SoftKitty{
         }
  
         public override void Execute(GraphRuntimeState _runtime){ //Execute this action once
-            if (entity(_runtime) != null)
+            var recipient = entity(_runtime);
+            if (recipient != null)
             {
-                if (GameManager.GetEntityInstance(entity(_runtime).uid) != null)
+                var actor = GameManager.FindEntityInstance(recipient);
+                if (actor)
                 {
                     if (move)
                     {
-                        GameManager.GetEntityInstance(entity(_runtime).uid).Move(new Vector3(posX, posY, posZ) * magnification(_runtime), duration, worldSpace);
+                        actor.Move(new Vector3(posX, posY, posZ) * magnification(_runtime), duration, worldSpace, true, interruptOnMove);
                         if (SGD_Settings.Instance.DebugLevel >= 3)
                             Debug.Log("<TransformAction> [Node:" + Uid + "] Executed() > Entity:" + entity(_runtime).uid + "  Move:" + (new Vector3(posX, posY, posZ) * magnification(_runtime)).ToString());
                     }
                     if (rotate)
                     {
-                        GameManager.GetEntityInstance(entity(_runtime).uid).Rotate(new Vector3(angleX, angleY, angleZ) * magnification(_runtime), duration, worldSpace);
+                        actor.Rotate(new Vector3(angleX, angleY, angleZ) * magnification(_runtime), duration, worldSpace);
                         if (SGD_Settings.Instance.DebugLevel >= 3)
                             Debug.Log("<TransformAction> [Node:" + Uid + "] Executed() > Entity:" + entity(_runtime).uid + "  Rotate:" + (new Vector3(angleX, angleY, angleZ) * magnification(_runtime)).ToString());
                     }
                     if (scale)
                     {
-                        GameManager.GetEntityInstance(entity(_runtime).uid).Scale((Vector3.one - new Vector3(scaleX, scaleY, scaleZ)) * magnification(_runtime) + Vector3.one, duration);
+                        actor.Scale((Vector3.one - new Vector3(scaleX, scaleY, scaleZ)) * magnification(_runtime) + Vector3.one, duration);
                         if (SGD_Settings.Instance.DebugLevel >= 3)
                             Debug.Log("<TransformAction> [Node:" + Uid + "] Executed() > Entity:" + entity(_runtime).uid + "  Scale:" + (new Vector3(scaleX, scaleY, scaleZ) * magnification(_runtime) + Vector3.one).ToString());
                     }
@@ -75,14 +80,17 @@ namespace SoftKitty{
                 {
                     if (move)
                     {
+                        var before = recipient.Position;
+                        var offset = new Vector3(posX, posY, posZ) * magnification(_runtime);
                         if (worldSpace)
                         {
-                            entity(_runtime).SetPosition(entity(_runtime).Position + new Vector3(posX, posY, posZ) * magnification(_runtime), stickGround);
+                            recipient.SetPosition(before + offset, stickGround);
                         }
                         else
                         {
-                            entity(_runtime).SetPosition(entity(_runtime).Position + entity(_runtime).Forward * posZ * magnification(_runtime) + Vector3.Cross(entity(_runtime).Forward, Vector3.up) * posX * magnification(_runtime) + Vector3.up * posY * magnification(_runtime), stickGround);
+                            recipient.SetPosition(before + recipient.Forward * offset.z + Vector3.Cross(recipient.Forward, Vector3.up) * offset.x + Vector3.up * offset.y, stickGround);
                         }
+                        if (interruptOnMove && offset != Vector3.zero && recipient.Position != before) recipient.InterruptCast();
                         if (SGD_Settings.Instance.DebugLevel >= 3)
                             Debug.Log("<TransformAction> [Node:" + Uid + "] Executed() > Entity:" + entity(_runtime).uid + "  Move:" + (new Vector3(posX, posY, posZ) * magnification(_runtime)).ToString());
                     }

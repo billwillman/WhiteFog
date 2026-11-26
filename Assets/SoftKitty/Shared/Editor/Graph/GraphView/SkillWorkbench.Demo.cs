@@ -165,6 +165,14 @@ namespace SoftKitty
         [SerializeField] private bool demoQueued;
         [SerializeField] private float demoRange = 8f;
         [SerializeField] private int demoSkillLevel = 1;
+        [SerializeField] private float previewHitDamage = 10f;
+
+        private void DrawPreviewHitDamage()
+        {
+            if (graph is OriginalSkillGraph)
+                previewHitDamage = Mathf.Max(0, EditorGUILayout.FloatField(new GUIContent("每剑预览来伤",
+                    "离线试放输入，抵达时扣除护盾并按实际生命损失飘字。设为 0 可只看表现。"), previewHitDamage));
+        }
         [SerializeField] private int previewDirection;
         [SerializeField] private int previewMode;
         private Vector2 previewScroll;
@@ -208,7 +216,7 @@ namespace SoftKitty
         {
             if (!(graph is OriginalSkillGraph))
             {
-                EditorGUILayout.LabelField("当前技能", "项目样例");
+                EditorGUILayout.LabelField("当前技能", "自定义技能图");
                 if (GUILayout.Button("选择原作技能 · 破空剑法（25090）"))
                 {
                     var original = AssetDatabase.LoadAssetAtPath<OriginalSkillGraph>(OriginalGraphPath);
@@ -223,6 +231,7 @@ namespace SoftKitty
             EditorGUILayout.LabelField("施放者 → 目标", reverse ? "小雕 → 男角色 001" : "男角色 001 → 小雕");
             demoRange = EditorGUILayout.Slider("双方距离（米）", demoRange, 2, 20);
             if (UsesSkillLevel(graph)) demoSkillLevel = Mathf.Max(1, EditorGUILayout.DelayedIntField("试放技能等级", demoSkillLevel));
+            DrawPreviewHitDamage();
             showGamePreview = EditorGUILayout.ToggleLeft(new GUIContent("同时在 Game 视图预览",
                 "快速试放只运行独立角色预览场景。勾选后同步显示竖屏战斗画面。"), showGamePreview);
             bool inStage = InPreviewStage;
@@ -242,7 +251,7 @@ namespace SoftKitty
                 DrawStageCamera();
                 if (graph is OriginalSkillGraph)
                     EditorGUILayout.LabelField("表现回放", "原作动作、飞剑和抵达特效");
-                else if (lastCaster && lastReceiver)
+                if (lastCaster && lastReceiver)
                 {
                     EditorGUILayout.LabelField("施放者生命", lastCaster.name + "  " + lastCaster.GetAttributeFloat("chp").ToString("0.##"));
                     EditorGUILayout.LabelField("目标生命", lastReceiver.name + "  " + healthBefore.ToString("0.##") + " → " + lastReceiver.GetAttributeFloat("chp").ToString("0.##"));
@@ -329,7 +338,7 @@ namespace SoftKitty
                     lastCaster = PreviewAsOpponent ? monster : hero;
                     lastReceiver = PreviewAsOpponent ? hero : monster;
                     healthBefore = lastReceiver.GetAttributeFloat("chp");
-                    CastActors(graph, lastCaster, lastReceiver, demoSkillLevel, out demoResult);
+                    CastActors(graph, lastCaster, lastReceiver, demoSkillLevel, out demoResult, previewHitDamage: previewHitDamage);
                 }
                 Repaint();
             }
@@ -373,7 +382,7 @@ namespace SoftKitty
             return CastActors(skill, caster, receiver, skillLevel, out info);
         }
 
-        private static bool CastActors(GraphObject skill, EntityComponent caster, EntityComponent receiver, int skillLevel, out string info, CombatDamage damage = null)
+        private static bool CastActors(GraphObject skill, EntityComponent caster, EntityComponent receiver, int skillLevel, out string info, CombatDamage damage = null, float previewHitDamage = 10f)
         {
             if (!caster || !receiver || !caster.isActiveAndEnabled || !receiver.isActiveAndEnabled ||
                 !caster.AvailableForInteraction || !receiver.AvailableForInteraction)
@@ -403,9 +412,17 @@ namespace SoftKitty
             if (UsesSkillLevel(skill)) damage.SetDynamicValue("skill.level", Mathf.Max(1, skillLevel));
             SkillDamageNumbers.Observe(caster);
             SkillDamageNumbers.Observe(receiver);
-            damage.DealDamage(caster.mData, receiver.mData);
+            if (original)
+            {
+                var playback = SkillPlayback.On(damage);
+                var previousImpact = playback.OriginalProjectileImpact;
+                playback.OriginalProjectileImpact = (source, victim) => SkillPlayback.ApplyIncomingDamage(source, victim, previewHitDamage);
+                try { damage.DealDamage(caster.mData, receiver.mData); }
+                finally { playback.OriginalProjectileImpact = previousImpact; }
+            }
+            else damage.DealDamage(caster.mData, receiver.mData);
             var description = original ? "原作表现 " + original.sourceId
-                : UsesSkillLevel(skill) ? skillLevel + " 级" : "项目样例";
+                : UsesSkillLevel(skill) ? skillLevel + " 级" : "自定义技能图";
             info = skill.name + "  ·  " + description + "  ·  " + caster.name + "（" + caster.uid + "） → " + receiver.name + "（" + receiver.uid + "）  ·  起始距离 "
                 + Vector3.Distance(caster.transform.position, receiver.transform.position).ToString("0.0") + " m";
             return true;
