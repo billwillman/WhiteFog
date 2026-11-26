@@ -105,14 +105,17 @@ function makeBattleEntry(art,onVictory) {
     cancelAnimationFrame(raf);scene.hidden=true;last=null;
     if(player&&mode){closing=player.Quit();player=null;loading=null;mode=null;}
   }
-  function show(which='ferry'){
-    cancelAnimationFrame(raf);last=null;mode=which;plan=sourceEncounters[mode];age=0;castIndex=0;active=null;victory=false;
+  function show(which='ferry', skillKey){
+    cancelAnimationFrame(raf);last=null;mode=which;
+    const single=mode==='skills' && sourceMoves[skillKey];
+    plan=single ? {slots:[skillKey],casts:[[.6,skillKey]],period:single.seconds+2} : sourceEncounters[mode];
+    age=0;castIndex=0;active=null;victory=false;
     result.hidden=label.hidden=true;props.hidden=mode!=='ferry';scene.hidden=false;
     scene.querySelector('small').textContent=mode==='ferry'?'第一章　第三声渡钟':'功法试放';
-    scene.querySelector('strong').textContent=mode==='ferry'?'雾里有灯':'剑修与独臂木侠';
+    scene.querySelector('strong').textContent=mode==='ferry'?'雾里有灯':single?single.name:'剑修与独臂木侠';
     slots.forEach(({li,icon,frame,timer},i)=>{
-      const skill=sourceMoves[plan.slots[i]];frame.hidden=icon.hidden=!skill;
-      if(skill){icon.src=art.ui[skill.id];frame.src=art.ui[skill.id===21020?'quality_skill_new_01':'quality_skill_new_05'];}
+      const skill=sourceMoves[plan.slots[i]];frame.hidden=!skill;icon.hidden=!skill || !art.ui[skill.id];
+      if(skill){if(!icon.hidden)icon.src=art.ui[skill.id];frame.src=art.ui[skill.id===21020?'quality_skill_new_01':'quality_skill_new_05'];}
       li.setAttribute('aria-label',skill?skill.name:'空功法位');li.className='';timer.textContent='';
     });
     player.SendMessage('QingyunBattle','Begin',mode);raf=requestAnimationFrame(tick);

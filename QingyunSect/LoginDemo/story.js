@@ -180,11 +180,14 @@ const firstChapter=(()=>{
   let openingSkills=false;
   function openSkills(){
     if(openingSkills)return;
+    const id=preview==='skills' ? new URLSearchParams(location.search).get('skill') : null;
+    const key=Object.keys(sourceMoves).find(k=>String(sourceMoves[k].id)===id);
+    if(id && !key){caption('功法试放','当前战场版本尚未收录这门功法。','回到舆图',map);return;}
     openingSkills=true;
     caption('功法试放','正在载入云端战场……','回到舆图',()=>{openingSkills=false;map();});
     battle.prepare().then(()=>{
       if(!openingSkills)return;
-      openingSkills=false;dialogue.hide();$('region').hidden=true;motion.setVisible(false);battle.show('skills');
+      openingSkills=false;dialogue.hide();$('region').hidden=true;motion.setVisible(false);battle.show('skills',key);
     },()=>{
       if(!openingSkills)return;
       openingSkills=false;caption('功法试放','云端战场载入失败。','重试',openSkills);
