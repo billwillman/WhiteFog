@@ -200,8 +200,11 @@ namespace SoftKitty
             using (var view = new EditorGUILayout.ScrollViewScope(previewScroll))
             {
                 previewScroll = view.scrollPosition;
-                if (showLibrary || !graph) DrawLibrary();
-                if (!graph) return;
+                if (showLibrary || !graph)
+                {
+                    DrawLibrary();
+                    return;
+                }
                 if (graph.RootSet == null || graph.RootSet.Uid != "Node0")
                 {
                     EditorGUILayout.HelpBox("请先在「技能编辑」中初始化技能时间轴。", MessageType.Info);

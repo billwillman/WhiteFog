@@ -164,7 +164,7 @@ namespace SoftKitty
             EditorGUILayout.EndHorizontal();
             scroll = EditorGUILayout.BeginScrollView(scroll);
             if (showLibrary || !graph) DrawLibrary();
-            if (graph)
+            else
             {
                 if (MasterGraphWindow.IsEditing(graph))
                 {
