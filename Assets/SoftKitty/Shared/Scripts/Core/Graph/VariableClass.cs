@@ -89,11 +89,12 @@ namespace SoftKitty
                 case VariableType.Attribute:
                     if (inputPort[0].uid.Count > 0)
                     {
-                        return _runtime.NodeStates[NodeIndex].SetHashCache(_runtime.Hash, inputPort[0].connectedNodes[0].GetEntity(_runtime).GetAttributeFloat(AttributeKey));
+                        var selector = _runtime.AttributeSelector(inputPort[0].connectedNodes[0]);
+                        return _runtime.NodeStates[NodeIndex].SetHashCache(_runtime.Hash, _runtime.ReadAttribute(selector.GetEntity(_runtime), selector, AttributeKey));
                     }
                     else
                     {
-                        return _runtime.NodeStates[NodeIndex].SetHashCache(_runtime.Hash, GameManager.GetPlayer().GetAttributeFloat(AttributeKey));
+                        return _runtime.NodeStates[NodeIndex].SetHashCache(_runtime.Hash, _runtime.ReadAttribute(GameManager.GetPlayer(), null, AttributeKey));
                     }
                 case VariableType.DynamicVariable:
                     if (_runtime.RootState.DynamicVariableDic.ContainsKey(VariableUid)) return _runtime.NodeStates[NodeIndex].SetHashCache(_runtime.Hash, _runtime.RootState.DynamicVariableDic[VariableUid]);

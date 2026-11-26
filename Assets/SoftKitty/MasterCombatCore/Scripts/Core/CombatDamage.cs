@@ -79,6 +79,15 @@ namespace SoftKitty
         private List<EntityComponent> DamagedEntitiesKeys = new List<EntityComponent>();
         private Entity instanceEntity;
         private bool projectileLaunched = false;
+        private SkillAttributeSnapshot projectileAttributes;
+
+        private Entity ProjectileDealer()
+        {
+            var bound = mRuntime.RootState.InvolvedEntityDic != null ? GetDealerEntity() : null;
+            if (bound != null) return bound;
+            var actor = DealerEntity ? DealerEntity : GetComponentInParent<EntityComponent>();
+            return actor ? actor.mData : null;
+        }
         private EntityComponent seekingTarget;
         private float life = 0F;
 
@@ -213,6 +222,11 @@ namespace SoftKitty
                 instanceEntity = new Entity();
                 instanceEntity.uid = "instance";
                 mRuntime.RootState.SetInvolvedEntity("Instance", instanceEntity);
+                if (projectileAttributes != null)
+                {
+                    mRuntime.CasterSnapshot = projectileAttributes;
+                    mRuntime.RootState.SetInvolvedEntity("Dealer", projectileAttributes.Dealer);
+                }
                 inited = true;
             }
         }
@@ -229,7 +243,8 @@ namespace SoftKitty
 
         public virtual void OnEnable()
         {
-            if (ProjectileMode != ProjectileModes.Disable && LaunchOnStart) Launch();
+            // A freshly instantiated prefab can receive its owner before Start.
+            if (ProjectileMode != ProjectileModes.Disable && LaunchOnStart && ProjectileDealer() != null) Launch();
         }
         public virtual void Update()
         {
@@ -493,16 +508,28 @@ namespace SoftKitty
         /// </summary>
         /// <param name="_direction"></param>
         public void Launch(Vector3 _direction) {
+            Launch(_direction, null);
+        }
+
+        public void Launch(Vector3 direction, SkillAttributeSnapshot snapshot)
+        {
             if (projectileLaunched) return;
-            if (is2D) _direction.z = 0F;
+            var dealer = snapshot?.Dealer ?? ProjectileDealer();
+            if (dealer != null && ProjectileMode != ProjectileModes.Disable)
+            {
+                projectileAttributes = snapshot ?? SkillAttributeSnapshot.Capture(dealer);
+                mRuntime.CasterSnapshot = projectileAttributes;
+                if (mRuntime.RootState.InvolvedEntityDic != null) SetDealerEntity(dealer);
+            }
+            if (is2D) direction.z = 0F;
             transform.parent = null;
             if (is2D)
             {
-                transform.right = _direction;
+                transform.right = direction;
             }
             else
             {
-                transform.forward = _direction;
+                transform.forward = direction;
             }
             seekingTarget = null;
             life = 0F;
@@ -531,7 +558,7 @@ namespace SoftKitty
             }
             SetEnable(true);
             projectileLaunched = true;
-            if (SGD_Settings.Instance.DebugLevel >= 2) Debug.Log("<CombatDamage> -> Launch(" + _direction+") > "+gameObject.name);
+            if (SGD_Settings.Instance.DebugLevel >= 2) Debug.Log("<CombatDamage> -> Launch(" + direction+") > "+gameObject.name);
         }
 
 
@@ -641,7 +668,7 @@ namespace SoftKitty
         public void DealDamage()
             => DealDamageEvent(null);
 
-        private void DealDamageEvent(ulong? eventId)
+        private void DealDamageEvent(ulong? eventId, System.Action<int, Entity, float, float> onSettled = null, SkillDamageReport.Cast replay = null, SkillAttributeSnapshot snapshot = null)
         {
             if (!PhysicsDetection && TargetEntity != null && GetTargetEntity() == null) SetTargetEntity(TargetEntity.mData);
             if(DealerEntity!=null && GetDealerEntity() == null) SetDealerEntity(DealerEntity.mData);
@@ -664,7 +691,7 @@ namespace SoftKitty
                 }
                 if(DestroyOnHitTarget) Destroy(gameObject,Mathf.Clamp(DamageCoolDown*0.8F,Time.fixedDeltaTime*2F,0.3F));
             }
-            bool _success = IfTriggerThenPerformAction(eventId);
+            bool _success = IfTriggerThenPerformAction(eventId, onSettled, replay, snapshot);
             if (SGD_Settings.Instance.DebugLevel >= 2) Debug.Log("<CombatDamage> -> DealDamage() > isTriggered:" + _success);
         }
         /// <summary>
@@ -704,6 +731,58 @@ namespace SoftKitty
             DealDamageEvent(eventId);
         }
 
+        public void DealDamage(Entity dealer, Entity target, SkillDamageReport.Cast records)
+        {
+            if (records != null && (records.skill != mGraph || records.caster != dealer))
+                throw new System.ArgumentException("战报已绑定到另一招或另一施放者。", nameof(records));
+            SetDealerEntity(dealer);
+            SetTargetEntity(target);
+            UpdateInstanceEntity();
+            DealDamageEvent(null, replay: records);
+        }
+
+        /// <summary>Resolve another target or a delayed effect of the same cast with its original inputs.</summary>
+        public void DealDamageFromSnapshot(SkillAttributeSnapshot snapshot, Entity target, ulong? eventId = null)
+        {
+            if (snapshot == null) throw new System.ArgumentNullException(nameof(snapshot));
+            SetDealerEntity(snapshot.Dealer);
+            SetTargetEntity(target);
+            UpdateInstanceEntity();
+            DealDamageEvent(eventId, snapshot: snapshot);
+        }
+
+        /// <summary>Observes damage and shield consumption after a formula impact settles.</summary>
+        public void DealDamageObserved(Entity dealer, Entity target, System.Action<int, Entity, float, float> onSettled)
+        {
+            SetDealerEntity(dealer);
+            SetTargetEntity(target);
+            UpdateInstanceEntity();
+            DealDamageEvent(null, onSettled);
+        }
+
+        internal static void RunImpactGraph(GraphObject graph, GraphRuntimeState parent, RootRuntimeState inputs,
+            SkillPlayback host, Vector3 point, Entity dealer, Entity target, CombatRoll key, bool detached)
+        {
+            // Each confirmed contact owns its own MCC runtime, including delayed and repeated native actions.
+            var go = new GameObject(graph.name + " · 命中结算");
+            UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(go, host.gameObject.scene);
+            go.transform.position = point;
+            var damage = go.AddComponent<CombatDamage>();
+            damage.enabled = false; // Init below. Start must not reset a graph whose delayed actions are running.
+            damage.mGraph = graph;
+            damage.impactHost = SkillPlayback.On(damage);
+            damage.impactHost.RetireAfter(0);
+            damage.Init();
+            if (!damage.inited) return;
+            damage.mRuntime.nativeGraphPath = parent.nativeGraphPath == null
+                ? new HashSet<GraphObject>() : new HashSet<GraphObject>(parent.nativeGraphPath);
+            damage.mRuntime.nativeGraphPath.Add(graph);
+            damage.mRuntime.CasterSnapshot = parent.CasterSnapshot;
+            if (!detached) damage.mRuntime.InheritCastOwner(parent);
+            foreach (var input in inputs.DynamicVariableDic) damage.SetDynamicValue(input.Key, input.Value);
+            damage.DealDamage(dealer, target, key.Key);
+        }
+
         /// <summary>
         /// Ignores all triggers and directly performs all actions. An integer hash is required for caching the result.
         /// </summary>
@@ -712,15 +791,30 @@ namespace SoftKitty
         {
             if (!inited) return;
             SetCastRandomKey(unchecked((uint)_hash));
+            PrepareCastSnapshot(null);
             RunCastActions(_hash);
         }
 
-        private void RunCastActions(int _hash)
+        private void PrepareCastSnapshot(SkillAttributeSnapshot snapshot)
+        {
+            if (!impactHost) mRuntime.CasterSnapshot = snapshot ?? projectileAttributes;
+            mRuntime.EnsureCasterSnapshot(GetDealerEntity());
+        }
+
+        private void RunCastActions(int _hash, System.Action<int, Entity, float, float> onSettled = null, SkillDamageReport.Cast replay = null)
         {
             mRuntime.Hash = _hash;
+            if (impactHost)
+            {
+                currentRootInstance.RunActions(this, mRuntime);
+                return;
+            }
             // A graph running on an already launched physical projectile owns its on-hit actions.
             var owner = projectileLaunched && ProjectileMode != ProjectileModes.Disable ? null : GetDealerEntity();
-            currentRootInstance.RunActions(this, mRuntime.ForCast(owner));
+            var cast = mRuntime.ForCast(owner, mRuntime.CasterSnapshot);
+            cast.onDamageSettled = onSettled;
+            cast.replay = replay;
+            currentRootInstance.RunActions(this, cast);
         }
         /// <summary>
         /// Returns whether all trigger nodes are triggered. An integer hash is required for caching the result.
@@ -731,6 +825,7 @@ namespace SoftKitty
         {
             if (!inited) return false;
             SetCastRandomKey(unchecked((uint)_hash));
+            PrepareCastSnapshot(null);
             return TestTriggers(_hash);
         }
 
@@ -754,14 +849,15 @@ namespace SoftKitty
         public bool IfTriggerThenPerformAction()
             => IfTriggerThenPerformAction(null);
 
-        private bool IfTriggerThenPerformAction(ulong? eventId)
+        private bool IfTriggerThenPerformAction(ulong? eventId, System.Action<int, Entity, float, float> onSettled = null, SkillDamageReport.Cast replay = null, SkillAttributeSnapshot snapshot = null)
         {
             if (!inited) return false;
             SetCastRandomKey(eventId);
+            PrepareCastSnapshot(snapshot);
             int _hash = currentRootInstance.GenerateInstanceHash();
             mRuntime.Hash = _hash;
             bool _triggered = TestTriggers(_hash);
-            if (_triggered) RunCastActions(_hash);
+            if (_triggered) RunCastActions(_hash, onSettled, replay);
 #if UNITY_EDITOR
             if (SGD_Settings.Instance.GraphDebugMode)
             {

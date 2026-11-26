@@ -28,13 +28,28 @@ namespace SoftKitty
             s.weakUntil = Time.time + Mathf.Max(0, seconds);
         }
 
-        internal static float Incoming(AttributeData attribute, float amount)
+        internal static float ApplyVulnerability(AttributeData attribute, float amount)
         {
             if (amount <= 0 || !states.TryGetValue(attribute, out var s)) return amount;
-            if (Time.time < s.weakUntil) amount = Mathf.Floor(amount * (1f + s.bonusPercent * .01f) + .5f);
-            if (Time.time >= s.shieldUntil) return amount;
-            float absorbed = Mathf.Min(amount, s.shield);
-            s.shield -= absorbed;
+            return Time.time < s.weakUntil ? Mathf.Floor(amount * (1f + s.bonusPercent * .01f) + .5f) : amount;
+        }
+
+        internal static float ShieldAbsorption(AttributeData attribute, float amount)
+        {
+            if (amount <= 0 || !states.TryGetValue(attribute, out var s) || Time.time >= s.shieldUntil) return 0;
+            return Mathf.Min(s.shield, amount);
+        }
+
+        internal static void SpendShield(AttributeData attribute, float absorbed)
+        {
+            if (absorbed > 0 && states.TryGetValue(attribute, out var s)) s.shield = Mathf.Max(0, s.shield - absorbed);
+        }
+
+        internal static float Incoming(AttributeData attribute, float amount)
+        {
+            amount = ApplyVulnerability(attribute, amount);
+            float absorbed = ShieldAbsorption(attribute, amount);
+            SpendShield(attribute, absorbed);
             return amount - absorbed;
         }
     }

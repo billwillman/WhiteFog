@@ -885,6 +885,9 @@ namespace SoftKitty
         /// <param name="_dealer"></param>
         /// <returns></returns>
         public OverTimeEffectData AddOverTimeEffect(int _id, Entity _dealer)
+            => AddOverTimeEffect(_id, _dealer, null);
+
+        internal OverTimeEffectData AddOverTimeEffect(int _id, Entity _dealer, SkillAttributeSnapshot snapshot)
         {
             OverTimeEffectData _newEffect = null;
             OverTimeEffect _setting = GameManager.GetOverTimeEffect(_id);
@@ -909,6 +912,7 @@ namespace SoftKitty
                 else
                 {
                     _newEffect = new OverTimeEffectData(_setting.uid, _setting.duration, _dealer.uid);
+                    _newEffect.casterSnapshot = snapshot ?? SkillAttributeSnapshot.Capture(_dealer);
                     mOverTimeEffect.Add(_id, _newEffect);
                     if (_setting.interruptCastOnEnter) InterruptCast(_dealer);
                     OnOverTimeChange(_setting.uid, _newEffect, OverTimeEffectEventType.Add);

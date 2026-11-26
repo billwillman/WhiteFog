@@ -57,31 +57,20 @@ namespace SoftKitty
             done.Add(node);
         }
 
-        internal Dictionary<string, float> CaptureNonTargetAttributes(RootRuntimeState context)
-        {
-            if (compiled == null) Compile();
-            var values = new Dictionary<string, float>();
-            var state = new GraphRuntimeState { RootState = context };
-            foreach (var variable in inputs)
-            {
-                if (variable.Type != VariableType.Attribute) continue;
-                var owner = (EntityClass)variable.inputPort[0].connectedNodes[0];
-                if (owner.Type == EntityType.Target) continue;
-                string key = AttributeInputKey(owner, variable.AttributeKey);
-                var entity = owner.GetEntity(state);
-                if (entity == null) throw new InvalidOperationException("无法读取实体属性 " + key);
-                values[key] = entity.GetAttributeFloat(variable.AttributeKey);
-            }
-            return values;
-        }
-
         // sampleInputs is optional and is used by the standalone calculator without spawning actors.
         public float Evaluate(RootRuntimeState context, IDictionary<string, float> sampleInputs = null)
+            => EvaluateInputs(context, sampleInputs, context.CasterSnapshot);
+
+        public float EvaluateWithAttributes(RootRuntimeState context, SkillAttributeSnapshot casterSnapshot)
+            => EvaluateInputs(context, null, casterSnapshot);
+
+        private float EvaluateInputs(RootRuntimeState context, IDictionary<string, float> sampleInputs, SkillAttributeSnapshot casterSnapshot)
         {
             if (compiled == null) Compile();
             var state = new GraphRuntimeState();
             compiled.InitRuntimeState(ref state);
             state.RootState = context;
+            state.CasterSnapshot = casterSnapshot;
             state.Hash = 1;
             foreach (var variable in inputs)
             {
@@ -94,7 +83,7 @@ namespace SoftKitty
                     {
                         var entity = owner.GetEntity(state);
                         if (entity == null) throw new InvalidOperationException("无法读取实体属性 " + key);
-                        value = entity.GetAttributeFloat(variable.AttributeKey);
+                        value = state.ReadAttribute(entity, owner, variable.AttributeKey);
                     }
                 }
                 else if (variable.Type == VariableType.DynamicVariable)

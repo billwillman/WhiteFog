@@ -32,7 +32,7 @@ namespace SoftKitty{
                 switch (action)
                 {
                     case actions.Add_Effect:
-                        entity(_runtime).AddOverTimeEffect(_effectId, _runtime.RootState.GetInvolvedEntity("Dealer"));
+                        entity(_runtime).AddOverTimeEffect(_effectId, _runtime.RootState.GetInvolvedEntity("Dealer"), _runtime.CasterSnapshot);
                         if (SGD_Settings.Instance.DebugLevel >= 3)
                             Debug.Log("<OverTimeEffectAction> [Node:" + Uid + "] Executed() > (Entity)" + entity(_runtime).uid + ".AddOverTimeEffect("
                                 + _effectId + ")");

@@ -38,37 +38,41 @@ namespace SoftKitty
         bool _result = false;
         public override void Update(GraphRuntimeState _runtime)
         {
-            if (_id == -1) _id = GameManager.AttributeData.GetId(uid);
-            if (entity(_runtime) == null)
+            var selector = _runtime.AttributeSelector(inputPort[0].connectedNodes[0]);
+            var owner = selector?.GetEntity(_runtime);
+            if (owner == null)
             {
                 if (SGD_Settings.Instance.DebugLevel >= 1)Debug.LogError("<AttributeValueHandler> [Node:" + Uid + "] failed to Update(), because the entity is null.");
                 return;
             }
-            if (entity(_runtime).GetAttributeData(_id)==null)
+            bool snapshotInput = _runtime.CasterSnapshot?.IsSource(owner, selector) == true;
+            if (!snapshotInput && _id == -1) _id = GameManager.AttributeData.GetId(uid);
+            if (!snapshotInput && owner.GetAttributeData(_id) == null)
             {
                 if (SGD_Settings.Instance.DebugLevel >= 1) Debug.LogError("<AttributeValueHandler> [Node:" + Uid + "] failed to Update(), because Attribute<" + uid + "> can't be found.");
                 return;
             }
+            float actual = _runtime.ReadAttribute(owner, selector, uid);
             _result = false;
             switch (logic) {
                 case logics.Greater:
-                    _result = ( entity(_runtime).GetAttributeFloat(_id) > value(_runtime));
+                    _result = ( actual > value(_runtime));
                     break;
                 case logics.Greater_Or_Equal:
-                    _result = (entity(_runtime).GetAttributeFloat(_id) >= value(_runtime));
+                    _result = (actual >= value(_runtime));
                     break;
                 case logics.Equal:
-                    _result = (entity(_runtime).GetAttributeFloat(_id) == value(_runtime));
+                    _result = (actual == value(_runtime));
                     break;
                 case logics.Less_Or_Equal:
-                    _result = (entity(_runtime).GetAttributeFloat(_id) <= value(_runtime));
+                    _result = (actual <= value(_runtime));
                     break;
                 case logics.Less:
-                    _result = (entity(_runtime).GetAttributeFloat(_id) < value(_runtime));
+                    _result = (actual < value(_runtime));
                     break;
             }
             SetActive(_runtime, _result);
-            if (SGD_Settings.Instance.DebugLevel >= 3) Debug.Log("<AttributeValueHandler> [Node:" + Uid + "] -> Condition Update( (Entity)" + entity(_runtime).uid + ".GetAttributeFloat(" + _id + ")="+ entity(_runtime).GetAttributeFloat(_id) + " is " + logic+ " than " + value(_runtime)+") > "+_result);
+            if (SGD_Settings.Instance.DebugLevel >= 3) Debug.Log("<AttributeValueHandler> [Node:" + Uid + "] -> Condition Update( (Entity)" + owner.uid + ".GetAttributeFloat(" + uid + ")="+ actual + " is " + logic+ " than " + value(_runtime)+") > "+_result);
         }
 
     }

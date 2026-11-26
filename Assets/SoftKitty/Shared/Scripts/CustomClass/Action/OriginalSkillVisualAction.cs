@@ -24,12 +24,18 @@ namespace SoftKitty
             if (caster == null || target == null) return;
             var host = SkillPlayback.On(instance);
             state.NodeStates[NodeIndex].lastBool = true;
-            var impact = host.OriginalProjectileImpact;
+            var fallback = host.OriginalProjectileImpact;
             var cue = EffectFor(this, graph);
             if (cue == null) return;
             uint ordinal = 0;
             host.ScheduleReleases(state, caster, WaitTime, FormulaImpactAction.SegmentCount(this), Interval,
-                () => { if (ConditionsMet(ref state, ordinal++)) PlayCue(host, cue, caster, target, impact); });
+                () =>
+                {
+                    var release = state.ForRelease(Uid, ordinal++);
+                    if (!ConditionsMet(ref release)) return;
+                    var onHit = cue.triggerHit ? ProjectileAction.ContactHandler(this, instance.mGraph, host.ProjectileHost(), release, caster, fallback) : null;
+                    PlayCue(host, cue, caster, target, onHit);
+                });
         }
 
         public static OriginalSkillGraph.EffectCue EffectFor(Action node, OriginalSkillGraph graph)
@@ -58,7 +64,7 @@ namespace SoftKitty
             return ActorRoot(actor.transform);
         }
 
-        private static void PlayCue(SkillPlayback host, OriginalSkillGraph.EffectCue cue, Entity source, Entity recipient, System.Action<Entity, Entity> impact)
+        private static void PlayCue(SkillPlayback host, OriginalSkillGraph.EffectCue cue, Entity source, Entity recipient, System.Action<Entity, Vector3> impact)
         {
             var actor = SkillPlayback.FindActor(cue.onTarget ? recipient : source);
             if (!actor || !actor.AvailableForInteraction) return;
@@ -78,7 +84,7 @@ namespace SoftKitty
                 {
                     var target = SkillPlayback.FindActor(recipient);
                     var center = cue.followBone && anchor ? anchor.position : point;
-                    if (SkillProjectile.OverlapsTarget(target, center, facing, cue.hitBoxSize, ~0)) impact(source, recipient);
+                    if (SkillProjectile.OverlapsTarget(target, center, facing, cue.hitBoxSize, ~0)) impact(recipient, center);
                 }
                 if (cue.hitDelay > 0) host.ProjectileHost().Schedule(DelayedHit(cue.hitDelay, TestHit));
                 else TestHit();
@@ -144,7 +150,8 @@ namespace SoftKitty
                     if (cue != null)
                     {
                         var host = SkillPlayback.On(instance);
-                        PlayCue(host, cue, caster.mData, target.mData, host.OriginalProjectileImpact);
+                        var onHit = cue.triggerHit ? ProjectileAction.ContactHandler(this, instance.mGraph, host.ProjectileHost(), state, caster.mData, host.OriginalProjectileImpact) : null;
+                        PlayCue(host, cue, caster.mData, target.mData, onHit);
                     }
                     break;
             }

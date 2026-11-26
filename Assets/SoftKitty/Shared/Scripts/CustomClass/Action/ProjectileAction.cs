@@ -48,16 +48,23 @@ namespace SoftKitty
             var host = SkillPlayback.On(instance).ProjectileHost();
             var skill = instance.mGraph;
             var settings = SkillProjectile.For(node, skill);
+            host.Schedule(Fly(settings, caster, victim, ContactHandler(node, skill, host, state, source, fallback)));
+        }
+
+        internal static System.Action<Entity, Vector3> ContactHandler(Action node, GraphObject skill, SkillPlayback host,
+            GraphRuntimeState state, Entity source, System.Action<Entity, Entity> fallback)
+        {
             var output = node.outputPort.Count > 0 ? node.outputPort[0] : null;
-            System.Action<Entity, Vector3> onHit = null;
             if (output != null && output.connectedNodes.Count > 0)
             {
                 var arrival = state.ForCast(null);
                 arrival.HandlerStates = (HandlerRuntimeState[])state.HandlerStates.Clone();
-                onHit = (struck, point) => GraphInstance.RunOnProjectileHit(skill, output, arrival, host.gameObject, point, source, struck);
+                arrival.projectileContact = true;
+                arrival.EnsureCasterSnapshot(source);
+                return (struck, point) => GraphInstance.RunOnProjectileHit(skill, output, arrival, host.gameObject, point, source, struck);
             }
-            else if (fallback != null) onHit = (struck, point) => fallback(source, struck);
-            host.Schedule(Fly(settings, caster, victim, onHit));
+            if (fallback == null) return null;
+            return (struck, point) => fallback(source, struck);
         }
 
         private static IEnumerator Fly(SkillProjectile shot, EntityComponent caster, EntityComponent victim, System.Action<Entity, Vector3> impact)

@@ -27,6 +27,7 @@ namespace SoftKitty
     /// </summary>
     public struct RootRuntimeState
     {
+        public SkillAttributeSnapshot CasterSnapshot { get; internal set; }
         public CombatRoll RandomKey;
         public GameObject RootInstance;
         public string instanceUid;

@@ -15,8 +15,13 @@ namespace SoftKitty
             if (target == null || !target.AvailableForInteraction || amount <= 0) return;
             var health = target.GetAttributeData("chp");
             if (health == null) return;
+            ApplySettledDamage(source, target, health, SkillDefence.Incoming(health, amount));
+        }
+
+        internal static void ApplySettledDamage(Entity source, Entity target, AttributeData health, float amount)
+        {
             float hp = target.GetAttributeFloat("chp");
-            float loss = Mathf.Clamp(SkillDefence.Incoming(health, amount), 0, Mathf.Max(0, hp));
+            float loss = Mathf.Clamp(amount, 0, Mathf.Max(0, hp));
             if (loss <= 0) return;
             health.SetValue(hp - loss, source);
             target.OnEntityEvent("Damage", loss, source, false);

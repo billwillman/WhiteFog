@@ -95,7 +95,7 @@ namespace SoftKitty
         }
 
         private static int nextExecutionHash;
-        private static int NextExecutionHash()
+        internal static int NextExecutionHash()
             => nextExecutionHash = nextExecutionHash == int.MinValue ? -1 : nextExecutionHash - 1;
 
         public bool ConditionsMet(ref GraphRuntimeState state) => ConditionsMet(ref state, 0);

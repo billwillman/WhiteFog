@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Kind = SoftKitty.SkillDamageFlow.Kind;
+using Stage = SoftKitty.SkillDamageFlow.Stage;
 
 namespace SoftKitty
 {
@@ -32,28 +34,47 @@ namespace SoftKitty
                 if (calculation == null || inputPort[3].connectedNodes.Count != 1)
                     throw new InvalidOperationException("缺少公式配置或技能等级输入。");
                 int level = Mathf.RoundToInt(GetVariableValue(inputPort[3].connectedNodes[0], runtime));
-                calculation.ValidateShares(SegmentCount(this));
                 var context = calculation.Capture(runtime.RootState, caster, target, level);
-                context.RandomKey = TargetRoll(runtime, target).With("damage");
-                bool resolvesRecipientOnContact = (SkillPlayback.Style)IntValues[0] != SkillPlayback.Style.Direct &&
-                    projectile?.hitRecipients == SkillProjectile.HitRecipients.FirstMatchingEntity;
-                var castInputs = resolvesRecipientOnContact ? calculation.damage.CaptureNonTargetAttributes(context) : null;
-                if (!resolvesRecipientOnContact)
-                    context.DynamicVariableDic["hit.total"] = Mathf.Max(0, calculation.damage.Evaluate(context));
+                int count = SegmentCount(this);
+                GraphObject nativeGraph = calculation.EffectiveMode == SkillCalculation.Mode.NativeGraph ? calculation.nativeGraph : null;
+                IReadOnlyList<Stage> stages = null;
+                float[] weights = null;
+                var style = (SkillPlayback.Style)IntValues[0];
+                if (nativeGraph)
+                {
+                    if (nativeGraph == instance.mGraph || runtime.nativeGraphPath?.Contains(nativeGraph) == true)
+                        throw new InvalidOperationException("检测到 MCC 伤害图循环调用：" + nativeGraph.name);
+                    runtime.nativeGraphPath = runtime.nativeGraphPath == null ? new HashSet<GraphObject>() :
+                        new HashSet<GraphObject>(runtime.nativeGraphPath);
+                    runtime.nativeGraphPath.Add(instance.mGraph);
+                    calculation.ValidateShares(count);
+                    weights = calculation.segmentPercent.ToArray();
+                }
+                else
+                {
+                    stages = calculation.ActiveStages();
+                    foreach (var stage in stages)
+                        if (stage.kind == Kind.SegmentShare)
+                        {
+                            calculation.ValidateShares(count);
+                            weights = calculation.segmentPercent.ToArray();
+                            break;
+                        }
+                }
                 var playback = SkillPlayback.On(instance);
                 runtime.NodeStates[NodeIndex].lastBool = true;
-                var weights = calculation.segmentPercent.ToArray();
                 playback.ScheduleReleases(runtime, caster, WaitTime, 1, 0, () =>
                 {
-                    if ((SkillPlayback.Style)IntValues[0] != SkillPlayback.Style.Direct && !ConditionsMet(ref runtime)) return;
-                    var host = (SkillPlayback.Style)IntValues[0] == SkillPlayback.Style.Direct ? playback : playback.ProjectileHost();
-                    host.Schedule(Strike(host, caster, target, context, weights, runtime, castInputs));
+                    if (style != SkillPlayback.Style.Direct && !ConditionsMet(ref runtime)) return;
+                    var host = style == SkillPlayback.Style.Direct ? playback : playback.ProjectileHost();
+                    host.Schedule(Strike(host, caster, target, context, stages, count, weights, runtime, nativeGraph));
                 });
             }
             catch (Exception e) { Debug.LogError(instance.mGraph.name + " · " + Uid + "：" + e.Message, instance); }
         }
 
-        private IEnumerator Strike(SkillPlayback host, Entity source, Entity target, RootRuntimeState context, float[] weights, GraphRuntimeState cast, Dictionary<string, float> castInputs)
+        private IEnumerator Strike(SkillPlayback host, Entity source, Entity target, RootRuntimeState context,
+            IReadOnlyList<Stage> stages, int count, float[] weights, GraphRuntimeState cast, GraphObject nativeGraph)
         {
             if (!target.AvailableForInteraction) yield break;
             var caster = SkillPlayback.FindActor(source);
@@ -74,59 +95,127 @@ namespace SoftKitty
                 victim = struck;
                 target = struck.mData;
                 context.SetInvolvedEntity("Target", target);
-                if (castInputs != null)
-                {
-                    context.RandomKey = TargetRoll(cast, target).With("damage");
-                    if (!TryEvaluate(calculation.damage, context, host, out var total, castInputs)) yield break;
-                    context.DynamicVariableDic["hit.total"] = Mathf.Max(0, total);
-                }
             }
 
             bool appliedWeakness = false;
             var vars = context.DynamicVariableDic;
             var targetKey = TargetRoll(cast, target);
-            for (int i = 0; i < weights.Length; i++)
+            int firstConfirmedStage = 1;
+            bool vulnerabilityEnabled = false;
+            for (int s = 1; stages != null && s < stages.Count; s++)
             {
-                if (i > 0) yield return new WaitForSeconds(Mathf.Max(.01f, Interval));
+                if (stages[s].kind == Kind.HitChance) firstConfirmedStage = s + 1;
+                if (stages[s].kind == Kind.Vulnerability) vulnerabilityEnabled = true;
+            }
+            IReadOnlyList<SkillDamageReport.Entry> records = null;
+            if (stages != null && stages[0].kind == Kind.ReportedResult)
+            {
+                if (!SkillPlayback.CanSettle(style, target, victim) || cast.replay == null) yield break;
+                if (style == SkillPlayback.Style.Direct && (cast.CastInterrupted || !ConditionsMet(ref cast))) yield break;
+                records = cast.replay.Take(calculation.logicIndex, target.CombatRandomId);
+                count = records.Count;
+            }
+            for (int i = 0; i < count; i++)
+            {
+                if (records == null && i > 0) yield return new WaitForSeconds(Mathf.Max(.01f, Interval));
                 if (!SkillPlayback.CanSettle(style, target, victim)) yield break;
                 if (style == SkillPlayback.Style.Direct && cast.CastInterrupted) yield break;
-                if (style == SkillPlayback.Style.Direct && !ConditionsMet(ref cast, (uint)i)) continue;
-                vars["hit.index"] = i + 1;
-                vars["hit.share"] = weights[i] * .01f;
-                vars["hit.raw"] = vars["hit.total"] * vars["hit.share"];
-                var segment = targetKey.With((uint)i);
-                context.RandomKey = segment.With("accuracy");
-                if (!TryEvaluate(calculation.accuracy, context, host, out var chance)) yield break;
-                if (chance <= 0 || (chance < 1 && segment.With("hit").Unit >= chance))
+                if (records == null && style == SkillPlayback.Style.Direct && !ConditionsMet(ref cast, (uint)i)) continue;
+                int index = calculation.independentSegment ? calculation.logicIndex + i : i + 1;
+                vars["hit.index"] = index;
+                if (nativeGraph)
                 {
-                    host.Signal(victim, SkillPlayback.Position(target, victim), "未命中", .18f, Color.gray);
+                    vars["hit.share"] = weights[i] * .01f;
+                    var point = SkillPlayback.Position(target, victim);
+                    if (style == SkillPlayback.Style.Direct && cast.projectileContact && cast.RootState.RootInstance)
+                        point = cast.RootState.RootInstance.transform.position;
+                    CombatDamage.RunImpactGraph(nativeGraph, cast, context, host, point, source, target,
+                        targetKey.With((uint)i).With("mcc"), style != SkillPlayback.Style.Direct);
                     continue;
                 }
-
+                vars["hit.share"] = 1;
+                float value;
+                if (records != null) value = records[i].healthBefore - records[i].healthAfter;
+                else
+                {
+                    context.RandomKey = targetKey.With("damage");
+                    if (!TryEvaluate(stages[0].formula, context, host, out value, cast.CasterSnapshot)) yield break;
+                    vars["hit.total"] = value = Mathf.Max(0, value);
+                }
+                var segment = targetKey.With((uint)i);
                 var health = target.GetAttributeData("chp");
                 if (health == null) yield break;
-                if (BoolValues[1] && !appliedWeakness)
+                float absorbed = records != null ? records[i].shieldSpent : 0;
+                for (int s = 1; s < stages.Count; s++)
                 {
-                    SkillDefence.Weaken(health, FloatValues[3], FloatValues[4]);
-                    host.Signal(victim, SkillPlayback.Position(target, victim), "易伤", FloatValues[4], new Color(.9f,.3f,.85f));
-                    appliedWeakness = true;
+                    if (s == firstConfirmedStage)
+                    {
+                        if (vulnerabilityEnabled && BoolValues[1] && !appliedWeakness)
+                        {
+                            SkillDefence.Weaken(health, FloatValues[3], FloatValues[4]);
+                            host.Signal(victim, SkillPlayback.Position(target, victim), "易伤", FloatValues[4], new Color(.9f,.3f,.85f));
+                            appliedWeakness = true;
+                        }
+                        if (i == 0 && FloatValues[5] > 0) yield return new WaitForSeconds(FloatValues[5]);
+                        if (!SkillPlayback.CanSettle(style, target, victim)) yield break;
+                        if (style == SkillPlayback.Style.Direct && cast.CastInterrupted) yield break;
+                    }
+
+                    var stage = stages[s];
+                    vars["hit.raw"] = vars["hit.value"] = value;
+                    context.RandomKey = segment.With(stage.id);
+                    if (stage.kind == Kind.HitChance)
+                    {
+                        if (!TryEvaluate(stage.formula, context, host, out var chance, cast.CasterSnapshot)) yield break;
+                        if (chance <= 0 || (chance < 1 && segment.With("hit").Unit >= chance))
+                        {
+                            host.Signal(victim, SkillPlayback.Position(target, victim), "未命中", .18f, Color.gray);
+                            break;
+                        }
+                    }
+                    else if (stage.kind == Kind.SegmentShare)
+                    {
+                        vars["hit.share"] = weights[i] * .01f;
+                        value *= vars["hit.share"];
+                    }
+                    else if (stage.kind == Kind.ModifyDamage)
+                    {
+                        if (stage.conditionChance)
+                        {
+                            var modifierKey = context.RandomKey;
+                            context.RandomKey = modifierKey.With("condition");
+                            if (!TryEvaluate(stage.conditionChance, context, host, out var probability, cast.CasterSnapshot)) yield break;
+                            if (probability <= 0 || (probability < 1 && modifierKey.With("apply").Unit >= probability)) continue;
+                            context.RandomKey = modifierKey;
+                        }
+                        if (!TryEvaluate(stage.formula, context, host, out value, cast.CasterSnapshot)) yield break;
+                    }
+                    else if (stage.kind == Kind.Vulnerability)
+                        value = SkillDefence.ApplyVulnerability(health, Mathf.Max(0, value));
+                    else if (stage.kind == Kind.Shield)
+                    {
+                        // Commit shield consumption only after all downstream formulas succeed.
+                        absorbed = SkillDefence.ShieldAbsorption(health, value);
+                        value -= absorbed;
+                    }
+                    else if (stage.kind == Kind.ApplyHealth)
+                    {
+                        float before = cast.onDamageSettled == null ? 0 : target.GetAttributeFloat("chp");
+                        SkillDefence.SpendShield(health, absorbed);
+                        SkillPlayback.ApplySettledDamage(source, target, health, value);
+                        cast.onDamageSettled?.Invoke(index, target, before - target.GetAttributeFloat("chp"), absorbed);
+                        host.Signal(victim, SkillPlayback.Position(target, victim), "命中", .18f, new Color(1f,.55f,.22f));
+                    }
                 }
-                if (i == 0 && FloatValues[5] > 0) yield return new WaitForSeconds(FloatValues[5]);
-                if (!SkillPlayback.CanSettle(style, target, victim)) yield break;
-                if (style == SkillPlayback.Style.Direct && cast.CastInterrupted) yield break;
-                context.RandomKey = segment.With("settlement");
-                if (!TryEvaluate(calculation.settlement, context, host, out var defended)) yield break;
-                SkillPlayback.ApplyIncomingDamage(source, target, Mathf.Max(0, defended));
-                host.Signal(victim, SkillPlayback.Position(target, victim), "命中", .18f, new Color(1f,.55f,.22f));
             }
         }
 
-        private bool TryEvaluate(SkillFormula formula, RootRuntimeState context, SkillPlayback host, out float value, Dictionary<string, float> castInputs = null)
+        private bool TryEvaluate(SkillFormula formula, RootRuntimeState context, SkillPlayback host, out float value, SkillAttributeSnapshot casterSnapshot)
         {
-            try { value = formula.Evaluate(context, castInputs); return true; }
+            try { value = formula.EvaluateWithAttributes(context, casterSnapshot); return true; }
             catch (Exception e)
             {
-                Debug.LogError(formula.name + " · " + Uid + "：" + e.Message, host);
+                Debug.LogError((formula ? formula.name : "缺少公式") + " · " + Uid + "：" + e.Message, host);
                 value = 0;
                 return false;
             }

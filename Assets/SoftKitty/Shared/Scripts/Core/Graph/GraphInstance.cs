@@ -70,7 +70,7 @@ namespace SoftKitty
             if (impactHost) impactHost.Schedule(routine);
             else StartCoroutine(routine);
         }
-        private SkillPlayback impactHost;
+        protected SkillPlayback impactHost;
 
         internal static void RunOnProjectileHit(GraphObject skill, PortSetting output, GraphRuntimeState state, GameObject projectileHost,
             Vector3 point, Entity source, Entity target)

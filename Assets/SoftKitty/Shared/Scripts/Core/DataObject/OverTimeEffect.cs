@@ -182,6 +182,7 @@ namespace SoftKitty
         /// The dealer¡¯s UID ¡ª the entity responsible for applying this over-time effect. This could be the attacker in the case of DoT or the caster for a buff/debuff.
         /// </summary>
         public string dealer;
+        [System.NonSerialized] internal SkillAttributeSnapshot casterSnapshot;
 
         /// <summary>
         /// Retrieves a copy of the data.
@@ -194,6 +195,7 @@ namespace SoftKitty
             _copy.timer = timer;
             _copy.layer = layer;
             _copy.dealer = dealer;
+            _copy.casterSnapshot = casterSnapshot;
             return _copy;
         }
 

@@ -16,18 +16,17 @@ namespace SoftKitty
             var source = SkillPlayback.ReadEntity(this, 1, runtime);
             var recipient = SkillPlayback.ReadEntity(this, 2, runtime);
             if (source == null || recipient == null || inputPort[3].connectedNodes.Count == 0) return;
-            float amount = GetVariableValue(inputPort[3].connectedNodes[0], runtime);
             runtime.NodeStates[NodeIndex].lastBool = true;
             var host = SkillPlayback.On(instance);
             host.ScheduleReleases(runtime, source, WaitTime, 1, 0, () =>
             {
                 if ((SkillPlayback.Style)IntValues[0] != SkillPlayback.Style.Direct && !ConditionsMet(ref runtime)) return;
                 var playback = (SkillPlayback.Style)IntValues[0] == SkillPlayback.Style.Direct ? host : host.ProjectileHost();
-                playback.Schedule(Strike(playback, source, recipient, Mathf.Max(0, amount), runtime));
+                playback.Schedule(Strike(playback, source, recipient, runtime));
             });
         }
 
-        private IEnumerator Strike(SkillPlayback host, Entity source, Entity recipient, float amount, GraphRuntimeState cast)
+        private IEnumerator Strike(SkillPlayback host, Entity source, Entity recipient, GraphRuntimeState cast)
         {
             if (!recipient.AvailableForInteraction) yield break;
             var caster = SkillPlayback.FindActor(source);
@@ -48,6 +47,8 @@ namespace SoftKitty
                 if (!struck) yield break;
                 victim = struck;
                 recipient = struck.mData;
+                cast.RootState = cast.ForCast(null).RootState;
+                cast.RootState.SetInvolvedEntity("Target", recipient);
             }
             if (!SkillPlayback.CanSettle(style, recipient, victim)) yield break;
             var health = recipient.GetAttributeData("chp");
@@ -66,7 +67,9 @@ namespace SoftKitty
                 if (!SkillPlayback.CanSettle(style, recipient, victim)) yield break;
                 if (style == SkillPlayback.Style.Direct && cast.CastInterrupted) yield break;
                 if (style == SkillPlayback.Style.Direct && !ConditionsMet(ref cast, (uint)i)) continue;
-                SkillPlayback.ApplyIncomingDamage(source, recipient, amount);
+                cast.Hash = NextExecutionHash();
+                float amount = GetVariableValue(inputPort[3].connectedNodes[0], cast);
+                SkillPlayback.ApplyIncomingDamage(source, recipient, Mathf.Max(0, amount));
                 host.Signal(victim, SkillPlayback.Position(recipient, victim), "命中", .18f, new Color(1f,.55f,.22f));
             }
         }

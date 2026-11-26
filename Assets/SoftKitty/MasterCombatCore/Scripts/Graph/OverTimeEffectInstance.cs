@@ -37,6 +37,9 @@ namespace SoftKitty
             mRuntime.RootState.SetDynamicVariableFloat("Layer", _layer);
             SetDealer(_dealer);
             SetTarget(_target);
+            var effect = _target?.GetOverTimeEffect(_uid);
+            mRuntime.CasterSnapshot = effect?.casterSnapshot;
+            mRuntime.EnsureCasterSnapshot(_dealer);
             bool _success = IfTriggerThenPerformAction(eventId);
             if (SGD_Settings.Instance.DebugLevel >= 2) Debug.Log("<OverTimeEffectInstance> -> Perform() > isTriggered:" + _success);
         }
