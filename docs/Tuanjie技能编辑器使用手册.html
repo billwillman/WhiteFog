@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="团结引擎 1.9.3 与 Master Combat Core 1.03 中文技能图操作手册">
+<title>团结技能编辑器使用手册 · WhiteFog</title>
+<style>
+:root{color-scheme:light;--ink:#172b30;--muted:#52656c;--paper:#f3f6f5;--line:#d8e4e2;--teal:#006456;--pale:#e5f3ee;--navy:#152b33;--amber:#fff3da}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.75 "Microsoft YaHei UI","PingFang SC",system-ui,sans-serif}
+a{color:var(--teal);text-underline-offset:.2em}a:focus-visible,summary:focus-visible,button:focus-visible{outline:3px solid #169983;outline-offset:4px}code,kbd{font: .9em/1.65 Consolas,monospace;overflow-wrap:anywhere}code{background:#edf1ef;border-radius:4px;padding:.08em .3em}kbd{padding:.05em .35em;border:1px solid var(--line);border-radius:4px;background:white}
+.wrap{max-width:1220px;margin:auto;padding:0 28px}.hero{background:linear-gradient(125deg,#10272f 35%,#184c4a 100%);color:#f5fffc;padding:58px 0 48px;border-bottom:5px solid #83c5ad}.hero .mark{font-size:13px;letter-spacing:.15em;color:#b5e3d6}.hero h1{line-height:1.2;font-size:clamp(34px,6vw,60px);margin:12px 0}.hero p{max-width:710px;margin:10px 0;color:#d8eeea}.hero code{background:#24504e}.toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:22px}.toolbar a,.toolbar button{display:inline-block;padding:8px 14px;border:1px solid #81bcae;border-radius:7px;background:transparent;color:#f0fffb;text-decoration:none;font:inherit;cursor:pointer}.toolbar a{background:#ddf6ec;color:#123e35;border-color:#ddf6ec}
+.layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:28px;padding-top:28px;padding-bottom:52px}.sidebar{align-self:start;position:sticky;top:20px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px}.sidebar strong{font-size:13px;color:var(--muted)}.sidebar a{display:block;text-decoration:none;padding:5px 8px;border-radius:5px;font-size:14px}.sidebar a:hover{background:var(--pale)}
+section{background:#fff;border:1px solid var(--line);border-radius:14px;margin-bottom:18px;padding:26px 30px;scroll-margin-top:18px}h2{margin:0 0 10px;font-size:26px;line-height:1.3}h3{margin:24px 0 6px;font-size:19px;line-height:1.4}p{margin:8px 0 12px}ul,ol{padding-left:1.5rem;margin:8px 0 14px}li+li{margin-top:5px}.hint{padding:12px 15px;border-left:4px solid #2c907a;background:var(--pale);margin:14px 0}.warn{background:var(--amber);border-left-color:#b88131}
+.graph{display:flex;flex-wrap:wrap;align-items:center;gap:9px;padding:15px;border-radius:10px;background:#162d34;color:#dcf2ed;margin:15px 0 0}.graph b{font-size:14px;border:1px solid #88aeaa;padding:7px 10px;border-radius:6px}.graph .cond{border-color:#d9bb88}.graph .act{border-color:#b1a2df}.graph span{color:#8ad6bf;font-weight:bold}.caption{font-size:13px;color:var(--muted);margin:4px 0 12px}.table{overflow:auto}table{width:100%;border-collapse:collapse;margin:10px 0 14px;font-size:14px;line-height:1.6}th,td{padding:9px 11px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}th{background:#edf5f2;white-space:nowrap}td:first-child{font-weight:600}pre{padding:16px 18px;background:var(--navy);color:#dcf3ed;border-radius:9px;overflow:auto;tab-size:4;margin:10px 0}pre code{background:none;padding:0;overflow-wrap:normal;font-size:13px}.source{font-size:14px;color:var(--muted)}details{border:1px solid var(--line);border-radius:8px;margin:9px 0;padding:8px 12px}summary{cursor:pointer;font-weight:600}
+@media(max-width:790px){.wrap{padding-inline:16px}.hero{padding:36px 0 28px}.layout{grid-template-columns:minmax(0,1fr);gap:14px}.sidebar{position:static}.sidebar nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}section{padding:18px 16px}h2{font-size:23px}}
+@media print{body{background:white;font-size:11pt}.hero{background:white;color:#162c31;padding:0 0 14px}.hero .mark,.hero p{color:#35545a}.hero code{background:#edf1ef}.toolbar,.sidebar{display:none}.layout{display:block;padding:14px 0}.wrap{padding-inline:0}section{border:0;padding:12px 0;margin:0}h2,h3{break-after:avoid}pre,.graph{background:#ecf3f0;color:#152b33;white-space:pre-wrap;break-inside:avoid}.graph span{color:#006456}a{color:inherit}}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <div class="mark">WHITEFOG / 战斗策划与开发</div>
+    <h1>团结技能编辑器使用手册</h1>
+    <p>从打开样例、搭建伤害图，到绑定角色与飞剑预制体，逐步验证一次命中如何变成伤害、持续效果和战斗表现。</p>
+    <p>团结引擎 <code>1.9.3 / 2022.3.62t11</code> · Master Combat Core <code>1.03</code> · 中文技能图</p>
+    <div class="toolbar"><a href="#workbench">打开集中制作流程</a><a href="#first">学习原节点图</a><button type="button" onclick="window.print()">打印或另存为 PDF</button></div>
+  </div>
+</header>
+<div class="wrap layout">
+  <aside class="sidebar">
+    <strong>操作目录</strong>
+    <nav aria-label="操作目录">
+      <a href="#workbench">技能工作台 · 集中编辑</a>
+      <a href="#demo">01　样例和入口</a><a href="#editor">02　画布和节点</a><a href="#data">03　属性与实体</a><a href="#first">04　第一张伤害图</a><a href="#play">05　进入场景验证</a><a href="#formula">06　伤害公式与参数</a><a href="#effect">07　持续伤害和 Buff</a><a href="#sword">08　御剑命中与表现</a><a href="#debug">09　调试与排错</a><a href="#delivery">10　交付与验收</a>
+    </nav>
+  </aside>
+  <main>
+    <section id="demo">
+      <h2 id="workbench">用技能工作台集中制作</h2>
+      <p><a href="MCC技能工作台操作手册.html">打开独立的《MCC 技能工作台操作手册》</a>，可按九张原生图逐个练习选图、修改和 Demo 实战试放。</p>
+      <p>在团结菜单选 <strong>Window → Soft Kitty → 技能工作台</strong>。也可以在 Project 面板选一张 MCC 技能图，在 Inspector 点<strong>打开技能工作台</strong>。工作台直接读写原插件的 <code>GraphObject</code>，能用原版节点图打开同一个文件。</p>
+      <ol>
+        <li>用<strong>技能库</strong>搜索并打开一张图。文件路径可以区分 Demo 和核心预设中的同名技能。点<strong>复制技能</strong>制作副本，或点<strong>新建技能</strong>选择空白、单次伤害、三段伤害、单体治疗。三个数值模板已接好目标、条件和动作，默认使用 Demo 的生命属性 <code>chp</code>。下面从空白技能开始搭建。</li>
+        <li>展开<strong>触发配置</strong>。可直接选择已有条件改参数，或点<strong>添加必须满足的条件 → 实体存在判断</strong>。实体选「目标」，逻辑选「存在」。新增条件作为独立触发器，求值时与已有触发器共同生效。</li>
+        <li>将<strong>时间游标</strong>移到起始时刻，选<strong>添加动作 → 修改属性</strong>。在同一窗口把实体设成「目标」，属性 UID 填 <code>chp</code>，操作选「减法」，属性值填 <code>7</code>。输入框按回车提交。</li>
+        <li>选中该动作，在<strong>执行方式</strong>选「执行多次」，次数 <code>3</code>，间隔 <code>0.04</code> 秒。时间轴上每行是一项动作，横条表示计划执行区间。行首注明直接执行、分支或未连接。分支行表示可能发生的动作，实际命中由运行条件决定。</li>
+        <li>点<strong>保存</strong>。展开<strong>执行组件与场景试放</strong>下方的配置，选择使用此图的伤害执行组件；空场景可点<strong>创建场景测试组件</strong>。展开<strong>命中检测、投射物与动态变量</strong>可直接使用 MCC 的原生组件面板。</li>
+        <li>填写同一场景的<strong>施加者、目标</strong>，确保两个对象都绑定有效的 <code>EntityComponent</code>，目标携带 <code>chp</code>。进入 Play 后点<strong>试放当前技能</strong>。初值 100 时，等待三段动作结束，预期生命为 79。实际团结 PC 编辑器回归得到 <strong>100 → 79</strong>。</li>
+      </ol>
+      <p class="hint">表单中标有「共享」的实体或数值节点会同时影响该图的其他使用者。来自复杂公式的输入会标出源节点 UID；点「打开节点图」可继续改公式和分支连线。两种视图之间切换时按提示保存。</p>
+      <h2>01　样例和入口</h2>
+      <p>工程根目录为 <code>E:\Tuanjie19_WhiteFog</code>。团结 Project 面板中，双击技能图 <code>.asset</code>，或选中后点 Inspector 中的<strong>打开技能图编辑器</strong>。新建资产用<strong>创建 → Soft Kitty → 技能图</strong>。<code>CombatDamage</code> 组件的 <strong>Graph → Design</strong> 也能打开挂载的图。</p>
+      <h3>战斗 Demo 场景</h3>
+      <p>在 Project 面板打开 <code>Assets/SoftKitty/MasterCombatCore/Demo/Scenes/DemoScene.unity</code> 并点击 Play。首次打开可能需要等待模型、贴图和 Shader 导入完成。Hierarchy 中带 <code>Demo Introduction</code> 的说明对象，在 Inspector 里列出管理脚本、技能图和演示资源入口。<a href="https://www.soft-kitty.com/docs/master-combat-core/getting-started/installation/">厂商安装说明</a></p>
+      <p>原包还提供内置管线和 HDRP 版本，三个版本使用相同的场景路径。当前工程使用 URP。原版演示通过 <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> 移动，<kbd>Shift</kbd> 冲刺，<kbd>Space</kbd> 跳跃，鼠标左键挥击、右键格挡。角色获得对应的特殊能力后，攻击还可发射投射物。</p>
+      <p>Demo 的属性、实体和持续效果数据已在 <strong>Data Settings</strong> 注册。如果项目后续切换成正式数据，打开 Demo 前可重新分配 <code>Assets/SoftKitty/MasterCombatCore/Demo/Data/</code> 中的三张演示表。随场景使用的技能图位于 <code>Demo/CombatGraph/</code>。</p>
+      <p class="caption">在团结 1.9.3 的 PC 编辑器测试中，自动加载场景并调用原版剑击后，测试敌人的当前生命从 100 降到 85，期间未捕获运行错误。</p>
+      <h3>随核心插件安装的五张图</h3>
+      <p>目录为 <code>Assets/SoftKitty/MasterCombatCore/Presets/</code>。先在 Project 面板复制一张到自己的技能目录，再改副本。图内的属性 UID、事件接收器和效果数据需要与运行场景匹配。</p>
+      <div class="table"><table><thead><tr><th>文件</th><th>适合查看</th><th>阅读路径</th></tr></thead><tbody>
+        <tr><td>GeneralDamageSimple.asset</td><td>直接伤害</td><td>从修改生命值的动作反查目标、伤害表达式和触发条件。</td></tr>
+        <tr><td>GeneralDamageAdvanced.asset</td><td>多条件、多分支结算</td><td>先找根节点，再查看普通命中、格挡、暴击与附带效果在图里的入口。</td></tr>
+        <tr><td>DoT_Damage.asset</td><td>持续伤害的结算</td><td>查看生效目标、每次结算的伤害数值和属性变化。</td></tr>
+        <tr><td>DoT_Frost.asset</td><td>冰霜类持续效果</td><td>配合 Demo 中的 <code>OverTimeEffectObject</code> 查看挂载关系与效果动作。</td></tr>
+        <tr><td>Buff_Berserker.asset</td><td>增益效果</td><td>查看作用于哪个实体、改变什么属性及效果到期后的行为。</td></tr>
+      </tbody></table></div>
+      <p class="hint">第一次操作可以先在 Demo 里观察一轮普攻，再复制 <code>GeneralDamageSimple.asset</code> 练习。自建示例从固定伤害开始，便于判断出错的是图、实体绑定，还是物理命中。</p>
+    </section>
+    <section id="editor">
+      <h2>02　画布和节点</h2>
+      <div class="graph" role="img" aria-label="条件或条件组送入触发器，触发器连入战斗根节点，根节点连接动作"><b class="cond">条件 / 条件组</b><span>→</span><b class="cond">触发器</b><span>→</span><b>战斗 · 根节点</b><span>→</span><b class="act">动作 / 动作分支</b></div>
+      <p class="caption">执行路径示意。实体、变量和数学节点通过数据端口为条件及动作提供输入。</p>
+      <ol>
+        <li>空白处右键打开<strong>创建节点</strong>菜单。选择类别和预设后，将新节点挪到有空位的地方。拖节点标题移动，滚轮缩放，中键拖动平移，空白处拖框选择多个节点。</li>
+        <li>把输出端口拖到兼容的输入端口。条件结果、实体、数值、动作各有独立语义。改节点类型后重新检查端口，尤其是原来接入的实体和数值。</li>
+        <li>删除单根线时先点选连线，再用 <kbd>Delete</kbd> 或右键删除。对一组相关节点执行<strong>分组</strong>，组名可用「伤害公式」「命中条件」「受击表现」。</li>
+        <li>用<strong>新建便笺</strong>写明输入、结果与例值，右键<strong>设为图摘要</strong>后可在 Inspector 里阅读。打开图后，先读摘要再看连线。</li>
+        <li>修改完点<strong>保存</strong>再进 Play。<strong>恢复</strong>回到本次打开窗口时的快照，期间点过保存也能回到开窗时的内容。关闭窗口仍会保存，需要撤回整次会话的修改时先用<strong>恢复</strong>。</li>
+      </ol>
+      <div class="table"><table><thead><tr><th>节点</th><th>作用</th><th>常见配置</th></tr></thead><tbody>
+        <tr><td>根节点</td><td>组织一次求值中的触发与动作。</td><td>技能计算通常保留「战斗」。根节点可连多条动作，要求严格时序的表现应显式安排时机。</td></tr>
+        <tr><td>触发器</td><td>决定一次求值是否满足技能执行条件。</td><td>同一触发器的多个「触发条件」需全部成立。需要任一成立时，先用「或」条件组归并。</td></tr>
+        <tr><td>条件 / 条件组</td><td>读取实体或数值并输出真假。</td><td>实体存在、生命值、标签、距离、高度差、角度差。条件组支持与、或、异或、或非。</td></tr>
+        <tr><td>实体</td><td>提供被检查或被修改的对象。</td><td>施加者是本次来源，目标是本次受体，玩家是全局玩家，指定按 UID 查找，执行实例关联当前执行者。</td></tr>
+        <tr><td>变量</td><td>提供数值。</td><td>常量适合调试，属性从实体读取，动态变量接受实例覆盖，随机值适合带范围的波动。</td></tr>
+        <tr><td>数学</td><td>组合数值。</td><td>倍率、加减、上下限；对减、除等运算核实输入次序。</td></tr>
+        <tr><td>分支</td><td>根据条件结果选择执行路径或输入值。</td><td>数值分支可决定暴击倍率，实体分支可选治疗对象，动作分支可切换格挡与受伤的动作。</td></tr>
+        <tr><td>动作</td><td>改变数值或触发外部行为。</td><td>修改属性、播放动画、播放音效、实例化预制体、应用持续效果、触发事件。</td></tr>
+      </tbody></table></div>
+      <p>动作支持<strong>仅执行一次</strong>、<strong>执行多次</strong>和<strong>按时长持续执行</strong>。给多段技能标明起始延迟、间隔和次数，提交前在实际运行中数命中次数。跨技能持续状态使用持续效果资产管理更容易验收。<a href="https://www.soft-kitty.com/docs/master-combat-core/nodes/action/">厂商动作节点说明</a></p>
+    </section>
+    <section id="data">
+      <h2>03　属性与实体</h2>
+      <p>先打开 <strong>Edit → Project Settings → SoftKitty → Data Settings → Data</strong>。工程已有通用设置 <code>Assets/SoftKitty/Data/SGD_Settings.asset</code>。查看 <strong>Data Object List</strong> 中实际启用的资产。正式技能尽量复用项目定义的 UID。练习使用 Demo 数据时，可直接用其 <code>chp</code> 表示当前生命值。</p>
+      <h3>从空表建立一套独立的练习数据</h3>
+      <ol>
+        <li>在 Project 面板创建 <strong>Soft Kitty → Data Objects → Attribute Data</strong> 和 <strong>Entity Manager Data</strong>。进阶练习再创建 <strong>Over Time Effect Data</strong>。</li>
+        <li>在 <strong>Data Settings → Data</strong> 点击 <strong>Add</strong> 后填写资源槽，或对未分配的资产点 <strong>Assign</strong>。每类数据用一个启用的资产。同类资产已启用时，记录原来绑定的对象，需要时换成练习数据，练完恢复原配置。</li>
+        <li>在 <strong>SoftKitty → SubData - Attributes</strong>（或直接选中 <code>AttributeObject</code>）点 <strong>Add New [Attribute]</strong>。建数值属性 <code>chp</code>，显示名「当前生命」，默认值 <code>100</code>，关闭字符串类型。后续公式再加 <code>atk</code> 与 <code>def</code>。</li>
+        <li>在 <strong>SoftKitty → Entity Manager</strong> 点 <strong>Add New [Entity]</strong>，创建 <code>skill_test_caster</code> 和 <code>skill_test_target</code>。展开每个实体的 <strong>Attributes</strong>，下拉选到 <code>chp</code> 后点 <strong>Add</strong>，也可以用 <strong>Fill Attributes from Database</strong> 从表填充。确认目标的 <code>chp</code> 初值为 100，再保存。</li>
+        <li>需要同种怪物同时出现在场景时，在该实体模板上勾选 <strong>Multiple Instances</strong>，使各个对象拥有独立运行数据。示例用「施加者」从调用端注入，<code>skill_test_caster</code> 可保持普通实体。需要全局「玩家」节点时，确认项目唯一的 <code>player</code> 绑定。</li>
+      </ol>
+      <div class="table"><table><thead><tr><th>UID</th><th>练习值</th><th>用法</th></tr></thead><tbody>
+        <tr><td><code>chp</code></td><td>测试目标 100</td><td>修改属性的 UID，在项目里确认它表示当前生命。</td></tr>
+        <tr><td><code>atk</code></td><td>测试施加者 40</td><td>读取施加者攻击，给进阶公式供值。</td></tr>
+        <tr><td><code>def</code></td><td>测试目标 15</td><td>读取目标防御，给进阶公式供值。</td></tr>
+      </tbody></table></div>
+      <p class="hint">属性表中的定义与实体实际携带的属性都要检查。节点填 UID（如 <code>chp</code>），弹窗里看到的显示名「当前生命」可独立修改。</p>
+    </section>
+    <section id="first">
+      <h2>04　第一张伤害图</h2>
+      <p>目标是每次触发从测试靶扣 <strong>30</strong> 点当前生命值。数值是本手册的演示参数。把新图保存为 <code>Skill_Test_Fixed30.asset</code>。</p>
+      <ol>
+        <li>在 Project 面板用<strong>创建 → Soft Kitty → 技能图</strong>新建资产，再双击。新图预置一个条件、一个触发器、一个根节点和一个动作，并已连好基础执行路径。</li>
+        <li>将条件的类型切到<strong>实体存在判断</strong>，逻辑选<strong>存在</strong>。检查它的输出连到触发器的<strong>触发条件</strong>，触发器连到战斗根节点。</li>
+        <li>空白处右键<strong>创建节点 → 实体 → 目标</strong>。把实体输出连到条件的<strong>实体</strong>输入。保留触发器自动重置。</li>
+        <li>将动作类型设为<strong>修改属性</strong>，执行方式选<strong>仅执行一次</strong>，延迟设为 <code>0</code>。<strong>属性 UID</strong> 填 <code>chp</code>，<strong>操作</strong>选<strong>减法</strong>。</li>
+        <li>把同一个「目标」输出连到「修改属性」的<strong>实体</strong>。添加<strong>变量 → 常量</strong>，数值设为 <code>30</code>，将数值输出连到动作的<strong>属性值</strong>输入。</li>
+        <li>检查根节点的动作输出仍然连着这个动作。点<strong>保存</strong>。关闭并重开一次，确认节点选择和连线写入资产。</li>
+      </ol>
+      <div class="table"><table><thead><tr><th>输出</th><th>输入</th><th>检查目的</th></tr></thead><tbody>
+        <tr><td>目标实体</td><td>实体存在判断的实体</td><td>确认本次受体存在。</td></tr>
+        <tr><td>实体存在判断</td><td>触发器的触发条件</td><td>把判定结果交给触发器。</td></tr>
+        <tr><td>触发器</td><td>战斗根节点</td><td>注册一次结算的门槛。</td></tr>
+        <tr><td>战斗根节点</td><td>修改属性的动作入口</td><td>通过触发后调用动作。</td></tr>
+        <tr><td>目标实体</td><td>修改属性的实体</td><td>绑定要扣血的对象。</td></tr>
+        <tr><td>常量 30</td><td>修改属性的属性值</td><td>使用正数表示减量。</td></tr>
+      </tbody></table></div>
+    </section>
+    <section id="play">
+      <h2>05　进入场景验证</h2>
+      <p>开始一个独立测试场景，用显式调用验证图结算。两名实体可以是普通空对象，物理检测关闭时无需碰撞体。</p>
+      <ol>
+        <li>创建两个场景对象。选中后用 <strong>GameObject → Soft Kitty → Attach Entity Instance</strong> 绑定 <code>EntityComponent</code>，在 <strong>Entity UID</strong> 分别选施加者和测试目标。也可以用 <strong>Create Entity Instance</strong> 直接创建。</li>
+        <li>用 <strong>GameObject → Soft Kitty → Create Damage Object</strong> 加一个 <code>CombatDamage</code> 对象。<strong>Graph</strong> 拖入 <code>Skill_Test_Fixed30.asset</code>。启用 <strong>Enable Damage</strong>，在 <strong>Physics Detection</strong> 中关闭 <strong>Enable Physics Detection</strong>。</li>
+        <li>在 <strong>Optional References</strong> 里确认能看到 <strong>Dealer Entity</strong> 和 <strong>Target Entity</strong>。固定测试可直接绑定它们。下面的脚本通过参数传入实体，可用来验证动态锁定场景。</li>
+        <li>在自己的测试目录创建 <code>SkillDamageProbe.cs</code>，粘贴下面的完整脚本，挂到场景任意对象。将伤害组件、施加者和靶子拖入三个字段。进入 Play 后，在脚本组件菜单点击 <strong>Test Skill Hit</strong>。Console 查看血量前后值。</li>
+      </ol>
+      <pre><code>using System.Collections;
+using SoftKitty;
+using UnityEngine;
+
+public class SkillDamageProbe : MonoBehaviour
+{
+    [SerializeField] private CombatDamage damage;
+    [SerializeField] private EntityComponent caster;
+    [SerializeField] private EntityComponent target;
+
+    [ContextMenu("Test Skill Hit")]
+    private void TestSkillHit()
+    {
+        if (!Application.isPlaying || !damage || !damage.inited || !caster || !target)
+        {
+            Debug.LogWarning("Enter Play and assign the initialized skill and both entities.", this);
+            return;
+        }
+
+        var dealerData = caster.mData;
+        var targetData = target.mData;
+        if (dealerData == null || targetData == null || targetData.GetAttributeData("chp") == null)
+        {
+            Debug.LogWarning("Check Entity UID assignments and the target chp attribute.", this);
+            return;
+        }
+
+        StartCoroutine(MeasureHit(dealerData, targetData));
+    }
+
+    private IEnumerator MeasureHit(Entity dealerData, Entity targetData)
+    {
+        var before = targetData.GetAttributeFloat("chp");
+        damage.DealDamage(dealerData, targetData);
+        // The graph schedules actions as coroutines, even with a zero delay.
+        yield return new WaitForSeconds(0.1f);
+        Debug.Log($"Skill hit: chp {before} -&gt; {targetData.GetAttributeFloat("chp")}", target);
+    }
+}</code></pre>
+      <p>初始化后第一击的预期为 <code>100 → 70</code>，第二击为 <code>70 → 40</code>。如果使用 Demo 中已有的实体，初始生命可能与练习表不同，应观察每击的差值。<code>DealDamage(dealer, target)</code> 会经过触发条件。<code>PerformAction(hash)</code> 会跳过触发条件，正常命中流程使用前者。<a href="https://www.soft-kitty.com/docs/master-combat-core/damage-component/combat-damage/">厂商 CombatDamage 接口说明</a></p>
+      <p class="hint">这张图只验证属性变化。正式角色的死亡、血条、击退、各类受击动画及玩家输入，由对应角色系统和事件接收逻辑处理。</p>
+    </section>
+    <section id="formula">
+      <h2>06　伤害公式与可调参数</h2>
+      <p>复制固定伤害图，再把常量 30 替换成公式。先设一组可手算的数据，验证后再打磨倍率。</p>
+      <div class="graph" role="img" aria-label="施加者攻击乘技能倍率，再减目标防御，使用最大值保底"><b>施加者 atk</b><span>×</span><b>动态变量 skill_multiplier</b><span>−</span><b>目标 def</b><span>→</span><b class="act">max(1, 结果)</b></div>
+      <p class="caption">练习公式。40 × 1.25 − 15 = 35，满血 100 的目标结算后应为 65。</p>
+      <ol>
+        <li>新建「施加者」与「目标」的实体输入，分别连到两张<strong>属性</strong>变量节点。UID 分别设 <code>atk</code> 和 <code>def</code>。</li>
+        <li>创建<strong>动态变量</strong>，设 UID <code>skill_multiplier</code>，默认值 <code>1.25</code>。把攻击与倍率接进乘法，再将乘积放到减法的第一个输入，防御放到第二个输入。</li>
+        <li>用<strong>最大值</strong>在公式结果与常量 <code>1</code> 之间取大值，输出接到修改属性的<strong>属性值</strong>。如果项目允许免疫或零伤害，按对应规则另设条件或调整下限。</li>
+        <li>保存后去 <code>CombatDamage</code> Inspector 展开 <strong>Dynamic Variables</strong>，确认变量 UID 与默认值对应。可为装备或技能等级覆盖组件的倍率，运行时可用 <code>damage.SetDynamicValue("skill_multiplier", 1.5f)</code> 后再调用结算。换 UID 后检查已有组件是否仍写入旧 UID。</li>
+      </ol>
+      <p>继续加入暴击、护盾或格挡时，先写清它们影响的是「是否出招」「是否命中」还是「结算后的数值」。比如程序已经判定格挡，图里可以用动作分支播放格挡事件。若把格挡当成总触发失败，连接在根节点下的格挡表现也会被跳过。</p>
+    </section>
+    <section id="effect">
+      <h2>07　持续伤害、增益和减益</h2>
+      <div class="graph" role="img" aria-label="命中图在目标上施加效果，效果根据自身寿命和层数调用效果图"><b>命中技能图</b><span>→</span><b class="act">持续效果动作</b><span>→</span><b>持续效果数据</b><span>→</span><b class="act">效果结算图</b></div>
+      <p class="caption">命中图负责施加，效果资产保存时长、刷新和层数，结算图负责执行每次有效效果。</p>
+      <ol>
+        <li>在 <strong>Data Settings</strong> 确认启用 <code>OverTimeEffectObject</code>，打开 <strong>SubData - Over Time Effect</strong>。点击 <strong>Add New [OverTimeEffect]</strong> 新建条目。</li>
+        <li>给条目一个稳定标识，填写 <strong>Duration</strong>、<strong>Can be Refreshed</strong>、<strong>Can be Extended</strong> 与 <strong>Layered / Maximum Layers</strong>。先用 4 秒、可刷新、不延长、单层练通，再决定最终叠层规则。<strong>Tick Interval</strong> 是数据资产设置，调整会影响同一数据资产的其他效果。</li>
+        <li>给条目绑定一张独立效果图。持续伤害图可先只做「目标 <code>chp</code> 减 5」，再通过实测确认实际的生效时点、次数与层数。参考 Demo 的 <code>DoT_Damage</code> 和 <code>DoT_Frost</code>。</li>
+        <li>在命中图加「持续效果」动作，连接目标，填效果使用的 ID。效果参数需要数值输入时，使用条目的整数 ID，对照数据库中的记录，不要填显示名。避免让效果图再次施加自身而持续刷新。</li>
+        <li>增益优先查看 <code>Buff_Berserker</code> 和「临时修改属性」。按项目规则验证结束后原属性是否复原、重施加是否刷新、多个来源同时施加时是否符合预期。</li>
+      </ol>
+      <p>验收至少记录首次施加、重复施加、层数变化、自然到期、目标死亡或销毁五个时点。养成端修改的永久面板值与战斗期间的临时增益分别记录。<a href="https://www.soft-kitty.com/docs/core/over-time-effects/overview/">厂商持续效果说明</a></p>
+    </section>
+    <section id="sword">
+      <h2>08　接入御剑空战</h2>
+      <p>先证明图能扣血，再接飞行物、命中和表现。主角与怪物可以共用同一个结算结构，一律从本次施放的施加者读取攻击、从本次命中的目标读取防御。</p>
+      <div class="table"><table><thead><tr><th>阶段</th><th>配置位置</th><th>验收动作</th></tr></thead><tbody>
+        <tr><td>起手与出剑</td><td>角色施法逻辑、动画事件、施法挂点</td><td>起手后从正确位置生成飞剑一次，取消时清理预生成对象和音效。</td></tr>
+        <tr><td>飞行</td><td>飞剑 Prefab 的 <code>Projectile</code> 或项目飞行脚本</td><td>用斜向、高低差、移动目标各试一次，记录速度、最大寿命及失去目标的行为。</td></tr>
+        <tr><td>命中</td><td><code>CombatDamage → Physics Detection</code></td><td>3D 飞剑关闭 <strong>2D Physics</strong>，启用检测。按项目挑选 <strong>Trigger Collider</strong>、<strong>Raycast</strong> 或扫掠检测，并查看场景 Gizmo。检查 LayerMask、实体 Tags、Collider 和组件位置。</td></tr>
+        <tr><td>伤害</td><td>飞剑上的 Graph 与当前施加者</td><td>同一把剑对同一目标只扣预期次数。多敌人、穿透、同帧多命中分开记录。</td></tr>
+        <tr><td>反馈</td><td>命中事件、音画表现、角色受击</td><td>命中点与特效位置吻合。对空命中可配冲击波或滞空反馈，地面命中可配着地点特效。</td></tr>
+        <tr><td>结束</td><td>生命周期、技能冷却、对象池</td><td>目标失效、飞出距离、超时或完成命中后回收。再次从对象池出剑时重新设置施加者、方向与动态变量。</td></tr>
+      </tbody></table></div>
+      <p>静态近战武器常用动画窗口开关检测。飞剑常用明确发射向量和射线或扫掠，对高速穿透及高低差更容易复现测试。组件支持 <strong>Ignore Same Target Within</strong>，用于抑制同一目标短时间的重复碰撞。需要每把飞剑只命中一次时，同时对照生命周期与重复命中冷却。<a href="https://www.soft-kitty.com/docs/master-combat-core/getting-started/projectile/">厂商投射物示例</a></p>
+      <p>练习表可先定「飞剑命中伤害 30、命中成功后播放特效、2 秒超时」。副本可扩展成怪物远程落雷和近地冲撞。落雷重点验证提示到命中的时间，冲撞重点验证横向范围和结束收招。</p>
+    </section>
+    <section id="debug">
+      <h2>09　调试与排错</h2>
+      <ol>
+        <li>打开目标技能图，勾选工具栏的<strong>调试模式</strong>。如果只需要异常信息，在 <strong>Data Settings</strong> 把 <strong>Debug Level</strong> 设为 <strong>Errors Only</strong>。</li>
+        <li>进入 Play，复现一次施法。在 Console 选中此次 <code>DealDamage()</code> 发出的图调试 JSON。涉及延迟动作时，等待该动作结束后再查看后续日志。</li>
+        <li>复制消息里的完整 JSON 字符串，贴进图窗口的调试文本框，点<strong>调试</strong>。检查触发结果、目标 UID 和数值端口输出，从第一个异常的节点向上游查。完成后关掉调试模式，减少日志。</li>
+      </ol>
+      <details open><summary>图能打开，按键后没有扣血</summary><p>先检查技能输入是否调用了 <code>DealDamage</code> 或触发了物理检测。再看图是否挂到本次生成的预制体上、目标 Entity UID 能否解析、目标 <code>AvailableForInteraction</code> 是否有效、触发器是否通过、修改属性的 UID 是否实装。</p></details>
+      <details open><summary>数值正常，表现缺失</summary><p>核对图中的事件名、播放动画的目标实体、Animator 参数及大小写。再看场景是否有接收处理器，特效 Prefab 与发射挂点是否存在。启用命中反馈前可用 Console 验证事件只触发一次。</p></details>
+      <details open><summary>直连测试通过，飞剑总是没打到</summary><p>用慢速、静止目标、相同高度先验碰撞。再检查目标 Layer、实体 Tags、Collider 的 Trigger 状态和 Rigidbody 配置。在 Scene 看起点、方向和半径，确认命中点能追溯到 <code>EntityComponent</code>。最后提高速度并测试高低差。</p></details>
+      <details open><summary>同帧命中两名敌人，伤害集中到最后一个目标</summary><p>当前 MCC 1.03 迁移版中，同一 <code>CombatDamage</code> 连续向 A、B 提交三段、每段 7 点的延迟伤害，会复用执行上下文。团结 Play 实测 A 保持 100，B 从 100 降到 58。需要独立结算的并行命中请分别使用执行实例，并让实例存活到最后一段动作完成。单实例复用前，先做这项双目标回归。</p></details>
+      <details><summary>多个怪物的血量同时变化</summary><p>检查它们是否指向相同实体 UID。复用同一模板时启用 <strong>Multiple Instances</strong>。检查动作连的是「目标」，而非按固定 UID 读取的「指定」。</p></details>
+      <details><summary>编辑时有节点，打包后节点类型找不到</summary><p>检查编译错误、命名空间和自定义节点的运行时类型。内置反射类型已经随迁移包含 <code>link.xml</code>，自定义反射类型也需要按目标平台做保留和验证。</p></details>
+      <details><summary>技能误改，退出窗口保存了错误版本</summary><p>窗口仍在本次打开会话时可用「恢复」。窗口已关闭时，从 Git 历史或手动备份找回图资产，同时检查它依赖的 UID 和数据表版本。</p></details>
+    </section>
+    <section id="delivery">
+      <h2>10　交付与验收</h2>
+      <p>技能资产、使用该图的角色或飞剑预制体、实体和属性配置、事件接收脚本、动画特效等一起交接。Project 里的<strong>导出技能图</strong>可导出 <code>.unitypackage</code>，工具会尝试附带检测到的属性与持续效果数据。检查导出清单，并按实际引用补齐场景对象、角色逻辑与表现资源。源工程走 Git 时，将新增资产和对应 <code>.meta</code> 一起提交。</p>
+      <div class="table"><table><thead><tr><th>场景</th><th>最少记录</th><th>预期</th></tr></thead><tbody>
+        <tr><td>单次命中</td><td>施加者 UID、目标 UID、伤害前后值</td><td>扣血一次，伤害与手算一致。</td></tr>
+        <tr><td>失去目标</td><td>目标消失时间、飞剑处理分支</td><td>无异常，生命周期正常结束。</td></tr>
+        <tr><td>不同高度与速度</td><td>命中距离、高度差、飞行速度</td><td>判定符合技能描述，可稳定复现。</td></tr>
+        <tr><td>连发与穿透</td><td>发射次数、各敌人命中次数</td><td>覆盖预期目标，无额外结算。</td></tr>
+        <tr><td>Buff / DoT</td><td>每跳数值、重施加、层数、到期状态</td><td>时序符合配置，结束后状态正确。</td></tr>
+        <tr><td>表现</td><td>首次出剑帧、首个命中帧、声音与受击事件</td><td>视觉、音效与结算对齐。</td></tr>
+        <tr><td>目标平台</td><td>团结编辑器、PC 或小游戏目标、测试设备</td><td>构建后回归一遍核心技能与显示效果。</td></tr>
+      </tbody></table></div>
+      <p class="source">本手册以迁移后的中文版节点和项目内的运行接口为准。核心插件基线是 <code>00cff19</code>，示例图数值为教学设定。<a href="https://github.com/billwillman/WhiteFog/commit/00cff19cb85df42e32d966a9acfa9052b0d0ab67">核心插件提交</a> · <a href="https://www.soft-kitty.com/docs/master-combat-core/graph-system/overview/">图资产与运行实例</a> · <a href="https://www.soft-kitty.com/docs/master-combat-core/getting-started/first-damage-graph/">厂商首张伤害图</a></p>
+    </section>
+  </main>
+</div>
+</body>
+</html>

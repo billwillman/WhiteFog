@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MCC 技能工作台操作手册 · 团结 1.9</title>
+<style>
+:root{color-scheme:light;--ink:#1c3030;--soft:#536766;--brand:#076c5a;--line:#d3e1da;--pale:#e7f3eb}*{box-sizing:border-box}
+body{margin:0;color:var(--ink);background:#f4f6f1;font:16px/1.75 "Microsoft YaHei UI",system-ui,sans-serif}main,header>div{max-width:1120px;margin:auto;padding:0 24px}header{background:#173831;color:#f4fff8;padding:40px 0 30px;border-bottom:5px solid #a9d3a2}h1{font-size:clamp(32px,5vw,52px);line-height:1.18;margin:8px 0}header p{max-width:700px;color:#d9eee2}button,header a{font:inherit;padding:6px 12px;border-radius:6px;background:#eff9ea;color:#183d30;border:0;cursor:pointer;text-decoration:none;margin-right:8px}main{display:grid;grid-template-columns:185px minmax(0,1fr);gap:24px;padding-top:22px;padding-bottom:40px}nav{position:sticky;top:16px;align-self:start;padding:14px;background:white;border:1px solid var(--line);border-radius:10px}nav a{display:block;padding:4px;color:var(--brand);text-decoration:none}section{background:white;padding:22px 26px;border:1px solid var(--line);border-radius:10px;margin-bottom:15px;scroll-margin-top:14px}h2,h3{line-height:1.35;margin:0 0 9px}h2{font-size:25px}h3{font-size:18px;margin-top:18px}p{margin:7px 0 12px}li+li{margin-top:6px}ul,ol{padding-left:1.6em}code,kbd{overflow-wrap:anywhere;font:.90em/1.6 Consolas,monospace;background:#edf2ec;padding:.08em .3em;border-radius:4px}a{color:var(--brand)}.note{background:var(--pale);border-left:4px solid #328069;padding:10px 14px}.table{overflow:auto}table{border-collapse:collapse;width:100%;font-size:14px;line-height:1.6}td,th{border-bottom:1px solid var(--line);padding:8px;text-align:left;vertical-align:top}th{background:#eef4ed}td:first-child{font-weight:bold;min-width:6em}.flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:#193832;color:#ebf7eb;padding:14px;border-radius:7px}.flow b{padding:3px 7px;border:1px solid #84b999;border-radius:4px}.caption{font-size:13px;color:var(--soft)}details{border-bottom:1px solid var(--line);padding:9px 0}summary{font-weight:650;cursor:pointer}.times{border:1px solid var(--line);border-radius:6px;padding:10px}.lane{display:grid;grid-template-columns:7em minmax(0,1fr);align-items:center;gap:9px;min-height:33px}.bar{height:8px;background:#e8eee6;border-radius:4px;position:relative}.bar i{position:absolute;top:-3px;width:12px;height:14px;background:#197760;border-radius:4px}.bar span{position:absolute;top:1px;height:6px;background:#8bc2a9}
+@media(max-width:800px){main{grid-template-columns:minmax(0,1fr);gap:12px;padding-inline:12px}nav{position:static;display:flex;flex-wrap:wrap;gap:2px 8px}section{padding:17px 14px}.lane{grid-template-columns:5em minmax(0,1fr)}}@media print{body{background:white;font-size:10pt}main{display:block;padding:0}nav,header a,button{display:none}header{padding:5px 0;color:#183b30;background:white}header p{color:#384c45}section{border:0;padding:10px 0}tr,.flow,.times{break-inside:avoid}h2,h3{break-after:avoid}.table{overflow:visible}}
+.window-map{margin:14px 0 18px}.window-map div{padding:9px 12px;border:1px solid #d3e1da;border-top:0;background:#f7f9f5}.window-map div:first-child{background:#29453d;color:white;border-radius:6px 6px 0 0}.window-map strong{display:inline-block;min-width:8em}.window-map figcaption{color:var(--soft);font-size:14px}.bar-label{display:flex;justify-content:space-between;font-size:12px;color:var(--soft);margin-left:calc(7rem + 9px)}@media(max-width:800px){.bar-label{margin-left:calc(5rem + 9px)}}@media print{details{break-inside:avoid}.window-map div:first-child,.flow{background:white;color:#183b30}}
+</style></head><body>
+<header><div><small>WhiteFog · 团结 1.9.3 · Master Combat Core 1.03</small><h1>技能工作台操作手册</h1><p>从九张现成技能中选一张，在同一窗口改目标、时序和数值，保存后直接让 Demo 里的主角或怪物施放。</p><a href="#first">跟做一次飞剑试放</a><button onclick="window.print()">打印 / 另存 PDF</button></div></header>
+<main><nav aria-label="目录"><a href="#first">首次打开和试放</a><a href="#workspace">窗口里的配置</a><a href="#timing">时间轴和节点</a><a href="#build">从空白制作飞剑</a><a href="#catalog">九个原生技能</a><a href="#edit">复制、修改、复测</a><a href="#preview">两种试放方式</a><a href="#status">护盾和易伤</a><a href="#trouble">常见问题</a><a href="#files">目录与交付</a></nav><article>
+<section id="first"><h2>首次打开和试放</h2>
+<ol><li>打开 <code>E:\Tuanjie19_WhiteFog</code>，等待团结完成脚本编译和资源导入。从菜单打开 <strong>Window → Soft Kitty → 技能工作台</strong>。已经在 Project 中选中技能图时，也可以点 Inspector 里的<strong>打开技能工作台</strong>。</li>
+<li>首次打开时可直接看到技能库。如果窗口已有选中的技能，点顶部<strong>技能库</strong>打开列表。在「主角技能」里点<strong>御剑穿云</strong>。搜索框按技能名称筛选，清空即可恢复全部。点选后，窗口上方显示当前图的名字和摘要。</li>
+<li>在<strong>动作时间轴</strong>点<strong>技能命中</strong>。检查开始时间 <code>0.24</code>、每段伤害 <code>55</code>、射程 <code>16</code>、飞行速度 <code>19</code>。点顶部<strong>保存</strong>。</li>
+<li>向下滚到<strong>Demo 快速试放</strong>。默认施放方向为「主角 → 怪物」。勾选<strong>让怪物就位到主角前方</strong>，将<strong>起始距离</strong>设为 <code>8</code> 米。</li>
+<li>点<strong>打开 Demo 并试放所选技能</strong>。如团结询问是否保存原场景，按项目需要保存后继续。编辑器会打开原版 URP Demo，进入 Play，等待主角与可交互的敌人生成，再施放所选技能。</li>
+<li>观察 Game 窗口的起手提示、飞剑和命中反馈，再看工作台的施放信息及<strong>当前生命</strong>。在双方静止、无护盾、无易伤且目标血量充足时，约在 <code>0.24 + 8÷19 ≈ 0.66</code> 秒后扣 55 点。</li>
+<li>Play 中可直接切到另一张图，点<strong>在 Demo 试放所选技能</strong>。要保存新的设计参数，先退出 Play，再改图、保存并重试。</li></ol>
+<p class="note">快速试放会自动绑定 Demo 中存活的主角和最近一只可交互怪物。第一次试放不需要手动建执行物体，也不需要把九张图分别挂到场景。</p></section>
+<section id="workspace"><h2>窗口里的配置</h2>
+<figure class="window-map" aria-label="工作台窗口，自上向下排列"><div>技能库　｜　当前资产　｜　新建技能　｜　复制技能　｜　打开节点图　｜　保存　｜　使用手册</div><div><strong>触发配置 ▸</strong> 决定这一招能否启动</div><div><strong>动作时间轴</strong> 点动作名称，会在下方显示它的参数</div><div><strong>当前动作</strong> 改时间、实体和数值，回车确认字段</div><div><strong>Demo 快速试放</strong> 选择方向、设定距离、让角色出招</div><div><strong>执行组件与场景试放</strong> 指定场景里的执行组件和双方实体</div><figcaption>工作台位置示意。窗口较矮时，向下滚动即可看到两种试放入口。</figcaption></figure>
+<div class="table"><table><thead><tr><th>位置</th><th>在这里做什么</th><th>何时使用</th></tr></thead><tbody>
+<tr><td>技能库 / 资产槽</td><td>按名字搜索，按主角、怪物、其他图选择，也可从 Project 拖入 GraphObject。</td><td>开始制作或在 Play 中切换试放技能。</td></tr>
+<tr><td>新建 / 复制</td><td>新建可选空白、单次伤害、三段伤害或单体治疗。复制可保留现有节点、参数和连线。</td><td>想沿用现有飞剑、易伤或护盾配置时，用复制最快。</td></tr>
+<tr><td>触发配置</td><td>查看和修改实体存在、属性、距离等条件，或添加新的必需条件。</td><td>整张图的施放前提。九图的攻击射程放在「技能命中」步骤里，经过前摇后才检查。</td></tr>
+<tr><td>动作时间轴</td><td>选中动作，改变开始时间、执行模式、段数、间隔，或在游标处添加动作。</td><td>看一招有哪些步骤，调整起手和命中的节奏。</td></tr>
+<tr><td>动作表单</td><td>编辑当前节点的实体、数值、枚举、事件和命中后的行为。共享输入会标「共享」。</td><td>修改基础伤害、弹道、易伤、护盾或回复。</td></tr>
+<tr><td>Demo 快速试放</td><td>选择施放方向和起始距离，用 Demo 当前角色试放并观察实时生命值。</td><td>验收技能资产本身。</td></tr>
+<tr><td>执行组件与场景试放</td><td>绑定指定 CombatDamage，打开原生组件的物理检查、投射物、动态变量，并手动指定双方。</td><td>检查正式角色、武器或具体碰撞体与图的接入。</td></tr>
+<tr><td>打开节点图</td><td>查看实体、变量、条件、触发器、战斗根节点和动作的实际连线。</td><td>修改复杂公式或分支。点「切回工作台编辑」返回表单。</td></tr>
+</tbody></table></div></section>
+<section id="timing"><h2>时间轴和节点怎么读</h2>
+<div class="flow" aria-label="执行关系"><b>检查施放条件</b>→<b>战斗根节点</b>→<b>按各动作的开始时间执行</b>→<b>表现和数值结算</b></div>
+<p>每行动作的<strong>开始时间</strong>以本次施放为零点。同一根节点可启动多行动作。要让第二步等到第一步完成，应填写合适的开始时间。若命中时间随距离变化，将后续扣血写在「技能命中」内，用「命中后到首段的延迟」衔接。</p>
+<div class="times" role="img" aria-label="星弧连闪在 8 米时于 0 秒蓄剑，0.25 秒出剑，约 0.54、0.68、0.82 秒各命中一次">
+<div class="lane"><strong>施法提示</strong><div class="bar"><i style="left:0"></i></div></div>
+<div class="lane"><strong>飞剑在途</strong><div class="bar"><span style="left:25%;width:29%"></span></div></div>
+<div class="lane"><strong>三段命中</strong><div class="bar"><i style="left:54%"></i><i style="left:68%"></i><i style="left:82%"></i></div></div><div class="bar-label"><span>0 秒</span><span>0.5 秒</span><span>1 秒</span></div></div>
+<p class="caption">以「星弧连闪」为例。起始距离 8 米、速度 28 米/秒。理论命中点约为 0.54、0.68、0.82 秒。团结协程按帧推进，实际时点会有帧级差异。</p>
+<h3>时间游标、横条与执行方式</h3><p>点左侧动作名称，游标会对齐其开始时间。点右侧轨道，会选中该行并把游标放到点击位置。游标决定下一次「添加动作」的起点。移动已有动作时，选中它，在下方改「开始时间（秒）」并按回车。</p>
+<p>「单次」执行一遍。「执行多次」填写次数和间隔，例如三段、间隔 0.14 秒，第一段到第三段相隔 0.28 秒。「持续执行」填写持续时间和执行间隔。行名末尾的「直接」表示连接根节点，「分支」表示经其他节点接入，「未连接」时应在节点图检查动作的执行输入。</p>
+<h3>三种样例动作</h3><ul>
+<li><strong>施法提示</strong>指定提示对象、事件名、显示时长及施法或敌对预警类型。事件会发给所连实体。比如雷鳞震翅把预警放在受术者，御剑穿云把起剑提示放在施加者。</li>
+<li><strong>技能命中</strong>把施加者、受术者、每段伤害作为节点输入。投射方式可选直接命中、飞剑、光弹或毒雾。射程填 0 表示不限；飞行时长取出发距离除以速度，弧线高度控制视觉轨迹。超出射程时该步骤跳过。勾选提示可显示未命中的反馈。</li>
+<li><strong>护盾与回复</strong>选择作用实体、效果类型和数值。护盾可设持续时间，回复以该实体的 <code>hp</code> 为上限，写入 <code>chp</code>。清罡护体的两行动作都接「施加者」。</li></ul>
+<p>「技能命中」勾选<strong>到达时施加易伤</strong>后可编辑百分比和时长。<strong>命中后到首段的延迟</strong>用于把减益与第一段伤害分开。工作台时间轴横条表示动作的计划重复区间，投射物的在途时间根据实战距离另算。</p></section>
+<section id="build"><h2>从空白制作一招飞剑</h2><p>下面做一招练习用的单体飞剑。完成后，主角会先给出施法提示，0.3 秒后出剑，在 8 米距离约 0.7 秒时命中一次，造成 30 点伤害。练习文件可以单独保存。</p>
+<ol><li>退出 Play，点<strong>新建技能 → 空白技能</strong>。在项目的 Assets 下选择练习目录，保存为 <code>练习_单体飞剑.asset</code>。工作台自动选中这张新图。</li>
+<li>展开<strong>触发配置 → 添加必须满足的条件 → 实体存在判断</strong>。在「选择条件」中查看刚加入的节点，将实体输入选为<strong>目标</strong>。这样整招会先判断传入的目标是否存在。</li>
+<li>在动作时间轴把游标放到 <code>0</code>，点<strong>添加动作 → 施法提示</strong>。设「提示对象」为<strong>施加者</strong>，「事件名」为 <code>起剑</code>，「提示类型」为<strong>施法</strong>，「显示时长（秒）」为 <code>0.3</code>。</li>
+<li>再点<strong>添加动作 → 技能命中</strong>。选中新行，填写下表。新加的实体端口默认绑定目标，尤其要把「施加者」这一栏改为<strong>施加者</strong>。否则飞剑可能从目标身上出发。</li></ol>
+<div class="table"><table><thead><tr><th>命中动作字段</th><th>本例填写值</th></tr></thead><tbody><tr><td>开始时间 / 执行方式</td><td>0.30 秒 / 单次</td></tr><tr><td>施加者 / 受术者</td><td>施加者 / 目标</td></tr><tr><td>每段伤害 / 投射方式</td><td>30 / 飞剑</td></tr><tr><td>射程 / 飞行速度 / 弧线高度</td><td>12 米 / 20 米每秒 / 1 米。选择「飞剑」后会显示速度和高度。</td></tr><tr><td>超出射程时提示 / 到达时施加易伤 / 命中后到首段的延迟</td><td>勾选 / 关闭 / 0 秒</td></tr></tbody></table></div>
+<ol start="5"><li>点<strong>保存</strong>。在 Demo 快速试放里选「主角 → 怪物」，就位距离设为 8 米并试放。静止目标应扣 30 点。将距离拉到 15 米再试，可观察超距提示。</li><li>要制作怪物版，可先复制这张图，在编辑模式把<strong>默认施放方向</strong>改成「怪物 → 主角」。要让主角提前看到危险，将「施法提示」里的提示对象改成<strong>目标</strong>、提示类型改成<strong>敌对预警</strong>。再保存、试放，观察预警圆环所在角色和掉血方向。</li></ol>
+<p class="note">已有模板也可作为起点。「单次伤害」预设为 0.1 秒时扣 30，「三段伤害」预设为每段 7、间隔 0.2 秒，「单体治疗」预设为给目标加 30。它们使用 MCC「修改属性」动作。制作带弹道或需要按生命上限回复的技能时，可分别使用「技能命中」或「护盾与回复」。</p></section>
+<section id="catalog"><h2>九个原生技能与 Demo 实测</h2><p>下表的伤害段数与生命变化已在团结 1.9.3 编辑器的原版 URP Demo 中逐招验证。试放固定双方位置，相距 8 米，攻击前目标生命为 300，无额外增减益。主角图默认由主角施放，怪物图默认由怪物施放。正常游玩中双方可移动，其他攻击也可能改变血量。</p>
+<div class="table"><table><thead><tr><th>技能</th><th>时间与参数</th><th>观察结果</th></tr></thead><tbody>
+<tr><td>御剑穿云</td><td>0.24 秒起手，16 米射程，飞剑速度 19，弧高 1.5。</td><td>命中一次，55 点。将起始距离设为 20 米，可观察超距提示和零伤害。</td></tr>
+<tr><td>赤纹连灼</td><td>0.30 秒起手，光弹速度 15，弧高 1。命中后每段 16，间隔 0.45 秒。</td><td>四段共 64 点。</td></tr>
+<tr><td>星弧连闪</td><td>0.25 秒起手，飞剑速度 28，弧高 0.35。每段 22，间隔 0.14 秒。</td><td>三段共 66 点。只发射一把飞剑。</td></tr>
+<tr><td>缚影蚀脉</td><td>光弹速度 18，弧高 0.6。到达后施加 35% 易伤，持续 2.4 秒，0.20 秒后结算基础伤害 48。</td><td>首次伤害取整后为 65。窗口内后续命中同一目标也可受益。</td></tr>
+<tr><td>清罡护体</td><td>0.18 秒后为施加者提供 65 点护盾，持续 3 秒，同时回复 28。</td><td>主角从 200/300 回到 228/300。护盾生效后承受一次 62 点的雷鳞震翅，生命仍为 228。目标生命维持 300。</td></tr>
+<tr><td>回风裂阵</td><td>0.40 秒后检查 10 米射程，每段 35，间隔 0.32 秒。</td><td>当前目标两段共 70 点。</td></tr>
+<tr><td>雷鳞震翅</td><td>对目标预警，0.78 秒后检查 14 米射程。</td><td>怪物对主角造成 62 点。</td></tr>
+<tr><td>幽雾侵蚀</td><td>0.40 秒起手，毒雾速度 12，弧高 1.6。每段 12，间隔 0.35 秒。</td><td>主角承受五段，共 60 点。</td></tr>
+<tr><td>裂石冲撞</td><td>对目标显示地面预警，0.65 秒后检查 9 米射程。</td><td>主角承受单段 46 点。此样例实现预警和近距结算，角色移动沿用 Demo 控制器。</td></tr>
+</tbody></table></div></section>
+<section id="edit"><h2>跟做一次复制、修改和复测</h2><ol>
+<li>在编辑模式选「星弧连闪」，点<strong>复制技能</strong>。选自己的目录，命名为 <code>星弧连闪_测试.asset</code>。工作台会切换到副本。</li>
+<li>选「技能命中」行，把<strong>每段伤害</strong>从 22 改为 31，按 <kbd>Enter</kbd> 提交字段。执行方式仍选「执行多次」，次数 3，间隔 0.14 秒。点<strong>保存</strong>。</li>
+<li>切去另一张图，再重新选择副本。确认显示 31。若想看底层数据，打开节点图，检查数值输入连到技能命中的对应端口，再切回工作台。</li>
+<li>在 Demo 以 8 米试放，等三段全部结束。副本保存、重新导入后，实测从基础版的 <code>22 × 3 = 66</code> 变成 <code>31 × 3 = 93</code>，300 生命的目标剩 207。</li>
+<li>要改成两段，修改<strong>执行次数</strong>即可。要拉开节奏，修改<strong>执行间隔</strong>。要延后整招的出剑时间，修改<strong>开始时间</strong>。三者对应不同的可见结果。</li></ol>
+<p>要增加表现，可把时间游标移到所需时刻，点<strong>添加动作 → 施法提示</strong>，选择作用实体、填写事件名和时长。移除动作时先选中该时间轴行，点<strong>移除当前动作</strong>。工作台支持团结编辑器的撤销操作。</p></section>
+<section id="preview"><h2>Demo 快速试放与指定执行组件</h2><h3>快速试放现成样例</h3><p>每次快速试放都会新建一个临时执行实例，交由原生 <code>CombatDamage.DealDamage</code> 执行当前图，结束后回收。可以连续换图和试放。勾选就位时，移动的是怪物；关闭后按场上实际位置与移动轨迹验收。</p>
+<p>「默认施放方向」只决定 Demo 快速试放时谁作为 Dealer、谁作为 Target。图内的实体输入再决定每步具体作用于谁。例如「清罡护体」的施放方向仍可为「主角 → 怪物」，盾和治疗却都作用于主角。正式玩法由调用方传入双方。</p>
+<h3>试放自己指定的角色、执行器或武器</h3><ol>
+<li>在「执行组件与场景试放」拖入一个 <code>CombatDamage</code>，或用<strong>查找使用此图的场景组件</strong>。空场景可点<strong>创建场景测试组件</strong>，它会绑定当前图并关闭自动物理检测。</li>
+<li>在同窗展开<strong>命中检测、投射物与动态变量</strong>检查原组件设置。在「试放对象」里把带有效 <code>EntityComponent</code> 的施加者和目标拖到对应槽里。</li>
+<li>进入 Play。确认执行组件使用当前这张图并完成初始化，然后点<strong>试放当前技能</strong>。手动试放通过指定目标调用图。要测试碰撞层、射线或实际命中体，请另用武器或角色的正常施法入口触发物理检测。</li>
+</ol><p class="note">MCC 原版多个延迟动作复用同一个执行器时可能串目标。Demo 快速试放为每次施放分配独立实例。接入正式角色时，并行施放也应保留独立的执行上下文和足够的存活时间。</p></section>
+<section id="status"><h2>验证护盾、易伤和未命中</h2><ul>
+<li><strong>护盾吸收。</strong>让主角先施放「清罡护体」，等 0.18 秒起效，再立刻换「雷鳞震翅」试放。后者在 0.78 秒后造成 62 点基础伤害。若两次命中之间没有其他攻击，65 点护盾吸收 62 点，主角生命不降，剩余 3 点护盾到期消失。</li>
+<li><strong>回复封顶。</strong>记录施放前的当前生命与最大生命。例如生命 80/100，回复 28 后应为 100/100。如果 100/100 时施放，仅凭血条看不出回复，需要另验护盾吸收。</li>
+<li><strong>易伤与取整。</strong>「缚影蚀脉」的 48 点基础伤害乘 1.35 后为 64.8，当前规则结算为 65。比较易伤结束前后的同值攻击时，要对同一个目标测量，并排除护盾影响。</li>
+<li><strong>射程失败。</strong>先用 8 米验证「御剑穿云」正常命中，再改 20 米。射程在前摇结束时检查，实际角色仍在移动，观察当时的距离。未通过时不会发射飞剑或扣血。</li></ul>
+<p>九图使用生命属性 <code>chp</code> 和最大生命 <code>hp</code>。护盾和易伤同时作用于这些技能的命中及 MCC「修改属性 → 减法」对同一属性的伤害。其他游戏系统自行直接写生命时，需要按其伤害入口接入相同规则。</p></section>
+<section id="trouble"><h2>常见问题</h2>
+<details open><summary>技能库找不到某张图</summary><p>点顶部「技能库」，清空「查找技能」。分组标题下直接列出技能。工程内 <code>Assets/WhiteFog/Skills/</code> 下的图区分主角和怪物，分组由该图的「默认施放方向」决定。保存在其他目录的副本列在「其他技能图」，列表显示完整资产路径。</p></details>
+<details open><summary>点了快速试放，还在等角色</summary><p>确认活跃场景是 <code>DemoScene</code>，处于 Play，游戏未暂停，主角存活。Demo 会在运行中生成怪物，工作台会等待可交互的双方。若主角死亡，先按 Demo 提示重新开始，再点试放。</p></details>
+<details open><summary>能看到特效，但伤害看起来偏少或偏多</summary><p>先查射程、目标当前生命、是否存在护盾或易伤，再确认次数、间隔与在途时间。血量不足时结算会受剩余生命限制。原版 Demo 敌人会自行攻击；比对单招时应给双方足够生命，观察受术者的变化。</p></details>
+<details><summary>编辑框变灰，或节点图和工作台显示不同</summary><p>先退出 Play。若节点图正在编辑同一资产，点「切回工作台编辑」。确认正在编辑原图还是副本，用路径核对同名技能。输入框按回车后再保存。</p></details>
+<details><summary>Console 出现找不到 SkillPlayback 或自定义动作</summary><p>检查 <code>Assets/SoftKitty/MasterCombatCore/Scripts/Core/SkillPlayback.cs</code>、三个动作脚本及其 <code>_interface.txt</code> 是否已导入。等待脚本编译结束，从 Console 第一条红色错误开始排查。运行时反射类型同时在插件 <code>link.xml</code> 中登记。</p></details>
+<details><summary>如何查看更复杂的条件和公式</summary><p>选中图后点「打开节点图」，从根节点的触发输入和动作输出追查连线。工作台中显示「来自节点」的端口说明它连接了公式或分支。原图使用方法见<a href="Tuanjie技能编辑器使用手册.html">团结技能节点编辑器手册</a>。</p></details>
+</section><section id="files"><h2>文件目录与交付</h2><p>工程根目录为 <code>E:\Tuanjie19_WhiteFog</code>。</p>
+<div class="table"><table><tbody><tr><td>主角技能</td><td><code>Assets/WhiteFog/Skills/主角/</code>，六张原生图。</td></tr>
+<tr><td>怪物技能</td><td><code>Assets/WhiteFog/Skills/怪物/</code>，三张原生图。</td></tr>
+<tr><td>场景</td><td><code>Assets/SoftKitty/MasterCombatCore/Demo/Scenes/DemoScene.unity</code></td></tr>
+<tr><td>共用表现材质</td><td><code>Assets/WhiteFog/Skills/Resources/MccSkillTrace.mat</code></td></tr>
+<tr><td>本手册</td><td><code>docs/MCC技能工作台操作手册.html</code>，可直接双击离线阅读，也可在工作台顶部点「使用手册」。</td></tr></tbody></table></div>
+<p>分享给同项目同事时，交付技能图和对应 <code>.meta</code>。跨项目移植还需要本版 MCC 自定义动作、接口描述、表现材质、运行脚本与反射保留配置。H5 工具单独保存网页 JSON，团结工作台直接修改项目中的原生 <code>.asset</code>。</p></section>
+</article></main>
+<script>
+let foldedForPrint = [];
+window.addEventListener('beforeprint', () => {
+  foldedForPrint = Array.from(document.querySelectorAll('details:not([open])'));
+  foldedForPrint.forEach(item => { item.open = true; });
+});
+window.addEventListener('afterprint', () => {
+  foldedForPrint.forEach(item => { item.open = false; });
+  foldedForPrint = [];
+});
+</script></body></html>

@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace SoftKitty
 {
-    public class SkillWorkbench : EditorWindow
+    public partial class SkillWorkbench : EditorWindow
     {
         [SerializeField] private GraphObject graph;
         [SerializeField] private string selection;
@@ -46,14 +46,22 @@ namespace SoftKitty
             cursor = 0;
             showLibrary = false;
             message = "";
+            demoQueued = false;
+            demoResult = null;
+            lastCaster = lastReceiver = null;
             GUI.FocusControl(null);
         }
 
         private void OnProjectChange() { library = null; Repaint(); }
-        private void OnEnable() => Undo.undoRedoPerformed += Repaint;
+        private void OnEnable()
+        {
+            Undo.undoRedoPerformed += Repaint;
+            EditorApplication.update += UpdateDemoPreview;
+        }
         private void OnDisable()
         {
             Undo.undoRedoPerformed -= Repaint;
+            EditorApplication.update -= UpdateDemoPreview;
             if (componentEditor) DestroyImmediate(componentEditor);
         }
 
@@ -85,6 +93,12 @@ namespace SoftKitty
             }
             if (graph && GUILayout.Button("打开节点图", EditorStyles.toolbarButton)) MasterGraphWindow.OpenWindow(graph);
             if (graph && GUILayout.Button("保存", EditorStyles.toolbarButton)) AssetDatabase.SaveAssetIfDirty(graph);
+            if (GUILayout.Button("使用手册", EditorStyles.toolbarButton))
+            {
+                string manual = Path.GetFullPath(Path.Combine(Application.dataPath, "../docs/MCC技能工作台操作手册.html"));
+                if (File.Exists(manual)) Application.OpenURL(new Uri(manual).AbsoluteUri);
+                else ShowNotification(new GUIContent("手册位置：docs/MCC技能工作台操作手册.html"));
+            }
             EditorGUILayout.EndHorizontal();
             scroll = EditorGUILayout.BeginScrollView(scroll);
             if (showLibrary || !graph) DrawLibrary();
@@ -113,6 +127,7 @@ namespace SoftKitty
                         var action = root.Actions.Find(x => x.Uid == selection);
                         if (action != null) DrawAction(action);
                     }
+                    DrawDemoPreview();
                     DrawPlayTest();
                 }
             }
@@ -124,10 +139,17 @@ namespace SoftKitty
             filter = EditorGUILayout.TextField("查找技能", filter);
             if (library == null)
                 library = AssetDatabase.FindAssets("t:GraphObject").Select(x => AssetDatabase.LoadAssetAtPath<GraphObject>(AssetDatabase.GUIDToAssetPath(x))).Where(x => x).OrderBy(x => x.name).ToArray();
-            foreach (var skill in library)
+            foreach (var group in library.Where(s => s.name.IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0)
+                .GroupBy(s => AssetDatabase.GetAssetPath(s).StartsWith("Assets/WhiteFog/Skills/", StringComparison.Ordinal)
+                    ? (s.previewAsOpponent ? "怪物技能" : "主角技能") : "其他技能图")
+                .OrderBy(g => g.Key == "主角技能" ? 0 : g.Key == "怪物技能" ? 1 : 2))
             {
-                if (skill.name.IndexOf(filter, StringComparison.OrdinalIgnoreCase) < 0) continue;
-                if (GUILayout.Button(AssetDatabase.GetAssetPath(skill), EditorStyles.miniButton)) SelectGraph(skill);
+                EditorGUILayout.LabelField(group.Key, EditorStyles.boldLabel);
+                foreach (var skill in group)
+                {
+                    string path = AssetDatabase.GetAssetPath(skill);
+                    if (GUILayout.Button(new GUIContent(group.Key == "其他技能图" ? path : skill.name, path), EditorStyles.miniButton)) SelectGraph(skill);
+                }
             }
         }
 

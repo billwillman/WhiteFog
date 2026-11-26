@@ -2,6 +2,9 @@
   <!-- Built-in graph classes are resolved from serialized class names at runtime. -->
   <assembly fullname="Assembly-CSharp">
     <type fullname="SoftKitty.CombatRoot" preserve="all" />
+    <type fullname="SoftKitty.SkillImpactAction" preserve="all" />
+    <type fullname="SoftKitty.SkillVitalAction" preserve="all" />
+    <type fullname="SoftKitty.SkillSignalAction" preserve="all" />
     <type fullname="SoftKitty.AnimationAction" preserve="all" />
     <type fullname="SoftKitty.AttributeChangeAction" preserve="all" />
     <type fullname="SoftKitty.CustomDataAction" preserve="all" />

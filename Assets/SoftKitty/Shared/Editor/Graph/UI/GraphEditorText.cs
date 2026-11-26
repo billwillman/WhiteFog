@@ -8,6 +8,9 @@ namespace SoftKitty
         private static readonly Dictionary<string, string> Labels = new Dictionary<string, string>
         {
             { "Action", "动作" },
+            { "SkillImpact", "技能命中" },
+            { "SkillSignal", "施法提示" },
+            { "SkillVital", "护盾与回复" },
             { "Trigger", "触发器" },
             { "Condition", "条件" },
             { "Conditions", "条件" },

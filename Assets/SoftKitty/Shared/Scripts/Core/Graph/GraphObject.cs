@@ -7,6 +7,7 @@ namespace SoftKitty
     public class GraphObject : GraphBase
     {
         public Root RootSet;
+        [HideInInspector] public bool previewAsOpponent;
         public bool autoSave = false;
         [HideInInspector]
         public List<Sprite> NodeIconSprites = new List<Sprite>();//0-Root 1-Node 2-Logic 3-Math 4-Variable 5-Entity

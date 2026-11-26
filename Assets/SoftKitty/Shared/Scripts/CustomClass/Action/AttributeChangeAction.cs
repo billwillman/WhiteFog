@@ -62,7 +62,7 @@ namespace SoftKitty{
                                    _id.ToString() + ", " + (entity(_runtime).GetAttributeFloat(_id) * value(_runtime)).ToString() + " )");
                             break;
                         case operations.Substract:
-                            _attValue.SetValue(entity(_runtime).GetAttributeFloat(_id) - value(_runtime), _runtime.RootState.GetInvolvedEntity("Dealer"));
+                            _attValue.SetValue(entity(_runtime).GetAttributeFloat(_id) - SkillDefence.Incoming(_attValue, value(_runtime)), _runtime.RootState.GetInvolvedEntity("Dealer"));
                             if (SGD_Settings.Instance.DebugLevel >= 3)
                                 Debug.Log("<AttributeChangeAction> [Node:" + Uid + "] Executed() > (Entity)" + entity(_runtime).uid + ".SetAttributeValue(" +
                                    _id.ToString() + ", " + (entity(_runtime).GetAttributeFloat(_id) - value(_runtime)).ToString() + " )");
