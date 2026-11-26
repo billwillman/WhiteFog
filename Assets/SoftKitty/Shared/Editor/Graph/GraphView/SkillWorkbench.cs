@@ -524,7 +524,7 @@ namespace SoftKitty
             to.inputPort[input].uid.Add(from.Uid + "#0");
         }
 
-        private static string ActionName(Action action) =>
+        internal static string ActionName(Action action) =>
             SkillProjectile.IsLaunch(action) ? "产生投射物" :
             action.ClassName == "OriginalSkillVisual" ? VisualLabel(action.IntValues.ElementAtOrDefault(0)) :
             action.ClassName == "Event" && action.StringValues.Count > 0 && action.StringValues[0] == Entity.InterruptCastEvent
@@ -652,7 +652,7 @@ namespace SoftKitty
             Change(() => { Fill(node.StringValues, index, ""); node.StringValues[index] = resourceKey; });
         }
 
-        private static bool Visible(CustomNode node, string rule)
+        internal static bool Visible(CustomNode node, string rule)
         {
             if (string.IsNullOrEmpty(rule)) return true;
             var parts = rule.Replace("!", "").Split('#');

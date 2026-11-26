@@ -29,7 +29,14 @@ namespace SoftKitty
                 if (entity == EntityType.Dealer && from) actor = from.gameObject;
                 if (entity == EntityType.Target && to) actor = to.gameObject;
             }
-            if (!actor && (entity == EntityType.Player || entity == EntityType.Dealer || entity == EntityType.Target))
+            return actor ? actor.GetComponentInChildren<Animator>()?.runtimeAnimatorController : DefaultMotionController(skill, action);
+        }
+
+        internal static RuntimeAnimatorController DefaultMotionController(GraphObject skill, Action action)
+        {
+            var entity = MotionEntity(skill, action);
+            GameObject actor = null;
+            if (entity == EntityType.Player || entity == EntityType.Dealer || entity == EntityType.Target)
             {
                 bool opponent = entity == EntityType.Target ? !skill.previewAsOpponent : entity == EntityType.Dealer && skill.previewAsOpponent;
                 actor = opponent ? (skill as OriginalSkillGraph)?.previewEnemy : AssetDatabase.LoadAssetAtPath<GameObject>("Assets/WhiteFog/OriginalSkills/男角色001.prefab");
