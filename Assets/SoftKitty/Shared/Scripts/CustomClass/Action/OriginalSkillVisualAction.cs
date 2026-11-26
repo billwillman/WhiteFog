@@ -6,6 +6,8 @@ namespace SoftKitty
     [UnityEngine.Scripting.Preserve]
     public sealed class OriginalSkillVisualAction : Action
     {
+        [System.NonSerialized] private SkillMotion legacyMotion;
+
         public OriginalSkillVisualAction() { }
         private OriginalSkillVisualAction(Action data) : base(data) { }
         [UnityEngine.Scripting.Preserve]
@@ -90,15 +92,25 @@ namespace SoftKitty
             var instance = state.RootState.RootInstance.GetComponent<GraphInstance>();
             var graph = instance.mGraph as OriginalSkillGraph;
             var caster = SkillPlayback.FindActor(SkillPlayback.ReadEntity(this, 1, state));
+            if (!graph || !caster) return;
+            if (IntValues[0] == 0)
+            {
+                var binding = motion;
+                if (binding == null)
+                {
+                    var clip = graph ? graph.castMotion : null;
+                    if (legacyMotion == null || !ReferenceEquals(legacyMotion.clip, clip))
+                        legacyMotion = SkillMotion.For(this, graph);
+                    binding = legacyMotion;
+                }
+                if (!binding.Play(caster.SkillAnimator, state, out var error) && error != null)
+                    Debug.LogWarning(instance.mGraph.name + " · " + Uid + " · " + error, caster);
+                return;
+            }
             var target = SkillPlayback.FindActor(SkillPlayback.ReadEntity(this, 2, state));
-            if (!graph || !caster || (!target && IntValues[0] != 0)) return;
+            if (!target) return;
             switch (IntValues[0])
             {
-                case 0:
-                    var binding = SkillMotion.For(this, graph);
-                    if (!binding.Play(caster.GetComponentInChildren<Animator>(), state, out var error) && error != null)
-                        Debug.LogWarning(graph.name + " · " + Uid + " · " + error, caster);
-                    break;
                 case 1:
                     var castRoot = ActorRoot(caster.transform);
                     var cast = Spawn(graph.castEffect, castRoot.position, castRoot.rotation);

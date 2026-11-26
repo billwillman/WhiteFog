@@ -16,6 +16,24 @@ namespace SoftKitty
             mData?.InterruptCast();
         }
 
+        private Animator skillAnimator;
+
+        public Animator SkillAnimator
+        {
+            get
+            {
+                if (!skillAnimator || !skillAnimator.gameObject.activeInHierarchy ||
+                    !skillAnimator.transform.IsChildOf(transform))
+                    skillAnimator = GetComponentInChildren<Animator>();
+                return skillAnimator;
+            }
+        }
+
+        private void OnTransformChildrenChanged()
+        {
+            skillAnimator = null;
+        }
+
         #region Variables
         /// <summary>
         /// A reference to the entity's data.
@@ -153,6 +171,7 @@ namespace SoftKitty
         }
         public virtual void Awake()
         {
+            skillAnimator = GetComponentInChildren<Animator>();
             if (id == -1) id = GameManager.EntityManagerData.GetId(uid);
             RefreshData();
             if (!string.IsNullOrEmpty(uid))

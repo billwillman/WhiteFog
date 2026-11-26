@@ -13,9 +13,31 @@ namespace SoftKitty
         public AnimationClip clip;
         public float transitionSeconds = .04f;
 
-        public SkillMotion Copy() => (SkillMotion)MemberwiseClone();
+        [NonSerialized] private string cachedLayer;
+        [NonSerialized] private string cachedState;
+        [NonSerialized] private string cachedPath;
+        [NonSerialized] private int stateHash;
+        [NonSerialized] private RuntimeAnimatorController cachedController;
+        [NonSerialized] private int layerIndex = -1;
+
+        public SkillMotion Copy()
+        {
+            var copy = (SkillMotion)MemberwiseClone();
+            if (source == Source.AnimatorState) copy.PrepareStatePath();
+            return copy;
+        }
 
         public string StatePath => string.IsNullOrEmpty(state) ? "" : layer + "." + state;
+
+        private void PrepareStatePath()
+        {
+            if (cachedPath != null && layer == cachedLayer && state == cachedState) return;
+            if (layer != cachedLayer) cachedController = null;
+            cachedLayer = layer;
+            cachedState = state;
+            cachedPath = StatePath;
+            stateHash = Animator.StringToHash(cachedPath);
+        }
 
         public static SkillMotion For(Action action, OriginalSkillGraph graph)
         {
@@ -32,9 +54,15 @@ namespace SoftKitty
             if (source == Source.AnimationClip)
                 return !clip ? "请选择 Animation Clip" : clip.legacy ? "Animator 无法播放 Legacy 片段 " + clip.name : null;
             if (string.IsNullOrEmpty(state)) return "请选择 Animator State";
-            if (!animator.runtimeAnimatorController) return "角色的 Animator 缺少 Controller";
-            int index = animator.GetLayerIndex(layer);
-            return index >= 0 && animator.HasState(index, Animator.StringToHash(StatePath)) ? null : "角色缺少 Animator State " + StatePath;
+            var controller = animator.runtimeAnimatorController;
+            if (!controller) return "角色的 Animator 缺少 Controller";
+            PrepareStatePath();
+            if (controller != cachedController || layerIndex < 0)
+            {
+                layerIndex = animator.GetLayerIndex(layer);
+                cachedController = controller;
+            }
+            return layerIndex >= 0 && animator.HasState(layerIndex, stateHash) ? null : "角色缺少 Animator State " + cachedPath;
         }
 
         public bool Play(Animator animator, GraphRuntimeState cast, out string error)
@@ -50,8 +78,7 @@ namespace SoftKitty
             else
             {
                 if (player) player.StopClip();
-                animator.CrossFadeInFixedTime(Animator.StringToHash(StatePath),
-                    Mathf.Max(0f, transitionSeconds), animator.GetLayerIndex(layer), 0f);
+                animator.CrossFadeInFixedTime(stateHash, Mathf.Max(0f, transitionSeconds), layerIndex, 0f);
             }
             return true;
         }

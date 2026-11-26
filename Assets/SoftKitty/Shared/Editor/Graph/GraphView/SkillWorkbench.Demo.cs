@@ -428,7 +428,7 @@ namespace SoftKitty
                     var entity = MotionEntity(original, node);
                     var actor = entity == EntityType.Dealer ? caster : entity == EntityType.Target ? receiver : null;
                     if (!actor) continue; // Dynamic entity bindings resolve when the graph reaches the action.
-                    string error = SkillMotion.For(node, original).Check(actor.GetComponentInChildren<Animator>());
+                    string error = SkillMotion.For(node, original).Check(actor.SkillAnimator);
                     if (error != null) { info = node.Uid + " · " + error; return false; }
                 }
             }
