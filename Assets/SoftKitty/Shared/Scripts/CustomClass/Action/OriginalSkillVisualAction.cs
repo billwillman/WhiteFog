@@ -13,7 +13,7 @@ namespace SoftKitty
 
         public override void Run(GraphInstance instance, GraphRuntimeState state)
         {
-            if (IntValues[0] != 3)
+            if (IntValues[0] != 3 && IntValues[0] != 6)
             {
                 base.Run(instance, state);
                 return;
@@ -26,8 +26,55 @@ namespace SoftKitty
             var host = SkillPlayback.On(instance);
             state.NodeStates[NodeIndex].lastBool = true;
             var impact = host.OriginalProjectileImpact;
+            if (IntValues[0] == 6)
+            {
+                int index = IntValues[1];
+                if (index < 0 || index >= graph.effects.Length) return;
+                var cue = graph.effects[index];
+                host.ScheduleReleases(state, caster, WaitTime, FormulaImpactAction.SegmentCount(this), Interval,
+                    () => PlayCue(host, cue, caster, target, impact));
+                return;
+            }
             host.ScheduleReleases(state, caster, WaitTime, FormulaImpactAction.SegmentCount(this), Interval,
                 () => Launch(host, graph, caster, target, impact));
+        }
+
+        private static Transform Anchor(EntityComponent actor, string name)
+        {
+            if (string.IsNullOrEmpty(name)) return actor.transform;
+            foreach (var bone in actor.GetComponentsInChildren<Transform>())
+                if (bone.name == name) return bone;
+            if (name == "weapon_r")
+                foreach (var bone in actor.GetComponentsInChildren<Transform>())
+                    if (bone.name == "Bip01 R Hand") return bone;
+            return ActorRoot(actor.transform);
+        }
+
+        private static void PlayCue(SkillPlayback host, OriginalSkillGraph.EffectCue cue, Entity source, Entity recipient, System.Action<Entity, Entity> impact)
+        {
+            var actor = SkillPlayback.FindActor(cue.onTarget ? recipient : source);
+            if (!actor || !actor.AvailableForInteraction) return;
+            var anchor = Anchor(actor, cue.bone);
+            var point = anchor.position;
+            if (cue.bone == "vfx_p_hit" && anchor.name != cue.bone)
+                point = SkillPlayback.Position(cue.onTarget ? recipient : source, actor);
+            var fx = Spawn(cue.prefab, point, cue.followRotation ? anchor.rotation : actor.transform.rotation,
+                cue.followBone && cue.followRotation ? anchor : null, cue.duration <= 0);
+            if (fx && cue.duration > 0) Object.Destroy(fx, cue.duration);
+            if (fx && cue.followBone && !cue.followRotation)
+                host.ProjectileHost().Schedule(FollowPosition(fx.transform, anchor));
+            if (cue.onTarget && impact != null)
+            {
+                if (cue.hitDelay > 0) host.ProjectileHost().Schedule(DelayedHit(cue.hitDelay, source, recipient, impact));
+                else impact(source, recipient);
+            }
+        }
+
+        private static IEnumerator DelayedHit(float delay, Entity source, Entity recipient, System.Action<Entity, Entity> impact)
+        {
+            yield return new WaitForSeconds(delay);
+            var target = SkillPlayback.FindActor(recipient);
+            if (target && target.AvailableForInteraction) impact(source, recipient);
         }
 
         private static void Launch(SkillPlayback host, OriginalSkillGraph graph, Entity source, Entity recipient, System.Action<Entity, Entity> impact)
@@ -116,7 +163,7 @@ namespace SoftKitty
             var target = targetActor.transform;
             var source = casterActor.mData;
             var recipient = targetActor.mData;
-            var releaseRoot = ActorRoot(caster);
+            var releaseRoot = string.IsNullOrEmpty(graph.projectileBone) ? ActorRoot(caster) : Anchor(casterActor, graph.projectileBone);
             var hitRoot = ActorRoot(target);
             Vector3 start = releaseRoot.position + caster.rotation * graph.launchOffset;
             Vector3 end = hitRoot.position + target.rotation * graph.impactOffset;
@@ -137,7 +184,8 @@ namespace SoftKitty
                 if (bolt) bolt.transform.position = end;
                 if (hitRoot && targetActor && targetActor.isActiveAndEnabled && targetActor.mData == recipient && recipient.AvailableForInteraction)
                 {
-                    Spawn(graph.impact, hitRoot.position + target.rotation * graph.impactOffset, Quaternion.identity);
+                    var hit = Spawn(graph.impact, hitRoot.position + target.rotation * graph.impactOffset, Quaternion.identity);
+                    if (hit) hit.transform.localScale *= graph.impactScale;
                     impact?.Invoke(source, recipient);
                 }
                 if (tail)

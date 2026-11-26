@@ -103,6 +103,8 @@ namespace SoftKitty
             cam.transform.rotation = Quaternion.Euler(38, 0, 0);
             cam.transform.position = StageCenter + Vector3.up * 1.05f - cam.transform.forward * 16;
             cam.orthographicSize = Mathf.Max(3.75f, demoRange * .32f + 2.3f);
+            if ((graph as OriginalSkillGraph)?.previewEnemy)
+                cam.orthographicSize = Mathf.Max(cam.orthographicSize, 5.9f);
         }
 
         private void DrawStageCamera(EntityComponent from = null, EntityComponent to = null)
@@ -170,7 +172,7 @@ namespace SoftKitty
         private void DrawPreviewHitDamage()
         {
             if (graph is OriginalSkillGraph)
-                previewHitDamage = Mathf.Max(0, EditorGUILayout.FloatField(new GUIContent("每剑预览来伤",
+                previewHitDamage = Mathf.Max(0, EditorGUILayout.FloatField(new GUIContent("每段预览来伤",
                     "离线试放输入，抵达时扣除护盾并按实际生命损失飘字。设为 0 可只看表现。"), previewHitDamage));
         }
         [SerializeField] private int previewDirection;
@@ -178,7 +180,17 @@ namespace SoftKitty
         private Vector2 previewScroll;
         private static readonly string[] PreviewModes = { "快速试放", "当前场景试放" };
         private float healthBefore;
-        private bool PreviewAsOpponent => !(graph is OriginalSkillGraph) && (previewDirection == 0 ? graph.previewAsOpponent : previewDirection == 2);
+        private const string EnemyModelSlot = "原作怪物模型";
+
+        private static string PreviewActorName(EntityComponent actor)
+        {
+            var model = actor.transform.Find(EnemyModelSlot);
+            return model && model.gameObject.activeSelf
+                ? model.GetComponent<Animator>()?.runtimeAnimatorController?.name ?? actor.name
+                : actor.name;
+        }
+
+        private bool PreviewAsOpponent => graph is OriginalSkillGraph ? graph.previewAsOpponent : (previewDirection == 0 ? graph.previewAsOpponent : previewDirection == 2);
         private double nextReadout;
         private EntityComponent lastCaster, lastReceiver;
         private string demoResult;
@@ -228,7 +240,7 @@ namespace SoftKitty
             if (!(graph is OriginalSkillGraph)) previewDirection = EditorGUILayout.Popup("本次施放方向", previewDirection,
                 new[] { graph.previewAsOpponent ? "按技能默认（怪物 → 主角）" : "按技能默认（主角 → 怪物）", "主角 → 怪物", "怪物 → 主角" });
             bool reverse = PreviewAsOpponent;
-            EditorGUILayout.LabelField("施放者 → 目标", reverse ? "小雕 → 男角色 001" : "男角色 001 → 小雕");
+            EditorGUILayout.LabelField("施放者 → 目标", reverse ? ((graph as OriginalSkillGraph)?.previewEnemy?.name ?? "小雕") + " → 男角色 001" : "男角色 001 → 小雕");
             demoRange = EditorGUILayout.Slider("双方距离（米）", demoRange, 2, 20);
             if (UsesSkillLevel(graph)) demoSkillLevel = Mathf.Max(1, EditorGUILayout.DelayedIntField("试放技能等级", demoSkillLevel));
             DrawPreviewHitDamage();
@@ -250,11 +262,11 @@ namespace SoftKitty
             {
                 DrawStageCamera();
                 if (graph is OriginalSkillGraph)
-                    EditorGUILayout.LabelField("表现回放", "原作动作、飞剑和抵达特效");
+                    EditorGUILayout.LabelField("表现回放", "原作动作、施放与命中特效");
                 if (lastCaster && lastReceiver)
                 {
-                    EditorGUILayout.LabelField("施放者生命", lastCaster.name + "  " + lastCaster.GetAttributeFloat("chp").ToString("0.##"));
-                    EditorGUILayout.LabelField("目标生命", lastReceiver.name + "  " + healthBefore.ToString("0.##") + " → " + lastReceiver.GetAttributeFloat("chp").ToString("0.##"));
+                    EditorGUILayout.LabelField("施放者生命", PreviewActorName(lastCaster) + "  " + lastCaster.GetAttributeFloat("chp").ToString("0.##"));
+                    EditorGUILayout.LabelField("目标生命", PreviewActorName(lastReceiver) + "  " + healthBefore.ToString("0.##") + " → " + lastReceiver.GetAttributeFloat("chp").ToString("0.##"));
                     EditorGUILayout.LabelField("施放者状态", BuffReadout(lastCaster), EditorStyles.wordWrappedLabel);
                     EditorGUILayout.LabelField("目标状态", BuffReadout(lastReceiver), EditorStyles.wordWrappedLabel);
                 }
@@ -294,7 +306,7 @@ namespace SoftKitty
                 EditorSceneManager.playModeStartScene = start;
             }
             demoQueued = true;
-            demoResult = "正在打开男角色 001与小雕的角色预览";
+            demoResult = "正在打开角色预览场景";
             if (!Application.isPlaying) EditorApplication.isPlaying = true;
         }
 
@@ -331,6 +343,23 @@ namespace SoftKitty
                     // The extracted bird faces local -Z. Keep the entity forward available for skill targeting.
                     var birdModel = monster.transform.Find("小雕 · 飞行");
                     if (birdModel) birdModel.rotation = Quaternion.LookRotation(-monster.transform.forward, monster.transform.up);
+                    var enemyPrefab = (graph as OriginalSkillGraph)?.previewEnemy;
+                    if (birdModel) birdModel.gameObject.SetActive(!enemyPrefab);
+                    const string enemySlot = EnemyModelSlot;
+                    var previous = monster.transform.Find(enemySlot);
+                    if (previous && (!enemyPrefab || previous.gameObject.GetComponentInChildren<Animator>(true)?.runtimeAnimatorController !=
+                        enemyPrefab.GetComponentInChildren<Animator>(true)?.runtimeAnimatorController))
+                    {
+                        previous.gameObject.SetActive(false);
+                        previous.name = enemySlot + "（退出）";
+                        Destroy(previous.gameObject);
+                        previous = null;
+                    }
+                    if (enemyPrefab && !previous)
+                    {
+                        var view = Instantiate(enemyPrefab, monster.transform, false);
+                        view.name = enemySlot;
+                    }
                     hero.UpdateData();
                     monster.UpdateData();
                     FrameStageCamera();
@@ -423,7 +452,7 @@ namespace SoftKitty
             else damage.DealDamage(caster.mData, receiver.mData);
             var description = original ? "原作表现 " + original.sourceId
                 : UsesSkillLevel(skill) ? skillLevel + " 级" : "自定义技能图";
-            info = skill.name + "  ·  " + description + "  ·  " + caster.name + "（" + caster.uid + "） → " + receiver.name + "（" + receiver.uid + "）  ·  起始距离 "
+            info = skill.name + "  ·  " + description + "  ·  " + PreviewActorName(caster) + "（" + caster.uid + "） → " + PreviewActorName(receiver) + "（" + receiver.uid + "）  ·  起始距离 "
                 + Vector3.Distance(caster.transform.position, receiver.transform.position).ToString("0.0") + " m";
             return true;
         }

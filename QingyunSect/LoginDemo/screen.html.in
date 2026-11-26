@@ -73,7 +73,7 @@ button:focus-visible{outline:2px solid #fff0be;outline-offset:4px}
   </section>
   <section id="battle-entry" aria-label="旧渡云端战场" hidden>
     <canvas id="battle-role" aria-label="后上方斜视，外门弟子踏剑飞过滚动的云雾"></canvas>
-    <img id="battle-still" alt="云端御剑入场" hidden>
+    <canvas id="battle-props" width="540" height="960" aria-hidden="true" hidden></canvas>
     <span id="battle-skill" hidden></span>
     <ol id="battle-bar" aria-label="出战功法，自动施放"></ol>
     <section id="battle-result" role="status" hidden>

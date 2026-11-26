@@ -502,22 +502,22 @@
     <p>竖屏纵深作为交战轴。主角踏剑位于下方中央，同行伙伴分居斜后方，首领在上方云台现身。底部留给功法图标和冷却反馈，首领血条靠上。青衣、墨线和剑锋勾光让人物在晴云与雷云里都能辨认。</p>
     <h3 id="ferry-battle-entry">旧渡对话接云战 · 入场样片</h3>
     <p>阵修说完「你在前头带路」，点「护送药舟」。立绘和对白淡出，镜头向渡口推进，登录用的云幕覆满画面。战场首帧准备好后，原云幕从中间散开。主角位于竖屏下方，镜头从背后向下约 38°，小雕在上方振翼，与主角迎面相对。可从「舆图」回到地图，再从当前任务重新进入。</p>
-    <p>脚下的滚云取自本工程 <a href="../Assets/FogOfWar/FogOfWar.shader">FogOfWar.shader</a> 的移动分支。构建时读取原密度与着色函数、移动材质和两张 1024 雾图，按原速度持续向两个方向采样，驱动雾面起伏。战场使用半可见雾区。云隙短暂的透光叠加工程已有的 <a href="../Assets/CloudFlight/WeChatMiniGame/art/CloudMatCap.png">CloudMatCap</a>。主角使用《修仙时代》NP0023 的三块原网格，当前演示御剑悬停、出招及命中。</p>
+    <p>脚下的滚云取自本工程 <a href="../Assets/FogOfWar/FogOfWar.shader">FogOfWar.shader</a> 的移动分支。构建时读取原密度与着色函数、移动材质和两张 1024 雾图，按原速度持续向两个方向采样，驱动雾面起伏。战场使用半可见雾区。云隙短暂的透光叠加工程已有的 <a href="../Assets/CloudFlight/WeChatMiniGame/art/CloudMatCap.png">CloudMatCap</a>。当前战场使用《宗师之上》男角色 001、原包剑系动作和团结工作台的御剑坐骑。</p>
     <p><a href="LoginDemo/index.html?preview=passage">从旧渡最后一句开始试玩</a> · <a href="LoginDemo/ferry-to-clouds.mp4">观看完整竖屏实录</a></p>
     <video controls playsinline preload="none" width="360" height="640" style="display:block;max-width:100%;height:auto" src="LoginDemo/ferry-to-clouds.mp4" aria-label="从护送药舟对白到滚动白迷雾中的御剑入场"></video>
     <p><a href="LoginDemo/index.html?preview=passage">从「护送药舟」开始试玩</a></p>
-    <p>画面两侧各有一片来自指定水墨参考图的云沿。左侧近云和右侧远云共用一张透明图集，一次绘制，轻微错速移动。中间的交战通道保留原白迷雾的实时滚动。<a href="LoginDemo/edge-clouds.webp">查看两片原画裁片</a></p>
+    <p>画面两侧各有一片来自指定水墨参考图的云沿。左侧近云和右侧远云共用一张透明图集，轻微错速移动。中间的交战通道保留原白迷雾的实时滚动。<a href="LoginDemo/edge-clouds.webp">查看两片原画裁片</a></p>
     <h3>敌人原包与 HTML5 Impostor</h3>
-    <p>上方敌位使用《宗师之上》原包小雕 <code>mon_xiaodiao_001</code>，原模型有 1,328 个顶点、1,024 个三角形和 34 个蒙皮关节。五段原动作已写入 GLB，战场交替播放 <code>fly</code> 与 <code>fly_idle01</code>。源文件的块索引按 16 字节边界对齐，导出时按此布局读取。<a href="ReferenceAssets/Zszs/Xiaodiao/manifest.json">小雕原包清单</a></p>
+    <p>上方敌位使用《宗师之上》原包小雕 <code>mon_xiaodiao_001</code>，原模型有 1,328 个顶点、1,024 个三角形和 34 个蒙皮关节。资料库的 GLB 收录五段原动作；当前战场使用工作台小雕飞行模型与动画。源文件的块索引按 16 字节边界对齐，导出时按此布局读取。<a href="ReferenceAssets/Zszs/Xiaodiao/manifest.json">小雕原包清单</a></p>
     <h4>1-3 护舟教学战</h4>
     <p>雾鸢掠向船头，弟子踏剑使出通用入门招式，将它逼离航路。第二股云流贴近时，阵修在药舟上展开护阵。药舟驶入避风水面后结算首通修为与通用残页。六格功法栏只有一格已装配，开战自动施放。<a href="#open-water">对照第一章 1-3 剧情</a></p>
     <video controls playsinline preload="none" width="360" height="640" style="display:block;max-width:100%;height:auto" src="LoginDemo/sword-vs-xiaodiao.mp4" aria-label="雾里有灯，御剑逼退雾鸢，阵修护舟"></video>
     <p><a href="LoginDemo/index.html?preview=passage">试玩护舟</a> · <a href="LoginDemo/sword-vs-xiaodiao.mp4">护舟实录</a></p>
-    <h4>破空剑法与流星剑雨 · 独立表现演示</h4>
-    <p>两招展示原包中不同的起手、飞行轨迹和命中特效。角色上身跟随《宗师之上》人形剑招，双脚保持御剑站姿。出手点取采样动作中施法手前伸最远的一帧，飞行时长按竖屏交战距离调校。技能栏沿用原包六格布局和图标，读秒显示这一轮演示中距离下次出手的时间。这个入口独立于第一章存档。</p>
-    <video controls playsinline preload="none" width="360" height="640" style="display:block;max-width:100%;height:auto" src="LoginDemo/sword-skills.mp4" aria-label="破空剑法与流星剑雨演示"></video>
-    <p><a href="LoginDemo/index.html?preview=skills">试玩双招</a> · <a href="LoginDemo/sword-skills.mp4">双招实录</a> · <a href="https://www.bilibili.com/video/BV1umJX6SEAX/?t=20">《宗师之上》实战录像，约 20 秒看起手与目标区</a></p>
-    <p>素材索引包括原包剑系动作 <code>jian_attack_1_yj</code>、<code>jian_pokong_25090</code>、<code>jian_liuxing_25120</code>，护盾预制体 <code>vfx_cha_buff_xinfa_hudun</code>，以及 <code>WorldCombatSkillNodeNew</code> 的六个技能位。HTML5 使用原粒子预制体烘焙的透明序列图。<a href="LoginDemo/battle-art/interface-source.json">技能界面出处</a> · <a href="ReferenceAssets/Zszs/Library/index.html">角色、怪物与技能素材</a></p>
+    <h4>四招工作台与 HTML5 试放</h4>
+    <p>H5 轮流施放基础剑法、破空剑法、流星剑雨和独臂木侠的玄铁剑法-下。施放和命中时刻由同一份 Unity 技能图驱动。技能栏沿用原包六格布局和图标，读秒显示这一轮演示中距离下次出手的时间。这个入口独立于第一章存档。</p>
+    <video controls playsinline preload="none" width="360" height="640" style="display:block;max-width:100%;height:auto" src="../docs/previews/宗师之上-四招工作台试放.mp4" aria-label="Unity 工作台四招实录"></video>
+    <p><a href="LoginDemo/index.html?preview=skills">试玩四招</a> · <a href="../docs/previews/宗师之上-四招工作台试放.mp4">Unity 四招实录</a> · <a href="https://www.bilibili.com/video/BV1umJX6SEAX/?t=20">《宗师之上》实战录像，约 20 秒看起手与目标区</a></p>
+    <p>素材索引包括原包剑系动作 <code>jian_jichu_21020</code>、<code>jian_pokong_25090</code>、<code>jian_liuxing_25120</code>，护盾预制体 <code>vfx_cha_buff_xinfa_hudun</code>，以及 <code>WorldCombatSkillNodeNew</code> 的六个技能位。四招使用原粒子预制体，护舟的护盾使用透明序列图。<a href="LoginDemo/battle-art/interface-source.json">技能界面出处</a> · <a href="ReferenceAssets/Zszs/Library/index.html">角色、怪物与技能素材</a></p>
     <p><a href="Impostor/index.html">打开 HTML5 Impostor 转换工具</a>。内置预览使用战场角色 NP0023。也可导入贴图内嵌的 GLB，选取俯角与动画姿势，烘焙为透明 PNG 和角度 JSON，拖动方位对照原模型与面片。接入战场时，将 JSON 命名为 <code>battle-enemy.json</code>，与其引用的图集一起放进 <code>LoginDemo</code>，再运行 <code>build.py</code>。图集只在战场准备时上传。</p>
     <h3>战场分层与招式特效</h3>
     <dl>

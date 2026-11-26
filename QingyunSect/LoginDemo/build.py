@@ -8,7 +8,6 @@ import re
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFilter
-from unity_fog import shader_parts
 import cv2
 import numpy as np
 
@@ -23,50 +22,24 @@ def uri(mime, data):
 
 
 def battle_art():
-    assets_root = HERE.parents[1] / 'Assets'
-    noise_maps = []
-    for index in (1, 2):
-        source = assets_root / f'FogOfWar/Mobile/NoiseClouds{index}_1024.asset'
-        pixels = bytes.fromhex(re.search(r'_typelessdata: ([0-9a-fA-F]+)', source.read_text())[1])
-        field = np.frombuffer(pixels[:1024**2], np.uint8).reshape(1024, 1024)
-        noise_maps.append(field)
-    # Opaque RGB preserves both original R8 channels when browsers decode the PNG.
-    image = Image.fromarray(np.stack([*noise_maps,np.zeros_like(noise_maps[0])],axis=-1))
-    packed = io.BytesIO()
-    image.save(packed, format='PNG')
-    library=HERE.parent/'ReferenceAssets/Zszs/Library'
-    bird=library/'Models/mon_xiaodiao_001/mon_xiaodiao_001.glb'
-    effects={}
-    for prefix, folder, names in [
-        ('', 'pugongjian', ['eff_cha_jianpugong_shifa01','eff_cha_jianpugong_trail01','eff_cha_jianpugong_hit']),
-        ('pierce', 'pokongjianfa', ['vfx_pokongjianfa_shifa','vfx_pokongjianfa_trail','vfx_pokongjianfa_hit']),
-        ('rain', 'liuxingjianyu', ['vfx_liuxingjianyu_shifa','vfx_liuxingjianyu_trail','vfx_liuxingjianyu_hit'])]:
-        fx_root=library/'Effects'/folder
-        for stage,name in zip(('cast','trail','hit'),names):
-            info=json.loads((fx_root/(name+'.json')).read_text('utf8'))
-            effects[prefix+stage]=dict(info,image=uri('image/webp',(fx_root/(name+'.webp')).read_bytes()))
-    ward_root=library/'Effects/hudun'
-    ward_name='vfx_cha_buff_xinfa_hudun'
-    effects['ward']=dict(json.loads((ward_root/(ward_name+'.json')).read_text('utf8')),image=uri('image/webp',(ward_root/(ward_name+'.webp')).read_bytes()))
-    ui_dir=HERE/'battle-art'
-    sprites=json.loads((ui_dir/'interface-source.json').read_text('utf8'))['sprites']
-    ui={key:uri('image/png',(ui_dir/(key+'.png')).read_bytes()) for key in sprites}
-    enemy = None
+    library = HERE.parent/'ReferenceAssets/Zszs/Library'
+    ward = library/'Effects/hudun/vfx_cha_buff_xinfa_hudun'
+    effect = json.loads(ward.with_suffix('.json').read_text('utf8'))
+    effect['image'] = uri('image/webp', ward.with_suffix('.webp').read_bytes())
+    art = HERE/'battle-art'
+    sprites = json.loads((art/'interface-source.json').read_text('utf8'))['sprites']
+    bird_sprite = None
     atlas_path = HERE/'battle-enemy.json'
     if atlas_path.is_file():
-        atlas=json.loads(atlas_path.read_text(encoding='utf-8-sig'))
-        image_file=HERE/atlas['image']
-        with Image.open(image_file) as sprite:
-            if sprite.size!=(atlas['width'],atlas['height']):
+        atlas = json.loads(atlas_path.read_text('utf-8-sig'))
+        with Image.open(HERE/atlas['image']) as image:
+            if image.size != (atlas['width'], atlas['height']):
                 raise ValueError('Impostor atlas dimensions do not match the image')
-            enemy=dict(atlas=atlas,image=uri(Image.MIME[sprite.format],image_file.read_bytes()))
-    return dict(parts=json.loads((HERE/'entry-role.json').read_text(encoding='utf-8')),
-                noise=uri('image/png',packed.getvalue()),
-                edgeClouds=uri('image/webp',(HERE/'edge-clouds.webp').read_bytes()),
-                cap=uri('image/png',(assets_root/'CloudFlight/WeChatMiniGame/art/CloudMatCap.png').read_bytes()),
-                fog=shader_parts(assets_root/'FogOfWar'),enemy=enemy,enemyModel=uri('model/gltf-binary',bird.read_bytes()),effects=effects,ui=ui,
-                swordPose=json.loads((ui_dir/'rider-sword.json').read_text('utf8')),
-                still=uri('image/webp',(HERE/'entry-still.webp').read_bytes()) if (HERE/'entry-still.webp').exists() else '')
+            frame = atlas['frames'][0]
+            x, y, w, h = (frame[key] for key in ('x','y','w','h'))
+            tile = image.crop((x, y, x+w, y+h)).convert('RGBA').transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+            bird_sprite = f'{w},{h},' + base64.b64encode(tile.tobytes()).decode('ascii')
+    return dict(ward=effect, birdSprite=bird_sprite, edgeClouds=uri('image/webp',(HERE/'edge-clouds.webp').read_bytes()), ui={key:uri('image/png', (art/(key+'.png')).read_bytes()) for key in sprites})
 
 
 def smooth(lo, hi, value):
@@ -347,8 +320,7 @@ def main():
     html=html.replace('/* PACKED_ASSETS */', 'const assets='+compact(data)+';')
     html=html.replace('/* SCENE_CODE */',(HERE/'scene.js').read_text(encoding='utf-8'))
     html=html.replace('/* STORY_CODE */',(HERE/'story.js').read_text(encoding='utf-8'))
-    html=html.replace('/* BATTLE_ENTRY */','\n'.join(src.read_text(encoding='utf-8') for src in (
-        HERE.parent/'Impostor/atlas.js', HERE/'battle-clouds.js', HERE/'battle-skills.js', HERE/'battle-enemy.js', HERE/'battle-entry.js')))
+    html=html.replace('/* BATTLE_ENTRY */',(HERE/'battle-entry.js').read_text(encoding='utf-8'))
     html=html.replace('/* DIALOGUE_CODE */',(HERE/'dialogue.js').read_text(encoding='utf-8'))
     html=html.replace('/* MAP_MOTION */',(HERE/'map-motion.js').read_text(encoding='utf-8'))
     html=html.replace('/* STORY_STYLE */',(HERE/'story.css').read_text(encoding='utf-8'))

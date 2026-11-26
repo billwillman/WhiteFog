@@ -14,7 +14,7 @@ body{margin:0;color:var(--ink);background:#f4f6f1;font:16px/1.75 "Microsoft YaHe
 <li>点<strong>技能库</strong>，按名字或编号搜索 <strong>25090 破空剑法</strong>。</li>
 <li>在动作时间轴检查 0 秒的动作和武器，以及 1.120、1.251、1.443 秒的三次飞剑发射。</li>
 <li>切到 <strong>Preview → 快速试放</strong>。使用默认的 8 米距离，点<strong>打开角色预览并试放</strong>。</li>
-<li>「每剑预览来伤」是本地试放输入，默认 10。每把飞剑抵达才结算，头顶数字显示实际扣血。改成 0 可单看动作和特效。</li>
+<li>「每段预览来伤」是本地试放输入，默认 10。每把飞剑抵达才结算，头顶数字显示实际扣血。改成 0 可单看动作和特效。</li>
 <li>Play 中可直接切到另一张图，点<strong>再次试放所选技能</strong>。要保存新的设计参数，先退出 Play，再改图、保存并重试。</li></ol>
 <p class="note">角色预览使用《宗师之上》男角色 001 与小雕。点「退出角色预览」回到之前的编辑场景。要用 Hierarchy 里的具体角色，请切换「当前场景试放」。</p></section>
 <section id="platform"><h2>从技能引用 Buff，查看它的数值来源</h2>
@@ -58,9 +58,14 @@ body{margin:0;color:var(--ink);background:#f4f6f1;font:16px/1.75 "Microsoft YaHe
 <div class="flow"><b>施放：最终攻击 × 等级倍率 + 固定项</b>→<b>抵达：本段独立判命中</b>→<b>成功：分段伤害减去本段分摊的实时防御</b>→<b>易伤、护盾、剩余生命</b></div>
 <p>例如总伤害 200，三段占 20%、30%、50%，各分得 40、60、100。若目标当前防御 50，三段均命中且没有护盾或易伤，则实际扣 30、45、75。第二段落空时它扣 0，第三段仍只占原定的 50%。防御在段与段之间改变时，后续命中使用新值。</p></section>
 <section id="catalog"><h2>原作技能验证</h2>
-<table><thead><tr><th>原作 ID</th><th>工作台技能图</th><th>团结试放核对项</th></tr></thead><tbody><tr><td>25090 · 1.3.0</td><td>破空剑法</td><td>角色动作、右手武器、起手、三次出剑、三次抵达。下方提供同一次试放的视频和分镜。</td></tr></tbody></table>
-<p>源事件取自还原目录的 <code>SkillReleaseStudy/Evidence/Tables/config/skill/25090.json</code>。起手、飞剑、拖尾、抵达四个预制体分别含 8、5、2、4 个粒子系统。逐层核对了渲染器、17 个材质及 75 处纹理绑定；42 张纹理与还原目录的 PNG 字节一致。桌面使用兼容着色器，原包保存的备用纹理槽一起保留。工作台技能库只列已接入的原作图。原包索引、网页原型和 Buff 模板不计作可试放的技能。</p>
-<p>本地预览将来伤送入角色生命和护盾结算。原作按战报确定各段伤害与目标；单凭三次飞剑事件无法推算三段实伤。</p></section>
+<table><thead><tr><th>原作 ID</th><th>工作台技能图</th><th>8 米单目标试放</th></tr></thead><tbody>
+<tr><td>21020</td><td>基础剑法</td><td>右手在起手时挂两层武器特效，分别持续 500、800 ms。317 ms 从右手发射，初速 15 m/s、加速度 35 m/s²，抵达后播放太极剑受击特效。</td></tr>
+<tr><td>25090</td><td>破空剑法</td><td>1120、1251、1443 ms 三次出剑。已发出的飞剑各自在抵达时触发预览伤害。</td></tr>
+<tr><td>25120</td><td>流星剑雨</td><td>903 ms 在目标处展开剑雨，1003、1150、1313、1501 ms 四次播放受击粒子。第一和最后一条 HIT 配置各含 200 ms 延迟。</td></tr>
+<tr><td>102412</td><td>玄铁剑法-下</td><td>上方独臂木侠挥剑，600、672 ms 先后展开两层施放特效，800 ms 击中下方主角。原包 boss_dubimuxia_001 和 002 战斗预制体含本体、大剑和剑鞘，两者都没有坐骑节点。</td></tr>
+</tbody></table><figure><video controls playsinline preload="metadata" width="270" height="480" style="max-width:100%;height:auto" src="previews/宗师之上-四招工作台试放.mp4"></video><figcaption>四招连续切换的工作台竖屏实录。每段预览来伤设为 1，可在受击者头顶看到飘字。<a href="previews/宗师之上-四招工作台试放.mp4">打开 MP4</a></figcaption></figure>
+<p><a href="../QingyunSect/LoginDemo/index.html?preview=skills">在 H5 中试放这四招</a>。舆图里的「功法」也可进入轮播。基础剑法同时用于旧渡首战。H5 在进入战场时加载团结 WebGL 播放器，使用与工作台相同的技能图、角色、粒子预制体和伤害回调。</p><details><summary>重新发布 H5 技能播放器</summary><p>用独立工程副本执行构建，给环境变量 <code>QINGYUN_WEB_OUTPUT</code> 设置输出目录。团结编辑器以 <code>-batchmode -buildTarget WebGL -executeMethod OriginalSkillWebBuild.Build</code> 运行。构建器临时复制试放场景并加入四张技能图。完成后，运行 <code>python QingyunSect/LoginDemo/pack_unity_player.py &lt;输出目录&gt;/Build</code>；改过页面或技能栏时，再运行 <code>python QingyunSect/LoginDemo/build.py</code>。发布时一并保留 <code>index.html</code> 和 <code>battle-art/unity-player.js</code>。</p></details><p>新增三招共引用八个新粒子预制体，逐个与原包对象层级核对了 29 个粒子系统及对应渲染器；基础剑法两次挂剑复用工程已有的原包武器预制体。独臂木侠的身体网格为 3,340 个顶点、58 根蒙皮骨骼，剑与鞘各自独立。</p><p>破空剑法的源事件取自还原目录的 <code>SkillReleaseStudy/Evidence/Tables/config/skill/25090.json</code>。起手、飞剑、拖尾、抵达四个预制体分别含 8、5、2、4 个粒子系统。逐层核对了渲染器、17 个材质及 75 处纹理绑定；42 张纹理与还原目录的 PNG 字节一致。桌面使用兼容着色器，原包保存的备用纹理槽一起保留。工作台技能库只列已接入的原作图。原包索引、网页原型和 Buff 模板不计作可试放的技能。</p>
+<p>本地预览将来伤送入角色生命和护盾结算。原作按战报确定各段伤害与目标；四招试放中的飘字用于核对触发和目标，原服伤害数值及多人分摊仍需战报核实。</p></section>
 <section id="edit"><h2>复制、修改和复测</h2><ol><li>选中原作图，点「复制技能」，将试验副本保存到自己的工作目录。</li><li>选中一次发射并修改开始时间，按回车、保存。在 Preview 里保持双方距离相同，比较出手间隔。</li><li>在 Project 或工作台的资产槽中选择副本。正式原作清单与练习草稿分开管理。</li></ol></section>
 <section id="preview"><h2>Preview 页签</h2><h3>试放《宗师之上》破空剑法</h3>
 <ol><li>在工作台点 <strong>Preview → 快速试放</strong>。如果当前选中自定义图，点<strong>选择原作技能 · 破空剑法（25090）</strong>。也可以从技能库的「宗师之上 · 原作表现」分组选择。</li>

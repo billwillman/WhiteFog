@@ -27,9 +27,9 @@ main{container-type:inline-size}
 #story .map-foot button{width:30%;border-block:1px solid #b29e7c;padding:.3em 0;font-size:clamp(14px,4cqw,36px)}
 #court-art{width:100%;height:100%;display:block;object-fit:cover;object-position:56% center}
 #story #to-map,#story #battle-map{position:absolute;left:4.4%;top:4%;min-height:40px;padding:.25em .6em;background:#f4ead5ed;border:1px solid #a79b7d;font-size:clamp(15px,3.5cqw,34px)}
-#battle-entry,#battle-role,#battle-still{position:absolute;inset:0;width:100%;height:100%}
+#battle-entry,#battle-role,#battle-props{position:absolute;inset:0;width:100%;height:100%}
 #battle-entry{overflow:hidden;background:#b6c6c2}
-#battle-still{object-fit:cover}
+#battle-props{pointer-events:none}
 #court-art{transform-origin:63% 46%}
 .court-chapter{position:absolute;top:4%;right:5%;display:grid;justify-items:end;color:#342e23;text-shadow:0 0 8px #fff2ce,0 1px 3px #fcf0ce}
 .court-chapter small{font-size:clamp(12px,2.9cqw,29px);letter-spacing:.13em}.court-chapter strong{margin-top:.12em;font-size:clamp(22px,6cqw,59px);font-weight:600;letter-spacing:.12em}

@@ -177,7 +177,22 @@ const firstChapter=(()=>{
   $('battle-map').addEventListener('click',returnFromBattle);
   $('battle-return').addEventListener('click',returnFromBattle);
   const hints={修行:'办完这趟差事，外院会给你留一席静修的蒲团。',功法:'护送药舟所得的残页，可以用来参悟行气诀。',伙伴:'下一趟巡灯差事，可以邀一位同道同行。'};
-  document.querySelectorAll('[data-note]').forEach(el=>el.addEventListener('click',()=>caption(el.dataset.note,hints[el.dataset.note])));
+  let openingSkills=false;
+  function openSkills(){
+    if(openingSkills)return;
+    openingSkills=true;
+    caption('功法试放','正在载入云端战场……','回到舆图',()=>{openingSkills=false;map();});
+    battle.prepare().then(()=>{
+      if(!openingSkills)return;
+      openingSkills=false;dialogue.hide();$('region').hidden=true;motion.setVisible(false);battle.show('skills');
+    },()=>{
+      if(!openingSkills)return;
+      openingSkills=false;caption('功法试放','云端战场载入失败。','重试',openSkills);
+    });
+  }
+  document.querySelectorAll('[data-note]').forEach(el=>el.addEventListener('click',()=>{
+    if(el.dataset.note==='功法')openSkills();else caption(el.dataset.note,hints[el.dataset.note]);
+  }));
   function prepare(onReady){
     if(prepared)return;prepared=true;
     if(!motion)motion=makeMapMotion(art);
@@ -195,10 +210,7 @@ const firstChapter=(()=>{
       canvas.hidden=title.hidden=enter.hidden=again.hidden=notice.hidden=true;
       $('story').hidden=false;map();
       if(ferryPreview)visit('ferry');
-      if(preview==='skills')battle.prepare().then(()=>{
-        $('region').hidden=true;motion.setVisible(false);
-        battle.show('skills');
-      });
+      if(preview==='skills')openSkills();
     });
   }
   function transition(age){
