@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Linq;
+using System.Runtime.InteropServices;
 using SoftKitty;
 using UnityEngine;
 using UnityEngine.Scripting;
@@ -6,6 +8,8 @@ using UnityEngine.Scripting;
 public sealed class OriginalSkillWebBattle : MonoBehaviour
 {
     public OriginalSkillGraph[] skills;
+    public string[] editorSkillIds;
+    public GraphObject[] editorSkills;
     public EntityComponent hero, enemy;
     public Transform bird;
     private GameObject boss;
@@ -13,6 +17,96 @@ public sealed class OriginalSkillWebBattle : MonoBehaviour
     private readonly Vector3 center = new Vector3(0, 10, 20);
     private float elapsed;
     private bool ferry;
+    private EntityComponent previewCaster, previewTarget;
+    private float nextReadout;
+
+    [System.Serializable]
+    private sealed class EditorRequest
+    {
+        public string guid;
+        public int level = 1;
+        public float distance = 8, fallbackDamage = 10;
+        public bool opponent;
+    }
+
+    [System.Serializable]
+    private sealed class Readout
+    {
+        public string kind, text, casterStates, targetStates;
+        public float casterHp, targetHp, loss, shield;
+        public int segment;
+    }
+
+#if UNITY_WEBGL && !UNITY_EDITOR
+    [DllImport("__Internal")] private static extern void SkillEditorReadout(string json);
+#endif
+    private void Report(string kind, string text = "", int segment = 0, float loss = 0, float shield = 0)
+    {
+#if UNITY_WEBGL && !UNITY_EDITOR
+        SkillEditorReadout(JsonUtility.ToJson(new Readout {
+            kind = kind, text = text, segment = segment, loss = loss, shield = shield,
+            casterHp = previewCaster ? previewCaster.GetAttributeFloat("chp") : 0,
+            targetHp = previewTarget ? previewTarget.GetAttributeFloat("chp") : 0,
+            casterStates = States(previewCaster), targetStates = States(previewTarget)
+        }));
+#endif
+    }
+
+    private static string States(EntityComponent actor) => actor && actor.mData != null
+        ? string.Join("、", actor.mData.GetOverTimeEffectList().Select(e => e.uid + " ×" + e.layer)) : "";
+
+    [Preserve]
+    public void PlayEditorSkill(string json)
+    {
+        var request = JsonUtility.FromJson<EditorRequest>(json);
+        int index = System.Array.IndexOf(editorSkillIds, request.guid);
+        if (index < 0 || index >= editorSkills.Length) { Report("error", "该技能尚未打入 WebGL 包"); return; }
+        Time.timeScale = 1;
+        StartCoroutine(Preview(editorSkills[index], request));
+    }
+
+    private IEnumerator Preview(GraphObject skill, EditorRequest request)
+    {
+        while (hero.mData == null || enemy.mData == null) yield return null;
+        float distance = Mathf.Clamp(request.distance, 2, 20);
+        hero.SetPosition(center + Vector3.back * distance * .5f, false);
+        enemy.SetPosition(center + Vector3.forward * distance * .5f, false);
+        hero.transform.forward = Vector3.forward;
+        enemy.transform.forward = Vector3.back;
+        if (bird) bird.rotation = Quaternion.LookRotation(-enemy.transform.forward);
+        var original = skill as OriginalSkillGraph;
+        SelectOpponent(original ? original.previewEnemy : null);
+        Camera.main.orthographicSize = Mathf.Max(original && original.previewEnemy ? 5.9f : 3.75f, distance * .32f + 2.3f);
+        hero.UpdateData();
+        enemy.UpdateData();
+        Physics.SyncTransforms();
+        bool opponent = original ? original.previewAsOpponent : request.opponent;
+        previewCaster = opponent ? enemy : hero;
+        previewTarget = opponent ? hero : enemy;
+        var go = new GameObject(skill.name);
+        go.transform.position = previewCaster.transform.position;
+        var damage = go.AddComponent<CombatDamage>();
+        damage.mGraph = skill;
+        damage.Init();
+        if (!damage.inited) { Destroy(go); Report("error", "技能图初始化失败"); yield break; }
+        damage.SetDynamicValue("skill.level", Mathf.Max(1, request.level));
+        SkillDamageNumbers.Observe(previewCaster);
+        SkillDamageNumbers.Observe(previewTarget);
+        var host = SkillPlayback.On(damage);
+        host.RetireAfter(1 + skill.RootSet.Actions.Select(a => a.WaitTime +
+            (a.Type == ActionType.Multiple_Time ? Mathf.Max(0, a.Count-1) * a.Interval :
+            a.Type == ActionType.For_X_Seconds ? a.KeepTime : 0)).DefaultIfEmpty(0).Max());
+        host.OriginalProjectileImpact = (source, victim) => SkillPlayback.ApplyIncomingDamage(source, victim, Mathf.Max(0, request.fallbackDamage));
+        Report("cast", skill.name);
+        damage.DealDamageObserved(previewCaster.mData, previewTarget.mData,
+            (index, victim, loss, shield) => Report("hit", victim.CombatRandomId, index, loss, shield));
+    }
+
+    [Preserve]
+    public void InterruptEditorSkill(string unused)
+    {
+        if (previewCaster) { previewCaster.InterruptCast(); Report("interrupt"); }
+    }
 
     [Preserve]
     public void Begin(string encounter)
@@ -107,6 +201,11 @@ public sealed class OriginalSkillWebBattle : MonoBehaviour
 
     private void Update()
     {
+        if (previewCaster && Time.unscaledTime >= nextReadout)
+        {
+            nextReadout = Time.unscaledTime + .25f;
+            Report("state");
+        }
         elapsed += Time.deltaTime;
         if (!ferry || enemy.mData == null || !enemy.mData.AvailableForInteraction) return;
         float approach = Mathf.SmoothStep(0, 1, (elapsed - .7f) / 2.05f);

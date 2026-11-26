@@ -1,0 +1,285 @@
+%YAML 1.1
+%TAG !u! tag:yousandi.cn,2023:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9673d44acbbc423ebd80b40b40255dd2, type: 3}
+  m_Name: "PvP_\u9762\u677F\u653B\u51FB"
+  m_EditorClassIdentifier: 
+  RootSet:
+    mType: 0
+    Name: Root
+    Uid: Node0
+    Position: {x: 0, y: 0}
+    NodeIndex: 0
+    inputPort:
+    - Name: Trigger
+      Type: RootIn
+      acceptedTypes:
+      - TriggerOut
+      uid: []
+      connectedNodes: []
+      allowMutipleConnection: 1
+      createByDefault: 1
+    outputPort:
+    - Name: Action
+      Type: RootOut
+      acceptedTypes:
+      - ActionIn
+      - BranchInAction
+      uid: []
+      connectedNodes: []
+      allowMutipleConnection: 1
+      createByDefault: 1
+    minimized: 0
+    InstanceCache: 0
+    mRoot:
+      rid: -2
+    ClassName: Combat
+    IntValues: 
+    FloatValues: []
+    StringValues: []
+    BoolValues: 
+    CustomInterface:
+      Elements:
+      - Uid: Element2
+        Label: 
+        ToolTips: 
+        Type: 6
+        Index: 0
+        VisibleBind: 
+        EnumOptions: []
+      - Uid: Element0
+        Label: When the conditions matchs,
+        ToolTips: 
+        Type: 5
+        Index: 0
+        VisibleBind: 
+        EnumOptions: []
+      - Uid: Element1
+        Label: The actions will be performed.
+        ToolTips: 
+        Type: 5
+        Index: 1
+        VisibleBind: 
+        EnumOptions: []
+    Actions: []
+    Triggers: []
+    ConditionGroups: []
+    Handlers: []
+    Maths: []
+    Variables:
+    - mType: 0
+      Name: Variable
+      Uid: Node2
+      Position: {x: -1100, y: 0}
+      NodeIndex: 0
+      inputPort:
+      - Name: Entity
+        Type: EntityIn
+        acceptedTypes:
+        - EntityOut
+        uid:
+        - Node1#0
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 0
+      outputPort:
+      - Name: Variable
+        Type: Variable
+        acceptedTypes:
+        - Variable
+        - MathIn
+        - CustomVariable
+        - BranchInValue
+        uid: []
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 1
+      minimized: 0
+      InstanceCache: 0
+      mRoot:
+        rid: 6312275967867617280
+      Type: 1
+      Constant: 0
+      AttributeKey: atk
+      VariableUid: 
+      Max: 1
+    Entities:
+    - mType: 0
+      Name: Entity (Player)
+      Uid: Node1
+      Position: {x: -1450, y: 0}
+      NodeIndex: 0
+      inputPort: []
+      outputPort:
+      - Name: Entity
+        Type: EntityOut
+        acceptedTypes:
+        - EntityIn
+        - BranchInEntity
+        uid:
+        - Node2#0
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 1
+      minimized: 0
+      InstanceCache: 0
+      mRoot:
+        rid: 6312275967867617280
+      Type: 1
+      EntityUid: 
+    Notes: []
+    Groups: []
+    Branchs: []
+    ActiveTriggers: []
+  combatRandomId: 
+  previewAsOpponent: 0
+  autoSave: 0
+  NodeIconSprites: []
+  ActionClassNames: []
+  HandlerClassNames: []
+  RootClassNames: []
+  pendingSave: 0
+  summaryNoteId: 
+  outputUid: Node2
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 6312275967867617280
+      type: {class: Root, ns: SoftKitty, asm: Assembly-CSharp}
+      data:
+        mType: 0
+        Name: Root
+        Uid: Node0
+        Position: {x: 0, y: 0}
+        NodeIndex: 0
+        inputPort:
+        - Name: Trigger
+          Type: RootIn
+          acceptedTypes:
+          - TriggerOut
+          uid: []
+          connectedNodes: []
+          allowMutipleConnection: 1
+          createByDefault: 1
+        outputPort:
+        - Name: Action
+          Type: RootOut
+          acceptedTypes:
+          - ActionIn
+          - BranchInAction
+          uid: []
+          connectedNodes: []
+          allowMutipleConnection: 1
+          createByDefault: 1
+        minimized: 0
+        InstanceCache: 0
+        mRoot:
+          rid: -2
+        ClassName: Combat
+        IntValues: 
+        FloatValues: []
+        StringValues: []
+        BoolValues: 
+        CustomInterface:
+          Elements:
+          - Uid: Element2
+            Label: 
+            ToolTips: 
+            Type: 6
+            Index: 0
+            VisibleBind: 
+            EnumOptions: []
+          - Uid: Element0
+            Label: When the conditions matchs,
+            ToolTips: 
+            Type: 5
+            Index: 0
+            VisibleBind: 
+            EnumOptions: []
+          - Uid: Element1
+            Label: The actions will be performed.
+            ToolTips: 
+            Type: 5
+            Index: 1
+            VisibleBind: 
+            EnumOptions: []
+        Actions: []
+        Triggers: []
+        ConditionGroups: []
+        Handlers: []
+        Maths: []
+        Variables:
+        - mType: 0
+          Name: Variable
+          Uid: Node2
+          Position: {x: -1100, y: 0}
+          NodeIndex: 0
+          inputPort:
+          - Name: Entity
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid:
+            - Node1#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 0
+          outputPort:
+          - Name: Variable
+            Type: Variable
+            acceptedTypes:
+            - Variable
+            - MathIn
+            - CustomVariable
+            - BranchInValue
+            uid: []
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 6312275967867617280
+          Type: 1
+          Constant: 0
+          AttributeKey: atk
+          VariableUid: 
+          Max: 1
+        Entities:
+        - mType: 0
+          Name: Entity (Player)
+          Uid: Node1
+          Position: {x: -1450, y: 0}
+          NodeIndex: 0
+          inputPort: []
+          outputPort:
+          - Name: Entity
+            Type: EntityOut
+            acceptedTypes:
+            - EntityIn
+            - BranchInEntity
+            uid:
+            - Node2#0
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 6312275967867617280
+          Type: 1
+          EntityUid: 
+        Notes: []
+        Groups: []
+        Branchs: []
+        ActiveTriggers: []

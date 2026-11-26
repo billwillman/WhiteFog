@@ -11,6 +11,7 @@ namespace SoftKitty
         [SerializeField] private GraphObject formulaGraph;
         [SerializeField] private string formulaUid;
         [SerializeField] private bool formulaFromBuff;
+        [SerializeField] private string formulaActionUid;
         private readonly Dictionary<string, float> sampleNumbers = new Dictionary<string, float>();
 
         internal static Root CreateConditionalHeal(string requiredStatus)
@@ -120,8 +121,13 @@ namespace SoftKitty
                 return;
             }
             var root = source.RootSet;
+            if (source is OriginalSkillGraph original) DrawOriginalDamageReference(original);
+            bool showsDamage = DrawDamageSources(source);
             var nodes = root.Maths.Cast<NodeBase>().Concat(root.Variables).ToList();
-            if (nodes.Count == 0) { EditorGUILayout.HelpBox("图中没有变量或数学节点。", MessageType.Info); }
+            if (nodes.Count == 0)
+            {
+                if (!showsDamage) EditorGUILayout.HelpBox("图中没有变量或数学节点。", MessageType.Info);
+            }
             else
             {
                 int index = Mathf.Max(0, nodes.FindIndex(n => n.Uid == formulaUid));
@@ -158,8 +164,98 @@ namespace SoftKitty
                 if (GUILayout.Button("重置试算输入")) sampleNumbers.Clear();
                 using (new EditorGUI.DisabledScope(EditorApplication.isPlaying))
                     if (GUILayout.Button("用原生节点树编辑连线")) MasterGraphWindow.OpenWindow(source);
-                if (GUILayout.Button("保存图资产")) AssetDatabase.SaveAssetIfDirty(source);
+                if (GUILayout.Button("保存图资产")) SaveSkillAndLevels(source);
             }
+        }
+
+        private bool DrawDamageSources(GraphObject source)
+        {
+            bool shown = false, usesPreviewDamage = false;
+            var actions = source.RootSet.Actions;
+            bool hasCallback = source is OriginalSkillGraph || actions.Any(SkillProjectile.IsLaunch);
+            var configured = actions.Find(a => a.ClassName == "FormulaImpact" && a.Uid == formulaActionUid)
+                ?? actions.Find(a => a.ClassName == "FormulaImpact");
+            foreach (var action in actions)
+            {
+                string origin;
+                bool canConnect = false;
+                bool hitBox = action.ClassName == "OriginalSkillVisual" && action.IntValues.FirstOrDefault() == 6 &&
+                    OriginalSkillVisualAction.EffectFor(action, source as OriginalSkillGraph)?.triggerHit == true;
+                if (SkillProjectile.IsLaunch(action) || hitBox)
+                {
+                    var links = action.outputPort.FirstOrDefault()?.uid;
+                    if (links != null && links.Count > 0)
+                        origin = "命中后执行 " + string.Join("、", links.Select(link => link.Split('#')[0]));
+                    else
+                    {
+                        origin = "命中口未接线" + (hasCallback ? "，试放时使用每段预览来伤" : "");
+                        usesPreviewDamage |= hasCallback;
+                        canConnect = true;
+                    }
+                }
+                else if (action.ClassName == "FormulaImpact")
+                {
+                    var c = action.calculation;
+                    if (c != null && c.EffectiveMode == SkillCalculation.Mode.NativeGraph)
+                        origin = "MCC 伤害图 " + (c.nativeGraph ? c.nativeGraph.name : "未绑定");
+                    else if (c != null && c.ActiveFlow)
+                        origin = "技能伤害流程 " + c.ActiveFlow.name +
+                            (c.independentSegment ? " · 逻辑段 " + c.logicIndex + (c.segmentRatioVerified ? " · 倍率已核实" : " · 倍率待核") : "");
+                    else if (c != null && c.UsesLinkedAssets)
+                        origin = "技能伤害流程 · 沿用本招的公式引用";
+                    else origin = "技能伤害流程未绑定";
+                }
+                else continue;
+
+                if (!shown) EditorGUILayout.LabelField("命中与伤害来源", EditorStyles.boldLabel);
+                shown = true;
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    EditorGUILayout.LabelField(ActionName(action) + " · " + action.Uid + "　" + origin, EditorStyles.wordWrappedLabel);
+                    using (new EditorGUI.DisabledScope(EditorApplication.isPlaying))
+                    {
+                        if (canConnect && GUILayout.Button("接入伤害流程", GUILayout.Width(100)))
+                        {
+                            if (graph != source) { SelectGraph(source); OpenFormulas(source, false); }
+                            Change(() => formulaActionUid = AddConfiguredAction(source.RootSet, "FormulaImpact", 0, 0, action).Uid);
+                            GUIUtility.ExitGUI();
+                        }
+                    }
+                    if (action.ClassName == "FormulaImpact" && (configured != action || graph != source) &&
+                        GUILayout.Button("编辑流程", GUILayout.Width(78)))
+                    {
+                        if (graph != source) { SelectGraph(source); OpenFormulas(source, false); }
+                        formulaActionUid = action.Uid;
+                        GUIUtility.ExitGUI();
+                    }
+                    if (GUILayout.Button("定位动作", GUILayout.Width(78))) OpenAction(source, action.Uid);
+                }
+            }
+            if (configured != null && graph == source)
+            {
+                using (new EditorGUI.DisabledScope(EditorApplication.isPlaying))
+                using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
+                {
+                    EditorGUILayout.LabelField("伤害流程 · " + configured.Uid, EditorStyles.boldLabel);
+                    DrawAttackCalculation(configured);
+                    if (configured.calculation?.levels) DrawLevelTable(configured.calculation.levels);
+                }
+            }
+            if (!shown && source == graph && !(source is SkillFormula) && !formulaFromBuff)
+            {
+                using (new EditorGUI.DisabledScope(EditorApplication.isPlaying))
+                    if (GUILayout.Button("添加直接结算的伤害动作"))
+                    {
+                        Change(() => formulaActionUid = AddConfiguredAction(source.RootSet, "FormulaImpact", 0, 0).Uid);
+                        GUIUtility.ExitGUI();
+                    }
+            }
+            if (usesPreviewDamage)
+            {
+                DrawPreviewDamageInput();
+                EditorGUILayout.HelpBox("工作台用此值作为一次命中的来伤。有效易伤先放大并四舍五入，护盾吸收后再扣生命，最多扣到零。飘字显示实际生命损失。", MessageType.Info);
+            }
+            return shown;
         }
 
         private static string NumericLabel(Root root, NodeBase node)
@@ -221,6 +317,7 @@ namespace SoftKitty
                     {
                         Undo.RegisterCompleteObjectUndo(formulaGraph, "修改公式数值");
                         variable.Constant = saved;
+                        if (formulaGraph is SkillFormula editedFormula) editedFormula.Invalidate();
                         EditorUtility.SetDirty(formulaGraph);
                     }
                 }

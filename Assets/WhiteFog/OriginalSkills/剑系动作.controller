@@ -24,11 +24,11 @@ AnimatorState:
   m_TimeParameterActive: 0
   m_UseOverrideDuration: 0
   m_Motion: {fileID: 7400000, guid: 21644ad213eaf8b478c839072e7c14d2, type: 2}
-  m_Tag:
-  m_SpeedParameter:
-  m_MirrorParameter:
-  m_CycleOffsetParameter:
-  m_TimeParameter:
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!1102 &-7455978298215449808
 AnimatorState:
   serializedVersion: 7
@@ -64,7 +64,7 @@ AnimatorStateTransition:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name:
+  m_Name: 
   m_Conditions: []
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 8021042753863674841}
@@ -88,7 +88,7 @@ AnimatorStateTransition:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name:
+  m_Name: 
   m_Conditions: []
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 8021042753863674841}
@@ -130,11 +130,11 @@ AnimatorState:
   m_TimeParameterActive: 0
   m_UseOverrideDuration: 0
   m_Motion: {fileID: 7400000, guid: 66cdc5814f2613340a367fc3ebfa814b, type: 2}
-  m_Tag:
-  m_SpeedParameter:
-  m_MirrorParameter:
-  m_CycleOffsetParameter:
-  m_TimeParameter:
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!1101 &-1545606691542125334
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -170,13 +170,13 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 8021042753863674841}
-    m_Position: {x: 200, y: 0, z: 0}
+    m_Position: {x: 240, y: 0, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -7455978298215449808}
-    m_Position: {x: 235, y: 65, z: 0}
+    m_Position: {x: 540, y: -20, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -9019575283477888147}
-    m_Position: {x: 270, y: 130, z: 0}
+    m_Position: {x: 470, y: 90, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -4260268766469610916}
     m_Position: {x: 305, y: 195, z: 0}

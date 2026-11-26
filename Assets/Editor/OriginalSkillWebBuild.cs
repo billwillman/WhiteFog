@@ -31,6 +31,9 @@ public static class OriginalSkillWebBuild
             driver.bird = driver.enemy.transform.Find("小雕 · 飞行");
             driver.skills = AssetDatabase.FindAssets("t:OriginalSkillGraph", new[]{"Assets/WhiteFog/Skills/宗师之上"})
                 .Select(k => AssetDatabase.LoadAssetAtPath<OriginalSkillGraph>(AssetDatabase.GUIDToAssetPath(k))).ToArray();
+            driver.editorSkillIds = OriginalSkillEditorExport.SkillIds();
+            driver.editorSkills = driver.editorSkillIds.Select(id =>
+                AssetDatabase.LoadAssetAtPath<GraphObject>(AssetDatabase.GUIDToAssetPath(id))).ToArray();
             var camera = scene.GetRootGameObjects().Select(x => x.GetComponent<Camera>()).Single(x => x && x.CompareTag("MainCamera"));
             camera.transform.rotation = Quaternion.Euler(38,0,0);
             camera.transform.position = new Vector3(0,11.05f,20) - camera.transform.forward * 16;

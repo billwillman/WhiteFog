@@ -153,13 +153,36 @@ namespace SoftKitty
                     button.SetEnabled(formula);
                     panel.Add(button);
                 }
-                Formula("施放时", config.damage);
-                Formula("逐段判定", config.accuracy);
-                Formula("命中后", config.settlement);
+                if (config.EffectiveMode == SkillCalculation.Mode.NativeGraph)
+                {
+                    var native = config.nativeGraph;
+                    var open = new Button(() => MasterGraphWindow.OpenWindow(native))
+                        { text = "MCC 原生伤害图 · " + (native ? native.name : "未绑定") };
+                    open.SetEnabled(native);
+                    panel.Add(open);
+                    if (config.nativeParameters != null)
+                        foreach (var field in config.nativeParameters)
+                            if (field != null) panel.Add(new Label(field.key + " = " + field.value.ToString("G6")));
+                }
+                else if (config.ActiveFlow || config.UsesLinkedAssets)
+                {
+                    panel.Add(new Label("技能伤害流程 · " + (config.ActiveFlow ? config.ActiveFlow.name : "动作内置流程")));
+                    if (config.independentSegment) panel.Add(new Label("逻辑段 " + config.logicIndex + (config.segmentRatioVerified ? " · 倍率已核实" : " · 倍率待核")));
+                    foreach (var stage in config.GetStageEntries())
+                    {
+                        if (stage == null || !config.IsStageEnabled(stage.id)) continue;
+                        if (stage.kind == SkillDamageFlow.Kind.ModifyDamage && stage.conditionChance)
+                            Formula(stage.label + "触发概率", stage.conditionChance);
+                        if (stage.formula) Formula(stage.label, stage.formula);
+                        else panel.Add(new Label(stage.label));
+                    }
+                }
+                else panel.Add(new Label("伤害流程 · 未绑定"));
                 panel.Add(new Button(() => Selection.activeObject = config.levels)
                     { text = "等级表 · " + (config.levels ? config.levels.name : "未绑定") });
                 panel.Add(new Label("各段占比（%）  " + string.Join(" / ", config.segmentPercent)));
             }
+            panel.Add(new Button(() => SkillWorkbench.OpenAction(mainDataObject, m_data.Uid)) { text = "配置伤害流程" });
             extensionContainer.Add(panel);
         }
 

@@ -11,6 +11,18 @@ public static class OriginalSkillEditorExport
     private const string Catalog = "Assets/WhiteFog/Skills/宗师之上";
     private static bool queued;
 
+    internal static string[] SkillIds()
+    {
+        return AssetDatabase.FindAssets("t:GraphObject", new[] { "Assets" })
+            .Where(id => {
+                string path = AssetDatabase.GUIDToAssetPath(id);
+                var graph = AssetDatabase.LoadAssetAtPath<GraphObject>(path);
+                if (graph is OriginalSkillGraph source)
+                    return InCatalog(path) && source.sourceId > 0 && !string.IsNullOrEmpty(source.sourceVersion);
+                return graph && graph.GetType() == typeof(GraphObject) && graph.RootSet?.ClassName == "Combat";
+            }).OrderBy(id => id, StringComparer.Ordinal).ToArray();
+    }
+
     [Serializable]
     private sealed class AssetInfo
     {

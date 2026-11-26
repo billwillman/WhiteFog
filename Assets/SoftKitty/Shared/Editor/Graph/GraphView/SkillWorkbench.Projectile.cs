@@ -55,6 +55,11 @@ namespace SoftKitty
             else
             {
                 node = AddAction(root, key, time);
+                if (key == "FormulaImpact")
+                {
+                    node.calculation.mode = SkillCalculation.Mode.SharedFlow;
+                    node.calculation.flow = AssetDatabase.LoadAssetAtPath<SkillDamageFlow>(FormulaDirectory + "通用伤害流程.asset");
+                }
                 if (key == "Animation")
                 {
                     node.IntValues[0] = (int)AnimationAction.AnimTypes.SkillMotionBinding;

@@ -8,13 +8,13 @@ body{margin:0;color:var(--ink);background:#f4f6f1;font:16px/1.75 "Microsoft YaHe
 .window-map{margin:14px 0 18px}.window-map div{padding:9px 12px;border:1px solid #d3e1da;border-top:0;background:#f7f9f5}.window-map div:first-child{background:#29453d;color:white;border-radius:6px 6px 0 0}.window-map strong{display:inline-block;min-width:8em}.window-map figcaption{color:var(--soft);font-size:14px}.bar-label{display:flex;justify-content:space-between;font-size:12px;color:var(--soft);margin-left:calc(7rem + 9px)}@media(max-width:800px){.bar-label{margin-left:calc(5rem + 9px)}}@media print{details{break-inside:avoid}.window-map div:first-child,.flow{background:white;color:#183b30}}
 </style></head><body>
 <header><div><small>WhiteFog · 团结 1.9.3 · Master Combat Core 1.03</small><h1>技能工作台操作手册</h1><p>从原作技能库选择《破空剑法》，在工作台查看出手、飞剑抵达和试放扣血。</p><a href="#first">跟做一次飞剑试放</a><button onclick="window.print()">打印 / 另存 PDF</button></div></header>
-<main><nav aria-label="目录"><a href="#first">首次打开和试放</a><a href="#platform">Buff、公式与条件技能</a><a href="#workspace">窗口里的配置</a><a href="#timing">时间轴和节点</a><a href="#build">从空白制作飞剑</a><a href="#catalog">原作技能验证</a><a href="#edit">复制、修改、复测</a><a href="#preview">两种试放方式</a><a href="#status">护盾和易伤</a><a href="#trouble">常见问题</a><a href="#files">目录与交付</a></nav><article>
+<main><nav aria-label="目录"><a href="#first">首次打开和试放</a><a href="#platform">Buff、公式与条件技能</a><a href="#workspace">窗口里的配置</a><a href="#timing">时间轴和节点</a><a href="#damage-flow">制作伤害流程</a><a href="#build">从空白制作飞剑</a><a href="#catalog">原作技能验证</a><a href="#edit">复制、修改、复测</a><a href="#preview">两种试放方式</a><a href="#status">护盾和易伤</a><a href="#trouble">常见问题</a><a href="#files">目录与交付</a></nav><article>
 <section id="first"><h2>首次打开和试放</h2>
 <ol><li>打开 <code>E:\Tuanjie19_WhiteFog</code>，等待团结完成脚本编译和资源导入。从菜单打开 <strong>Window → Soft Kitty → 技能工作台</strong>。已经在 Project 中选中技能图时，也可以点 Inspector 里的<strong>打开技能工作台</strong>。</li>
 <li>点<strong>技能库</strong>，按名字或编号搜索 <strong>25090 破空剑法</strong>。</li>
 <li>在动作时间轴检查 0 秒的动作和武器，以及 1.120、1.251、1.443 秒的三次飞剑发射。</li>
 <li>切到 <strong>Preview → 快速试放</strong>。使用默认的 8 米距离，点<strong>打开角色预览并试放</strong>。</li>
-<li>「每段预览来伤」是本地试放输入，默认 10。每把飞剑抵达才结算，头顶数字显示实际扣血。改成 0 可单看动作和特效。</li>
+<li>打开「公式与数值」查看「命中与伤害来源」。命中口接有结算动作的技能会列出其伤害流程，例如《基础剑法》。保留空命中口的试放使用「每段预览来伤」，这个值也可在 Preview 中调整。<a href="#damage-flow">查看流程制作步骤</a>。</li>
 <li>Play 中可直接切到另一张图，点<strong>再次试放所选技能</strong>。要保存新的设计参数，先退出 Play，再改图、保存并重试。</li></ol>
 <p class="note">角色预览使用《宗师之上》男角色 001 与小雕。点「退出角色预览」回到之前的编辑场景。要用 Hierarchy 里的具体角色，请切换「当前场景试放」。</p></section>
 <section id="platform"><h2>从技能引用 Buff，查看它的数值来源</h2>
@@ -54,13 +54,43 @@ body{margin:0;color:var(--ink);background:#f4f6f1;font:16px/1.75 "Microsoft YaHe
 <p>「单次」执行一遍。「执行多次」填写次数和间隔，例如三段、间隔 0.14 秒，第一段到第三段相隔 0.28 秒。「持续执行」填写持续时间和执行间隔。行名末尾的「直接」表示连接根节点，「分支」表示经其他节点接入，「未连接」时应在节点图检查动作的执行输入。</p>
 <h3>动作类型</h3><ul>
 <li><strong>发送施法提示事件</strong>生成 MCC 的 Event 节点。接收对象默认是本次目标，实体参数默认传施法者。需要画出预警时，在相同时刻添加「显示提示环」，选择提示对象、颜色类型和时长。</li>
-<li><strong>分段命中与公式结算</strong>接施加者、目标和技能等级。点动作可配置等级表、三个公式引用和各段占比。节点画布上的按钮可直接打开三个公式树。</li>
+<li><strong>分段命中与公式结算</strong>接施加者、目标和技能等级。点动作可配置等级表、伤害流程和参与环节。按战报结算的动作显示原作逻辑段号。</li>
 <li>旧动作<strong>技能命中</strong>接三个输入：施加者、受术者和<strong>伤害输入（点）</strong>。最后一个端口读入上游已经算好的点数。选飞剑、光弹或毒雾时，飞行时长取出发距离除以速度，弧线高度控制轨迹。射程填 0 表示不限；超距会中止此次动作并可显示提示。</li>
 <li><strong>回复生命（限制上限）</strong>创建可编辑的属性节点和数学节点。接收者可交互时，按 <code>min(hp, chp + max(0, 回复量))</code> 写入生命。选中数值输入旁的「查看公式」可改回复量。限时吸收护盾在独立的菜单项中配置。</li></ul>
 <p>「技能命中」勾选<strong>到达时施加易伤</strong>后可编辑百分比和时长。<strong>命中后到首段的延迟</strong>用于把减益与第一段伤害分开。工作台时间轴横条表示动作的计划重复区间，投射物的在途时间根据实战距离另算。</p></section>
+<section id="damage-flow"><h2>制作伤害流程，给每一招选择环节</h2>
+<p>在技能库选《基础剑法》，打开<strong>公式与数值 → 使用当前技能图</strong>。飞剑行显示它的命中动作，下面的<strong>本次结算参与的环节</strong>列出完整流程。「目标防御」即使未勾选也能看见。勾选属于这个结算动作，同一招的不同命中动作可以有各自的选择。</p>
+<div class="flow"><b>飞剑接触合格受击体</b>→<b>命中口执行结算动作</b>→<b>依次执行勾选的环节</b>→<b>写入生命并报告实际损失</b></div>
+<ol><li><strong>接线。</strong>已有投射物或启用命中盒的特效，点「接入伤害流程」会把结算动作接在它的命中口。制作直接结算的技能时，可在时间轴添加「分段命中与公式结算」。</li>
+<li><strong>选择计算方式。</strong>「技能伤害流程」可以引用通用流程，也可以为本招制作专用流程和公式。两者使用同一套结算逻辑。「MCC 原生伤害图」运行指定的 Combat 图，可按招传入图中声明的动态变量，例如 <code>dmgMulti</code>。早期技能绑定的总伤害、命中率、防御公式，按原顺序载入同一套流程。</li><li><strong>绑定流程资产。</strong>在「流程资产」选「通用伤害流程」，或点「新建公共流程」。模板依次提供基础伤害、命中判定、分段占比、目标防御、易伤、护盾吸收和扣减生命。基础伤害提供初值，扣减生命写回结果。其余环节可按招取消。取消命中判定的飞剑仍须碰到有效受击体。</li>
+<li><strong>编辑流程。</strong>展开「编辑公共流程」或「编辑本招专用流程」，增删或移动中间环节，为数值环节指定 MCC 公式。数值修正可读取 <code>hit.value</code> 取得上一步结果。命中概率为零会结束当前段。格挡、会心这类条件修正可以单独编写触发概率和触发后的数值公式。只想改一招时，点「制作本招专用流程」。它一并复制当前环节、数值公式和触发概率公式，随后调整这个副本。</li>
+<li><strong>验证。</strong>保存图资产后到 Preview 试放。以攻击 100、一级倍率 0.70、目标防御 30、已有护盾 10 为例，关闭易伤且此次命中，启用通用防御与护盾时扣 30 生命；关闭防御后扣 60；再关闭吸盾则扣 70 且保留盾。试放前须为各次对照恢复相同的生命和盾量。</li></ol>
+<p>《基础剑法》按 1.3.0 原表的单体、70% 攻击制作一级基础伤害。本工程初始启用易伤、护盾与生命写回；命中概率、额外分段和防御可在工作台启用。原服对减伤、护盾等环节的具体顺序仍缺服务端证据。<a href="Tuanjie技能平台设计与MCC边界.md">技能平台设计与 MCC 边界</a></p>
+<h3>《宗师之上》1.3.0 的匹配依据</h3>
+<p>在「公式与数值」展开原作编号即可查看原包等级行、倍率单位、目标数、基础冷却和出招时序。数值表保留原作阶、级及运行技能编号。工作台的第一级对应这里的原表一阶零级；破空与流星只收录当前运行编号的等级行，进阶换编号后须另取变体。</p>
+<table><thead><tr><th>技能</th><th>可核对配置</th><th>当前结算依据</th></tr></thead><tbody>
+<tr><td>基础剑法 21020</td><td>单体，70% 攻击，317 ms 发射</td><td>飞剑命中后按一级表实算。目标资格由实际受击体决定。</td></tr>
+<tr><td>破空剑法 25090</td><td>两个目标，初始 450%，三次发射</td><td>已提供该运行编号的原表。三次发射的命中口分别连接逻辑段 1 至 3。各段的受击者、实际扣血与耗盾待原作战报。</td></tr>
+<tr><td>流星剑雨 25120</td><td>三个目标，初始 405%，五条 HIT 表现</td><td>五个命中口分别连接逻辑段 1 至 5。各目标段伤待核。描述另有降伤 30%，是否已计入 405% 尚待核对。</td></tr>
+<tr><td>玄铁剑法-下 102412</td><td>首领，三个目标，800 ms 直接 HIT，基础冷却 18.5 秒</td><td>800 ms 命中口连接逻辑段 1。首领倍率、各受击者和扣血量待核。</td></tr></tbody></table>
+<h3 id="original-hit-results">从原包追到一次实际扣血</h3>
+<p><code>SkillRelease.update</code> 到达 HIT、BULLET 事件时递增 <code>_logicIndex</code>。<code>getSkillActionData(index, targetEid)</code> 用段号、受击者和施放者从 <code>_srvSkillActions</code> 取服务端动作。飞剑抵达时继续传递该段号及受击者。<code>SkillActionData</code> 按 <code>skill_damage.dst_eid</code> 匹配受击者，<code>BattleActionHandler</code> 读取 <code>damage</code> 和 <code>cost_shield</code>。生命变化另由 <code>attr_change.id / old / new</code> 记录。核对一段时须对应到同场、同次施放及同一实体的当前生命变化。<a href="file:///E:/zszs_restore/CombatRestore_1.3.0/SkillReleaseStudy/RecoveredLua/app/battle/skill/SkillRelease.lua">SkillRelease 还原源码</a> · <a href="file:///E:/zszs_restore/CombatRestore_1.3.0/SkillReleaseStudy/Read/BattleActionHandler-trace.html">原函数执行记录</a></p>
+<p>在本机原包和现有还原记录中，三招尚缺能核对到每段受击者与实际扣血的原作战报。测试输入的 37 点来伤、8 点耗盾用于验证客户端函数如何接收和传递数据。</p>
+<h3 id="attribute-segments">三招在实际战斗中怎样扣血</h3>
+<p>命中口把实际受击者交给「宗师之上实战属性伤害」。整招基础值为施放者攻击 × 当前技能等级倍率 + 等级固定值。各独立命中段乘本段配置百分比，再用实际受击者当前防御按该段百分比扣减，最低为零。随后处理易伤、耗盾和剩余生命。这里的防御及护盾顺序采用工程公式。招式未命中时，该段伤害不会转移到后续段。</p>
+<p><strong>每次施法共用一份施放者属性快照。</strong>技能开始执行时，框架一次记录施放者的数值属性，包含装备和临时加成。直击、同次施法的所有投射物、放置物及其施加的持续状态都沿用这份记录。共享伤害流程、独立公式和 MCC 原生图读取相同的施放者属性。飞行中换装，同一招尚未出手的后续飞剑也沿用旧值，重新施法才取新值。碰撞决定实际受击者，防御、易伤、护盾和生命在对应结算环节读取。用 MCC 物理投射物时，在发射前绑定施放者。</p>
+<p>在<strong>技能工作台 → 公式与数值 → 分段倍率（相对于整招公式）</strong>直接输入每段百分比并保存图资产。倍率旁的「待核」仅记录证据状态，编辑值即可生效。勾选「已核实」表示已确认。各段可以独立编辑，工作台保留所填比例，不自动归一化。</p>
+<table><caption>随工程交付的一级初始配置</caption><thead><tr><th>技能</th><th>整招倍率</th><th>各逻辑段初始百分比</th></tr></thead><tbody>
+<tr><td>破空剑法</td><td>原表 450% 攻击</td><td>100 / 0 / 0，均待核。已有的灼烧动作独立结算。</td></tr>
+<tr><td>流星剑雨</td><td>原表 405% 攻击。描述中的 30% 降伤尚未确认是否已计入，当前仅使用表值。</td><td>100 / 0 / 0 / 0 / 0，均待核。</td></tr>
+<tr><td>玄铁剑法-下</td><td>首领原倍率待核，工程一级暂设 100% 攻击。整招倍率与固定值可在「玄铁剑法-下102412_试配等级」修改。</td><td>100，待核。</td></tr></tbody></table>
+<p>在 Preview 可逐段查看实算受击者、扣血和耗盾。拖入同技能同施放者的「对照战报（可选）」可并排查看记录。实际战斗可直接调用 <code>CombatDamage.DealDamage(施放者, 目标)</code>，整个结算不读取战报。</p>
+<p>一级实放对照：施放者攻击 100、受击者防御 20、无盾，三招直接伤害分别为 430、385、80。将破空的三个段倍率保存为 20%、0%、80%，攻击改为 200、防御改为 10，逐段实扣为 178、0、712。破空技能图已有的灼烧另外结算。</p>
+<p><strong>可选 PvP 实测对照。</strong>在「流程资产」选「宗师之上PvP直伤实测」。它将面板攻击、穿防后的目标防御、原表招式倍率、适用类别净增减伤、境界护体和会心修正拆成可编辑公式。适用范围是还原手册中固定项为零的 PvP 直伤样本。会心触发概率由调用方输入。同一份样本中，攻击 10,000、目标防御 2,000、无视防御 20%、抗性 5%、原表破空倍率 4.5、净增伤 25%、境界减免 20%，普通直伤试算 37,350。强制本次会心、净会心倍率 1.8 时为 67,230。这是整招数值对照，单剑单目标的分摊另行核对。<a href="file:///E:/zszs_restore/CombatRestore_1.3.0/CombatMath/Index.html">本地原包数值手册</a></p>
+</section>
 <section id="build"><h2>从空白制作一招公式飞剑</h2>
 <ol><li>新建空白技能，加「实体存在判断」，让条件检查目标。时间轴添加「分段命中与公式结算」，将施加者接 Dealer、受术者接 Target。技能等级端口使用动态变量 <code>skill.level</code>，默认 1；正式调用方可在施放前用 <code>CombatDamage.SetDynamicValue("skill.level", 等级)</code> 传入该角色掌握的技能等级。</li>
-<li>设置 0.30 秒开始、飞剑、射程 12 米、速度 20 米/秒。在动作上绑定「通用总伤害」「通用命中率」「通用防御结算」。在「技能等级表」选择自己的资产。选择自建等级表后，确认动作引用正确。</li>
+<li>设置 0.30 秒开始、飞剑、射程 12 米、速度 20 米/秒。在动作上绑定「通用伤害流程」，按需勾选命中、分段和防御等环节。早期技能会直接显示原来参与结算的环节和已绑定的公式，也可点「制作本招专用流程」保存为独立资产。在「技能等级表」选择自己的资产。选择自建等级表后，确认动作引用正确。</li>
 <li>在技能摘要下方的<strong>技能等级表</strong>逐行编辑。攻击倍率填 <code>0.55</code> 表示最终攻击的 55%；固定加值填点数；基础命中率填 <code>95</code> 表示 95%；身法修正填 <code>0.5</code> 表示双方每相差 1 点身法，命中率变化 0.5 个百分点。点「新增一级」会复制当前最高等级的数值，新行可以单独修改。顶部「保存」同时保存技能图与绑定的等级表。若多个技能引用同一张表，保存的改动对这些技能都生效。</li>
 <li>单段填写 100。三段时选「执行多次」，次数 3，点「按当前 3 段均分 100%」生成三栏，再分别填 20、30、50。段数与占比数量必须一致，合计 100%。每段只处理自己的份额，落空的份额直接结束。</li>
 <li>在公式结算动作里选「公式试算等级」，再点「看公式」，即可使用这一级的表行试算，并调整模拟属性。Preview 的「试放技能等级」单独选择。用「用原生节点树编辑连线」改公式；若只想改这一招，先在该槽点「专用副本」。改了输出节点时，在公式页选新节点，再点「把当前节点设为运行时输出」并保存。</li></ol>
@@ -112,7 +142,6 @@ body{margin:0;color:var(--ink);background:#f4f6f1;font:16px/1.75 "Microsoft YaHe
 <tr><td>本手册</td><td><code>docs/MCC技能工作台操作手册.html</code>，可直接双击离线阅读，也可在工作台顶部点「使用手册」。</td></tr></tbody></table></div>
 <p>分享给同项目同事时，交付技能图和对应 <code>.meta</code>。跨项目移植还需要本版 MCC 自定义动作、接口描述、表现材质、运行脚本与反射保留配置。H5 工具单独保存网页 JSON，团结工作台直接修改项目中的原生 <code>.asset</code>。</p></section>
 </article><section><h2>产生投射物与命中盒</h2>
-<p><strong>每次施法共用一份施放者属性快照。</strong>技能开始执行时，框架一次记录施放者的数值属性，包含装备和临时加成。直击、同次施法的所有投射物、放置物及其施加的持续状态都沿用这份记录。共享伤害流程、独立公式和 MCC 原生图读取相同的施放者属性。飞行中换装，同一招尚未出手的后续飞剑也沿用旧值，重新施法才取新值。碰撞决定实际受击者，防御、易伤、护盾和生命在对应结算环节读取。用 MCC 物理投射物时，在发射前绑定施放者。</p>
 <p>在动作时间轴选择「添加动作 → 产生投射物」，为该发设置预制体、拖尾、挂点、移动轨迹和速度。命中盒的位置以飞行朝向为基准，开启时间从本发生成时计算。开启时长为 0 时持续到本发结束。</p>
 <p>目标可以直接使用 MCC Demo 的 DamageReciever，也可以在受击 Collider 的同一物体添加「战斗 / 受击体」。命中盒开启时，工作台按当前受击体检查重叠和飞行区间的扫掠。「可命中对象」默认是确定目标，只有瞄准的实体可以受击。选择非确定目标后，在「可命中 MCC 实体标签」添加允许受击的标签，预览场敌方为 <code>hostile</code>。命中盒会取路径上最先碰到的合格受击体，标签留空时不会产生接触结果。通过「添加命中后执行的动作」接入结算或后续表现，其延时以命中为起点。<a href="技能编辑器设计复盘.md">技能编辑器设计复盘</a></p></section>
 </main>

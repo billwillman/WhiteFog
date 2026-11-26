@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:yousandi.cn,2023:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bdb6da936d94134a91a916a5daa82d1, type: 3}
+  m_Name: "\u5B97\u5E08\u4E4B\u4E0A\u5B9E\u6218\u5C5E\u6027\u4F24\u5BB3"
+  m_EditorClassIdentifier: 
+  stages:
+  - id: base
+    label: "\u57FA\u7840\u4F24\u5BB3"
+    kind: 0
+    formula: {fileID: 11400000, guid: 94eaa40406d50b5489ba205f84c10a8b, type: 2}
+    conditionChance: {fileID: 0}
+  - id: share
+    label: "\u547D\u4E2D\u6BB5\u500D\u7387"
+    kind: 1
+    formula: {fileID: 0}
+    conditionChance: {fileID: 0}
+  - id: defence
+    label: "\u76EE\u6807\u9632\u5FA1"
+    kind: 3
+    formula: {fileID: 11400000, guid: 6aa8cc93a02c7bc4d941c37de20c4f12, type: 2}
+    conditionChance: {fileID: 0}
+  - id: vulnerability
+    label: "\u6613\u4F24"
+    kind: 4
+    formula: {fileID: 0}
+    conditionChance: {fileID: 0}
+  - id: shield
+    label: "\u62A4\u76FE\u5438\u6536"
+    kind: 5
+    formula: {fileID: 0}
+    conditionChance: {fileID: 0}
+  - id: health
+    label: "\u6263\u51CF\u751F\u547D"
+    kind: 6
+    formula: {fileID: 0}
+    conditionChance: {fileID: 0}
+  ownsFormulas: 0

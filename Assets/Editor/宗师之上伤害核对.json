@@ -1,0 +1,65 @@
+{
+  "version": "1.3.0",
+  "skills": [
+    {
+      "skillId": 21020,
+      "name": "基础剑法",
+      "levelTableId": 1020,
+      "hasLevelRow": true,
+      "advance": 1,
+      "level": 0,
+      "rawRatio": 700,
+      "rawFlat": 0,
+      "targetCount": 1,
+      "cooldownMs": 4000,
+      "timing": "317 ms 发射一剑。",
+      "limit": "目标数与倍率有原表依据；易伤、吸盾及其顺序沿用本工程规则。",
+      "levelAssetPath": "Assets/WhiteFog/Skills/攻击公式/基础剑法等级.asset"
+    },
+    {
+      "skillId": 25090,
+      "name": "破空剑法",
+      "levelTableId": 5090,
+      "hasLevelRow": true,
+      "advance": 1,
+      "level": 0,
+      "rawRatio": 4500,
+      "rawFlat": 0,
+      "targetCount": 2,
+      "cooldownMs": 10000,
+      "timing": "1120、1251、1443 ms 发射；1501 ms 收招。",
+      "limit": "整招使用原等级表。原作各目标的分段倍率待核，可在下方编辑；工程初始试配为首段 100%，其余 0%。",
+      "levelAssetPath": "Assets/WhiteFog/Skills/攻击公式/宗师之上数值/破空剑法25090_原表等级.asset"
+    },
+    {
+      "skillId": 25120,
+      "name": "流星剑雨",
+      "levelTableId": 5120,
+      "hasLevelRow": true,
+      "advance": 1,
+      "level": 0,
+      "rawRatio": 4050,
+      "rawFlat": 0,
+      "targetCount": 3,
+      "cooldownMs": 10000,
+      "timing": "903、1003、1150、1313、1501 ms 五条 HIT；首条含 200 ms 表现延时。",
+      "limit": "分段倍率待核，工程初始试配为首段 100%，其余 0%。原表另列降伤 30%，是否已计入 405% 待核，当前按 405% 计算。",
+      "levelAssetPath": "Assets/WhiteFog/Skills/攻击公式/宗师之上数值/流星剑雨25120_原表等级.asset"
+    },
+    {
+      "skillId": 102412,
+      "name": "玄铁剑法-下",
+      "levelTableId": 0,
+      "hasLevelRow": false,
+      "advance": 0,
+      "level": 0,
+      "rawRatio": 0,
+      "rawFlat": 0,
+      "targetCount": 3,
+      "cooldownMs": 18500,
+      "timing": "600、672 ms 施法特效，800 ms 直接 HIT，2633 ms 收招。",
+      "limit": "首领整招倍率及分段倍率均待核。工程一级暂用攻击 × 1.0，逻辑段 1 取整招 100%，可分别编辑等级表和分段倍率。",
+      "levelAssetPath": "Assets/WhiteFog/Skills/攻击公式/宗师之上数值/玄铁剑法-下102412_试配等级.asset"
+    }
+  ]
+}

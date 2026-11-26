@@ -27,6 +27,9 @@ namespace SoftKitty
         private static void SaveSkillAndLevels(GraphObject skill)
         {
             foreach (var table in BoundLevelTables(skill)) AssetDatabase.SaveAssetIfDirty(table);
+            if (skill && skill.RootSet != null)
+                foreach (var flow in skill.RootSet.Actions.Select(a => a.calculation?.ActiveFlow).Where(f => f).Distinct())
+                    AssetDatabase.SaveAssetIfDirty(flow);
             AssetDatabase.SaveAssetIfDirty(skill);
         }
 
@@ -118,63 +121,150 @@ namespace SoftKitty
             var config = action.calculation;
             if (config == null)
             {
-                if (GUILayout.Button("配置攻击公式")) Change(() => action.calculation = new SkillCalculation());
+                if (GUILayout.Button("配置伤害结算")) Change(() => action.calculation = new SkillCalculation { mode = SkillCalculation.Mode.SharedFlow });
                 return;
             }
-            EditorGUILayout.LabelField("施放时取攻击，命中后取目标防御", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("攻击公式与技能等级", EditorStyles.boldLabel);
+            bool wasNative = config.EffectiveMode == SkillCalculation.Mode.NativeGraph;
+            bool native = EditorGUILayout.Popup("计算方式", wasNative ? 1 : 0, new[] { "技能伤害流程", "MCC 原生伤害图" }) == 1;
+            if (native != wasNative)
+                Change(() => config.SetMode(native ? SkillCalculation.Mode.NativeGraph : SkillCalculation.Mode.SharedFlow));
             var table = (SkillLevelTable)EditorGUILayout.ObjectField("技能等级表", config.levels, typeof(SkillLevelTable), false);
             if (table != config.levels) Change(() => config.levels = table);
-            if (table && table.rows.Count > 0)
+            if (!config.levels && GUILayout.Button("新建本技能等级表"))
+            {
+                string path = EditorUtility.SaveFilePanelInProject("新建技能等级表", graph.name + "_等级表", "asset", "选择保存位置");
+                if (!string.IsNullOrEmpty(path))
+                {
+                    table = CreateInstance<SkillLevelTable>();
+                    AssetDatabase.CreateAsset(table, AssetDatabase.GenerateUniqueAssetPath(path));
+                    AddLevel(table);
+                    AssetDatabase.SaveAssetIfDirty(table);
+                    Change(() => config.levels = table);
+                }
+            }
+            if (!native && table && table.rows.Count > 0)
             {
                 var levels = table.rows.Select(row => row.level).Distinct().OrderBy(level => level).ToArray();
                 if (!levels.Contains(formulaSampleLevel)) formulaSampleLevel = levels[0];
                 formulaSampleLevel = EditorGUILayout.IntPopup("公式试算等级", formulaSampleLevel,
                     levels.Select(level => level + " 级").ToArray(), levels);
             }
-            DrawFormulaSlot("整招总伤害", config.damage, f => config.damage = f);
-            DrawFormulaSlot("逐段命中率（0～1）", config.accuracy, f => config.accuracy = f);
-            DrawFormulaSlot("命中后伤害", config.settlement, f => config.settlement = f);
-
+            if (native) DrawNativeDamageGraph(config);
+            else DrawDamageFlow(config);
+            if (!native && !config.GetStageEntries().Any(s => s != null && s.kind == SkillDamageFlow.Kind.SegmentShare && config.IsStageEnabled(s.id))) return;
             int count = FormulaImpactAction.SegmentCount(action);
-            if (GUILayout.Button("按当前 " + count + " 段均分 100%"))
+            if (native)
+                EditorGUILayout.LabelField("每段执行一次原生图。本段序号与占比分别通过 hit.index、hit.share 传给图内节点。", EditorStyles.wordWrappedMiniLabel);
+            if (!native)
+            {
+                bool independent = EditorGUILayout.Toggle("独立命中段倍率", config.independentSegment);
+                if (independent != config.independentSegment) Change(() => config.independentSegment = independent);
+            }
+            if (config.independentSegment)
+            {
+                int index = Mathf.Max(1, EditorGUILayout.DelayedIntField("起始逻辑段号", config.logicIndex));
+                if (index != config.logicIndex) Change(() => config.logicIndex = index);
+                bool verified = EditorGUILayout.Toggle("分段倍率已核实", config.segmentRatioVerified);
+                if (verified != config.segmentRatioVerified) Change(() => config.segmentRatioVerified = verified);
+                EditorGUILayout.LabelField(config.segmentRatioVerified ? "已核实 · 使用下列倍率结算" : "待核 · 实战使用下列配置值", EditorStyles.miniLabel);
+                if (config.segmentPercent.Count != count && GUILayout.Button("匹配执行次数，保留已有倍率"))
+                    Change(() => config.segmentPercent = Enumerable.Range(0, count)
+                        .Select(i => i < config.segmentPercent.Count ? config.segmentPercent[i] : 0f).ToList());
+            }
+            else if (GUILayout.Button("按当前 " + count + " 段均分 100%"))
                 Change(() => config.segmentPercent = Enumerable.Repeat(100f / count, count).ToList());
             for (int i = 0; i < config.segmentPercent.Count; i++)
             {
                 int segment = i;
                 float old = config.segmentPercent[i];
-                float next = EditorGUILayout.DelayedFloatField("第 " + (i + 1) + " 段占比（%）", old);
+                string label = config.independentSegment ? "逻辑段 " + (config.logicIndex + i) + " 倍率（%）" : "第 " + (i + 1) + " 段占比（%）";
+                float next = EditorGUILayout.DelayedFloatField(label, old);
                 if (next != old) Change(() => config.segmentPercent[segment] = next);
             }
             try { config.ValidateShares(count); }
             catch (InvalidOperationException e) { EditorGUILayout.HelpBox(e.Message, MessageType.Warning); }
         }
 
-        private void DrawFormulaSlot(string label, SkillFormula current, System.Action<SkillFormula> assign)
+        internal static SkillFormula CreateFormulaAsset(string path)
         {
+            var formula = BlankFormula();
+            AssetDatabase.CreateAsset(formula, AssetDatabase.GenerateUniqueAssetPath(path));
+            return formula;
+        }
+
+        private static SkillFormula BlankFormula()
+        {
+            var formula = CreateInstance<SkillFormula>();
+            formula.RootSet = EmptyRoot();
+            var output = new VariableClass(formula.RootSet) { Type = VariableType.Constant };
+            formula.RootSet.Variables.Add(output);
+            formula.outputUid = output.Uid;
+            return formula;
+        }
+
+        private void DrawFormulaSlot(string label, SkillFormula current, SkillLevelTable table,
+            System.Action<SkillFormula> assign, SkillDamageFlow owner)
+        {
+            SkillFormula Bind(SkillFormula value)
+            {
+                if (value && owner.ownsFormulas && AssetDatabase.GetAssetPath(value) != AssetDatabase.GetAssetPath(owner))
+                    value = EmbedFormulaCopy(owner, value);
+                EditDamageFlow(owner, () => assign(value));
+                return value;
+            }
             using (new EditorGUILayout.HorizontalScope())
             {
                 var next = (SkillFormula)EditorGUILayout.ObjectField(label, current, typeof(SkillFormula), false);
-                if (next != current) Change(() => assign(next));
+                if (next != current) Bind(next);
+                if (!current && GUILayout.Button("新建公式", GUILayout.Width(68)))
+                {
+                    SkillFormula created = null;
+                    if (owner.ownsFormulas)
+                    {
+                        created = BlankFormula();
+                        created.name = label;
+                        AssetDatabase.AddObjectToAsset(created, owner);
+                    }
+                    else
+                    {
+                        string path = EditorUtility.SaveFilePanelInProject("新建数值公式", owner.name + "_公式", "asset", "选择保存位置");
+                        if (!string.IsNullOrEmpty(path)) created = CreateFormulaAsset(path);
+                    }
+                    if (created)
+                    {
+                        OpenFormulas(Bind(created), false);
+                        GUIUtility.ExitGUI();
+                    }
+                }
                 using (new EditorGUI.DisabledScope(!current))
                 {
                     if (GUILayout.Button("看公式", GUILayout.Width(56)))
                     {
-                        OpenFormulas(current, false);
-                        var action = graph.RootSet.Actions.Find(a => a.Uid == selection);
-                        var table = action?.calculation?.levels;
+                        var editable = owner.ownsFormulas && AssetDatabase.GetAssetPath(current) != AssetDatabase.GetAssetPath(owner)
+                            ? Bind(current) : current;
+                        OpenFormulas(editable, false);
                         var row = table ? table.rows.Find(r => r.level == formulaSampleLevel) : null;
                         if (row != null)
                             foreach (var field in row.fields) sampleNumbers["参数/level." + field.key] = field.value;
                     }
-                    if (GUILayout.Button("专用副本", GUILayout.Width(68)))
+                    if (GUILayout.Button("复制公式", GUILayout.Width(68)))
                     {
-                        string path = EditorUtility.SaveFilePanelInProject("保存本技能专用公式", graph.name + "_" + current.name, "asset", "选择保存位置");
+                        if (owner.ownsFormulas)
+                        {
+                            var copy = EmbedFormulaCopy(owner, current);
+                            copy.name = current.name + "_副本";
+                            Bind(copy);
+                            return;
+                        }
+                        string path = EditorUtility.SaveFilePanelInProject("保存公式副本", owner.name + "_" + current.name, "asset", "选择保存位置");
                         if (string.IsNullOrEmpty(path)) return;
                         MasterGraphWindow.CloseIfEditing(current);
                         AssetDatabase.SaveAssetIfDirty(current);
                         path = AssetDatabase.GenerateUniqueAssetPath(path);
-                        if (AssetDatabase.CopyAsset(AssetDatabase.GetAssetPath(current), path))
-                            Change(() => assign(AssetDatabase.LoadAssetAtPath<SkillFormula>(path)));
+                        var external = Instantiate(current);
+                        AssetDatabase.CreateAsset(external, path);
+                        Bind(external);
                     }
                 }
             }

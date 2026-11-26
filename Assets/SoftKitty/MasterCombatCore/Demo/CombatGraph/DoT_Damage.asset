@@ -1,5 +1,5 @@
 %YAML 1.1
-%TAG !u! tag:unity3d.com,2011:
+%TAG !u! tag:yousandi.cn,2023:
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106,6 +106,14 @@ MonoBehaviour:
         connectedNodes: []
         allowMutipleConnection: 0
         createByDefault: 1
+      - Name: "\u52A8\u4F5C\u524D\u7F6E\u6761\u4EF6"
+        Type: ConditionIn
+        acceptedTypes:
+        - ConditionOut
+        uid: []
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 1
       outputPort: []
       minimized: 0
       InstanceCache: 0
@@ -184,6 +192,14 @@ MonoBehaviour:
       WaitTime: 0
       KeepTime: 0
       Interval: 0
+      calculation:
+        rid: -2
+      motion:
+        rid: -2
+      projectile:
+        rid: -2
+      visualEffect:
+        rid: -2
     - mType: 0
       Name: Action
       Uid: Node4
@@ -225,6 +241,14 @@ MonoBehaviour:
         uid: []
         connectedNodes: []
         allowMutipleConnection: 0
+        createByDefault: 1
+      - Name: "\u52A8\u4F5C\u524D\u7F6E\u6761\u4EF6"
+        Type: ConditionIn
+        acceptedTypes:
+        - ConditionOut
+        uid: []
+        connectedNodes: []
+        allowMutipleConnection: 1
         createByDefault: 1
       outputPort: []
       minimized: 0
@@ -301,6 +325,14 @@ MonoBehaviour:
       WaitTime: 0
       KeepTime: 0
       Interval: 0
+      calculation:
+        rid: -2
+      motion:
+        rid: -2
+      projectile:
+        rid: -2
+      visualEffect:
+        rid: -2
     Triggers: []
     ConditionGroups: []
     Handlers: []
@@ -469,6 +501,8 @@ MonoBehaviour:
     Groups: []
     Branchs: []
     ActiveTriggers: []
+  combatRandomId: 
+  previewAsOpponent: 0
   autoSave: 0
   NodeIconSprites:
   - {fileID: 580834057, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
@@ -481,18 +515,26 @@ MonoBehaviour:
   ActionClassNames:
   - Animation
   - AttributeChange
+  - CustomData
   - Destroy
   - Event
+  - FormulaImpact
   - Instantiate
+  - OriginalSkillVisual
   - OverTimeEffect
   - PlaySound
+  - Projectile
   - SendMessage
+  - SkillImpact
+  - SkillSignal
+  - SkillVital
   - Teleport
   - TempAttributeChange
   - Transform
   HandlerClassNames:
   - AngleDifference
   - AttributeValue
+  - CustomData
   - Distance
   - EntityExist
   - HeightDifference
@@ -683,6 +725,14 @@ MonoBehaviour:
           WaitTime: 0
           KeepTime: 0
           Interval: 0
+          calculation:
+            rid: -2
+          motion:
+            rid: -2
+          projectile:
+            rid: -2
+          visualEffect:
+            rid: -2
         Triggers: []
         ConditionGroups: []
         Handlers: []
@@ -937,6 +987,14 @@ MonoBehaviour:
           WaitTime: 0
           KeepTime: 0
           Interval: 0
+          calculation:
+            rid: -2
+          motion:
+            rid: -2
+          projectile:
+            rid: -2
+          visualEffect:
+            rid: -2
         - mType: 0
           Name: Action
           Uid: Node4
@@ -1053,6 +1111,14 @@ MonoBehaviour:
           WaitTime: 0
           KeepTime: 0
           Interval: 0
+          calculation:
+            rid: -2
+          motion:
+            rid: -2
+          projectile:
+            rid: -2
+          visualEffect:
+            rid: -2
         Triggers: []
         ConditionGroups: []
         Handlers: []
@@ -1309,6 +1375,14 @@ MonoBehaviour:
           WaitTime: 0
           KeepTime: 0
           Interval: 0
+          calculation:
+            rid: -2
+          motion:
+            rid: -2
+          projectile:
+            rid: -2
+          visualEffect:
+            rid: -2
         - mType: 0
           Name: Action
           Uid: Node4
@@ -1426,6 +1500,14 @@ MonoBehaviour:
           WaitTime: 0
           KeepTime: 0
           Interval: 0
+          calculation:
+            rid: -2
+          motion:
+            rid: -2
+          projectile:
+            rid: -2
+          visualEffect:
+            rid: -2
         Triggers: []
         ConditionGroups: []
         Handlers: []

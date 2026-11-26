@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -168,11 +169,49 @@ namespace SoftKitty
         [SerializeField] private int demoSkillLevel = 1;
         [SerializeField] private float previewHitDamage = 10f;
 
+        [SerializeField] private SkillDamageReport previewDamageReport;
+
+        private List<(int index, string target, float loss, float shield)> measuredHits;
+        private string measuredCaster;
+
+        private static bool HasUnwiredHit(GraphObject skill) => skill.RootSet.Actions.Any(a =>
+            (SkillProjectile.IsLaunch(a) || a.ClassName == "OriginalSkillVisual" && a.IntValues.FirstOrDefault() == 6 &&
+             OriginalSkillVisualAction.EffectFor(a, skill as OriginalSkillGraph)?.triggerHit == true) &&
+            (a.outputPort.Count == 0 || a.outputPort[0].uid.Count == 0));
+
         private void DrawPreviewHitDamage()
         {
-            if (graph is OriginalSkillGraph || graph.RootSet.Actions.Any(SkillProjectile.IsLaunch))
-                previewHitDamage = Mathf.Max(0, EditorGUILayout.FloatField(new GUIContent("每段预览来伤",
-                    "离线试放输入。命中后使用图中连线；没有连线时用此数值试放。设为 0 可只看表现。"), previewHitDamage));
+            var segments = graph.RootSet.Actions.Where(a => a.ClassName == "FormulaImpact" && a.calculation?.independentSegment == true)
+                .Select(a => a.calculation).OrderBy(c => c.logicIndex).ToArray();
+            if (segments.Length > 0)
+            {
+                previewDamageReport = (SkillDamageReport)EditorGUILayout.ObjectField("对照战报（可选）", previewDamageReport,
+                    typeof(SkillDamageReport), false);
+                bool matches = previewDamageReport && graph is OriginalSkillGraph original &&
+                    previewDamageReport.skillId == original.sourceId && (measuredCaster == null || measuredCaster == previewDamageReport.casterId);
+                if (previewDamageReport && !matches) EditorGUILayout.HelpBox("所选战报与当前技能或施放者不符，试放继续使用技能公式。", MessageType.Warning);
+                foreach (var c in segments)
+                {
+                    var seen = measuredHits?.Where(h => h.index == c.logicIndex);
+                    var rows = matches ? previewDamageReport.entries?.Where(e => e.logicIndex == c.logicIndex) : null;
+                    string label = "逻辑段 " + c.logicIndex + (c.segmentRatioVerified ? " · 已核实" : " · 倍率待核");
+                    string actual = seen == null ? "" : string.Join("，", seen.Select(h => h.target + " 扣血 " + h.loss.ToString("G6") + " / 耗盾 " + h.shield.ToString("G6")));
+                    EditorGUILayout.LabelField(label, actual.Length > 0 ? actual : "尚无实算命中", EditorStyles.wordWrappedMiniLabel);
+                    if (matches)
+                    {
+                        string expected = rows == null ? "" : string.Join("，", rows.Select(e =>
+                            e.targetId + " 扣血 " + (e.healthBefore - e.healthAfter) + " / 耗盾 " + e.shieldSpent));
+                        EditorGUILayout.LabelField("战报对照", expected.Length > 0 ? expected : "本段无记录", EditorStyles.wordWrappedMiniLabel);
+                    }
+                }
+            }
+            if (HasUnwiredHit(graph)) DrawPreviewDamageInput();
+        }
+
+        private void DrawPreviewDamageInput()
+        {
+            previewHitDamage = Mathf.Max(0, EditorGUILayout.FloatField(new GUIContent("每段预览来伤",
+                "仅用于工作台试放。飞剑命中口有连线时执行连线；设为 0 可关闭预览回调的扣血。"), previewHitDamage));
         }
         [SerializeField] private int previewDirection;
         [SerializeField] private int previewMode;
@@ -364,12 +403,21 @@ namespace SoftKitty
                     lastCaster = PreviewAsOpponent ? monster : hero;
                     lastReceiver = PreviewAsOpponent ? hero : monster;
                     healthBefore = lastReceiver.GetAttributeFloat("chp");
-                    CastActors(graph, lastCaster, lastReceiver, demoSkillLevel, out demoResult, previewHitDamage: previewHitDamage);
+                    CastPreviewActors(lastCaster, lastReceiver, out demoResult);
                 }
                 Repaint();
             }
             if (page == PreviewPage && EditorApplication.timeSinceStartup >= nextReadout)
             { nextReadout = EditorApplication.timeSinceStartup + .05; Repaint(); }
+        }
+
+        private void CastPreviewActors(EntityComponent caster, EntityComponent receiver, out string result, CombatDamage damage = null)
+        {
+            var hits = new List<(int, string, float, float)>();
+            measuredHits = hits;
+            measuredCaster = caster ? caster.mData?.CombatRandomId : null;
+            CastActors(graph, caster, receiver, demoSkillLevel, out result, damage, previewHitDamage,
+                (index, target, loss, shield) => hits.Add((index, target.CombatRandomId, loss, shield)));
         }
 
         private static bool ValidatePreviewLevel(GraphObject skill, int level, out string info)
@@ -408,7 +456,7 @@ namespace SoftKitty
             return CastActors(skill, caster, receiver, skillLevel, out info);
         }
 
-        private static bool CastActors(GraphObject skill, EntityComponent caster, EntityComponent receiver, int skillLevel, out string info, CombatDamage damage = null, float previewHitDamage = 10f)
+        private static bool CastActors(GraphObject skill, EntityComponent caster, EntityComponent receiver, int skillLevel, out string info, CombatDamage damage = null, float previewHitDamage = 10f, System.Action<int, Entity, float, float> onSettled = null)
         {
             if (!caster || !receiver || !caster.isActiveAndEnabled || !receiver.isActiveAndEnabled ||
                 !caster.AvailableForInteraction || !receiver.AvailableForInteraction)
@@ -442,15 +490,15 @@ namespace SoftKitty
             if (UsesSkillLevel(skill)) damage.SetDynamicValue("skill.level", Mathf.Max(1, skillLevel));
             SkillDamageNumbers.Observe(caster);
             SkillDamageNumbers.Observe(receiver);
-            if (original || skill.RootSet.Actions.Any(SkillProjectile.IsLaunch))
+            if (HasUnwiredHit(skill))
             {
                 var playback = SkillPlayback.On(damage);
                 var previousImpact = playback.OriginalProjectileImpact;
                 playback.OriginalProjectileImpact = (source, victim) => SkillPlayback.ApplyIncomingDamage(source, victim, previewHitDamage);
-                try { damage.DealDamage(caster.mData, receiver.mData); }
+                try { damage.DealDamageObserved(caster.mData, receiver.mData, onSettled); }
                 finally { playback.OriginalProjectileImpact = previousImpact; }
             }
-            else damage.DealDamage(caster.mData, receiver.mData);
+            else damage.DealDamageObserved(caster.mData, receiver.mData, onSettled);
             var description = original ? "原作表现 " + original.sourceId
                 : UsesSkillLevel(skill) ? skillLevel + " 级" : "自定义技能图";
             info = skill.name + "  ·  " + description + "  ·  " + PreviewActorName(caster) + "（" + caster.uid + "） → " + PreviewActorName(receiver) + "（" + receiver.uid + "）  ·  起始距离 "

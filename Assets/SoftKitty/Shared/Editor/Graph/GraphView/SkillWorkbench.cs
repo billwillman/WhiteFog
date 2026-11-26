@@ -65,6 +65,12 @@ namespace SoftKitty
                 return;
             }
             if (page != PreviewPage) page = 0;
+            if (asset != graph)
+            {
+                previewDamageReport = null;
+                measuredHits = null;
+                measuredCaster = null;
+            }
             formulaGraph = asset;
             formulaUid = null;
             formulaFromBuff = false;
@@ -320,7 +326,8 @@ namespace SoftKitty
                 var name = new Rect(row.x, row.y, Mathf.Min(row.width * .49f, 285), row.height);
                 var lane = Rect.MinMaxRect(name.xMax + 4, row.y + 4, row.xMax - 5, row.yMax - 4);
                 var binding = action.inputPort[0].uid.FirstOrDefault();
-                bool onArrival = binding != null && root.Actions.Exists(a => SkillProjectile.IsLaunch(a) && binding == a.Uid + "#0");
+                bool onArrival = binding != null && root.Actions.Exists(a => binding == a.Uid + "#0" &&
+                    (SkillProjectile.IsLaunch(a) || a.visualEffect?.triggerHit == true));
                 string route = binding == null ? "未连接" : binding == "Node0#0" ? "直接" : onArrival ? "命中后" : "分支";
                 var timing = motions[action];
                 string label = (onArrival ? "+" : "") + action.WaitTime.ToString("0.00") + "s  " + (timing == null ? ActionName(action) : "角色动画") + "  ·  " + (timing == null ? route : TimingLabel(timing));
@@ -758,7 +765,7 @@ namespace SoftKitty
                     lastCaster = dealer;
                     lastReceiver = target;
                     healthBefore = target.mData != null ? target.GetAttributeFloat("chp") : 0;
-                    CastActors(graph, dealer, target, demoSkillLevel, out message, executor, previewHitDamage);
+                    CastPreviewActors(dealer, target, out message, executor);
                 }
             DrawInterruptButton(dealer, ref message);
             if (!string.IsNullOrEmpty(message)) EditorGUILayout.LabelField(message, EditorStyles.wordWrappedLabel);

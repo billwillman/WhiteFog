@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:yousandi.cn,2023:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bdb6da936d94134a91a916a5daa82d1, type: 3}
+  m_Name: "\u5B97\u5E08\u4E4B\u4E0APvP\u76F4\u4F24\u5B9E\u6D4B"
+  m_EditorClassIdentifier: 
+  stages:
+  - id: attack
+    label: "\u9762\u677F\u653B\u51FB"
+    kind: 0
+    formula: {fileID: 11400000, guid: d9d56118a67fe3745a7cfb9c81fd4372, type: 2}
+    conditionChance: {fileID: 0}
+  - id: penetration
+    label: "\u6709\u6548\u9632\u5FA1\uFF08\u7A7F\u9632\u4E0E\u6297\u6027\uFF09"
+    kind: 3
+    formula: {fileID: 11400000, guid: 98e8c8370ec33f348a694dfd1548d45b, type: 2}
+    conditionChance: {fileID: 0}
+  - id: ratio
+    label: "\u62DB\u5F0F\u500D\u7387\uFF08\u539F\u503C \xF7 1000\uFF09"
+    kind: 3
+    formula: {fileID: 11400000, guid: 42f5a451fc212e04fae730265f9f6aef, type: 2}
+    conditionChance: {fileID: 0}
+  - id: increase
+    label: "\u9002\u7528\u7C7B\u522B\u589E\u51CF\u4F24"
+    kind: 3
+    formula: {fileID: 11400000, guid: 2412a5a1298fd024cbef6753610c1c81, type: 2}
+    conditionChance: {fileID: 0}
+  - id: protection
+    label: "\u5883\u754C\u62A4\u4F53"
+    kind: 3
+    formula: {fileID: 11400000, guid: 143b8318e29f3da458fae2a949dd2110, type: 2}
+    conditionChance: {fileID: 0}
+  - id: critical
+    label: "\u5DF2\u89E6\u53D1\u4F1A\u5FC3\u65F6\u7684\u51C0\u500D\u7387"
+    kind: 3
+    formula: {fileID: 11400000, guid: 967a341a7aaca744bb057107b5074d4a, type: 2}
+    conditionChance: {fileID: 11400000, guid: faf7785add6546c49a1a3e1650f610dd, type: 2}
+  - id: health
+    label: "\u751F\u547D\u5199\u56DE\uFF08\u5DE5\u7A0B\u7ED3\u7B97\uFF09"
+    kind: 6
+    formula: {fileID: 0}
+    conditionChance: {fileID: 0}
