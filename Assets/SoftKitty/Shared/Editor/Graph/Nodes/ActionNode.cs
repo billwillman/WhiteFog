@@ -73,6 +73,7 @@ namespace SoftKitty
             baseSettings.Q<FloatField>("WaitTime").RegisterValueChangedCallback(x =>
             {
                 m_data.WaitTime = x.newValue;
+                if (SkillWorkbench.IsSourceTime(m_data)) DrawFormulaLinks();
             });
 
             baseSettings.Q<IntegerField>("Count").value = m_data.Count;
@@ -102,7 +103,11 @@ namespace SoftKitty
 
         protected override void OnEnumChanged(string uid)
         {
-            if (uid == "stage" && m_data.ClassName == "OriginalSkillVisual") RefreshProjectilePort();
+            if (uid == "stage" && m_data.ClassName == "OriginalSkillVisual")
+            {
+                RefreshProjectilePort();
+                DrawFormulaLinks();
+            }
         }
 
         private void RefreshProjectilePort()
@@ -133,6 +138,14 @@ namespace SoftKitty
         private void DrawFormulaLinks()
         {
             extensionContainer.Q<VisualElement>("formulaLinks")?.RemoveFromHierarchy();
+            if (SkillWorkbench.IsSourceTime(m_data))
+            {
+                var help = new Label(SkillWorkbench.SourceTimeHelp(m_data)) { name = "formulaLinks" };
+                help.style.width = 250;
+                help.style.whiteSpace = WhiteSpace.Normal;
+                extensionContainer.Add(help);
+                return;
+            }
             if (m_data.ClassName == "Projectile" || m_data.ClassName == "OriginalSkillVisual" || m_data.ClassName == "Animation")
             {
                 var edit = new Button(() => SkillWorkbench.OpenAction(mainDataObject, m_data.Uid))

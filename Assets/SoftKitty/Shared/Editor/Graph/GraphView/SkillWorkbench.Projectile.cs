@@ -166,11 +166,6 @@ namespace SoftKitty
         private void DrawVisualAction(Action node)
         {
             int stage = node.IntValues.ElementAtOrDefault(0);
-            if (stage == 4 || stage == 5)
-            {
-                EditorGUILayout.HelpBox("原作时间标记，仅记录此时刻。", MessageType.None);
-                return;
-            }
             if (stage != 1 && stage != 2 && stage != 6) return;
             var fx = OriginalSkillVisualAction.EffectFor(node, graph as OriginalSkillGraph)?.Copy() ?? new OriginalSkillGraph.EffectCue();
             EditorGUI.BeginChangeCheck();

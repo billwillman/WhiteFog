@@ -15,7 +15,11 @@ namespace SoftKitty
         private GraphObject[] library;
         private string filter = "";
         private bool showLibrary;
-        private bool showProjectSkills;
+        private SkillLibraryCharacter[] libraryCharacters;
+        [SerializeField] private SkillLibraryCharacter selectedLibraryCharacter;
+        [SerializeField] private int libraryCamp;
+        private string characterFilter = "";
+        private bool showSourceTimes = true;
         private GraphObject[] projectSkills;
         private bool showConditions;
         private static readonly string[] EntityRoleLabels = { "施法者（自己）", "本次目标", "按 UID 指定实体", "高级：全局玩家", "高级：技能执行实例" };
@@ -77,6 +81,7 @@ namespace SoftKitty
             sampleNumbers.Clear();
             MasterGraphWindow.CloseIfEditing(asset);
             graph = asset;
+            if (asset) FocusLibraryRole(asset.libraryCharacter);
             motionBrowserController = null;
             if (executor && executor.mGraph != graph) { executor = null; dealer = null; target = null; }
             selection = null;
@@ -94,7 +99,7 @@ namespace SoftKitty
             GUI.FocusControl(null);
         }
 
-        private void OnProjectChange() { projectSkills = null; library = null; RefreshMotionTimings(); }
+        private void OnProjectChange() { projectSkills = null; library = null; libraryCharacters = null; RefreshMotionTimings(); }
         private void OnEnable()
         {
             Undo.undoRedoPerformed += RefreshMotionTimings;
@@ -190,6 +195,12 @@ namespace SoftKitty
                         EditorGUILayout.LabelField(graph.name, EditorStyles.largeLabel);
                         if (!string.IsNullOrWhiteSpace(graph.GetSummary)) EditorGUILayout.HelpBox(graph.GetSummary, MessageType.None);
                         foreach (var table in BoundLevelTables(graph)) DrawLevelTable(table);
+                        var owner = (SkillLibraryCharacter)EditorGUILayout.ObjectField("所属角色", graph.libraryCharacter, typeof(SkillLibraryCharacter), false);
+                        if (owner != graph.libraryCharacter)
+                        {
+                            Change(() => graph.libraryCharacter = owner);
+                            FocusLibraryRole(owner);
+                        }
                         bool opponent = EditorGUILayout.Popup("默认施放方",
                             graph.previewAsOpponent ? 1 : 0, new[] { "主角", "怪物" }) == 1;
                         if (opponent != graph.previewAsOpponent) Change(() => graph.previewAsOpponent = opponent);
@@ -198,7 +209,7 @@ namespace SoftKitty
                         if (showConditions) DrawEntryConditions(root, entries);
                         DrawTimeline(root);
                         var action = root.Actions.Find(x => x.Uid == selection);
-                        if (action != null) DrawAction(action);
+                        if (action != null && !IsSourceTime(action)) DrawAction(action);
                     }
                 }
             }
@@ -214,35 +225,71 @@ namespace SoftKitty
             else SelectGraph(next);
         }
 
+        private void FocusLibraryRole(SkillLibraryCharacter character)
+        {
+            selectedLibraryCharacter = character;
+            libraryCamp = character ? (int)character.camp : 2;
+            characterFilter = "";
+        }
+
         private void DrawLibrary()
         {
+            int camp = GUILayout.Toolbar(libraryCamp, new[] { "友方", "敌方", "未归属" });
+            if (camp != libraryCamp)
+            {
+                libraryCamp = camp;
+                selectedLibraryCharacter = null;
+                characterFilter = "";
+                filter = "";
+            }
+            if (camp < 2)
+            {
+                if (libraryCharacters == null)
+                    libraryCharacters = AssetDatabase.FindAssets("t:SkillLibraryCharacter", new[] { "Assets" })
+                        .Select(id => AssetDatabase.LoadAssetAtPath<SkillLibraryCharacter>(AssetDatabase.GUIDToAssetPath(id)))
+                        .Where(c => c).OrderBy(c => c.name).ThenBy(c => AssetDatabase.GetAssetPath(c)).ToArray();
+
+                characterFilter = EditorGUILayout.TextField("查找角色", characterFilter);
+                var roles = libraryCharacters.Where(c => c && (int)c.camp == camp &&
+                    c.name.IndexOf(characterFilter, StringComparison.OrdinalIgnoreCase) >= 0).ToArray();
+                if (roles.Length == 0)
+                {
+                    selectedLibraryCharacter = null;
+                    EditorGUILayout.HelpBox(string.IsNullOrEmpty(characterFilter) ?
+                        "此阵营还没有角色。可在 Project 中创建「Soft Kitty/技能库角色」。" : "没有匹配的角色。", MessageType.Info);
+                    return;
+                }
+                int index = Mathf.Max(0, Array.IndexOf(roles, selectedLibraryCharacter));
+                int columns = Mathf.Clamp((int)(position.width / 130), 1, roles.Length);
+                index = GUILayout.SelectionGrid(index, roles.Select(c => c.name).ToArray(), columns, EditorStyles.miniButton);
+                if (selectedLibraryCharacter != roles[index]) filter = "";
+                selectedLibraryCharacter = roles[index];
+            }
+
             filter = EditorGUILayout.TextField("查找技能", filter);
             if (library == null)
                 library = AssetDatabase.FindAssets("t:OriginalSkillGraph", new[] { "Assets/WhiteFog/Skills/宗师之上" })
                     .Select(id => AssetDatabase.LoadAssetAtPath<OriginalSkillGraph>(AssetDatabase.GUIDToAssetPath(id)))
                     .Where(skill => skill && skill.sourceId > 0 && !string.IsNullOrEmpty(skill.sourceVersion))
                     .OrderBy(skill => skill.sourceId).ToArray();
-
-            EditorGUILayout.LabelField("宗师之上 · 原作表现", EditorStyles.boldLabel);
-            foreach (var skill in library)
-            {
-                var original = (OriginalSkillGraph)skill;
-                string label = original.sourceId + "  " + original.name;
-                if (label.IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0 &&
-                    GUILayout.Button(new GUIContent(label, AssetDatabase.GetAssetPath(original)), EditorStyles.miniButton))
-                    SelectGraph(original);
-            }
-            showProjectSkills = EditorGUILayout.Foldout(showProjectSkills, "项目自建技能", true);
-            if (!showProjectSkills) return;
             if (projectSkills == null)
                 projectSkills = AssetDatabase.FindAssets("t:GraphObject", new[] { "Assets" })
-                    .Select(guid => AssetDatabase.LoadAssetAtPath<GraphObject>(AssetDatabase.GUIDToAssetPath(guid)))
+                    .Select(id => AssetDatabase.LoadAssetAtPath<GraphObject>(AssetDatabase.GUIDToAssetPath(id)))
                     .Where(g => g && g.GetType() == typeof(GraphObject) && g.RootSet?.ClassName == "Combat")
                     .OrderBy(g => g.name).ToArray();
-            foreach (var item in projectSkills)
-                if (item.name.IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0 &&
-                    GUILayout.Button(new GUIContent(item.name, AssetDatabase.GetAssetPath(item)), EditorStyles.miniButton))
-                    SelectGraph(item);
+
+            var owner = camp == 2 ? null : selectedLibraryCharacter;
+            bool any = false;
+            foreach (var skill in library.Concat(projectSkills))
+            {
+                if (!skill || skill.libraryCharacter != owner) continue;
+                string label = skill is OriginalSkillGraph original ? original.sourceId + "  " + skill.name : skill.name;
+                if (label.IndexOf(filter, StringComparison.OrdinalIgnoreCase) < 0) continue;
+                any = true;
+                if (GUILayout.Button(new GUIContent(label, AssetDatabase.GetAssetPath(skill)), EditorStyles.miniButton))
+                    SelectGraph(skill);
+            }
+            if (!any) EditorGUILayout.HelpBox("当前列表没有匹配的技能。", MessageType.Info);
         }
 
         private static Root EmptyRoot()
@@ -258,10 +305,12 @@ namespace SoftKitty
             if (string.IsNullOrEmpty(path)) return;
             path = AssetDatabase.GenerateUniqueAssetPath(path);
             var asset = CreateInstance<GraphObject>();
+            asset.libraryCharacter = selectedLibraryCharacter;
+            asset.previewAsOpponent = selectedLibraryCharacter && selectedLibraryCharacter.camp == SkillLibraryCharacter.Camp.Enemy;
             asset.RootSet = requiredStatus == null ? CreateSkillRoot(count, healing) : CreateConditionalHeal(requiredStatus);
             AssetDatabase.CreateAsset(asset, path);
             SelectGraph(asset);
-            library = null;
+            projectSkills = null;
         }
 
         internal static Root CreateSkillRoot(int count, bool healing)
@@ -298,6 +347,18 @@ namespace SoftKitty
             return 0;
         }
 
+        internal static bool IsSourceTime(Action node) =>
+            node.ClassName == "OriginalSkillVisual" && node.IntValues.Count > 0 &&
+            (node.IntValues[0] == 4 || node.IntValues[0] == 5);
+
+        internal static string SourceTimeHelp(Action node)
+        {
+            string time = node.WaitTime.ToString("0.###") + " 秒";
+            return node.IntValues[0] == 4
+                ? "原作在施法后 " + time + " 记录收招。此处仅供对照原作时序，不会切回待机、结束施法或触发伤害。手动新建技能无需添加。"
+                : "原作在施法后 " + time + " 记录位移时点。此处仅供对照原作时序。角色移动由实际的位移动作控制。手动新建技能无需添加。";
+        }
+
         private void DrawTimeline(Root root)
         {
             EditorGUILayout.Space();
@@ -317,10 +378,11 @@ namespace SoftKitty
                 menu.ShowAsContext();
             }
             EditorGUILayout.EndHorizontal();
-            var motions = root.Actions.ToDictionary(a => a, MotionTimeline);
-            float horizon = Mathf.Max(2, root.Actions.Select(a => a.WaitTime + Span(a) + (motions[a]?.seconds ?? 0) + .4f).DefaultIfEmpty(2).Max());
+            var actions = root.Actions.Where(a => !IsSourceTime(a)).OrderBy(a => a.WaitTime).ToArray();
+            var motions = actions.ToDictionary(a => a, MotionTimeline);
+            float horizon = Mathf.Max(2, actions.Select(a => a.WaitTime + Span(a) + (motions[a]?.seconds ?? 0) + .4f).DefaultIfEmpty(2).Max());
             cursor = EditorGUILayout.Slider("时间游标（秒）", cursor, 0, horizon);
-            foreach (var action in root.Actions.OrderBy(x => x.WaitTime))
+            foreach (var action in actions)
             {
                 var row = EditorGUILayout.GetControlRect(false, 24);
                 var name = new Rect(row.x, row.y, Mathf.Min(row.width * .49f, 285), row.height);
@@ -342,8 +404,20 @@ namespace SoftKitty
                 if (Event.current.type == EventType.MouseDown && lane.Contains(Event.current.mousePosition))
                 { selection = action.Uid; cursor = Mathf.Clamp01((Event.current.mousePosition.x - lane.x) / lane.width) * horizon; Event.current.Use(); Repaint(); }
             }
-            if (root.Actions.Count == 0) EditorGUILayout.HelpBox("将游标移到起始时间，点击「添加动作」。", MessageType.Info);
-            else if (root.Actions.All(x => x.Uid != selection)) selection = root.Actions.OrderBy(x => x.WaitTime).First().Uid;
+            if (actions.Length == 0) EditorGUILayout.HelpBox("将游标移到起始时间，点击「添加动作」。", MessageType.Info);
+            if (!actions.Any(x => x.Uid == selection)) selection = actions.FirstOrDefault()?.Uid;
+
+            var sourceTimes = root.Actions.Where(IsSourceTime).OrderBy(a => a.WaitTime).ToArray();
+            if (sourceTimes.Length == 0) return;
+            showSourceTimes = EditorGUILayout.Foldout(showSourceTimes, "原作时间参考", true);
+            if (showSourceTimes)
+            {
+                foreach (var mark in sourceTimes)
+                {
+                    EditorGUILayout.LabelField(ActionName(mark) + " · " + mark.Uid, EditorStyles.boldLabel);
+                    EditorGUILayout.HelpBox(SourceTimeHelp(mark), MessageType.Info);
+                }
+            }
         }
 
         internal static Action AddAction(Root root, string key, float time)

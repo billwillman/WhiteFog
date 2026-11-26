@@ -1,111 +1,173 @@
-// The Unity tab reads the exported graph. Browser drafts keep their own schema and storage.
 (() => {
- const records = (window.unitySkillCatalog || []).map(({asset, graph}) => ({asset, graph: graph.MonoBehaviour || graph}))
-  .sort((a,b) => a.graph.sourceId-b.graph.sourceId || a.asset.path.localeCompare(b.asset.path));
- const seconds = value => Number(value).toFixed(3) + ' s';
- let draftReady = false;
-
- function describe(record, action) {
-  const {graph, asset} = record;
-  if (action.ClassName !== 'OriginalSkillVisual') return {name:action.ClassName, fields:[]};
-  const [stage, index] = action.IntValues;
-  const cue = graph.effects[index];
-  const stageNames = action.CustomInterface.Elements.find(item => item.Uid === 'stage')?.EnumOptions;
-  const name = stageNames?.[stage] || (stage === 5 ? '位移事件标记' : action.ClassName);
-  switch (stage) {
-   case 0: {
-    const motion = asset.motions?.find(item => item.uid === action.Uid);
-    if (!motion) return {name, fields:[['角色动作', asset.motion]]};
-    if (motion.mode === 'AnimationClip') return {name, fields:[['Animation Clip',motion.clipName],['资源路径',motion.clip]]};
-    return {name, fields:[['Animator State',motion.state], ...(motion.clip ? [['原作绑定片段',motion.clip]] : [])]};
-   }
-   case 1: return {name, fields:[['施法特效', asset.cast]]};
-   case 2: return {name, fields:[['武器特效', asset.weapon], ['挂点', graph.weaponBone], ['显示时长', seconds(graph.weaponSeconds)]]};
-   case 3: return {name, fields:[['飞行道具', asset.projectile], ['拖尾', asset.trail], ['命中特效', asset.impact],
-    ['发射挂点', graph.projectileBone || '角色根节点'], ['初速', graph.projectileSpeed + ' m/s'],
-    ['加速度', graph.projectileAcceleration + ' m/s²'], ['拖尾时长', seconds(graph.tailSeconds)]]};
-   case 6:
-    if (cue) return {name:cue.onTarget ? '目标特效与命中' : '施法者特效',
-     fields:[['特效资源', asset.cuePrefabs[index]], ['作用对象', cue.onTarget ? '目标' : '施法者'],
-      ['挂点', cue.bone || '角色根节点'], ['跟随位置', cue.followBone ? '是' : '否'], ['跟随旋转', cue.followRotation ? '是' : '否'],
-      ['显示时长', cue.duration > 0 ? seconds(cue.duration) : '按特效自身时长'], ...(cue.onTarget ? [['命中延迟',seconds(cue.hitDelay)]] : [])]};
-    break;
+  const records = (window.unitySkillCatalog || []).map(({asset,graph}) => {
+    graph = graph.MonoBehaviour || graph;
+    const root = graph.RootSet, nodes = new Map([[root.Uid,root]]);
+    for (const group of ['Actions','Triggers','Handlers','ConditionGroups','Maths','Variables','Entities','Branchs'])
+      for (const node of root[group]) nodes.set(node.Uid,node);
+    return {asset,graph,root,nodes,actions:new Map(asset.actions.map(a=>[a.uid,a]))};
+  }).sort((a,b)=> Number(b.asset.original)-Number(a.asset.original) || (a.graph.sourceId||0)-(b.graph.sourceId||0) ||
+    a.asset.name.localeCompare(b.asset.name,'zh') || a.asset.path.localeCompare(b.asset.path));
+  const number = value => Number(Number(value).toPrecision(7));
+  const seconds = value => number(value) + ' 秒';
+  const links = port => (port?.uid || []).map(ref=>ref.split('#')[0]);
+  let selected, selectedUid, preview = false, draftReady = false;
+  function pairs(parent, values) {
+    if (!values.length) return;
+    const dl = el('dl');
+    for (const [label,value] of values) dl.append(el('dt','',label),el('dd','',String(value ?? '—')));
+    parent.append(dl);
   }
-  return {name, fields:[]};
- }
-
- function fields(parent, pairs) {
-  const list = el('dl');
-  for (const [key, value] of pairs) {
-   list.append(el('dt','',key), el('dd','',value === '' || value == null ? '—' : String(value)));
+  function section(parent, title) {
+    const details = el('details');
+    details.append(el('summary','',title)); parent.append(details); return details;
   }
-  parent.append(list);
- }
-
- function showSkill(record, selectedId) {
-  const {asset, graph} = record;
-  $('unity-title').textContent = asset.name;
-  for (const item of $('unity-skills').children) item.setAttribute('aria-current', String(item.dataset.guid === asset.guid));
-  const events = [...graph.RootSet.Actions].sort((a,b) => a.WaitTime-b.WaitTime);
-  const selected = events.find(action => action.Uid === selectedId) || events[0];
-  $('unity-summary').textContent = events.length + ' 个动作';
-  const play = $('unity-play');
-  play.hidden = false;
-  play.href = 'QingyunSect/LoginDemo/index.html?preview=skills&skill=' + encodeURIComponent(graph.sourceId);
-  $('unity-events').replaceChildren();
-  for (const action of events) {
-   const data = describe(record, action);
-   const row = button('', () => showSkill(record, action.Uid), 'step');
-   row.classList.toggle('selected', action === selected);
-   row.setAttribute('aria-pressed', String(action === selected));
-   const text = el('span','',data.name);
-   const resource = data.fields[0]?.[1];
-   if (resource) text.append(el('small','',String(resource).split('/').pop()));
-   row.append(el('time','',seconds(action.WaitTime)), text, el('em','',action.Uid));
-   $('unity-events').append(row);
+  function label(id) {
+    const node = selected.nodes.get(id);
+    if (!node) return id;
+    if (node === selected.root) return '技能入口';
+    if (selected.actions.has(id)) return selected.actions.get(id).title;
+    if (node.Name === 'Variable') return ['常数 '+number(node.Constant),'属性 '+node.AttributeKey,'变量 '+node.VariableUid,'随机数'][node.Type];
+    if (selected.root.Entities.includes(node)) return ['玩家','施加者','目标','指定实体 '+node.EntityUid,'技能实例'][node.Type];
+    return node.ClassName || node.Name;
   }
-  const details = $('unity-fields'); details.replaceChildren();
-  if (selected) {
-   const data = describe(record, selected);
-   const execution = ['单次','执行多次','持续执行'];
-   details.append(el('h3','',data.name));
-   fields(details, [['节点', selected.Uid], ['开始时间', seconds(selected.WaitTime)], ['执行方式', execution[selected.Type] ?? selected.Type],
-    ...(selected.Type !== 0 ? [['执行间隔', seconds(selected.Interval)], [selected.Type === 1 ? '执行次数' : '持续时长',
-      selected.Type === 1 ? selected.Count : seconds(selected.KeepTime)]] : []), ...data.fields]);
+  function condition(parent,id,ancestors = []) {
+    const node = selected.nodes.get(id);
+    const d = section(parent,label(id)+' · '+id);
+    if (!node || ancestors.includes(id)) return;
+    const fields = [], arrays = ['BoolValues','StringValues','FloatValues','IntValues'];
+    for (const f of node.CustomInterface?.Elements || []) {
+      if (f.Type < 4) fields.push([f.Label,node[arrays[f.Type]]?.[f.Index]]);
+      if (f.Type === 7) fields.push([f.Label,f.EnumOptions[node.IntValues[f.Index]]]);
+    }
+    if (selected.root.ConditionGroups.includes(node)) fields.push(['组合逻辑',['AND','OR','XOR','NOR'][node.Type]]);
+    pairs(d,fields);
+    for (const p of node.inputPort || []) for (const other of links(p)) condition(d,other,[...ancestors,id]);
   }
-  details.append(el('h3','','技能来源'));
-  fields(details, [['原作 ID', graph.sourceId], ['版本', graph.sourceVersion], ['施放方', graph.previewAsOpponent ? '敌方' : '主角'],
-   ...(asset.enemy ? [['预览敌人', asset.enemy]] : []), ['技能图', asset.path]]);
- }
-
- function selectTab(useDraft) {
-  $('unity-pane').hidden = useDraft;
-  $('draft-pane').hidden = $('draft-tools').hidden = !useDraft;
-  $('unity-tab').setAttribute('aria-pressed',String(!useDraft));
-  $('draft-tab').setAttribute('aria-pressed',String(useDraft));
-  if (useDraft) {
-   if (!draftReady) { draftReady = true; boot(); }
-   else { render(); message('已打开本机草稿'); }
-   $('storage-status').textContent = '本机草稿';
-  } else {
-   if (draftReady) playing = false;
-   $('storage-status').textContent = 'Unity 资产 · 只读';
-   message('在 Unity 技能工作台保存后，刷新网页查看最新配置。战场试放使用已构建的 WebGL 包。');
+  function describeTiming(node) {
+    const [parent] = links(node.inputPort[0]);
+    return !parent ? '未连接' : parent === selected.root.Uid ? '直接' :
+      selected.actions.get(parent)?.onContact ? '命中后 · '+parent : '分支 · '+parent;
   }
- }
- for (const record of records) {
-  const {asset, graph} = record;
-  const row = button('', () => showSkill(record), 'skill-row');
-  row.dataset.guid = asset.guid;
-  const words = el('span');
-  words.append(el('strong','',asset.name),el('small','',graph.sourceId + ' · ' + (graph.previewAsOpponent ? '怪物' : '主角')));
-  row.append(el('span','skill-glyph',asset.name[0]),words);
-  $('unity-skills').append(row);
- }
- $('unity-count').textContent = records.length + ' 个';
- $('unity-tab').onclick = () => selectTab(false);
- $('draft-tab').onclick = () => selectTab(true);
- if (records.length) showSkill(records[0]);
- else $('unity-events').textContent = window.unitySkillCatalog ? 'Unity 原作技能库为空。' : '未载入技能库。请在 Unity 的 Tools → 技能工作台中运行「同步原作技能至 H5 编辑器」，再刷新本页。';
- selectTab(false);
+  function drawDetails(node) {
+    const {asset,graph,root} = selected, details = $('unity-fields');
+    details.replaceChildren();
+    if (node) {
+      const a = selected.actions.get(node.Uid);
+      details.append(el('h3','',a.title));
+      pairs(details,[['节点',node.Uid],['执行入口',describeTiming(node)],['开始延迟',seconds(node.WaitTime)],
+        ['执行方式',['单次','执行多次','持续执行'][node.Type]],...(node.Type ? [['执行间隔',seconds(node.Interval)],
+          node.Type===1 ? ['执行次数',node.Count] : ['持续时长',seconds(node.KeepTime)]]:[]),...a.fields.map(f=>[f.label,f.value])]);
+      const guards = node.inputPort.filter(p=>p.Type==='ConditionIn').flatMap(links);
+      const pre = section(details,'动作前置条件 · '+guards.length+' 项');
+      for (const id of guards) condition(pre,id);
+      for (const p of node.outputPort) for (const id of links(p)) {
+        if (selected.actions.has(id)) details.append(button((a.onContact?'命中后执行':'后续节点')+' · '+label(id)+' · '+id,()=>chooseNode(id)));
+        else condition(details,id);
+      }
+    }
+    const guards = links(root.inputPort[0]).flatMap(id=>links(selected.nodes.get(id)?.inputPort?.[0]));
+    const entry = section(details,'技能入口条件 · '+guards.length+' 项');
+    for (const id of guards) condition(entry,id);
+    for (const table of asset.levels) {
+      const d = section(details,'技能等级表 · '+table.path.split('/').pop());
+      for (const row of table.rows) { d.append(el('h4','','等级 '+row.level)); pairs(d,row.fields.map(f=>[f.key,number(f.value)])); }
+    }
+    if (asset.statuses.length) pairs(section(details,'绑定状态'),asset.statuses.map(f=>[f.label,f.value]));
+    const ref = window.unityDamageReference?.skills.find(r=>r.skillId===graph.sourceId);
+    if (ref) pairs(section(details,'原作数值核对'),[...(ref.hasLevelRow ? [['整招倍率',number(ref.rawRatio/10)+'%'],['固定值',ref.rawFlat],
+      ['目标数',ref.targetCount],['冷却',seconds(ref.cooldownMs/1000)]]:[]),['时序',ref.timing],['核对范围',ref.limit]]);
+    const source = section(details,'技能来源');
+    pairs(source,[...(asset.original?[['原作 ID',graph.sourceId],['版本',graph.sourceVersion]]:[]),
+      ['默认施放方',graph.previewAsOpponent?'怪物':'主角'],...(asset.enemy?[['预览敌人',asset.enemy]]:[]),['技能图',asset.path]]);
+  }
+  function chooseNode(id) {
+    selectedUid=id;
+    for (const row of $('unity-events').querySelectorAll('[data-uid]')) {
+      row.classList.toggle('selected',row.dataset.uid===id);
+      row.setAttribute('aria-pressed',String(row.dataset.uid===id));
+    }
+    drawDetails(selected.nodes.get(id));
+  }
+  function showTimeline() {
+    const list = $('unity-events'); list.replaceChildren();
+    const actions = [...selected.root.Actions].sort((a,b)=>a.WaitTime-b.WaitTime);
+    for (const node of actions) {
+      const a = selected.actions.get(node.Uid), row = button('',()=>chooseNode(node.Uid),'step');
+      row.dataset.uid=node.Uid;
+      const name=el('span','',a.title); name.append(el('small','',describeTiming(node)+(a.timing?' · '+a.timing:'')));
+      if (a.duration>0 && a.bands.length) {
+        const track=el('span','motion-track');
+        a.bands.forEach((band,i)=>{
+          const end=a.bands[i+1]?.start ?? a.duration;
+          if (end<=band.start) return;
+          const part=el('i',band.blend?'blend':''); part.title=band.name+' · '+seconds(band.start);
+          part.style.left=(100*band.start/a.duration)+'%'; part.style.width=(100*(end-band.start)/a.duration)+'%'; track.append(part);
+        }); name.append(track);
+      }
+      row.append(el('time','',seconds(node.WaitTime)),name,el('em','',node.Uid)); list.append(row);
+    }
+    if (!actions.length) list.textContent='此技能图没有动作。';
+    chooseNode(actions[0]?.Uid);
+  }
+  function setView(show) {
+    preview=show;
+    $('unity-preview').hidden=!show; $('unity-events').hidden=show;
+    $('unity-summary').previousElementSibling.textContent=show?'战斗预演':'动作时间轴';
+    $('unity-timeline-tab').setAttribute('aria-pressed',String(!show));
+    $('unity-preview-tab').setAttribute('aria-pressed',String(show));
+    if (!show) window.unitySkillPreview.stop();
+  }
+  function open(record) {
+    window.unitySkillPreview.stop(); selected=record;
+    const {asset,graph}=record;
+    $('unity-views').hidden=false; $('unity-title').textContent=asset.name; $('unity-summary').textContent=asset.actions.length+' 个动作';
+    const table=asset.levels[0], level=$('unity-level'); level.replaceChildren();
+    const levels = table ? [...new Set(table.rows.map(r=>r.level))].filter(n=>asset.levels.every(t=>t.rows.some(r=>r.level===n))).sort((a,b)=>a-b) : [1];
+    for(const n of levels) level.add(new Option(n,n));
+    $('unity-level-label').hidden=!table;
+    $('unity-play').disabled=levels.length===0;
+    if(!levels.length) $('unity-play-status').textContent='所绑定的等级表没有共同等级。';
+    $('unity-damage-label').hidden=!asset.unwiredHit;
+    $('unity-direction-label').hidden=asset.original; $('unity-direction').value=graph.previewAsOpponent?'enemy':'hero';
+    for(const row of $('unity-skills').querySelectorAll('[data-guid]')) row.setAttribute('aria-current',String(row.dataset.guid===asset.guid));
+    showTimeline();
+  }
+  function library() {
+    const query=$('unity-search').value.trim().toLowerCase(), list=$('unity-skills'); list.replaceChildren();
+    const matches=records.filter(({asset,graph})=>(asset.path+' '+(graph.sourceId||'')).toLowerCase().includes(query));
+    for(const original of [true,false]) {
+      const group=matches.filter(r=>r.asset.original===original);
+      if(!group.length) continue;
+      list.append(el('h3','',original?'宗师之上 · 原作表现':'项目自建技能'));
+      for(const record of group) {
+        const {asset,graph}=record,row=button('',()=>open(record),'skill-row'),name=el('span');
+        row.dataset.guid=asset.guid;row.title=asset.path;row.setAttribute('aria-current',String(record===selected));
+        name.append(el('strong','',asset.name),el('small','',original?String(graph.sourceId):asset.path.split('/').slice(-2,-1)[0]));
+        row.append(el('span','skill-glyph',asset.name[0]),name);list.append(row);
+      }
+    }
+    $('unity-count').textContent=matches.length+' / '+records.length;
+  }
+  function selectTab(draft) {
+    $('unity-pane').hidden=draft; $('draft-pane').hidden=$('draft-tools').hidden=!draft;
+    $('unity-tab').setAttribute('aria-pressed',String(!draft)); $('draft-tab').setAttribute('aria-pressed',String(draft));
+    if (draft) {
+      window.unitySkillPreview.stop();
+      if (!draftReady) {draftReady=true;boot();} else {render();message('已打开本机草稿');}
+      $('storage-status').textContent='本机草稿';
+    } else {
+      if (draftReady) playing=false;
+      $('storage-status').textContent='Unity 资产 · 只读';
+      message('Unity 保存后刷新可查看配置。战斗预演运行最近构建的 Unity WebGL 包。');
+    }
+  }
+  $('unity-tab').onclick=()=>{ selectTab(false); window.unitySkillPreview.stop(); selected=null; setView(false); $('unity-views').hidden=true;
+    $('unity-title').textContent='Unity 技能工作台'; $('unity-events').textContent='请选择技能'; $('unity-summary').replaceChildren(); $('unity-fields').replaceChildren(); library(); };
+  $('draft-tab').onclick=()=>selectTab(true);
+  $('unity-search').oninput=library;
+  $('unity-timeline-tab').onclick=()=>setView(false); $('unity-preview-tab').onclick=()=>setView(true);
+  $('unity-play').onclick=()=>{if(selected)window.unitySkillPreview.play(selected);};
+  $('unity-interrupt').onclick=()=>window.unitySkillPreview.interrupt();
+  $('unity-tab').click();
+  if(!records.length) $('unity-events').textContent='尚未载入 Unity 技能清单。';
 })();

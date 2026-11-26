@@ -33,7 +33,7 @@
 | 0 播放角色动画 | 读动作绑定或旧图 `castMotion`；State 走指定层和过渡，Clip 走 Playables。 | 原生动画动作在按 UID 找到的实例根组件上按名称播放。简单 State 可复用；子 Animator、实例身份、Clip 引用、层和混合参数需要动画适配。工作台可共用一个动画配置入口。[原生播放](../Assets/SoftKitty/Shared/Scripts/CustomClass/Action/AnimationAction.cs) · [项目绑定](../Assets/SoftKitty/Shared/Scripts/Core/Graph/SkillMotion.cs) |
 | 1 施法特效、2 武器特效 | 按角色根／武器骨骼放置，旧武器特效挂到骨骼并按配置销毁。 | `Instantiate` 的路径和实体父挂接可处理简单特效。指定骨骼、局部挂点、只跟位置与寿命需要适配。[原生实例化](../Assets/SoftKitty/Shared/Scripts/CustomClass/Action/InstantiateAction.cs) |
 | 3 发射 | 旧节点已委托 `ProjectileAction.Schedule`，无须为每种飞剑增加执行器。 | 资产迁移时保留原资源、发射时刻、初速、加速度、命中后连线或预览回调。 |
-| 4 收招、5 位移标记 | 两者在该 Action 的执行分支里都没有位移或收招调用。 | 可转为保留原始时点的注释／标记；将阶段 5 自动翻译成 `Transform` 会凭空加一次位移。 |
+| 4 收招、5 位移标记 | 两者在该 Action 的执行分支里都没有位移或收招调用。 | 工作台现将两类时点列在只读的「原作时间参考」，手动制作技能无需配置。旧图保留原序列化值。将阶段 5 自动翻译成 `Transform` 会凭空加一次位移。 |
 | 6 轨道特效 | 读取轨道配置，决定挂在谁身上及如何跟随。旧配置通过 `onTarget` 推导 `triggerHit`；提供回调时才会在命中盒检查后调用它。 | 挂目标特效、实际接触、伤害结算应有各自的配置。转为通用挂点特效时，需单独迁移原有的命中回调时机。[阶段执行器](../Assets/SoftKitty/Shared/Scripts/CustomClass/Action/OriginalSkillVisualAction.cs) |
 
 这四张图的动作上均未保存命中下游连线。对发射节点，工作台在没有连线时可注入“每段预览来伤”；旧轨道特效也可调用这个回调。原作试放中的飘字能证明预览发生了生命变化，不能单独证明四张资产已接入正式伤害公式。[试放注入](../Assets/SoftKitty/Shared/Editor/Graph/GraphView/SkillWorkbench.Demo.cs) · [发射节点的命中输出](../Assets/SoftKitty/Shared/Scripts/CustomClass/Action/ProjectileAction.cs)

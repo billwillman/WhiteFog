@@ -10,6 +10,7 @@ namespace SoftKitty
         [Tooltip("Stable skill ID for combat rolls. Set this when assets share a name or must survive renaming.")]
         public string combatRandomId;
         public string CombatRandomId => string.IsNullOrEmpty(combatRandomId) ? name : combatRandomId;
+        public SkillLibraryCharacter libraryCharacter;
         [HideInInspector] public bool previewAsOpponent;
         public bool autoSave = false;
         [HideInInspector]

@@ -196,6 +196,23 @@
   #unity-pane .toolbar { justify-content:space-between; }
   #unity-pane .skill-title { min-width:0; }
   #unity-pane .step small { overflow-wrap:anywhere; }
+  #unity-pane .library input { margin:8px 10px 0; width:calc(100% - 20px); }
+  #unity-pane .source-fields dl { grid-template-columns:minmax(74px,36%) minmax(0,1fr); }
+  #unity-pane .section-bar { flex-wrap:wrap; }
+  #unity-events { flex:1; min-height:100px; }
+  #unity-events .step { align-items:start; }
+  #unity-events .step time { white-space:nowrap; }
+  .motion-track { position:relative; display:block; height:5px; margin-top:6px; background:var(--line); }
+  .motion-track i { position:absolute; top:0; bottom:0; background:var(--accent); min-width:2px; }
+  .motion-track i.blend { background:var(--gold); }
+  #unity-preview { min-height:0; overflow:auto; padding:12px; }
+  #unity-preview .preview-controls { display:flex; flex-wrap:wrap; align-items:end; gap:10px; margin:0 0 12px; }
+  #unity-preview label { display:grid; gap:3px; color:var(--soft); }
+  #unity-preview input { width:7em; }
+  #unity-screen canvas { display:block; width:auto; max-width:100%; height:min(55vh,640px); aspect-ratio:9/16; margin:auto; background:#0d181d; }
+  #unity-readout { white-space:pre-line; }
+  #unity-details details { margin:12px 0; }
+  #unity-details summary { cursor:pointer; color:var(--accent); }
 </style>
 </head>
 <body>
@@ -213,20 +230,32 @@
       <input type="file" id="file-input" accept=".json,application/json" hidden>
     </div>
   </header>
-  <main class="workspace" id="unity-pane" aria-label="Unity 原作技能库">
+  <main class="workspace" id="unity-pane" aria-label="Unity 技能库">
     <aside class="library">
-      <div class="section-bar"><h2>原作技能库</h2><small id="unity-count"></small></div>
-      <nav id="unity-skills" class="skill-list" aria-label="选择原作技能"></nav>
+      <div class="section-bar"><h2>技能库</h2><small id="unity-count"></small></div>
+      <input type="search" id="unity-search" aria-label="查找技能" placeholder="查找名称或原作 ID">
+      <nav id="unity-skills" class="skill-list" aria-label="选择技能"></nav>
     </aside>
     <section class="graph-panel">
       <div class="toolbar">
         <div class="skill-title"><h2 id="unity-title">Unity 技能工作台</h2></div>
-        <a id="unity-play" hidden target="_blank" rel="noopener">在战场试放 ↗</a>
+        <div class="bar-actions" id="unity-views" hidden><button id="unity-timeline-tab" type="button">时间轴</button><button id="unity-preview-tab" type="button">战斗预演</button></div>
       </div>
       <div class="section-bar"><h2>动作时间轴</h2><small id="unity-summary"></small></div>
       <div id="unity-events" class="source-events"></div>
+      <section id="unity-preview" hidden aria-label="Unity 战斗预演">
+        <div class="preview-controls">
+          <label>施放距离（米）<input id="unity-distance" type="number" min="2" max="20" step=".1" value="8"></label>
+          <label id="unity-level-label" hidden>技能等级<select id="unity-level"></select></label>
+          <label id="unity-damage-label" hidden>每段预览来伤<input id="unity-damage" type="number" min="0" step="any" value="10"></label>
+          <label id="unity-direction-label" hidden>施放方<select id="unity-direction"><option value="hero">主角</option><option value="enemy">怪物</option></select></label>
+          <button id="unity-play" class="primary" type="button">试放技能</button><button id="unity-interrupt" type="button" disabled>打断施法</button>
+        </div>
+        <p id="unity-play-status" role="status"></p><div id="unity-screen"></div>
+        <p id="unity-readout"></p><ol id="unity-hits"></ol>
+      </section>
     </section>
-    <aside class="details">
+    <aside class="details" id="unity-details">
       <div class="section-bar"><h2>节点参数</h2></div>
       <div class="source-fields" id="unity-fields"></div>
     </aside>
@@ -826,6 +855,7 @@ function boot(){
 }
 </script>
 <script src="docs/unity-skill-catalog.js"></script>
+<script src="docs/unity-skill-preview.js"></script>
 <script src="docs/unity-skill-editor.js"></script>
 </body>
 </html>

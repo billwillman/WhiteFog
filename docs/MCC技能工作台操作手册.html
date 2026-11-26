@@ -11,7 +11,7 @@ body{margin:0;color:var(--ink);background:#f4f6f1;font:16px/1.75 "Microsoft YaHe
 <main><nav aria-label="目录"><a href="#first">首次打开和试放</a><a href="#platform">Buff、公式与条件技能</a><a href="#workspace">窗口里的配置</a><a href="#timing">时间轴和节点</a><a href="#damage-flow">制作伤害流程</a><a href="#build">从空白制作飞剑</a><a href="#catalog">原作技能验证</a><a href="#edit">复制、修改、复测</a><a href="#preview">两种试放方式</a><a href="#status">护盾和易伤</a><a href="#trouble">常见问题</a><a href="#files">目录与交付</a></nav><article>
 <section id="first"><h2>首次打开和试放</h2>
 <ol><li>打开 <code>E:\Tuanjie19_WhiteFog</code>，等待团结完成脚本编译和资源导入。从菜单打开 <strong>Window → Soft Kitty → 技能工作台</strong>。已经在 Project 中选中技能图时，也可以点 Inspector 里的<strong>打开技能工作台</strong>。</li>
-<li>点<strong>技能库</strong>，按名字或编号搜索 <strong>25090 破空剑法</strong>。</li>
+<li>点<strong>技能库 → 友方 → 主角</strong>，按名字或编号搜索 <strong>25090 破空剑法</strong>。</li>
 <li>在动作时间轴检查 0 秒的动作和武器，以及 1.120、1.251、1.443 秒的三次飞剑发射。</li>
 <li>切到 <strong>Preview → 快速试放</strong>。使用默认的 8 米距离，点<strong>打开角色预览并试放</strong>。</li>
 <li>打开「公式与数值」查看「命中与伤害来源」。命中口接有结算动作的技能会列出其伤害流程，例如《基础剑法》。保留空命中口的试放使用「每段预览来伤」，这个值也可在 Preview 中调整。<a href="#damage-flow">查看流程制作步骤</a>。</li>
@@ -28,9 +28,11 @@ body{margin:0;color:var(--ink);background:#f4f6f1;font:16px/1.75 "Microsoft YaHe
 <p>「吸收护盾」模板入口打开 MCC 高级伤害图，可检查能量盾的扣减过程。公式结算动作支持独立等级表和跨图公式引用。多盾优先级和按护盾实例驱散的规则仍待确定。<a href="Tuanjie技能平台设计与MCC边界.md">技能平台设计与 MCC 边界</a></p>
 <p><a href="Unity技能编辑器Action审查.md">查看全部 18 个 Action 的原生能力、必要扩展与实测结果</a></p>
 </section><section id="workspace"><h2>窗口里的配置</h2>
+<p>手动制作一招飞剑：选角色，点<strong>新建技能 → 空白技能</strong>。在 0 秒添加「播放角色动画」，在出手时添加「产生投射物」，在投射物的「命中后执行」下配置伤害。新技能继承所选的「所属角色」。新增角色用 Project 的 Create → Soft Kitty → 技能库角色，填写阵营。</p>
+<p>原作技能的「原作时间参考」供核对出处。例如破空剑法在 1.501 秒记录收招。此记录不切换动画、不限制下一次施法，也不触发命中。手动创建技能无需填写。</p>
 <figure class="window-map" aria-label="技能工作台页签"><div><strong>技能编辑　｜　Buff 状态　｜　公式与数值　｜　Preview</strong></div><div><strong>技能编辑</strong>　选择技能 → 编辑等级表、触发条件与动作时间轴 → 保存</div><div><strong>Preview → 快速试放</strong>　选择本次的方向、距离和等级，进入预览场景观察结果</div><div><strong>Preview → 当前场景试放</strong>　指定当前场景的执行组件、施加者和目标</div><figcaption>编辑和预览共用当前选中的技能。可以直接切换页签，也可以在 Preview 的技能库里换招。</figcaption></figure>
 <div class="table"><table><thead><tr><th>位置</th><th>在这里做什么</th><th>何时使用</th></tr></thead><tbody>
-<tr><td>技能库 / 资产槽</td><td>按名字或原作 ID 搜索，也可从 Project 拖入正在制作的图。</td><td>开始制作或在 Play 中切换试放技能。</td></tr>
+<tr><td>技能库 / 资产槽</td><td>先选阵营与角色，再按名字或原作 ID 找技能。「未归属」收录尚未指定角色的技能。也可从 Project 拖入技能图。</td><td>开始制作或在 Play 中切换试放技能。</td></tr>
 <tr><td>新建 / 复制</td><td>新建可选空白、单次伤害、三段伤害或单体治疗。复制可保留现有节点、参数和连线。</td><td>想沿用现有飞剑、易伤或护盾配置时，用复制最快。</td></tr>
 <tr><td>技能入口条件</td><td>展开后可添加、修改或删除每项条件，支持撤销。删除最后一项后，整招可以通过空的入口条件。</td><td>用于施放整招前的检查，例如施法者是否沉默。其他动作上单独配置的条件仍各自生效。</td></tr>
 <tr><td>动作前置条件</td><td>在时间轴点一个动作，点「添加此动作的前置条件」。多项须全部满足；「删除此条件」只断开本处引用。</td><td>等待动作开始时间后检查。重复或持续执行的动作每到一次执行时刻都重新检查，失败只跳过本次。原生分支仍在进入分支时选择路径。</td></tr>

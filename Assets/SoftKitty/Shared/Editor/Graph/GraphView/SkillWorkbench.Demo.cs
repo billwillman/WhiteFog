@@ -165,6 +165,7 @@ namespace SoftKitty
             if (monitor) { monitor.Release(); DestroyImmediate(monitor); }
         }
         [SerializeField] private bool demoQueued;
+        private AsyncOperation stageReload;
         [SerializeField] private float demoRange = 8f;
         [SerializeField] private int demoSkillLevel = 1;
         [SerializeField] private float previewHitDamage = 10f;
@@ -342,8 +343,16 @@ namespace SoftKitty
                 EditorSceneManager.playModeStartScene = start;
             }
             demoQueued = true;
-            demoResult = "正在打开角色预览场景";
+            measuredHits = null;
+            lastCaster = lastReceiver = null;
+            demoResult = "正在准备本次试放";
             if (!Application.isPlaying) EditorApplication.isPlaying = true;
+            else
+            {
+                // Replacing the preview scene also retires airborne projectiles, particles and delayed actions.
+                ReleasePreviewCamera();
+                stageReload = EditorSceneManager.LoadSceneAsyncInPlayMode(StagePath, new LoadSceneParameters(LoadSceneMode.Single));
+            }
         }
 
         private void UpdateDemoPreview()
@@ -362,9 +371,10 @@ namespace SoftKitty
             if (stageCamera && !showGamePreview)
                 stageCamera.enabled = page == PreviewPage;
             if (monitorCamera && (page != PreviewPage || (previewMode == 1 && (!dealer || !target)))) monitorCamera.enabled = false;
-            if (demoQueued && InPreviewStage && !EditorApplication.isPaused && Time.timeSinceLevelLoad > 0)
+            if (demoQueued && (stageReload == null || stageReload.isDone) && InPreviewStage && !EditorApplication.isPaused && Time.timeSinceLevelLoad > 0)
             {
                 demoQueued = false;
+                stageReload = null;
                 var actors = SceneManager.GetActiveScene().GetRootGameObjects();
                 var hero = actors.FirstOrDefault(go => go.name == "男角色 001")?.GetComponent<EntityComponent>();
                 var monster = actors.FirstOrDefault(go => go.name == "小雕")?.GetComponent<EntityComponent>();
@@ -372,6 +382,10 @@ namespace SoftKitty
                     demoResult = "预览场缺少有效的男角色 001（player）或小雕（EnemyBot01）实体。";
                 else
                 {
+                    // The MCC entity database outlives scene loads. Recreate the same initial combatants on every quick trial.
+                    CombatRandom.BeginBattle(CombatRandom.Seed);
+                    GameManager.EntityManagerData.RuntimeInit();
+                    GameManager.SetPlayerInstance(hero);
                     hero.SetPosition(StageCenter + Vector3.back * demoRange * .5f, false);
                     monster.SetPosition(StageCenter + Vector3.forward * demoRange * .5f, false);
                     hero.transform.forward = Vector3.forward;

@@ -1178,6 +1178,7 @@ MonoBehaviour:
     Branchs: []
     ActiveTriggers: []
   combatRandomId: 
+  libraryCharacter: {fileID: 11400000, guid: 8a2452e023e84d5eadaa670a236b6233, type: 2}
   previewAsOpponent: 1
   autoSave: 0
   NodeIconSprites: []
