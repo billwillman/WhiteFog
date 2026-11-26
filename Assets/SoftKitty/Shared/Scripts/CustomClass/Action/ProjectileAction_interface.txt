@@ -1,0 +1,1 @@
+{"Elements":[{"Uid":"caster","Label":"施放者","ToolTips":"产生投射物的实体","Type":8,"Index":0,"VisibleBind":"","EnumOptions":[]},{"Uid":"target","Label":"瞄准目标","ToolTips":"决定初始弹道及追踪对象，可命中对象由本发筛选规则决定","Type":8,"Index":1,"VisibleBind":"","EnumOptions":[]}]}

@@ -9,8 +9,10 @@ namespace SoftKitty
         {
             public GameObject prefab;
             public string bone;
-            public bool onTarget, followBone, followRotation;
+            public bool onTarget, followBone, followRotation, triggerHit;
             public float duration, hitDelay;
+            public Vector3 hitBoxSize = new Vector3(1.3f, 1.3f, 1.3f);
+            public EffectCue Copy() => (EffectCue)MemberwiseClone();
         }
 
         public EffectCue[] effects = new EffectCue[0];

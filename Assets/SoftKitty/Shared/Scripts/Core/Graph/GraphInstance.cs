@@ -65,8 +65,31 @@ namespace SoftKitty
 
         public void StartActionCoroutine(float _delay, int _count, float _keepTime, float _interval, NodeBase _node, GraphRuntimeState _runtime)
         {
-            StartCoroutine(ActionCo(_delay, _count, _keepTime, _interval, _node, _runtime));
+            var routine = ActionCo(_delay, _count, _keepTime, _interval, _node, _runtime);
+            if (impactHost) impactHost.Schedule(routine);
+            else StartCoroutine(routine);
         }
+        private SkillPlayback impactHost;
+
+        internal static void RunOnProjectileHit(GraphObject skill, PortSetting output, GraphRuntimeState state, GameObject projectileHost,
+            Vector3 point, Entity source, Entity target)
+        {
+            var go = new GameObject(skill.name + " · 命中");
+            UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(go, projectileHost.scene);
+            go.transform.position = point;
+            var instance = go.AddComponent<GraphInstance>();
+            instance.mGraph = skill;
+            instance.Init();
+            instance.impactHost = SkillPlayback.On(instance);
+            instance.impactHost.RetireAfter(0);
+            // Hit branches read the struck entity's attributes, even if the parent graph cached the aim target's.
+            state.NodeStates = instance.mRuntime.NodeStates;
+            state.RootState.RootInstance = go;
+            state.RootState.SetInvolvedEntity("Dealer", source);
+            state.RootState.SetInvolvedEntity("Target", target);
+            foreach (var next in output.connectedNodes) next.Run(instance, state);
+        }
+
         private void GetRootInstance()
         {
             if (!runtimeInitializedGraph.ContainsKey(mGraph))

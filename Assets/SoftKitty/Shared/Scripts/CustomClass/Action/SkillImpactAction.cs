@@ -21,6 +21,7 @@ namespace SoftKitty
             var host = SkillPlayback.On(instance);
             host.ScheduleReleases(runtime, source, WaitTime, 1, 0, () =>
             {
+                if ((SkillPlayback.Style)IntValues[0] != SkillPlayback.Style.Direct && !ConditionsMet(ref runtime)) return;
                 var playback = (SkillPlayback.Style)IntValues[0] == SkillPlayback.Style.Direct ? host : host.ProjectileHost();
                 playback.Schedule(Strike(playback, source, recipient, Mathf.Max(0, amount), runtime));
             });
@@ -41,8 +42,14 @@ namespace SoftKitty
 
             var style = (SkillPlayback.Style)IntValues[0];
             if (style != SkillPlayback.Style.Direct)
-                yield return host.Flight(style, start, recipient, victim, distance / Mathf.Max(.1f, FloatValues[1]), FloatValues[2]);
-            if (!recipient.AvailableForInteraction || (victim && !victim.isActiveAndEnabled)) yield break;
+            {
+                EntityComponent struck = null;
+                yield return host.Flight(style, start, recipient, victim, distance / Mathf.Max(.1f, FloatValues[1]), FloatValues[2], projectile ?? new SkillProjectile(), source, hit => struck = hit);
+                if (!struck) yield break;
+                victim = struck;
+                recipient = struck.mData;
+            }
+            if (!SkillPlayback.CanSettle(style, recipient, victim)) yield break;
             var health = recipient.GetAttributeData("chp");
             if (health == null) yield break;
             if (BoolValues[1])
@@ -52,17 +59,14 @@ namespace SoftKitty
             }
             if (FloatValues[5] > 0) yield return new WaitForSeconds(FloatValues[5]);
             float interval = Mathf.Max(.01f, Interval);
-            int count = Type == ActionType.Multiple_Time ? Mathf.Max(1, Count)
-                : Type == ActionType.For_X_Seconds ? 1 + Mathf.FloorToInt(Mathf.Max(0, KeepTime) / interval) : 1;
+            int count = FormulaImpactAction.SegmentCount(this);
             for (int i = 0; i < count && recipient.AvailableForInteraction; i++)
             {
                 if (i > 0) yield return new WaitForSeconds(interval);
-                if (!recipient.AvailableForInteraction) yield break;
+                if (!SkillPlayback.CanSettle(style, recipient, victim)) yield break;
                 if (style == SkillPlayback.Style.Direct && cast.CastInterrupted) yield break;
-                float hp = recipient.GetAttributeFloat("chp");
-                float loss = Mathf.Min(hp, SkillDefence.Incoming(health, amount));
-                health.SetValue(hp - loss, source);
-                if (loss > 0) recipient.OnEntityEvent("Damage", loss, source, false);
+                if (style == SkillPlayback.Style.Direct && !ConditionsMet(ref cast)) continue;
+                SkillPlayback.ApplyIncomingDamage(source, recipient, amount);
                 host.Signal(victim, SkillPlayback.Position(recipient, victim), "命中", .18f, new Color(1f,.55f,.22f));
             }
         }

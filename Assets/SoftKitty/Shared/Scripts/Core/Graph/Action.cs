@@ -14,6 +14,8 @@ namespace SoftKitty
         public float Interval = 0F;
         [SerializeReference] public SkillCalculation calculation;
         [SerializeReference] public SkillMotion motion;
+        [SerializeReference] public SkillProjectile projectile;
+        [SerializeReference] public OriginalSkillGraph.EffectCue visualEffect;
 
        
         public Action()
@@ -62,6 +64,8 @@ namespace SoftKitty
             this.Interval = _source.Interval;
             calculation = _source.calculation;
             motion = _source.motion?.Copy();
+            projectile = _source.projectile?.Copy();
+            visualEffect = _source.visualEffect?.Copy();
         }
 
         public void ResetInputPortSetting()
@@ -70,6 +74,7 @@ namespace SoftKitty
             inputPort.Add(new PortSetting("Action", "ActionIn", new string[2] { "RootOut", "BranchOutAction" }, false));
             CustomInit("Action", ClassName);
             EnsureExecutionConditionPort();
+            if (SkillProjectile.IsLaunch(this)) EnsureArrivalPort();
         }
 
         // Append after the class-specific inputs so all existing entity/value port numbers stay valid.
@@ -83,23 +88,29 @@ namespace SoftKitty
             return ExecutionConditionPort;
         }
 
+        public void EnsureArrivalPort()
+        {
+            if (outputPort.Count == 0)
+                outputPort.Add(new PortSetting("命中目标", "BranchOutAction", new[] { "ActionIn", "BranchInAction" }, true));
+        }
+
         private static int nextExecutionHash;
+        public bool ConditionsMet(ref GraphRuntimeState state)
+        {
+            if (ExecutionConditionPort < 0) return true;
+            var port = inputPort[ExecutionConditionPort];
+            if (port.uid.Count == 0) return true;
+            if (port.connectedNodes.Count != port.uid.Count) return false;
+            nextExecutionHash = nextExecutionHash == int.MinValue ? -1 : nextExecutionHash - 1;
+            state.Hash = nextExecutionHash;
+            foreach (var condition in port.connectedNodes)
+                if (!condition.isConditionActive(state)) return false;
+            return true;
+        }
+
         public static void ExecuteChecked(NodeBase node, GraphRuntimeState state)
         {
-            if (node is Action action && action.ExecutionConditionPort >= 0)
-            {
-                var port = action.inputPort[action.ExecutionConditionPort];
-                if (port.uid.Count > 0)
-                {
-                    if (port.connectedNodes.Count != port.uid.Count) return;
-                    // Cast hashes are positive. Each execution needs a fresh cache key, even within one frame.
-                    nextExecutionHash = nextExecutionHash == int.MinValue ? -1 : nextExecutionHash - 1;
-                    state.Hash = nextExecutionHash;
-                    foreach (var condition in port.connectedNodes)
-                        if (!condition.isConditionActive(state)) return;
-                }
-            }
-            node?.Execute(state);
+            if (!(node is Action action) || action.ConditionsMet(ref state)) node?.Execute(state);
         }
 
         public Action Copy(bool _runtime=false)

@@ -57,6 +57,24 @@ namespace SoftKitty
             done.Add(node);
         }
 
+        internal Dictionary<string, float> CaptureNonTargetAttributes(RootRuntimeState context)
+        {
+            if (compiled == null) Compile();
+            var values = new Dictionary<string, float>();
+            var state = new GraphRuntimeState { RootState = context };
+            foreach (var variable in inputs)
+            {
+                if (variable.Type != VariableType.Attribute) continue;
+                var owner = (EntityClass)variable.inputPort[0].connectedNodes[0];
+                if (owner.Type == EntityType.Target) continue;
+                string key = AttributeInputKey(owner, variable.AttributeKey);
+                var entity = owner.GetEntity(state);
+                if (entity == null) throw new InvalidOperationException("无法读取实体属性 " + key);
+                values[key] = entity.GetAttributeFloat(variable.AttributeKey);
+            }
+            return values;
+        }
+
         // sampleInputs is optional and is used by the standalone calculator without spawning actors.
         public float Evaluate(RootRuntimeState context, IDictionary<string, float> sampleInputs = null)
         {

@@ -2,8 +2,43 @@
 
 当前工作台原作清单和逐招试放结果见[工作台手册](MCC技能工作台操作手册.html#catalog)。下文涉及九张自建样例的数值和验收属于旧版开发记录，这些样例已从工程移除。
 
+18 个 Action 的原生替代、六个项目扩展的去留、四张原作图的依赖和位移实测见 [Unity 技能编辑器 Action 审查](Unity技能编辑器Action审查.md)。
+
 
 适用工程为 WhiteFog，基础版本为团结 1.9.3、Master Combat Core 1.03。面向制作技能、配置 Buff 和核对战斗结果的策划。以下数值设计示例用于说明编辑方式。
+
+## 由 MCC 源码决定的工作台分工
+
+本次核对以仓库里的 MCC 1.03 核心导入提交 `00cff19`、Demo 导入提交 `d1e238d` 和当前运行代码为准。下表中「Demo」指随工程导入的示例实现。工作台接入的打断版本号、Action 前置条件和命中输出端口属于项目扩展。
+
+| 策划要表达什么 | 底层实际做了什么 | 工作台的设计决定 |
+| --- | --- | --- |
+| 这次是谁施放、瞄准谁 | `GraphInstance` 的 `Dealer` 和 `Target` 是每次执行的实体输入。`CombatDamage.DealDamage(dealer, target)` 绑定两者，再进入触发器。 | 通过实体端口连线。主角和怪物共用技能。两个同类怪也按实例身份区分。 |
+| 整招什么时候成立，某一段什么时候成立 | `Trigger` 和 `ConditionGroup` 能读取 Handler 的条件，`BranchClass.Run` 按结果走两个输出之一。`Action.Run` 支持等待、单次、重复及持续。 | 入口条件放在根触发器；需要两种结果时用分支。工作台的 Action 前置条件在每次执行前复用相同的条件节点。时间轴编辑同一张图。 |
+| 发射与寻找目标 | `CombatDamage` 自带脚本驱动、物理驱动、重力、速度曲线、寿命和自动寻敌。Demo 的 `Player.prefab` 就有开启追踪、过滤 `hostile` 的发射器。 | 自带战斗逻辑的预制体沿用自己的发射器。工作台「产生投射物」用于按技能节点配置的弹道和视觉预制体。每一发只应有一个移动及命中执行者。原生自动寻敌可以搜寻目标；工作台的追踪轨迹只跟随发射时给出的瞄准对象。 |
+| 谁能受击，谁挡在最前面 | 原生 `CombatDamage` 支持触发器、刚体碰撞、射线、球扫掠、球形和胶囊重叠。`VerifyObject` 找实体、匹配任一 `TagFilter` 标签、按实体冷却，再将实际实体传给 `DealDamage`。原生射线和球扫掠读取一个物理结果后才过滤标签。 | 项目要求生效窗口内沿飞行段扫掠定向盒。工作台收集该段接触、按资格过滤后取最近者。受击端直接接受 Demo 的 `DamageReciever` 和它的 Collider；「战斗 / 受击体」继承这个组件。 |
+| 这次为什么停、命中后做什么 | 原生 `DestroyOnHitTarget` 安排延迟销毁，`DamageCoolDown` 记录的是单个受击实例。它们都不能表达「本发只能消耗一次且必须是某个实体」。 | 单次接触消费这发投射物。命中输出把实际受击者绑定到 MCC 的 `Target`。后续动作在独立运行上下文中读取属性、施加 Buff 或播放表现。 |
+| 受击、取消与死亡 | Demo 角色生命耗尽时关闭 `AvailableForInteraction`。本项目的 `Entity.InterruptCast` 和 `GraphRuntimeState.ForCast` 记录施法版本。 | 等待发射的动作随施法打断取消；已生成的投射物由场景中的独立宿主更新。接触时检查受击者是否启用、可交互，有生命属性的角色还要有剩余生命。 |
+| 动画、伤害和状态 | MCC 有 Legacy Animation / Animator 动作、属性／数学节点、属性变更动作和周期效果数据库。`CombatManager` 把周期回调交给效果实例。 | 工作台在动画上补充资源选择和 State 路径验证；等级表与公式继续读取图中的实体。防御结算和伤害飘字沿用项目扩展，飘字订阅实际生命变化。持续效果由实体上的效果定义处理叠层、延长、刷新或驱散。 |
+
+可从这些入口核对调用关系：[原生发射器与接触处理](../Assets/SoftKitty/MasterCombatCore/Scripts/Core/CombatDamage.cs)、[Demo 玩家预制体](../Assets/SoftKitty/MasterCombatCore/Demo/DemoAssets/Prefabs/Player.prefab)、[Demo 受击体](../Assets/SoftKitty/MasterCombatCore/Demo/Scripts/DamageReciever.cs)、[条件分支](../Assets/SoftKitty/Shared/Scripts/Core/Graph/BranchClass.cs)、[实体与状态](../Assets/SoftKitty/Shared/Scripts/Core/DataObject/Entity.cs)、[周期效果调度](../Assets/SoftKitty/MasterCombatCore/Scripts/Core/CombatManager.cs)。
+
+有两处需要特别按执行代码理解。第一，MCC 的 `TagFilter` 匹配实体的字符串标签，并非 Unity 的 GameObject Tag；配置 `character` 会同时放行 Demo 的主角和怪物。第二，Demo 的 `DamageReciever.DamageMultiplier` 在当前工程的 C# 中只有字段声明，没有结算端读取。若要做头部或弱点倍率，需要把该次接触的部位信息交给公式；在 Inspector 填倍率本身不会改变扣血。
+
+### 一个可复现的前后排例子
+
+在同一直线上放三名敌人。主角瞄准 8 米外的后排。前排在 4 米处，中排在 6 米处，各有两个受击 Collider。给主角标记 `friendly`，给敌人标记 `hostile`。
+
+| 配置或变化 | 预期结果 |
+| --- | --- |
+| 确定目标 | 4 米、6 米处都不触发。命中盒碰到 8 米处的瞄准实体时结算一次。 |
+| 确定目标，后排在接触前死亡或被停用 | 本发无伤害、无命中输出。 |
+| 非确定目标，可命中标签为 `hostile` | 4 米处接触即结算，两个 Collider 只产生一次结果。 |
+| 非确定目标，4 米处换成友军或在剑到前横移出去 | 6 米处的敌人承受结果。关闭前排的受击体也得到这个结果。 |
+| 非确定目标，已发射后瞄准对象死亡 | 已有弹道继续检测合格受击体；追踪弹保留最后已知的终点。 |
+| 非确定目标，标签列表留空 | 沿用 MCC 的任一标签匹配语义，候选集合为空。 |
+
+这里的「确定」只限定谁有受击资格。无论哪种规则都需要真实接触。轨迹、资格、接触后的命中率、最终生命变化是四步。现有资产默认保留确定目标；导入具体招式时，根据原作证据逐招选规则。穿透数量、连锁改选、地形阻挡等需求各有独立语义，原生发射器的销毁或冷却参数不能当作这些能力的验收结果。
 
 ## 1. 工作流与数据归属
 

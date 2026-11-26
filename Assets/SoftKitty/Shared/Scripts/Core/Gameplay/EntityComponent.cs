@@ -224,36 +224,40 @@ namespace SoftKitty
         }
         IEnumerator MoveCo(Vector3 _positionOffset, float _duration, bool _worldSpace, bool _stickToGround, Entity interruptOnMove)
         {
-            float _timer = 0F;
+            float elapsed = 0f;
+            Vector3 worldOffset = _worldSpace ? _positionOffset : transform.TransformDirection(_positionOffset);
             var fixedStep = new WaitForFixedUpdate();
             yield return fixedStep;
-            while (_timer < _duration)
+            while (elapsed < _duration)
             {
+                float next = Mathf.Min(_duration, elapsed + Time.fixedDeltaTime);
+                Vector3 delta = worldOffset * ((next - elapsed) / _duration);
+                elapsed = next;
                 var controller = MyCharacterController;
                 var body = controller ? null : MyRigidbody;
-                var before = body ? body.position : transform.position;
+                var before = body ? body.position : controller ? controller.transform.position : transform.position;
                 if (controller)
                 {
-                    controller.Move((_worldSpace ? _positionOffset : transform.InverseTransformPoint(_positionOffset)) * Time.fixedDeltaTime / _duration);
+                    controller.Move(delta);
                 }
                 else if (body)
                 {
-                    body.MovePosition(transform.position + (_worldSpace ? _positionOffset : transform.InverseTransformPoint(_positionOffset)) * Time.fixedDeltaTime / _duration);
+                    body.MovePosition(before + delta);
                 }
                 else
                 {
-                    Vector3 _pos = transform.position + (_worldSpace ? _positionOffset : transform.InverseTransformPoint(_positionOffset)) * Time.fixedDeltaTime / _duration;
+                    Vector3 _pos = transform.position + delta;
                     if (_stickToGround)
                     {
                         RaycastHit hit;
-                        if (Physics.Raycast(transform.position, Vector3.down, out hit, 500f, SGD_Settings.Instance.GroundLayer, QueryTriggerInteraction.Ignore))
+                        if (Physics.Raycast(_pos, Vector3.down, out hit, 500f, SGD_Settings.Instance.GroundLayer, QueryTriggerInteraction.Ignore))
                         {
                             _pos.y = hit.point.y + 0.01f;
                         }
                     }
                     transform.position = _pos;
                 }
-                if (interruptOnMove != null && !body && transform.position != before)
+                if (interruptOnMove != null && !body && (controller ? controller.transform.position : transform.position) != before)
                 {
                     interruptOnMove.InterruptCast();
                     interruptOnMove = null;
@@ -266,7 +270,6 @@ namespace SoftKitty
                     interruptOnMove.InterruptCast();
                     interruptOnMove = null;
                 }
-                _timer += _duration * Time.fixedDeltaTime;
             }
         }
         IEnumerator ScaleCo(Vector3 _target, float _duration)

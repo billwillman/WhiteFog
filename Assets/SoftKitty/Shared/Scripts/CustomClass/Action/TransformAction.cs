@@ -59,7 +59,7 @@ namespace SoftKitty{
                 {
                     if (move)
                     {
-                        actor.Move(new Vector3(posX, posY, posZ) * magnification(_runtime), duration, worldSpace, true, interruptOnMove);
+                        actor.Move(new Vector3(posX, posY, posZ) * magnification(_runtime), duration, worldSpace, stickGround, interruptOnMove);
                         if (SGD_Settings.Instance.DebugLevel >= 3)
                             Debug.Log("<TransformAction> [Node:" + Uid + "] Executed() > Entity:" + entity(_runtime).uid + "  Move:" + (new Vector3(posX, posY, posZ) * magnification(_runtime)).ToString());
                     }
@@ -88,7 +88,8 @@ namespace SoftKitty{
                         }
                         else
                         {
-                            recipient.SetPosition(before + recipient.Forward * offset.z + Vector3.Cross(recipient.Forward, Vector3.up) * offset.x + Vector3.up * offset.y, stickGround);
+                            var facing = recipient.Forward.sqrMagnitude > 0f ? Quaternion.LookRotation(recipient.Forward) : Quaternion.identity;
+                            recipient.SetPosition(before + facing * offset, stickGround);
                         }
                         if (interruptOnMove && offset != Vector3.zero && recipient.Position != before) recipient.InterruptCast();
                         if (SGD_Settings.Instance.DebugLevel >= 3)

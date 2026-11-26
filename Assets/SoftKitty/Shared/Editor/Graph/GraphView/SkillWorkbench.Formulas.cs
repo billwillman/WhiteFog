@@ -22,44 +22,64 @@ namespace SoftKitty
             root.Entities[0].Position = new Vector2(-1100, -720);
             condition.Position = new Vector2(-760, -720);
             root.Triggers[0].Position = new Vector2(-340, -670);
-            var heal = AddAction(root, "AttributeChange", 0);
+            AddCappedHeal(root, 0, 1.2f, true);
+            return root;
+        }
+
+        // Author a normal MCC expression. All inputs and conditions remain editable graph nodes.
+        private static Action AddCappedHeal(Root root, float time, float amount, bool scaleByAttack = false)
+        {
+            var heal = AddAction(root, "AttributeChange", time);
             heal.StringValues[0] = "chp";
             heal.IntValues[0] = (int)AttributeChangeAction.operations.Override;
-            heal.Position = new Vector2(1020, 0);
-            var caster = root.Entities.Last();
-            caster.Type = EntityType.Dealer;
-            caster.Position = new Vector2(-1100, 150);
-            var ratio = root.Variables.Last();
-            ratio.Position = new Vector2(-760, 440);
-            ratio.Type = VariableType.DynamicVariable;
-            ratio.VariableUid = "healRatio";
-            ratio.Constant = 1.2f;
-            ratio.outputPort[0].uid.Clear();
+            Vector2 origin = heal.Position;
+            var recipient = root.Entities.Last();
+            var value = root.Variables.Last();
+            recipient.Position = origin + new Vector2(-1520, 140);
+            value.Position = origin + new Vector2(-1180, 500);
+            value.Constant = amount;
+            value.outputPort[0].uid.Remove(heal.Uid + "#2");
             heal.inputPort[2].uid.Clear();
+
+            var guard = AddActionCondition(root, heal, "EntityExist");
+            guard.IntValues[0] = (int)EntityExistHandler.logics.Interactable;
+            guard.Position = origin + new Vector2(-320, -370);
+            var guardEntity = root.Entities.Last();
+            DisconnectNode(root, guardEntity);
+            root.Entities.Remove(guardEntity);
+            Wire(recipient, guard, 0);
 
             VariableClass Attribute(string key, int y)
             {
-                var node = new VariableClass(root) { Type = VariableType.Attribute, AttributeKey = key, Position = new Vector2(-760, y) };
+                var node = new VariableClass(root) { Type = VariableType.Attribute, AttributeKey = key,
+                    Position = origin + new Vector2(-1180, y) };
                 root.Variables.Add(node);
-                Wire(caster, node, 0);
+                Wire(recipient, node, 0);
                 return node;
             }
             MathClass Combine(MathType type, NodeBase a, NodeBase b, int x, int y)
             {
-                var node = new MathClass(root) { Type = type, Position = new Vector2(x, y) };
+                var node = new MathClass(root) { Type = type, Position = origin + new Vector2(x, y) };
                 root.Maths.Add(node);
                 Wire(a, node, 0);
                 Wire(b, node, 1);
                 return node;
             }
-            var amount = Combine(MathType.Multiply, Attribute("atk", 200), ratio, -400, 300);
-            var zero = new VariableClass(root) { Position = new Vector2(-760, 680) };
+
+            NodeBase gain = value;
+            if (scaleByAttack)
+            {
+                recipient.Type = EntityType.Dealer;
+                value.Type = VariableType.DynamicVariable;
+                value.VariableUid = "healRatio";
+                gain = Combine(MathType.Multiply, Attribute("atk", 270), value, -950, 350);
+            }
+            var zero = new VariableClass(root) { Position = origin + new Vector2(-1180, 740) };
             root.Variables.Add(zero);
-            var positive = Combine(MathType.Max, amount, zero, -90, 235);
-            var total = Combine(MathType.Add, Attribute("chp", -40), positive, 250, 110);
-            var capped = Combine(MathType.Min, Attribute("hp", -280), total, 610, 0);
-            Wire(capped, heal, 2);
-            return root;
+            var positive = Combine(MathType.Max, gain, zero, -720, 220);
+            var total = Combine(MathType.Add, Attribute("chp", 0), positive, -470, 110);
+            Wire(Combine(MathType.Min, Attribute("hp", -240), total, -240, 0), heal, 2);
+            return heal;
         }
 
         private void OpenFormulas(GraphObject source, bool fromBuff)

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace SoftKitty
@@ -30,21 +31,25 @@ namespace SoftKitty
                 int level = Mathf.RoundToInt(GetVariableValue(inputPort[3].connectedNodes[0], runtime));
                 calculation.ValidateShares(SegmentCount(this));
                 var context = calculation.Capture(runtime.RootState, caster, target, level);
-                var total = Mathf.Max(0, calculation.damage.Evaluate(context));
-                context.DynamicVariableDic["hit.total"] = total;
+                bool resolvesRecipientOnContact = (SkillPlayback.Style)IntValues[0] != SkillPlayback.Style.Direct &&
+                    projectile?.hitRecipients == SkillProjectile.HitRecipients.FirstMatchingEntity;
+                var castInputs = resolvesRecipientOnContact ? calculation.damage.CaptureNonTargetAttributes(context) : null;
+                if (!resolvesRecipientOnContact)
+                    context.DynamicVariableDic["hit.total"] = Mathf.Max(0, calculation.damage.Evaluate(context));
                 var playback = SkillPlayback.On(instance);
                 runtime.NodeStates[NodeIndex].lastBool = true;
                 var weights = calculation.segmentPercent.ToArray();
                 playback.ScheduleReleases(runtime, caster, WaitTime, 1, 0, () =>
                 {
+                    if ((SkillPlayback.Style)IntValues[0] != SkillPlayback.Style.Direct && !ConditionsMet(ref runtime)) return;
                     var host = (SkillPlayback.Style)IntValues[0] == SkillPlayback.Style.Direct ? playback : playback.ProjectileHost();
-                    host.Schedule(Strike(host, caster, target, context, weights, runtime));
+                    host.Schedule(Strike(host, caster, target, context, weights, runtime, castInputs));
                 });
             }
             catch (Exception e) { Debug.LogError(instance.mGraph.name + " · " + Uid + "：" + e.Message, instance); }
         }
 
-        private IEnumerator Strike(SkillPlayback host, Entity source, Entity target, RootRuntimeState context, float[] weights, GraphRuntimeState cast)
+        private IEnumerator Strike(SkillPlayback host, Entity source, Entity target, RootRuntimeState context, float[] weights, GraphRuntimeState cast, Dictionary<string, float> castInputs)
         {
             if (!target.AvailableForInteraction) yield break;
             var caster = SkillPlayback.FindActor(source);
@@ -58,15 +63,28 @@ namespace SoftKitty
             }
             var style = (SkillPlayback.Style)IntValues[0];
             if (style != SkillPlayback.Style.Direct)
-                yield return host.Flight(style, origin, target, victim, distance / Mathf.Max(.1f, FloatValues[1]), FloatValues[2]);
+            {
+                EntityComponent struck = null;
+                yield return host.Flight(style, origin, target, victim, distance / Mathf.Max(.1f, FloatValues[1]), FloatValues[2], projectile ?? new SkillProjectile(), source, hit => struck = hit);
+                if (!struck) yield break;
+                victim = struck;
+                target = struck.mData;
+                context.SetInvolvedEntity("Target", target);
+                if (castInputs != null)
+                {
+                    if (!TryEvaluate(calculation.damage, context, host, out var total, castInputs)) yield break;
+                    context.DynamicVariableDic["hit.total"] = Mathf.Max(0, total);
+                }
+            }
 
             bool appliedWeakness = false;
             var vars = context.DynamicVariableDic;
             for (int i = 0; i < weights.Length; i++)
             {
                 if (i > 0) yield return new WaitForSeconds(Mathf.Max(.01f, Interval));
-                if (!target.AvailableForInteraction || (victim && !victim.isActiveAndEnabled)) yield break;
+                if (!SkillPlayback.CanSettle(style, target, victim)) yield break;
                 if (style == SkillPlayback.Style.Direct && cast.CastInterrupted) yield break;
+                if (style == SkillPlayback.Style.Direct && !ConditionsMet(ref cast)) continue;
                 vars["hit.index"] = i + 1;
                 vars["hit.share"] = weights[i] * .01f;
                 vars["hit.raw"] = vars["hit.total"] * vars["hit.share"];
@@ -86,7 +104,7 @@ namespace SoftKitty
                     appliedWeakness = true;
                 }
                 if (i == 0 && FloatValues[5] > 0) yield return new WaitForSeconds(FloatValues[5]);
-                if (!target.AvailableForInteraction || (victim && !victim.isActiveAndEnabled)) yield break;
+                if (!SkillPlayback.CanSettle(style, target, victim)) yield break;
                 if (style == SkillPlayback.Style.Direct && cast.CastInterrupted) yield break;
                 if (!TryEvaluate(calculation.settlement, context, host, out var defended)) yield break;
                 SkillPlayback.ApplyIncomingDamage(source, target, Mathf.Max(0, defended));
@@ -94,9 +112,9 @@ namespace SoftKitty
             }
         }
 
-        private bool TryEvaluate(SkillFormula formula, RootRuntimeState context, SkillPlayback host, out float value)
+        private bool TryEvaluate(SkillFormula formula, RootRuntimeState context, SkillPlayback host, out float value, Dictionary<string, float> castInputs = null)
         {
-            try { value = formula.Evaluate(context); return true; }
+            try { value = formula.Evaluate(context, castInputs); return true; }
             catch (Exception e)
             {
                 Debug.LogError(formula.name + " · " + Uid + "：" + e.Message, host);

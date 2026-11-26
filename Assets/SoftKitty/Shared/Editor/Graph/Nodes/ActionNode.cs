@@ -15,6 +15,7 @@ namespace SoftKitty
         public ActionNode(Action _action)
         {
             m_data = _action;
+            if (SkillProjectile.IsLaunch(_action)) _action.EnsureArrivalPort();
         }
        
 
@@ -46,9 +47,10 @@ namespace SoftKitty
             baseSettings.Q<DropdownField>("Type").RegisterValueChangedCallback(x =>
             {
                 if (x.target is not DropdownField) return;
-                m_data.ClassName  = x.newValue;
+                m_data.ClassName = x.newValue;
                 DeleteAllCustomPort(m_data,1);
                 m_data.ResetInputPortSetting();
+                RefreshProjectilePort();
                 LoadClassInterface(m_data,"Action",1);
                 DrawFormulaLinks();
             });
@@ -98,9 +100,46 @@ namespace SoftKitty
             RefreshExpandedState();
         }
 
+        protected override void OnEnumChanged(string uid)
+        {
+            if (uid == "stage" && m_data.ClassName == "OriginalSkillVisual") RefreshProjectilePort();
+        }
+
+        private void RefreshProjectilePort()
+        {
+            if (SkillProjectile.IsLaunch(m_data))
+            {
+                m_data.EnsureArrivalPort();
+                if (output.Count > 0) return;
+                var port = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi, typeof(NodeBase));
+                port.portName = m_data.outputPort[0].Name;
+                port.portColor = portColors[m_data.outputPort[0].Type];
+                output.Add(port);
+                outputContainer.Add(port);
+            }
+            else if (m_data.outputPort.Count > 0)
+            {
+                if (output.Count > 0)
+                {
+                    DisconnectOutput(0);
+                    outputContainer.Remove(output[0]);
+                    output.RemoveAt(0);
+                }
+                m_data.outputPort.Clear();
+            }
+            RefreshPorts();
+        }
+
         private void DrawFormulaLinks()
         {
             extensionContainer.Q<VisualElement>("formulaLinks")?.RemoveFromHierarchy();
+            if (m_data.ClassName == "Projectile" || m_data.ClassName == "OriginalSkillVisual" || m_data.ClassName == "Animation")
+            {
+                var edit = new Button(() => SkillWorkbench.OpenAction(mainDataObject, m_data.Uid))
+                    { name = "formulaLinks", text = "编辑动作属性" };
+                extensionContainer.Add(edit);
+                return;
+            }
             if (m_data.ClassName != "FormulaImpact") return;
             var panel = new VisualElement { name = "formulaLinks" };
             var config = m_data.calculation;

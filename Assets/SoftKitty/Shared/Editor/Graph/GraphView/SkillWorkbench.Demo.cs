@@ -11,7 +11,6 @@ namespace SoftKitty
     {
         private const string DemoPath = "Assets/SoftKitty/MasterCombatCore/Demo/Scenes/DemoScene.unity";
         private const string StagePath = "Assets/WhiteFog/SkillPreview/角色预览.unity";
-        private const string OriginalGraphPath = "Assets/WhiteFog/Skills/宗师之上/破空剑法.asset";
         private const float PortraitAspect = 9f / 16f;
         private static readonly Vector3 StageCenter = new Vector3(0, 10f, 20);
         private const string PreviousStart = "SoftKitty.Workbench.PreviousPlayStart";
@@ -171,9 +170,9 @@ namespace SoftKitty
 
         private void DrawPreviewHitDamage()
         {
-            if (graph is OriginalSkillGraph)
+            if (graph is OriginalSkillGraph || graph.RootSet.Actions.Any(SkillProjectile.IsLaunch))
                 previewHitDamage = Mathf.Max(0, EditorGUILayout.FloatField(new GUIContent("每段预览来伤",
-                    "离线试放输入，抵达时扣除护盾并按实际生命损失飘字。设为 0 可只看表现。"), previewHitDamage));
+                    "离线试放输入。命中后使用图中连线；没有连线时用此数值试放。设为 0 可只看表现。"), previewHitDamage));
         }
         [SerializeField] private int previewDirection;
         [SerializeField] private int previewMode;
@@ -229,12 +228,7 @@ namespace SoftKitty
             if (!(graph is OriginalSkillGraph))
             {
                 EditorGUILayout.LabelField("当前技能", "自定义技能图");
-                if (GUILayout.Button("选择原作技能 · 破空剑法（25090）"))
-                {
-                    var original = AssetDatabase.LoadAssetAtPath<OriginalSkillGraph>(OriginalGraphPath);
-                    if (original) SelectGraph(original);
-                    return;
-                }
+
             }
             else EditorGUILayout.LabelField("来源", "《宗师之上》" + ((OriginalSkillGraph)graph).sourceVersion + " · " + ((OriginalSkillGraph)graph).sourceId);
             if (!(graph is OriginalSkillGraph)) previewDirection = EditorGUILayout.Popup("本次施放方向", previewDirection,
@@ -419,18 +413,15 @@ namespace SoftKitty
             if (SkillPlayback.FindActor(caster.mData) != caster || SkillPlayback.FindActor(receiver.mData) != receiver)
             { info = "场景中有多个角色共用同一份实体数据。请为所选角色使用独立实体或启用多实例。"; return false; }
             var original = skill as OriginalSkillGraph;
-            if (original)
+            foreach (var node in skill.RootSet.Actions.Where(SkillMotion.UsesBinding))
             {
-                foreach (var node in original.RootSet.Actions.Where(a => a.ClassName == "OriginalSkillVisual" && a.IntValues.FirstOrDefault() == 0))
-                {
-                    // Conditional and dynamic branches validate when the action actually runs.
-                    if (!original.RootSet.outputPort[0].uid.Contains(node.Uid + "#0")) continue;
-                    var entity = MotionEntity(original, node);
-                    var actor = entity == EntityType.Dealer ? caster : entity == EntityType.Target ? receiver : null;
-                    if (!actor) continue; // Dynamic entity bindings resolve when the graph reaches the action.
-                    string error = SkillMotion.For(node, original).Check(actor.SkillAnimator);
-                    if (error != null) { info = node.Uid + " · " + error; return false; }
-                }
+                // Conditional and dynamic branches validate when the action actually runs.
+                if (!skill.RootSet.outputPort[0].uid.Contains(node.Uid + "#0")) continue;
+                var entity = MotionEntity(skill, node);
+                var actor = entity == EntityType.Dealer ? caster : entity == EntityType.Target ? receiver : null;
+                if (!actor) continue; // Dynamic entity bindings resolve when the graph reaches the action.
+                string error = SkillMotion.For(node, original).Check(actor.SkillAnimator);
+                if (error != null) { info = node.Uid + " · " + error; return false; }
             }
             if (!ValidatePreviewLevel(skill, skillLevel, out info)) return false;
             if (!damage)
@@ -448,7 +439,7 @@ namespace SoftKitty
             if (UsesSkillLevel(skill)) damage.SetDynamicValue("skill.level", Mathf.Max(1, skillLevel));
             SkillDamageNumbers.Observe(caster);
             SkillDamageNumbers.Observe(receiver);
-            if (original)
+            if (original || skill.RootSet.Actions.Any(SkillProjectile.IsLaunch))
             {
                 var playback = SkillPlayback.On(damage);
                 var previousImpact = playback.OriginalProjectileImpact;

@@ -6,7 +6,8 @@ namespace SoftKitty{
         }
         public enum AnimTypes{
           Legacy,
-          Mecanim
+          Mecanim,
+          SkillMotionBinding
         }
         public AnimTypes AnimType; //Whether using Legacy Animation component or Mecanim component.
         public string clipName; //The name of the animation clip(Legacy) .
@@ -25,6 +26,18 @@ namespace SoftKitty{
         }
  
         public override void Execute(GraphRuntimeState _runtime){ //Execute this action once
+            if (AnimType == AnimTypes.SkillMotionBinding)
+            {
+                var actor = SkillPlayback.FindActor(entity(_runtime));
+                if (actor)
+                {
+                    var graph = _runtime.RootState.RootInstance.GetComponent<GraphInstance>().mGraph;
+                    var binding = motion ?? SkillMotion.For(this, graph as OriginalSkillGraph);
+                    if (!binding.Play(actor.SkillAnimator, _runtime, out var error) && error != null)
+                        Debug.LogWarning(graph.name + " · " + Uid + " · " + error, actor);
+                }
+                return;
+            }
             if (entity(_runtime) != null)
             {
                 if (GameManager.GetEntityInstance(entity(_runtime).uid) != null)

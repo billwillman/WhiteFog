@@ -43,11 +43,10 @@ namespace SoftKitty
 
         private SkillMotionTimeline MotionTimeline(Action action)
         {
-            if (!(graph is OriginalSkillGraph original) || action.ClassName != "OriginalSkillVisual" ||
-                (action.IntValues.Count > 0 && action.IntValues[0] != 0)) return null;
-            var motion = SkillMotion.For(action, original);
+            if (!SkillMotion.UsesBinding(action)) return null;
+            var motion = SkillMotion.For(action, graph as OriginalSkillGraph);
             if (motion.source == SkillMotion.Source.AnimationClip) return SkillMotionTimeline.Clip(motion.clip);
-            var runtime = MotionController(original, action);
+            var runtime = MotionController(graph, action);
             var key = (runtime, motion.StatePath, motion.transitionSeconds);
             if (motionTimings.TryGetValue(key, out var existing)) return existing;
             var controller = runtime is AnimatorOverrideController wrapped ? wrapped.runtimeAnimatorController : runtime;

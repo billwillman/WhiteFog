@@ -154,7 +154,17 @@ namespace SoftKitty
             Destroy(line.gameObject);
         }
 
+        internal static bool CanSettle(Style style, Entity recipient, EntityComponent actor)
+        {
+            if (style == Style.Direct) return recipient.AvailableForInteraction && (!actor || actor.isActiveAndEnabled);
+            return SkillProjectile.IsLive(actor) && actor.mData == recipient;
+        }
+
         public IEnumerator Flight(Style style, Vector3 start, Entity target, EntityComponent actor, float seconds, float arc)
+            => Flight(style, start, target, actor, seconds, arc, new SkillProjectile(), null, null);
+
+        internal IEnumerator Flight(Style style, Vector3 start, Entity target, EntityComponent actor, float seconds, float arc,
+            SkillProjectile hitBox, Entity source, System.Action<EntityComponent> onContact)
         {
             Color color = style == Style.Sword ? Color.cyan : style == Style.Orb ? new Color(1,.55f,.12f) : new Color(.55f,1,.25f);
             var line = Trace(style.ToString(), color, style == Style.Mist ? .17f : .09f, true);
@@ -163,18 +173,34 @@ namespace SoftKitty
                 : Ring(style == Style.Mist ? .36f : .25f, true);
             line.positionCount = shape.Length;
             line.SetPositions(shape);
-            for (float time = 0; time < seconds; time += Time.deltaTime)
+            Vector3 point = start;
+            line.transform.position = start;
+            float time = 0;
+            var physics = gameObject.scene.GetPhysicsScene();
+            var query = new SkillProjectile.HitQuery(hitBox, source, actor, physics);
+            EntityComponent contact = null;
+            Vector3 end = Position(target, actor);
+            try
             {
-                if (!target.AvailableForInteraction) break;
-                var end = Position(target, actor);
-                float u = time / seconds;
-                line.transform.position = Vector3.Lerp(start, end, u) + Vector3.up * (4 * arc * u * (1 - u));
-                var direction = end - start + Vector3.up * (4 * arc * (1 - 2 * u));
-                if (direction.sqrMagnitude > .001f) line.transform.rotation = Quaternion.LookRotation(direction);
-                if (style != Style.Sword) line.transform.Rotate(Vector3.up, time * 260, Space.Self);
-                yield return null;
+                while (!query.designated || query.AimIsLive)
+                {
+                    float nextTime = Mathf.Min(seconds, time + Time.deltaTime);
+                    float u = seconds > 0 ? nextTime / seconds : 1;
+                    if (query.AimIsLive) end = Position(target, actor);
+                    var next = Vector3.Lerp(start, end, u) + Vector3.up * (4 * arc * u * (1 - u));
+                    Vector3 direction = next - point;
+                    var facing = direction.sqrMagnitude > .000001f ? Quaternion.LookRotation(direction) : line.transform.rotation;
+                    contact = hitBox.Contact(query, point, next, facing, time, nextTime, out var hitPoint);
+                    point = contact ? hitPoint : next;
+                    line.transform.SetPositionAndRotation(point, facing);
+                    if (style != Style.Sword) line.transform.Rotate(Vector3.up, nextTime * 260, Space.Self);
+                    if (contact || nextTime >= seconds) break;
+                    time = nextTime;
+                    yield return null;
+                }
+                onContact?.Invoke(contact);
             }
-            Destroy(line.gameObject);
+            finally { Destroy(line.gameObject); }
         }
     }
 }

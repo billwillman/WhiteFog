@@ -11,13 +11,13 @@ namespace SoftKitty
         private RuntimeAnimatorController motionBrowserController;
         private static readonly string[] MotionSources = { "Animator State", "直接播放 Animation Clip" };
 
-        private static EntityType? MotionEntity(OriginalSkillGraph skill, Action action)
+        private static EntityType? MotionEntity(GraphObject skill, Action action)
         {
             var uid = action.inputPort.ElementAtOrDefault(1)?.uid.FirstOrDefault()?.Split('#')[0];
             return skill.RootSet.Entities.Find(e => e.Uid == uid)?.Type;
         }
 
-        private RuntimeAnimatorController MotionController(OriginalSkillGraph skill, Action action)
+        private RuntimeAnimatorController MotionController(GraphObject skill, Action action)
         {
             if (motionBrowserController) return motionBrowserController;
             var entity = MotionEntity(skill, action);
@@ -32,7 +32,7 @@ namespace SoftKitty
             if (!actor && (entity == EntityType.Player || entity == EntityType.Dealer || entity == EntityType.Target))
             {
                 bool opponent = entity == EntityType.Target ? !skill.previewAsOpponent : entity == EntityType.Dealer && skill.previewAsOpponent;
-                actor = opponent ? skill.previewEnemy : AssetDatabase.LoadAssetAtPath<GameObject>("Assets/WhiteFog/OriginalSkills/男角色001.prefab");
+                actor = opponent ? (skill as OriginalSkillGraph)?.previewEnemy : AssetDatabase.LoadAssetAtPath<GameObject>("Assets/WhiteFog/OriginalSkills/男角色001.prefab");
             }
             return actor ? actor.GetComponentInChildren<Animator>()?.runtimeAnimatorController : null;
         }
@@ -51,9 +51,9 @@ namespace SoftKitty
             EditorGUIUtility.PingObject(asset);
         }
 
-        private void DrawMotion(Action action, OriginalSkillGraph skill)
+        private void DrawMotion(Action action, GraphObject skill)
         {
-            var binding = SkillMotion.For(action, skill);
+            var binding = SkillMotion.For(action, skill as OriginalSkillGraph);
             int mode = EditorGUILayout.Popup("动作来源", (int)binding.source, MotionSources);
             if (mode != (int)binding.source)
                 Change(() => { binding.source = (SkillMotion.Source)mode; action.motion = binding; });

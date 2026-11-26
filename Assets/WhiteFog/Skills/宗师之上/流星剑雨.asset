@@ -34,7 +34,6 @@ MonoBehaviour:
       - ActionIn
       - BranchInAction
       uid:
-      - Node1#0
       - Node4#0
       - Node7#0
       - Node10#0
@@ -43,6 +42,7 @@ MonoBehaviour:
       - Node19#0
       - Node22#0
       - Node25#0
+      - Node1#0
       connectedNodes: []
       allowMutipleConnection: 1
       createByDefault: 1
@@ -104,22 +104,21 @@ MonoBehaviour:
         connectedNodes: []
         allowMutipleConnection: 0
         createByDefault: 1
-      - Name: 2
-        Type: EntityIn
+      - Name: "\u52A8\u4F5C\u524D\u7F6E\u6761\u4EF6"
+        Type: ConditionIn
         acceptedTypes:
-        - EntityOut
-        uid:
-        - Node3#0
+        - ConditionOut
+        uid: []
         connectedNodes: []
-        allowMutipleConnection: 0
+        allowMutipleConnection: 1
         createByDefault: 1
       outputPort: []
       minimized: 0
       InstanceCache: 0
       mRoot:
         rid: 6312275961689669633
-      ClassName: OriginalSkillVisual
-      IntValues: 0000000000000000
+      ClassName: Animation
+      IntValues: 0200000000000000
       FloatValues: []
       StringValues:
       - 
@@ -127,41 +126,36 @@ MonoBehaviour:
       BoolValues: 
       CustomInterface:
         Elements:
-        - Uid: caster
-          Label: "\u65BD\u653E\u8005"
-          ToolTips: "\u6280\u80FD\u7684\u52A8\u4F5C\u548C\u65BD\u6CD5\u7279\u6548\u8DDF\u968F\u6B64\u89D2\u8272"
+        - Uid: entity
+          Label: Entity
+          ToolTips: The entity to play this animation.
           Type: 8
           Index: 0
           VisibleBind: 
           EnumOptions: []
-        - Uid: target
-          Label: "\u8868\u73B0\u76EE\u6807"
-          ToolTips: "\u98DE\u5251\u53D1\u5C04\u65F6\u8BFB\u53D6\u76EE\u6807\u4F4D\u7F6E"
-          Type: 8
-          Index: 1
-          VisibleBind: 
-          EnumOptions: []
-        - Uid: stage
-          Label: "\u539F\u4F5C\u8868\u73B0\u4E8B\u4EF6"
-          ToolTips: "\u5B9E\u9645\u8D44\u6E90\u7531\u539F\u4F5C\u6280\u80FD\u56FE\u5F15\u7528"
+        - Uid: AnimType
+          Label: Animation Type
+          ToolTips: Whether using Legacy Animation component or Mecanim component.
           Type: 7
           Index: 0
           VisibleBind: 
           EnumOptions:
-          - "\u64AD\u653E\u539F\u4F5C\u89D2\u8272\u52A8\u4F5C"
-          - "\u65BD\u6CD5\u7279\u6548"
-          - "\u53F3\u624B\u6B66\u5668"
-          - "\u53D1\u5C04\u98DE\u5251"
-          - "\u6536\u62DB\u6807\u8BB0"
-          - "\u4F4D\u79FB\u4E8B\u4EF6\u6807\u8BB0"
-          - "\u539F\u4F5C\u8F68\u9053\u7279\u6548\u6216\u547D\u4E2D"
-        - Uid: cue
-          Label: "\u539F\u4F5C\u8F68\u9053\u914D\u7F6E\u5E8F\u53F7"
-          ToolTips: "\u5BF9\u5E94\u6280\u80FD\u56FE\u7684\u7279\u6548\u914D\u7F6E\uFF0C\u4ECE
-            0 \u5F00\u59CB\u3002"
+          - Legacy
+          - Mecanim
+          - Animator State / Animation Clip
+        - Uid: clipName
+          Label: Clip Name
+          ToolTips: The name of the animation clip(Legacy) .
+          Type: 1
+          Index: 0
+          VisibleBind: AnimType#0
+          EnumOptions: []
+        - Uid: stateName
+          Label: State Name
+          ToolTips: The name of the animation state.
           Type: 1
           Index: 1
-          VisibleBind: stage#6
+          VisibleBind: AnimType#1
           EnumOptions: []
       Type: 0
       Count: 1
@@ -169,6 +163,12 @@ MonoBehaviour:
       KeepTime: 0
       Interval: 0
       calculation:
+        rid: -2
+      motion:
+        rid: 6312275966157651970
+      projectile:
+        rid: -2
+      visualEffect:
         rid: -2
     - mType: 0
       Name: Action
@@ -261,6 +261,12 @@ MonoBehaviour:
       Interval: 0
       calculation:
         rid: -2
+      motion:
+        rid: -2
+      projectile:
+        rid: -2
+      visualEffect:
+        rid: -2
     - mType: 0
       Name: Action
       Uid: Node7
@@ -351,6 +357,12 @@ MonoBehaviour:
       KeepTime: 0
       Interval: 0
       calculation:
+        rid: -2
+      motion:
+        rid: -2
+      projectile:
+        rid: -2
+      visualEffect:
         rid: -2
     - mType: 0
       Name: Action
@@ -443,6 +455,12 @@ MonoBehaviour:
       Interval: 0
       calculation:
         rid: -2
+      motion:
+        rid: -2
+      projectile:
+        rid: -2
+      visualEffect:
+        rid: -2
     - mType: 0
       Name: Action
       Uid: Node13
@@ -533,6 +551,12 @@ MonoBehaviour:
       KeepTime: 0
       Interval: 0
       calculation:
+        rid: -2
+      motion:
+        rid: -2
+      projectile:
+        rid: -2
+      visualEffect:
         rid: -2
     - mType: 0
       Name: Action
@@ -625,6 +649,12 @@ MonoBehaviour:
       Interval: 0
       calculation:
         rid: -2
+      motion:
+        rid: -2
+      projectile:
+        rid: -2
+      visualEffect:
+        rid: -2
     - mType: 0
       Name: Action
       Uid: Node19
@@ -715,6 +745,12 @@ MonoBehaviour:
       KeepTime: 0
       Interval: 0
       calculation:
+        rid: -2
+      motion:
+        rid: -2
+      projectile:
+        rid: -2
+      visualEffect:
         rid: -2
     - mType: 0
       Name: Action
@@ -807,6 +843,12 @@ MonoBehaviour:
       Interval: 0
       calculation:
         rid: -2
+      motion:
+        rid: -2
+      projectile:
+        rid: -2
+      visualEffect:
+        rid: -2
     - mType: 0
       Name: Action
       Uid: Node25
@@ -898,6 +940,12 @@ MonoBehaviour:
       Interval: 0
       calculation:
         rid: -2
+      motion:
+        rid: -2
+      projectile:
+        rid: -2
+      visualEffect:
+        rid: -2
     Triggers: []
     ConditionGroups: []
     Handlers: []
@@ -926,29 +974,6 @@ MonoBehaviour:
       mRoot:
         rid: 6312275961689669633
       Type: 1
-      EntityUid: 
-    - mType: 0
-      Name: Entity (Player)
-      Uid: Node3
-      Position: {x: 205, y: 130}
-      NodeIndex: 0
-      inputPort: []
-      outputPort:
-      - Name: Entity
-        Type: EntityOut
-        acceptedTypes:
-        - EntityIn
-        - BranchInEntity
-        uid:
-        - Node1#2
-        connectedNodes: []
-        allowMutipleConnection: 1
-        createByDefault: 1
-      minimized: 0
-      InstanceCache: 0
-      mRoot:
-        rid: 6312275961689669633
-      Type: 2
       EntityUid: 
     - mType: 0
       Name: Entity (Player)
@@ -1336,43 +1361,55 @@ MonoBehaviour:
     onTarget: 0
     followBone: 1
     followRotation: 0
+    triggerHit: 0
     duration: 0
     hitDelay: 0
+    hitBoxSize: {x: 1.3, y: 1.3, z: 1.3}
   - prefab: {fileID: 6510894621179254004, guid: 65c7cb8ea3bb88842ab96438b19f2e38, type: 3}
     bone: root
     onTarget: 1
     followBone: 0
     followRotation: 0
+    triggerHit: 0
     duration: 0
     hitDelay: 0.2
+    hitBoxSize: {x: 1.3, y: 1.3, z: 1.3}
   - prefab: {fileID: 5912743465999023849, guid: 75ade664a95d9c646ab785afdd4566fe, type: 3}
     bone: vfx_p_hit
     onTarget: 1
     followBone: 0
     followRotation: 0
+    triggerHit: 0
     duration: 0
     hitDelay: 0
+    hitBoxSize: {x: 1.3, y: 1.3, z: 1.3}
   - prefab: {fileID: 5912743465999023849, guid: 75ade664a95d9c646ab785afdd4566fe, type: 3}
     bone: vfx_p_hit
     onTarget: 1
     followBone: 0
     followRotation: 0
+    triggerHit: 0
     duration: 0
     hitDelay: 0
+    hitBoxSize: {x: 1.3, y: 1.3, z: 1.3}
   - prefab: {fileID: 5912743465999023849, guid: 75ade664a95d9c646ab785afdd4566fe, type: 3}
     bone: vfx_p_hit
     onTarget: 1
     followBone: 0
     followRotation: 0
+    triggerHit: 0
     duration: 0
     hitDelay: 0
+    hitBoxSize: {x: 1.3, y: 1.3, z: 1.3}
   - prefab: {fileID: 5912743465999023849, guid: 75ade664a95d9c646ab785afdd4566fe, type: 3}
     bone: vfx_p_hit
     onTarget: 1
     followBone: 0
     followRotation: 0
+    triggerHit: 0
     duration: 0
     hitDelay: 0.2
+    hitBoxSize: {x: 1.3, y: 1.3, z: 1.3}
   previewEnemy: {fileID: 0}
   projectileBone: 
   impactScale: 1
@@ -1556,6 +1593,12 @@ MonoBehaviour:
           Interval: 0
           calculation:
             rid: -2
+          motion:
+            rid: -2
+          projectile:
+            rid: -2
+          visualEffect:
+            rid: -2
         - mType: 0
           Name: Action
           Uid: Node4
@@ -1646,6 +1689,12 @@ MonoBehaviour:
           KeepTime: 0
           Interval: 0
           calculation:
+            rid: -2
+          motion:
+            rid: -2
+          projectile:
+            rid: -2
+          visualEffect:
             rid: -2
         - mType: 0
           Name: Action
@@ -1738,6 +1787,12 @@ MonoBehaviour:
           Interval: 0
           calculation:
             rid: -2
+          motion:
+            rid: -2
+          projectile:
+            rid: -2
+          visualEffect:
+            rid: -2
         - mType: 0
           Name: Action
           Uid: Node10
@@ -1828,6 +1883,12 @@ MonoBehaviour:
           KeepTime: 0
           Interval: 0
           calculation:
+            rid: -2
+          motion:
+            rid: -2
+          projectile:
+            rid: -2
+          visualEffect:
             rid: -2
         - mType: 0
           Name: Action
@@ -1920,6 +1981,12 @@ MonoBehaviour:
           Interval: 0
           calculation:
             rid: -2
+          motion:
+            rid: -2
+          projectile:
+            rid: -2
+          visualEffect:
+            rid: -2
         - mType: 0
           Name: Action
           Uid: Node16
@@ -2010,6 +2077,12 @@ MonoBehaviour:
           KeepTime: 0
           Interval: 0
           calculation:
+            rid: -2
+          motion:
+            rid: -2
+          projectile:
+            rid: -2
+          visualEffect:
             rid: -2
         - mType: 0
           Name: Action
@@ -2102,6 +2175,12 @@ MonoBehaviour:
           Interval: 0
           calculation:
             rid: -2
+          motion:
+            rid: -2
+          projectile:
+            rid: -2
+          visualEffect:
+            rid: -2
         - mType: 0
           Name: Action
           Uid: Node22
@@ -2193,6 +2272,12 @@ MonoBehaviour:
           Interval: 0
           calculation:
             rid: -2
+          motion:
+            rid: -2
+          projectile:
+            rid: -2
+          visualEffect:
+            rid: -2
         - mType: 0
           Name: Action
           Uid: Node25
@@ -2283,6 +2368,12 @@ MonoBehaviour:
           KeepTime: 0
           Interval: 0
           calculation:
+            rid: -2
+          motion:
+            rid: -2
+          projectile:
+            rid: -2
+          visualEffect:
             rid: -2
         Triggers: []
         ConditionGroups: []
@@ -2708,3 +2799,11 @@ MonoBehaviour:
         Groups: []
         Branchs: []
         ActiveTriggers: []
+    - rid: 6312275966157651970
+      type: {class: SkillMotion, ns: SoftKitty, asm: Assembly-CSharp}
+      data:
+        source: 0
+        layer: Base Layer
+        state: chr_male_001@jian_liuxing_25120
+        clip: {fileID: 7400000, guid: 66cdc5814f2613340a367fc3ebfa814b, type: 2}
+        transitionSeconds: 0.033333335

@@ -15,6 +15,8 @@ namespace SoftKitty
         private GraphObject[] library;
         private string filter = "";
         private bool showLibrary;
+        private bool showProjectSkills;
+        private GraphObject[] projectSkills;
         private bool showConditions;
         private static readonly string[] EntityRoleLabels = { "施法者（自己）", "本次目标", "按 UID 指定实体", "高级：全局玩家", "高级：技能执行实例" };
         private static readonly int[] EntityRoleValues = { (int)EntityType.Dealer, (int)EntityType.Target, (int)EntityType.Specified, (int)EntityType.Player, (int)EntityType.Instance };
@@ -42,6 +44,14 @@ namespace SoftKitty
                 window.SelectGraph(asset);
             }
             window.Show();
+        }
+
+        internal static void OpenAction(GraphObject asset, string uid)
+        {
+            Open(asset);
+            var window = GetWindow<SkillWorkbench>();
+            window.selection = uid;
+            window.Repaint();
         }
 
         private void SelectGraph(GraphObject asset)
@@ -78,7 +88,7 @@ namespace SoftKitty
             GUI.FocusControl(null);
         }
 
-        private void OnProjectChange() { library = null; RefreshMotionTimings(); }
+        private void OnProjectChange() { projectSkills = null; library = null; RefreshMotionTimings(); }
         private void OnEnable()
         {
             Undo.undoRedoPerformed += RefreshMotionTimings;
@@ -216,6 +226,17 @@ namespace SoftKitty
                     GUILayout.Button(new GUIContent(label, AssetDatabase.GetAssetPath(original)), EditorStyles.miniButton))
                     SelectGraph(original);
             }
+            showProjectSkills = EditorGUILayout.Foldout(showProjectSkills, "项目自建技能", true);
+            if (!showProjectSkills) return;
+            if (projectSkills == null)
+                projectSkills = AssetDatabase.FindAssets("t:GraphObject", new[] { "Assets" })
+                    .Select(guid => AssetDatabase.LoadAssetAtPath<GraphObject>(AssetDatabase.GUIDToAssetPath(guid)))
+                    .Where(g => g && g.GetType() == typeof(GraphObject) && g.RootSet?.ClassName == "Combat")
+                    .OrderBy(g => g.name).ToArray();
+            foreach (var item in projectSkills)
+                if (item.name.IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0 &&
+                    GUILayout.Button(new GUIContent(item.name, AssetDatabase.GetAssetPath(item)), EditorStyles.miniButton))
+                    SelectGraph(item);
         }
 
         private static Root EmptyRoot()
@@ -242,13 +263,17 @@ namespace SoftKitty
             var root = EmptyRoot();
             if (count == 0) return root;
             AddCondition(root, "EntityExist");
-            var action = AddAction(root, "AttributeChange", .1f);
-            action.StringValues[0] = "chp";
-            action.IntValues[0] = (int)(healing ? AttributeChangeAction.operations.Add : AttributeChangeAction.operations.Substract);
+            float amount = count > 1 ? 7f : 30f;
+            var action = healing ? AddCappedHeal(root, .1f, amount) : AddAction(root, "AttributeChange", .1f);
+            if (!healing)
+            {
+                action.StringValues[0] = "chp";
+                action.IntValues[0] = (int)AttributeChangeAction.operations.Substract;
+                root.Variables.Last().Constant = amount;
+            }
             action.Type = count == 1 ? ActionType.Only_Once : ActionType.Multiple_Time;
             action.Count = count;
             action.Interval = .2f;
-            root.Variables.Last().Constant = count > 1 ? 7f : 30f;
             return root;
         }
 
@@ -281,13 +306,8 @@ namespace SoftKitty
                     interrupt.StringValues[0] = Entity.InterruptCastEvent;
                     selection = interrupt.Uid;
                 }));
-                var folder = Application.dataPath + "/SoftKitty/Shared/Scripts/CustomClass/Action";
-                foreach (string file in Directory.GetFiles(folder, "*Action_interface.txt").OrderBy(x => x))
-                {
-                    var key = Path.GetFileName(file).Replace("Action_interface.txt", "");
-                    menu.AddItem(new GUIContent(GraphEditorText.Localize(key)), false, () =>
-                        Change(() => selection = AddAction(root, key, cursor).Uid));
-                }
+                AddActionChoices(menu, (key, stage) => Change(() =>
+                    selection = AddConfiguredAction(root, key, stage, cursor).Uid));
                 menu.ShowAsContext();
             }
             EditorGUILayout.EndHorizontal();
@@ -300,9 +320,10 @@ namespace SoftKitty
                 var name = new Rect(row.x, row.y, Mathf.Min(row.width * .49f, 285), row.height);
                 var lane = Rect.MinMaxRect(name.xMax + 4, row.y + 4, row.xMax - 5, row.yMax - 4);
                 var binding = action.inputPort[0].uid.FirstOrDefault();
-                string route = binding == null ? "未连接" : binding == "Node0#0" ? "直接" : "分支";
+                bool onArrival = binding != null && root.Actions.Exists(a => SkillProjectile.IsLaunch(a) && binding == a.Uid + "#0");
+                string route = binding == null ? "未连接" : binding == "Node0#0" ? "直接" : onArrival ? "命中后" : "分支";
                 var timing = motions[action];
-                string label = action.WaitTime.ToString("0.00") + "s  " + (timing == null ? ActionName(action) : "角色动画") + "  ·  " + (timing == null ? route : TimingLabel(timing));
+                string label = (onArrival ? "+" : "") + action.WaitTime.ToString("0.00") + "s  " + (timing == null ? ActionName(action) : "角色动画") + "  ·  " + (timing == null ? route : TimingLabel(timing));
                 if (GUI.Toggle(name, action.Uid == selection, new GUIContent(label, action.Uid), EditorStyles.miniButton) && selection != action.Uid)
                 { selection = action.Uid; cursor = action.WaitTime; }
                 EditorGUI.DrawRect(lane, new Color(.13f,.19f,.21f));
@@ -472,7 +493,7 @@ namespace SoftKitty
                     case NodeInterfaceElementType.Enum: Fill(action.IntValues, i, 0); break;
                     case NodeInterfaceElementType.Bool_Variable: Fill(action.BoolValues, i, false); break;
                     case NodeInterfaceElementType.Input_Entity:
-                        var entity = new EntityClass(root) { Type = field.Uid == "entityA" ? EntityType.Dealer : EntityType.Target, Position = action.Position + new Vector2(-245, i * 130) };
+                        var entity = new EntityClass(root) { Type = (field.Uid == "entityA" || field.Uid == "caster") ? EntityType.Dealer : EntityType.Target, Position = action.Position + new Vector2(-245, i * 130) };
                         root.Entities.Add(entity);
                         Wire(entity, action, i + offset);
                         break;
@@ -497,6 +518,8 @@ namespace SoftKitty
         }
 
         private static string ActionName(Action action) =>
+            SkillProjectile.IsLaunch(action) ? "产生投射物" :
+            action.ClassName == "OriginalSkillVisual" ? VisualLabel(action.IntValues.ElementAtOrDefault(0)) :
             action.ClassName == "Event" && action.StringValues.Count > 0 && action.StringValues[0] == Entity.InterruptCastEvent
                 ? "打断施法" : GraphEditorText.Localize(action.ClassName);
 
@@ -516,6 +539,11 @@ namespace SoftKitty
             if (mode == ActionType.For_X_Seconds) Edit("持续时间（秒）", action.KeepTime, x => action.KeepTime = x);
             if (mode != ActionType.Only_Once) Edit("执行间隔（秒）", action.Interval, x => action.Interval = x);
             DrawFields(action, 1);
+            if (SkillProjectile.IsLaunch(action)) DrawProjectile(action);
+            else if (SkillMotion.UsesBinding(action)) DrawMotion(action, graph);
+            else if (action.ClassName == "OriginalSkillVisual") DrawVisualAction(action);
+            else if ((action.ClassName == "SkillImpact" || action.ClassName == "FormulaImpact") &&
+                     action.IntValues.ElementAtOrDefault(0) != (int)SkillPlayback.Style.Direct) DrawStrikeHitBox(action);
             // Older graphs keep their original interface until opened in the node editor.
             if (!action.CustomInterface.Elements.Any(f => f.Uid == "interruptOnMove"))
             {
@@ -556,6 +584,7 @@ namespace SoftKitty
             foreach (var field in action.CustomInterface.Elements)
             {
                 if (!Visible(action, field.VisibleBind)) continue;
+                if (action.ClassName == "OriginalSkillVisual" && (field.Uid == "stage" || field.Uid == "cue")) continue;
                 int i = field.Index;
                 string label = GraphEditorText.Localize(field.Label);
                 switch (field.Type)
@@ -569,7 +598,13 @@ namespace SoftKitty
                         DrawBinding(action, i + offset, label);
                         break;
                     case NodeInterfaceElementType.String_Variable:
-                        EditValue(action.StringValues, i, "", v => EditorGUILayout.DelayedTextField(label, v)); break;
+                        EditValue(action.StringValues, i, "", v => EditorGUILayout.DelayedTextField(label, v));
+                        if (field.Uid == "path")
+                        {
+                            if (action.ClassName == "Instantiate") DrawResourcesAsset<GameObject>(action, i, "Prefab");
+                            if (action.ClassName == "PlaySound") DrawResourcesAsset<AudioClip>(action, i, "Audio Clip");
+                        }
+                        break;
                     case NodeInterfaceElementType.Float_Variable:
                         EditValue(action.FloatValues, i, 0f, v => EditorGUILayout.DelayedFloatField(label, v)); break;
                     case NodeInterfaceElementType.Int_Variable:
@@ -582,12 +617,32 @@ namespace SoftKitty
                         EditValue(action.BoolValues, i, false, v => EditorGUILayout.Toggle(label, v)); break;
                     case NodeInterfaceElementType.Enum:
                         EditValue(action.IntValues, i, 0, v => EditorGUILayout.Popup(label, v, field.EnumOptions.Select(GraphEditorText.Localize).ToArray()));
-                        if (field.Uid == "stage" && action is Action motionAction && motionAction.ClassName == "OriginalSkillVisual" &&
-                            motionAction.IntValues.ElementAtOrDefault(i) == 0 && graph is OriginalSkillGraph original)
-                            DrawMotion(motionAction, original);
                         break;
                 }
             }
+        }
+
+        private void DrawResourcesAsset<T>(CustomNode node, int index, string label) where T : UnityEngine.Object
+        {
+            string key = node.StringValues.ElementAtOrDefault(index);
+            var current = string.IsNullOrEmpty(key) ? null : Resources.Load<T>(key);
+            var picked = (T)EditorGUILayout.ObjectField(label, current, typeof(T), false);
+            if (picked == current) return;
+            string path = AssetDatabase.GetAssetPath(picked);
+            const string folder = "/Resources/";
+            int start = path.LastIndexOf(folder, StringComparison.OrdinalIgnoreCase);
+            if (picked && start < 0)
+            {
+                ShowNotification(new GUIContent("请选择 Resources 目录中的资源"));
+                return;
+            }
+            string resourceKey = picked ? Path.ChangeExtension(path.Substring(start + folder.Length), null) : "";
+            if (picked && Resources.Load<T>(resourceKey) != picked)
+            {
+                ShowNotification(new GUIContent("请检查 Resources 中的同名资源或子资源"));
+                return;
+            }
+            Change(() => { Fill(node.StringValues, index, ""); node.StringValues[index] = resourceKey; });
         }
 
         private static bool Visible(CustomNode node, string rule)

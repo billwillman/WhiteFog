@@ -15,7 +15,8 @@ namespace SoftKitty
             var host = SkillPlayback.On(runtime.RootState.RootInstance.GetComponent<GraphInstance>());
             host.Signal(actor, SkillPlayback.Position(entity, actor), StringValues[0], FloatValues[0],
                 IntValues[0] == 0 ? new Color(.3f,1f,.86f) : new Color(1f,.35f,.18f));
-            entity.OnEntityEvent(StringValues[0], 0, runtime.RootState.GetInvolvedEntity("Dealer"), false);
+            if (BoolValues.Count == 0 || !BoolValues[0])
+                entity.OnEntityEvent(StringValues[0], 0, runtime.RootState.GetInvolvedEntity("Dealer"), false);
         }
     }
 }

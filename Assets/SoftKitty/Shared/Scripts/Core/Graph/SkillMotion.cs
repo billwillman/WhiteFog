@@ -39,10 +39,17 @@ namespace SoftKitty
             stateHash = Animator.StringToHash(cachedPath);
         }
 
+        public static bool UsesBinding(Action action) =>
+            (action.ClassName == "Animation" && action.IntValues.Count > 0 &&
+                action.IntValues[0] == (int)AnimationAction.AnimTypes.SkillMotionBinding) ||
+            (action.ClassName == "OriginalSkillVisual" && action.IntValues.Count > 0 && action.IntValues[0] == 0);
+
         public static SkillMotion For(Action action, OriginalSkillGraph graph)
         {
             // Older graphs stored one castMotion. Keep their original state and transition time.
-            return action.motion ?? new SkillMotion {
+            if (action.motion != null) return action.motion;
+            if (!graph) return new SkillMotion();
+            return new SkillMotion {
                 state = graph.castMotion ? graph.castMotion.name : "", clip = graph.castMotion,
                 transitionSeconds = graph.castMotion ? 1f / Mathf.Max(1f, graph.castMotion.frameRate) : 0f
             };

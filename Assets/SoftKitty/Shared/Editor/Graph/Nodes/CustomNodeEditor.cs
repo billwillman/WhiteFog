@@ -65,6 +65,8 @@ namespace SoftKitty
 
         }
 
+        protected virtual void OnEnumChanged(string uid) { }
+
         public virtual void LoadClassInterface(CustomNode _data,string _typeName, int _baseInputCount)
         {
             _customData = _data;
@@ -203,6 +205,7 @@ namespace SoftKitty
                                 {
                                     if (x.target is not DropdownField field) return;
                                     _data.IntValues[_index] = field.index;
+                                    OnEnumChanged(_uid);
                                     CheckVisibleBinding(_uid, true, _data.IntValues[_index]);
                                 });
                                 _dropDowns.Add(_uid);

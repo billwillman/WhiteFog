@@ -15,33 +15,38 @@ namespace SoftKitty
 
         public override void Run(GraphInstance instance, GraphRuntimeState state)
         {
-            if (IntValues[0] != 3 && IntValues[0] != 6)
-            {
-                base.Run(instance, state);
-                return;
-            }
+            if (IntValues[0] == 3) { ProjectileAction.Schedule(this, instance, state); return; }
+            if (IntValues[0] != 6) { base.Run(instance, state); return; }
 
             var caster = SkillPlayback.ReadEntity(this, 1, state);
             var target = SkillPlayback.ReadEntity(this, 2, state);
             var graph = instance.mGraph as OriginalSkillGraph;
-            if (caster == null || target == null || !graph) return;
+            if (caster == null || target == null) return;
             var host = SkillPlayback.On(instance);
             state.NodeStates[NodeIndex].lastBool = true;
             var impact = host.OriginalProjectileImpact;
-            if (IntValues[0] == 6)
-            {
-                int index = IntValues[1];
-                if (index < 0 || index >= graph.effects.Length) return;
-                var cue = graph.effects[index];
-                host.ScheduleReleases(state, caster, WaitTime, FormulaImpactAction.SegmentCount(this), Interval,
-                    () => PlayCue(host, cue, caster, target, impact));
-                return;
-            }
+            var cue = EffectFor(this, graph);
+            if (cue == null) return;
             host.ScheduleReleases(state, caster, WaitTime, FormulaImpactAction.SegmentCount(this), Interval,
-                () => Launch(host, graph, caster, target, impact));
+                () => { if (ConditionsMet(ref state)) PlayCue(host, cue, caster, target, impact); });
         }
 
-        private static Transform Anchor(EntityComponent actor, string name)
+        public static OriginalSkillGraph.EffectCue EffectFor(Action node, OriginalSkillGraph graph)
+        {
+            if (node.visualEffect != null) return node.visualEffect;
+            int stage = node.IntValues.Count > 0 ? node.IntValues[0] : 0;
+            if (!graph) return new OriginalSkillGraph.EffectCue();
+            if (stage == 1) return new OriginalSkillGraph.EffectCue { prefab = graph.castEffect, bone = "root", followBone = true };
+            if (stage == 2) return new OriginalSkillGraph.EffectCue { prefab = graph.weaponEffect, bone = graph.weaponBone,
+                followBone = true, followRotation = true, duration = graph.weaponSeconds };
+            int index = node.IntValues.Count > 1 ? node.IntValues[1] : -1;
+            if (index < 0 || index >= graph.effects.Length || graph.effects[index] == null) return null;
+            var cue = graph.effects[index].Copy();
+            cue.triggerHit = cue.onTarget;
+            return cue;
+        }
+
+        internal static Transform Anchor(EntityComponent actor, string name)
         {
             if (string.IsNullOrEmpty(name)) return actor.transform;
             foreach (var bone in actor.GetComponentsInChildren<Transform>())
@@ -65,26 +70,24 @@ namespace SoftKitty
             if (fx && cue.duration > 0) Object.Destroy(fx, cue.duration);
             if (fx && cue.followBone && !cue.followRotation)
                 host.ProjectileHost().Schedule(FollowPosition(fx.transform, anchor));
-            if (cue.onTarget && impact != null)
+            if (cue.triggerHit && impact != null)
             {
-                if (cue.hitDelay > 0) host.ProjectileHost().Schedule(DelayedHit(cue.hitDelay, source, recipient, impact));
-                else impact(source, recipient);
+                var facing = cue.followRotation ? anchor.rotation : actor.transform.rotation;
+                void TestHit()
+                {
+                    var target = SkillPlayback.FindActor(recipient);
+                    var center = cue.followBone && anchor ? anchor.position : point;
+                    if (SkillProjectile.OverlapsTarget(target, center, facing, cue.hitBoxSize, ~0)) impact(source, recipient);
+                }
+                if (cue.hitDelay > 0) host.ProjectileHost().Schedule(DelayedHit(cue.hitDelay, TestHit));
+                else TestHit();
             }
         }
 
-        private static IEnumerator DelayedHit(float delay, Entity source, Entity recipient, System.Action<Entity, Entity> impact)
+        private static IEnumerator DelayedHit(float delay, System.Action test)
         {
             yield return new WaitForSeconds(delay);
-            var target = SkillPlayback.FindActor(recipient);
-            if (target && target.AvailableForInteraction) impact(source, recipient);
-        }
-
-        private static void Launch(SkillPlayback host, OriginalSkillGraph graph, Entity source, Entity recipient, System.Action<Entity, Entity> impact)
-        {
-            var caster = SkillPlayback.FindActor(source);
-            var target = SkillPlayback.FindActor(recipient);
-            if (caster && target && target.AvailableForInteraction)
-                host.ProjectileHost().Schedule(Fly(graph, caster, target, impact));
+            test();
         }
 
         public override void Execute(GraphRuntimeState state)
@@ -92,7 +95,7 @@ namespace SoftKitty
             var instance = state.RootState.RootInstance.GetComponent<GraphInstance>();
             var graph = instance.mGraph as OriginalSkillGraph;
             var caster = SkillPlayback.FindActor(SkillPlayback.ReadEntity(this, 1, state));
-            if (!graph || !caster) return;
+            if (!caster) return;
             if (IntValues[0] == 0)
             {
                 var binding = motion;
@@ -108,7 +111,13 @@ namespace SoftKitty
                 return;
             }
             var target = SkillPlayback.FindActor(SkillPlayback.ReadEntity(this, 2, state));
-            if (!target) return;
+            if (!target && (IntValues[0] == 3 || IntValues[0] == 6)) return;
+            if ((IntValues[0] == 1 || IntValues[0] == 2) && (visualEffect != null || !graph))
+            {
+                var effect = EffectFor(this, graph);
+                if (effect != null) PlayCue(SkillPlayback.On(instance), effect, caster.mData, target ? target.mData : null, null);
+                return;
+            }
             switch (IntValues[0])
             {
                 case 1:
@@ -127,13 +136,20 @@ namespace SoftKitty
                     }
                     break;
                 case 3:
-                    var host = SkillPlayback.On(instance);
-                    Launch(host, graph, caster.mData, target.mData, host.OriginalProjectileImpact);
+                    ProjectileAction.LaunchNow(this, state);
+                    break;
+                case 6:
+                    var cue = EffectFor(this, graph);
+                    if (cue != null)
+                    {
+                        var host = SkillPlayback.On(instance);
+                        PlayCue(host, cue, caster.mData, target.mData, host.OriginalProjectileImpact);
+                    }
                     break;
             }
         }
 
-        private static GameObject Spawn(GameObject prefab, Vector3 at, Quaternion facing, Transform parent = null, bool timed = true)
+        internal static GameObject Spawn(GameObject prefab, Vector3 at, Quaternion facing, Transform parent = null, bool timed = true)
         {
             if (!prefab) return null;
             var effect = Object.Instantiate(prefab, at, facing, parent);
@@ -151,7 +167,7 @@ namespace SoftKitty
             return effect;
         }
 
-        private static Transform ActorRoot(Transform actor)
+        internal static Transform ActorRoot(Transform actor)
         {
             var animator = actor.GetComponentInChildren<Animator>();
             if (!animator) return actor;
@@ -168,51 +184,5 @@ namespace SoftKitty
             }
         }
 
-        private static IEnumerator Fly(OriginalSkillGraph graph, EntityComponent casterActor, EntityComponent targetActor, System.Action<Entity, Entity> impact)
-        {
-            var caster = casterActor.transform;
-            var target = targetActor.transform;
-            var source = casterActor.mData;
-            var recipient = targetActor.mData;
-            var releaseRoot = string.IsNullOrEmpty(graph.projectileBone) ? ActorRoot(caster) : Anchor(casterActor, graph.projectileBone);
-            var hitRoot = ActorRoot(target);
-            Vector3 start = releaseRoot.position + caster.rotation * graph.launchOffset;
-            Vector3 end = hitRoot.position + target.rotation * graph.impactOffset;
-            Vector3 delta = end - start;
-            float length = delta.magnitude;
-            var facing = length > .001f ? Quaternion.LookRotation(delta) : caster.rotation;
-            var bolt = Spawn(graph.projectile, start, facing, null, false);
-            var tail = Spawn(graph.tail, start, facing, null, false);
-            try
-            {
-                for (float t = 0; graph.projectileSpeed > 0 && t * (graph.projectileSpeed + .5f * graph.projectileAcceleration * t) < length; t += Time.deltaTime)
-                {
-                    var point = start + delta.normalized * (t * (graph.projectileSpeed + .5f * graph.projectileAcceleration * t));
-                    if (bolt) bolt.transform.position = point;
-                    if (tail) tail.transform.position = point;
-                    yield return null;
-                }
-                if (bolt) bolt.transform.position = end;
-                if (hitRoot && targetActor && targetActor.isActiveAndEnabled && targetActor.mData == recipient && recipient.AvailableForInteraction)
-                {
-                    var hit = Spawn(graph.impact, hitRoot.position + target.rotation * graph.impactOffset, Quaternion.identity);
-                    if (hit) hit.transform.localScale *= graph.impactScale;
-                    impact?.Invoke(source, recipient);
-                }
-                if (tail)
-                {
-                    tail.transform.position = end;
-                    foreach (var system in tail.GetComponentsInChildren<ParticleSystem>(true))
-                        system.Stop(false, ParticleSystemStopBehavior.StopEmitting);
-                    Object.Destroy(tail, graph.tailSeconds);
-                    tail = null;
-                }
-            }
-            finally
-            {
-                if (bolt) Object.Destroy(bolt);
-                if (tail) Object.Destroy(tail);
-            }
-        }
     }
 }

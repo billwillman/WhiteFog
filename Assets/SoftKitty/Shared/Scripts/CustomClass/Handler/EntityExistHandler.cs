@@ -7,7 +7,8 @@ namespace SoftKitty{
         }
         public enum logics{
           Existent,
-          Nonexistent
+          Nonexistent,
+          Interactable
         }
         public logics logic; //The logic for verification.
  
@@ -29,6 +30,10 @@ namespace SoftKitty{
             {
                 case logics.Existent:
                     _result=( entity(_runtime) != null); 
+                    break;
+                case logics.Interactable:
+                    var candidate = entity(_runtime);
+                    _result = candidate != null && candidate.AvailableForInteraction;
                     break;
                 case logics.Nonexistent:
                     _result = (entity(_runtime) == null); 

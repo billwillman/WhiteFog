@@ -35,14 +35,14 @@ MonoBehaviour:
       - ActionIn
       - BranchInAction
       uid:
-      - Node1#0
       - Node4#0
       - Node7#0
+      - Node19#0
+      - Node22#0
+      - Node1#0
       - Node10#0
       - Node13#0
       - Node16#0
-      - Node19#0
-      - Node22#0
       connectedNodes: []
       allowMutipleConnection: 1
       createByDefault: 1
@@ -104,22 +104,21 @@ MonoBehaviour:
         connectedNodes: []
         allowMutipleConnection: 0
         createByDefault: 1
-      - Name: 2
-        Type: EntityIn
+      - Name: "\u52A8\u4F5C\u524D\u7F6E\u6761\u4EF6"
+        Type: ConditionIn
         acceptedTypes:
-        - EntityOut
-        uid:
-        - Node3#0
+        - ConditionOut
+        uid: []
         connectedNodes: []
-        allowMutipleConnection: 0
+        allowMutipleConnection: 1
         createByDefault: 1
       outputPort: []
       minimized: 0
       InstanceCache: 0
       mRoot:
         rid: 6312275959582556160
-      ClassName: OriginalSkillVisual
-      IntValues: 00000000
+      ClassName: Animation
+      IntValues: 02000000
       FloatValues: []
       StringValues:
       - 
@@ -127,41 +126,36 @@ MonoBehaviour:
       BoolValues: 
       CustomInterface:
         Elements:
-        - Uid: caster
-          Label: "\u65BD\u653E\u8005"
-          ToolTips: "\u6280\u80FD\u7684\u52A8\u4F5C\u548C\u65BD\u6CD5\u7279\u6548\u8DDF\u968F\u6B64\u89D2\u8272"
+        - Uid: entity
+          Label: Entity
+          ToolTips: The entity to play this animation.
           Type: 8
           Index: 0
           VisibleBind: 
           EnumOptions: []
-        - Uid: target
-          Label: "\u8868\u73B0\u76EE\u6807"
-          ToolTips: "\u98DE\u5251\u53D1\u5C04\u65F6\u8BFB\u53D6\u76EE\u6807\u4F4D\u7F6E"
-          Type: 8
-          Index: 1
-          VisibleBind: 
-          EnumOptions: []
-        - Uid: stage
-          Label: "\u539F\u4F5C\u8868\u73B0\u4E8B\u4EF6"
-          ToolTips: "\u5B9E\u9645\u8D44\u6E90\u7531\u539F\u4F5C\u6280\u80FD\u56FE\u5F15\u7528"
+        - Uid: AnimType
+          Label: Animation Type
+          ToolTips: Whether using Legacy Animation component or Mecanim component.
           Type: 7
           Index: 0
           VisibleBind: 
           EnumOptions:
-          - "\u64AD\u653E\u539F\u4F5C\u89D2\u8272\u52A8\u4F5C"
-          - "\u65BD\u6CD5\u7279\u6548"
-          - "\u53F3\u624B\u6B66\u5668"
-          - "\u53D1\u5C04\u98DE\u5251"
-          - "\u6536\u62DB\u6807\u8BB0"
-          - "\u4F4D\u79FB\u4E8B\u4EF6\u6807\u8BB0"
-          - "\u539F\u4F5C\u8F68\u9053\u7279\u6548\u6216\u547D\u4E2D"
-        - Uid: cue
-          Label: "\u539F\u4F5C\u8F68\u9053\u914D\u7F6E\u5E8F\u53F7"
-          ToolTips: "\u5BF9\u5E94\u6280\u80FD\u56FE\u7684\u7279\u6548\u914D\u7F6E\uFF0C\u4ECE
-            0 \u5F00\u59CB\u3002"
+          - Legacy
+          - Mecanim
+          - Animator State / Animation Clip
+        - Uid: clipName
+          Label: Clip Name
+          ToolTips: The name of the animation clip(Legacy) .
+          Type: 1
+          Index: 0
+          VisibleBind: AnimType#0
+          EnumOptions: []
+        - Uid: stateName
+          Label: State Name
+          ToolTips: The name of the animation state.
           Type: 1
           Index: 1
-          VisibleBind: stage#6
+          VisibleBind: AnimType#1
           EnumOptions: []
       Type: 0
       Count: 1
@@ -169,6 +163,12 @@ MonoBehaviour:
       KeepTime: 0
       Interval: 0
       calculation:
+        rid: -2
+      motion:
+        rid: 6312275966157651972
+      projectile:
+        rid: -2
+      visualEffect:
         rid: -2
     - mType: 0
       Name: Action
@@ -261,6 +261,12 @@ MonoBehaviour:
       Interval: 0
       calculation:
         rid: -2
+      motion:
+        rid: -2
+      projectile:
+        rid: -2
+      visualEffect:
+        rid: -2
     - mType: 0
       Name: Action
       Uid: Node7
@@ -352,6 +358,12 @@ MonoBehaviour:
       Interval: 0
       calculation:
         rid: -2
+      motion:
+        rid: -2
+      projectile:
+        rid: -2
+      visualEffect:
+        rid: -2
     - mType: 0
       Name: Action
       Uid: Node10
@@ -386,55 +398,48 @@ MonoBehaviour:
         connectedNodes: []
         allowMutipleConnection: 0
         createByDefault: 1
-      outputPort: []
+      - Name: "\u52A8\u4F5C\u524D\u7F6E\u6761\u4EF6"
+        Type: ConditionIn
+        acceptedTypes:
+        - ConditionOut
+        uid: []
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 1
+      outputPort:
+      - Name: "\u547D\u4E2D\u76EE\u6807"
+        Type: BranchOutAction
+        acceptedTypes:
+        - ActionIn
+        - BranchInAction
+        uid: []
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 1
       minimized: 0
       InstanceCache: 0
       mRoot:
         rid: 6312275959582556160
-      ClassName: OriginalSkillVisual
-      IntValues: 03000000
+      ClassName: Projectile
+      IntValues:
       FloatValues: []
-      StringValues:
-      - 
-      - 
+      StringValues: []
       BoolValues: 
       CustomInterface:
         Elements:
         - Uid: caster
           Label: "\u65BD\u653E\u8005"
-          ToolTips: "\u6280\u80FD\u7684\u52A8\u4F5C\u548C\u65BD\u6CD5\u7279\u6548\u8DDF\u968F\u6B64\u89D2\u8272"
+          ToolTips: "\u4EA7\u751F\u6295\u5C04\u7269\u7684\u5B9E\u4F53"
           Type: 8
           Index: 0
           VisibleBind: 
           EnumOptions: []
         - Uid: target
-          Label: "\u8868\u73B0\u76EE\u6807"
-          ToolTips: "\u98DE\u5251\u53D1\u5C04\u65F6\u8BFB\u53D6\u76EE\u6807\u4F4D\u7F6E"
+          Label: "\u7784\u51C6\u76EE\u6807"
+          ToolTips: "\u51B3\u5B9A\u521D\u59CB\u5F39\u9053\u53CA\u8FFD\u8E2A\u5BF9\u8C61\uFF0C\u53EF\u547D\u4E2D\u5BF9\u8C61\u7531\u672C\u53D1\u7B5B\u9009\u89C4\u5219\u51B3\u5B9A"
           Type: 8
           Index: 1
           VisibleBind: 
-          EnumOptions: []
-        - Uid: stage
-          Label: "\u539F\u4F5C\u8868\u73B0\u4E8B\u4EF6"
-          ToolTips: "\u5B9E\u9645\u8D44\u6E90\u7531\u539F\u4F5C\u6280\u80FD\u56FE\u5F15\u7528"
-          Type: 7
-          Index: 0
-          VisibleBind: 
-          EnumOptions:
-          - "\u64AD\u653E\u539F\u4F5C\u89D2\u8272\u52A8\u4F5C"
-          - "\u65BD\u6CD5\u7279\u6548"
-          - "\u53F3\u624B\u6B66\u5668"
-          - "\u53D1\u5C04\u98DE\u5251"
-          - "\u6536\u62DB\u6807\u8BB0"
-          - "\u4F4D\u79FB\u4E8B\u4EF6\u6807\u8BB0"
-          - "\u539F\u4F5C\u8F68\u9053\u7279\u6548\u6216\u547D\u4E2D"
-        - Uid: cue
-          Label: "\u539F\u4F5C\u8F68\u9053\u914D\u7F6E\u5E8F\u53F7"
-          ToolTips: "\u5BF9\u5E94\u6280\u80FD\u56FE\u7684\u7279\u6548\u914D\u7F6E\uFF0C\u4ECE
-            0 \u5F00\u59CB\u3002"
-          Type: 1
-          Index: 1
-          VisibleBind: stage#6
           EnumOptions: []
       Type: 0
       Count: 1
@@ -442,6 +447,12 @@ MonoBehaviour:
       KeepTime: 0
       Interval: 0
       calculation:
+        rid: -2
+      motion:
+        rid: -2
+      projectile:
+        rid: 6312275966157651973
+      visualEffect:
         rid: -2
     - mType: 0
       Name: Action
@@ -477,55 +488,48 @@ MonoBehaviour:
         connectedNodes: []
         allowMutipleConnection: 0
         createByDefault: 1
-      outputPort: []
+      - Name: "\u52A8\u4F5C\u524D\u7F6E\u6761\u4EF6"
+        Type: ConditionIn
+        acceptedTypes:
+        - ConditionOut
+        uid: []
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 1
+      outputPort:
+      - Name: "\u547D\u4E2D\u76EE\u6807"
+        Type: BranchOutAction
+        acceptedTypes:
+        - ActionIn
+        - BranchInAction
+        uid: []
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 1
       minimized: 0
       InstanceCache: 0
       mRoot:
         rid: 6312275959582556160
-      ClassName: OriginalSkillVisual
-      IntValues: 03000000
+      ClassName: Projectile
+      IntValues:
       FloatValues: []
-      StringValues:
-      - 
-      - 
+      StringValues: []
       BoolValues: 
       CustomInterface:
         Elements:
         - Uid: caster
           Label: "\u65BD\u653E\u8005"
-          ToolTips: "\u6280\u80FD\u7684\u52A8\u4F5C\u548C\u65BD\u6CD5\u7279\u6548\u8DDF\u968F\u6B64\u89D2\u8272"
+          ToolTips: "\u4EA7\u751F\u6295\u5C04\u7269\u7684\u5B9E\u4F53"
           Type: 8
           Index: 0
           VisibleBind: 
           EnumOptions: []
         - Uid: target
-          Label: "\u8868\u73B0\u76EE\u6807"
-          ToolTips: "\u98DE\u5251\u53D1\u5C04\u65F6\u8BFB\u53D6\u76EE\u6807\u4F4D\u7F6E"
+          Label: "\u7784\u51C6\u76EE\u6807"
+          ToolTips: "\u51B3\u5B9A\u521D\u59CB\u5F39\u9053\u53CA\u8FFD\u8E2A\u5BF9\u8C61\uFF0C\u53EF\u547D\u4E2D\u5BF9\u8C61\u7531\u672C\u53D1\u7B5B\u9009\u89C4\u5219\u51B3\u5B9A"
           Type: 8
           Index: 1
           VisibleBind: 
-          EnumOptions: []
-        - Uid: stage
-          Label: "\u539F\u4F5C\u8868\u73B0\u4E8B\u4EF6"
-          ToolTips: "\u5B9E\u9645\u8D44\u6E90\u7531\u539F\u4F5C\u6280\u80FD\u56FE\u5F15\u7528"
-          Type: 7
-          Index: 0
-          VisibleBind: 
-          EnumOptions:
-          - "\u64AD\u653E\u539F\u4F5C\u89D2\u8272\u52A8\u4F5C"
-          - "\u65BD\u6CD5\u7279\u6548"
-          - "\u53F3\u624B\u6B66\u5668"
-          - "\u53D1\u5C04\u98DE\u5251"
-          - "\u6536\u62DB\u6807\u8BB0"
-          - "\u4F4D\u79FB\u4E8B\u4EF6\u6807\u8BB0"
-          - "\u539F\u4F5C\u8F68\u9053\u7279\u6548\u6216\u547D\u4E2D"
-        - Uid: cue
-          Label: "\u539F\u4F5C\u8F68\u9053\u914D\u7F6E\u5E8F\u53F7"
-          ToolTips: "\u5BF9\u5E94\u6280\u80FD\u56FE\u7684\u7279\u6548\u914D\u7F6E\uFF0C\u4ECE
-            0 \u5F00\u59CB\u3002"
-          Type: 1
-          Index: 1
-          VisibleBind: stage#6
           EnumOptions: []
       Type: 0
       Count: 1
@@ -533,6 +537,12 @@ MonoBehaviour:
       KeepTime: 0
       Interval: 0
       calculation:
+        rid: -2
+      motion:
+        rid: -2
+      projectile:
+        rid: 6312275966157651974
+      visualEffect:
         rid: -2
     - mType: 0
       Name: Action
@@ -568,55 +578,48 @@ MonoBehaviour:
         connectedNodes: []
         allowMutipleConnection: 0
         createByDefault: 1
-      outputPort: []
+      - Name: "\u52A8\u4F5C\u524D\u7F6E\u6761\u4EF6"
+        Type: ConditionIn
+        acceptedTypes:
+        - ConditionOut
+        uid: []
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 1
+      outputPort:
+      - Name: "\u547D\u4E2D\u76EE\u6807"
+        Type: BranchOutAction
+        acceptedTypes:
+        - ActionIn
+        - BranchInAction
+        uid: []
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 1
       minimized: 0
       InstanceCache: 0
       mRoot:
         rid: 6312275959582556160
-      ClassName: OriginalSkillVisual
-      IntValues: 03000000
+      ClassName: Projectile
+      IntValues:
       FloatValues: []
-      StringValues:
-      - 
-      - 
+      StringValues: []
       BoolValues: 
       CustomInterface:
         Elements:
         - Uid: caster
           Label: "\u65BD\u653E\u8005"
-          ToolTips: "\u6280\u80FD\u7684\u52A8\u4F5C\u548C\u65BD\u6CD5\u7279\u6548\u8DDF\u968F\u6B64\u89D2\u8272"
+          ToolTips: "\u4EA7\u751F\u6295\u5C04\u7269\u7684\u5B9E\u4F53"
           Type: 8
           Index: 0
           VisibleBind: 
           EnumOptions: []
         - Uid: target
-          Label: "\u8868\u73B0\u76EE\u6807"
-          ToolTips: "\u98DE\u5251\u53D1\u5C04\u65F6\u8BFB\u53D6\u76EE\u6807\u4F4D\u7F6E"
+          Label: "\u7784\u51C6\u76EE\u6807"
+          ToolTips: "\u51B3\u5B9A\u521D\u59CB\u5F39\u9053\u53CA\u8FFD\u8E2A\u5BF9\u8C61\uFF0C\u53EF\u547D\u4E2D\u5BF9\u8C61\u7531\u672C\u53D1\u7B5B\u9009\u89C4\u5219\u51B3\u5B9A"
           Type: 8
           Index: 1
           VisibleBind: 
-          EnumOptions: []
-        - Uid: stage
-          Label: "\u539F\u4F5C\u8868\u73B0\u4E8B\u4EF6"
-          ToolTips: "\u5B9E\u9645\u8D44\u6E90\u7531\u539F\u4F5C\u6280\u80FD\u56FE\u5F15\u7528"
-          Type: 7
-          Index: 0
-          VisibleBind: 
-          EnumOptions:
-          - "\u64AD\u653E\u539F\u4F5C\u89D2\u8272\u52A8\u4F5C"
-          - "\u65BD\u6CD5\u7279\u6548"
-          - "\u53F3\u624B\u6B66\u5668"
-          - "\u53D1\u5C04\u98DE\u5251"
-          - "\u6536\u62DB\u6807\u8BB0"
-          - "\u4F4D\u79FB\u4E8B\u4EF6\u6807\u8BB0"
-          - "\u539F\u4F5C\u8F68\u9053\u7279\u6548\u6216\u547D\u4E2D"
-        - Uid: cue
-          Label: "\u539F\u4F5C\u8F68\u9053\u914D\u7F6E\u5E8F\u53F7"
-          ToolTips: "\u5BF9\u5E94\u6280\u80FD\u56FE\u7684\u7279\u6548\u914D\u7F6E\uFF0C\u4ECE
-            0 \u5F00\u59CB\u3002"
-          Type: 1
-          Index: 1
-          VisibleBind: stage#6
           EnumOptions: []
       Type: 0
       Count: 1
@@ -624,6 +627,12 @@ MonoBehaviour:
       KeepTime: 0
       Interval: 0
       calculation:
+        rid: -2
+      motion:
+        rid: -2
+      projectile:
+        rid: 6312275966157651975
+      visualEffect:
         rid: -2
     - mType: 0
       Name: Action
@@ -716,6 +725,12 @@ MonoBehaviour:
       Interval: 0
       calculation:
         rid: -2
+      motion:
+        rid: -2
+      projectile:
+        rid: -2
+      visualEffect:
+        rid: -2
     - mType: 0
       Name: Action
       Uid: Node22
@@ -806,6 +821,12 @@ MonoBehaviour:
       KeepTime: 0
       Interval: 0
       calculation:
+        rid: -2
+      motion:
+        rid: -2
+      projectile:
+        rid: -2
+      visualEffect:
         rid: -2
     Triggers:
     - mType: 0
@@ -1062,29 +1083,6 @@ MonoBehaviour:
       mRoot:
         rid: 6312275959582556160
       Type: 1
-      EntityUid: 
-    - mType: 0
-      Name: Entity (Player)
-      Uid: Node3
-      Position: {x: 300.66666, y: 146}
-      NodeIndex: 0
-      inputPort: []
-      outputPort:
-      - Name: Entity
-        Type: EntityOut
-        acceptedTypes:
-        - EntityIn
-        - BranchInEntity
-        uid:
-        - Node1#2
-        connectedNodes: []
-        allowMutipleConnection: 1
-        createByDefault: 1
-      minimized: 0
-      InstanceCache: 0
-      mRoot:
-        rid: 6312275959582556160
-      Type: 2
       EntityUid: 
     - mType: 0
       Name: Entity (Player)
@@ -1452,7 +1450,7 @@ MonoBehaviour:
       InstanceCache: 0
       mRoot:
         rid: 1000
-      Type: 1
+      Type: 4
       EntityUid: 
     Notes: []
     Groups: []
@@ -1686,6 +1684,12 @@ MonoBehaviour:
           Interval: 0
           calculation:
             rid: -2
+          motion:
+            rid: -2
+          projectile:
+            rid: -2
+          visualEffect:
+            rid: -2
         - mType: 0
           Name: Action
           Uid: Node4
@@ -1776,6 +1780,12 @@ MonoBehaviour:
           KeepTime: 0
           Interval: 0
           calculation:
+            rid: -2
+          motion:
+            rid: -2
+          projectile:
+            rid: -2
+          visualEffect:
             rid: -2
         - mType: 0
           Name: Action
@@ -1868,6 +1878,12 @@ MonoBehaviour:
           Interval: 0
           calculation:
             rid: -2
+          motion:
+            rid: -2
+          projectile:
+            rid: -2
+          visualEffect:
+            rid: -2
         - mType: 0
           Name: Action
           Uid: Node10
@@ -1958,6 +1974,12 @@ MonoBehaviour:
           KeepTime: 0
           Interval: 0
           calculation:
+            rid: -2
+          motion:
+            rid: -2
+          projectile:
+            rid: -2
+          visualEffect:
             rid: -2
         - mType: 0
           Name: Action
@@ -2050,6 +2072,12 @@ MonoBehaviour:
           Interval: 0
           calculation:
             rid: -2
+          motion:
+            rid: -2
+          projectile:
+            rid: -2
+          visualEffect:
+            rid: -2
         - mType: 0
           Name: Action
           Uid: Node16
@@ -2140,6 +2168,12 @@ MonoBehaviour:
           KeepTime: 0
           Interval: 0
           calculation:
+            rid: -2
+          motion:
+            rid: -2
+          projectile:
+            rid: -2
+          visualEffect:
             rid: -2
         - mType: 0
           Name: Action
@@ -2232,6 +2266,12 @@ MonoBehaviour:
           Interval: 0
           calculation:
             rid: -2
+          motion:
+            rid: -2
+          projectile:
+            rid: -2
+          visualEffect:
+            rid: -2
         - mType: 0
           Name: Action
           Uid: Node22
@@ -2322,6 +2362,12 @@ MonoBehaviour:
           KeepTime: 0
           Interval: 0
           calculation:
+            rid: -2
+          motion:
+            rid: -2
+          projectile:
+            rid: -2
+          visualEffect:
             rid: -2
         Triggers:
         - mType: 0
@@ -3120,6 +3166,12 @@ MonoBehaviour:
           Interval: 0
           calculation:
             rid: -2
+          motion:
+            rid: -2
+          projectile:
+            rid: -2
+          visualEffect:
+            rid: -2
         - mType: 0
           Name: Action
           Uid: Node4
@@ -3198,6 +3250,12 @@ MonoBehaviour:
           KeepTime: 0
           Interval: 0
           calculation:
+            rid: -2
+          motion:
+            rid: -2
+          projectile:
+            rid: -2
+          visualEffect:
             rid: -2
         - mType: 0
           Name: Action
@@ -3278,6 +3336,12 @@ MonoBehaviour:
           Interval: 0
           calculation:
             rid: -2
+          motion:
+            rid: -2
+          projectile:
+            rid: -2
+          visualEffect:
+            rid: -2
         - mType: 0
           Name: Action
           Uid: Node10
@@ -3356,6 +3420,12 @@ MonoBehaviour:
           KeepTime: 0
           Interval: 0
           calculation:
+            rid: -2
+          motion:
+            rid: -2
+          projectile:
+            rid: -2
+          visualEffect:
             rid: -2
         - mType: 0
           Name: Action
@@ -3436,6 +3506,12 @@ MonoBehaviour:
           Interval: 0
           calculation:
             rid: -2
+          motion:
+            rid: -2
+          projectile:
+            rid: -2
+          visualEffect:
+            rid: -2
         - mType: 0
           Name: Action
           Uid: Node16
@@ -3515,6 +3591,12 @@ MonoBehaviour:
           Interval: 0
           calculation:
             rid: -2
+          motion:
+            rid: -2
+          projectile:
+            rid: -2
+          visualEffect:
+            rid: -2
         - mType: 0
           Name: Action
           Uid: Node19
@@ -3593,6 +3675,12 @@ MonoBehaviour:
           KeepTime: 0
           Interval: 0
           calculation:
+            rid: -2
+          motion:
+            rid: -2
+          projectile:
+            rid: -2
+          visualEffect:
             rid: -2
         Triggers: []
         ConditionGroups: []
@@ -4073,6 +4161,12 @@ MonoBehaviour:
           Interval: 0
           calculation:
             rid: -2
+          motion:
+            rid: -2
+          projectile:
+            rid: -2
+          visualEffect:
+            rid: -2
         - mType: 0
           Name: Action
           Uid: Node4
@@ -4151,6 +4245,12 @@ MonoBehaviour:
           KeepTime: 0
           Interval: 0
           calculation:
+            rid: -2
+          motion:
+            rid: -2
+          projectile:
+            rid: -2
+          visualEffect:
             rid: -2
         - mType: 0
           Name: Action
@@ -4231,6 +4331,12 @@ MonoBehaviour:
           Interval: 0
           calculation:
             rid: -2
+          motion:
+            rid: -2
+          projectile:
+            rid: -2
+          visualEffect:
+            rid: -2
         - mType: 0
           Name: Action
           Uid: Node10
@@ -4309,6 +4415,12 @@ MonoBehaviour:
           KeepTime: 0
           Interval: 0
           calculation:
+            rid: -2
+          motion:
+            rid: -2
+          projectile:
+            rid: -2
+          visualEffect:
             rid: -2
         - mType: 0
           Name: Action
@@ -4389,6 +4501,12 @@ MonoBehaviour:
           Interval: 0
           calculation:
             rid: -2
+          motion:
+            rid: -2
+          projectile:
+            rid: -2
+          visualEffect:
+            rid: -2
         - mType: 0
           Name: Action
           Uid: Node16
@@ -4467,6 +4585,12 @@ MonoBehaviour:
           KeepTime: 0
           Interval: 0
           calculation:
+            rid: -2
+          motion:
+            rid: -2
+          projectile:
+            rid: -2
+          visualEffect:
             rid: -2
         - mType: 0
           Name: Action
@@ -4547,6 +4671,12 @@ MonoBehaviour:
           Interval: 0
           calculation:
             rid: -2
+          motion:
+            rid: -2
+          projectile:
+            rid: -2
+          visualEffect:
+            rid: -2
         - mType: 0
           Name: Action
           Uid: Node22
@@ -4625,6 +4755,12 @@ MonoBehaviour:
           KeepTime: 0
           Interval: 0
           calculation:
+            rid: -2
+          motion:
+            rid: -2
+          projectile:
+            rid: -2
+          visualEffect:
             rid: -2
         Triggers: []
         ConditionGroups: []
@@ -5004,3 +5140,86 @@ MonoBehaviour:
         Groups: []
         Branchs: []
         ActiveTriggers: []
+    - rid: 6312275966157651972
+      type: {class: SkillMotion, ns: SoftKitty, asm: Assembly-CSharp}
+      data:
+        source: 0
+        layer: Base Layer
+        state: chr_male_001@jian_pokong_25090
+        clip: {fileID: 7400000, guid: 69a44bd5c081a2c4a9c5271360b535d0, type: 2}
+        transitionSeconds: 0.033333335
+    - rid: 6312275966157651973
+      type: {class: SkillProjectile, ns: SoftKitty, asm: Assembly-CSharp}
+      data:
+        hitRecipients: 0
+        hitTags: []
+        prefab: {fileID: 7884749451932359468, guid: 1297505c5b30f674daed6742a8274ce5, type: 3}
+        trail: {fileID: 7992197306841058336, guid: f7ad6ebb5cbac9c49861429f73a487da, type: 3}
+        impact: {fileID: 5456840448491255236, guid: 15b57bdd460214742b1e27ea533215af, type: 3}
+        launchBone:
+        targetBone:
+        launchOffset: {x: 0, y: 1, z: 0.7}
+        impactOffset: {x: 0, y: 1.4, z: 0}
+        path: 0
+        speed: 20
+        acceleration: 30
+        trailSeconds: 0.2
+        impactScale: 1
+        trackingTimeout: 10
+        hitBoxSize: {x: 1.3, y: 1.3, z: 1.3}
+        hitBoxOffset: {x: 0, y: 0, z: 0}
+        hitLayers:
+          serializedVersion: 2
+          m_Bits: 4294967295
+        hitBoxStart: 0
+        hitBoxSeconds: 0
+    - rid: 6312275966157651974
+      type: {class: SkillProjectile, ns: SoftKitty, asm: Assembly-CSharp}
+      data:
+        hitRecipients: 0
+        hitTags: []
+        prefab: {fileID: 7884749451932359468, guid: 1297505c5b30f674daed6742a8274ce5, type: 3}
+        trail: {fileID: 7992197306841058336, guid: f7ad6ebb5cbac9c49861429f73a487da, type: 3}
+        impact: {fileID: 5456840448491255236, guid: 15b57bdd460214742b1e27ea533215af, type: 3}
+        launchBone:
+        targetBone:
+        launchOffset: {x: 0, y: 1, z: 0.7}
+        impactOffset: {x: 0, y: 1.4, z: 0}
+        path: 0
+        speed: 20
+        acceleration: 30
+        trailSeconds: 0.2
+        impactScale: 1
+        trackingTimeout: 10
+        hitBoxSize: {x: 1.3, y: 1.3, z: 1.3}
+        hitBoxOffset: {x: 0, y: 0, z: 0}
+        hitLayers:
+          serializedVersion: 2
+          m_Bits: 4294967295
+        hitBoxStart: 0
+        hitBoxSeconds: 0
+    - rid: 6312275966157651975
+      type: {class: SkillProjectile, ns: SoftKitty, asm: Assembly-CSharp}
+      data:
+        hitRecipients: 0
+        hitTags: []
+        prefab: {fileID: 7884749451932359468, guid: 1297505c5b30f674daed6742a8274ce5, type: 3}
+        trail: {fileID: 7992197306841058336, guid: f7ad6ebb5cbac9c49861429f73a487da, type: 3}
+        impact: {fileID: 5456840448491255236, guid: 15b57bdd460214742b1e27ea533215af, type: 3}
+        launchBone:
+        targetBone:
+        launchOffset: {x: 0, y: 1, z: 0.7}
+        impactOffset: {x: 0, y: 1.4, z: 0}
+        path: 0
+        speed: 20
+        acceleration: 30
+        trailSeconds: 0.2
+        impactScale: 1
+        trackingTimeout: 10
+        hitBoxSize: {x: 1.3, y: 1.3, z: 1.3}
+        hitBoxOffset: {x: 0, y: 0, z: 0}
+        hitLayers:
+          serializedVersion: 2
+          m_Bits: 4294967295
+        hitBoxStart: 0
+        hitBoxSeconds: 0

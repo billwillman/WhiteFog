@@ -38,7 +38,7 @@ public static class OriginalSkillEditorExport
             cast = AssetPath(graph.castEffect), weapon = AssetPath(graph.weaponEffect),
             projectile = AssetPath(graph.projectile), trail = AssetPath(graph.tail), impact = AssetPath(graph.impact),
             cuePrefabs = graph.effects.Select(cue => AssetPath(cue?.prefab)).ToArray(),
-            motions = graph.RootSet.Actions.Where(a => a.ClassName == "OriginalSkillVisual" && a.IntValues.FirstOrDefault() == 0)
+            motions = graph.RootSet.Actions.Where(SkillMotion.UsesBinding)
                 .Select(a => {
                     var motion = SkillMotion.For(a, graph);
                     var clip = motion.source == SkillMotion.Source.AnimationClip || a.motion == null ? motion.clip : null;

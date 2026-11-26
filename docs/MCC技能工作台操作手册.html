@@ -26,6 +26,7 @@ body{margin:0;color:var(--ink);background:#f4f6f1;font:16px/1.75 "Microsoft YaHe
 <h3>按目标条件修改施法者</h3>
 <p>「新建技能 → 目标有状态时按攻击自疗」会按你选择的状态建立一张原生图。它从《宗师之上》流风回雪扇抽取一条制作路径：条件节点检查目标身上的状态，公式从施法者读取 <code>atk</code>，最后写回施法者的 <code>chp</code>。默认治疗倍率为 1.2，可以在公式页编辑。这个模板可用于主角或怪物。要实现原武学同时满足两项条件时的双份回复，需要另接第二条条件路径。</p>
 <p>「吸收护盾」模板入口打开 MCC 高级伤害图，可检查能量盾的扣减过程。公式结算动作支持独立等级表和跨图公式引用。多盾优先级和按护盾实例驱散的规则仍待确定。<a href="Tuanjie技能平台设计与MCC边界.md">技能平台设计与 MCC 边界</a></p>
+<p><a href="Unity技能编辑器Action审查.md">查看全部 18 个 Action 的原生能力、必要扩展与实测结果</a></p>
 </section><section id="workspace"><h2>窗口里的配置</h2>
 <figure class="window-map" aria-label="技能工作台页签"><div><strong>技能编辑　｜　Buff 状态　｜　公式与数值　｜　Preview</strong></div><div><strong>技能编辑</strong>　选择技能 → 编辑等级表、触发条件与动作时间轴 → 保存</div><div><strong>Preview → 快速试放</strong>　选择本次的方向、距离和等级，进入预览场景观察结果</div><div><strong>Preview → 当前场景试放</strong>　指定当前场景的执行组件、施加者和目标</div><figcaption>编辑和预览共用当前选中的技能。可以直接切换页签，也可以在 Preview 的技能库里换招。</figcaption></figure>
 <div class="table"><table><thead><tr><th>位置</th><th>在这里做什么</th><th>何时使用</th></tr></thead><tbody>
@@ -45,17 +46,17 @@ body{margin:0;color:var(--ink);background:#f4f6f1;font:16px/1.75 "Microsoft YaHe
 <p><strong>实体 A、B 怎么选。</strong>新建角度、距离或标签比较时，A 默认是施法者，B 是本次目标。怪物出招时施法者就是怪物。要限定友方，可在入口或该动作的条件菜单选「目标阵营 → 与施法者同阵营（比较标签）」，并指定双方存放阵营的标签序号。该条件筛选当前目标；需要从多名友军中挑选对象时应由选目标逻辑提供具体实体。「高级：全局玩家」固定读取全局玩家，「高级：技能执行实例」读取执行组件代表的位置、朝向等。旧图保留原绑定。</p>
 <p>每行动作的<strong>开始时间</strong>以本次施放为零点。同一根节点可启动多行动作。要让第二步等到第一步完成，应填写合适的开始时间。飞行时间随距离变化。《破空剑法》在起手后分三次发射，飞剑的抵达时刻由发射距离、初速和加速度共同决定。</p>
 <h3>给一个动作节点选动画</h3>
-<p>在「技能编辑 → 动作时间轴」选中一个「原作表现事件」，把事件设为「播放原作角色动作」。每个节点分别保存动作来源。</p>
+<p>在「技能编辑 → 动作时间轴」添加或选中「播放角色动画」。四招的起手使用 MCC 的 Animation 节点，动作绑定分别保存在节点上。选择施放者，再选择 Animator State 或 Animation Clip。</p>
 <ul><li><strong>Animator State</strong>：在施放角色的参考 Controller 里选 Layer 和 State，可展开子状态机。下方 State Motion 显示状态引用的动画或 Blend Tree。「定位状态」打开控制器。参考 Controller 用于挑选状态，试放时由节点所连角色的 Animator 执行。</li>
 <li><strong>直接播放 Animation Clip</strong>：拖入或点选非 Legacy 片段。「定位动画」选中该资源。片段直接驱动角色的 Animator；有控制器的角色在片段结束或施法打断后交回控制器。</li></ul>
 <p>例如，把起手节点设为剑系 Controller 的状态，在稍后的第二个动作节点拖入收剑片段。两处配置分别保存。旧技能首次打开时沿用原有施法状态。</p>
 <h3>时间游标、横条与执行方式</h3><p>点左侧动作名称，游标会对齐其开始时间。点右侧轨道，会选中该行并把游标放到点击位置。游标决定下一次「添加动作」的起点。移动已有动作时，选中它，在下方改「开始时间（秒）」并按回车。</p>
 <p>「单次」执行一遍。「执行多次」填写次数和间隔，例如三段、间隔 0.14 秒，第一段到第三段相隔 0.28 秒。「持续执行」填写持续时间和执行间隔。行名末尾的「直接」表示连接根节点，「分支」表示经其他节点接入，「未连接」时应在节点图检查动作的执行输入。</p>
 <h3>动作类型</h3><ul>
-<li><strong>施法提示</strong>指定提示对象、事件名、显示时长及施法或敌对预警类型。事件会发给所连实体。敌方预警可发给受术者，起手提示可发给施放者。</li>
+<li><strong>发送施法提示事件</strong>生成 MCC 的 Event 节点。接收对象默认是本次目标，实体参数默认传施法者。需要画出预警时，在相同时刻添加「显示提示环」，选择提示对象、颜色类型和时长。</li>
 <li><strong>分段命中与公式结算</strong>接施加者、目标和技能等级。点动作可配置等级表、三个公式引用和各段占比。节点画布上的按钮可直接打开三个公式树。</li>
 <li>旧动作<strong>技能命中</strong>接三个输入：施加者、受术者和<strong>伤害输入（点）</strong>。最后一个端口读入上游已经算好的点数。选飞剑、光弹或毒雾时，飞行时长取出发距离除以速度，弧线高度控制轨迹。射程填 0 表示不限；超距会中止此次动作并可显示提示。</li>
-<li><strong>护盾与回复</strong>选择作用实体、效果类型和数值。护盾可设持续时间，回复以该实体的 <code>hp</code> 为上限，写入 <code>chp</code>。</li></ul>
+<li><strong>回复生命（限制上限）</strong>创建可编辑的属性节点和数学节点。接收者可交互时，按 <code>min(hp, chp + max(0, 回复量))</code> 写入生命。选中数值输入旁的「查看公式」可改回复量。限时吸收护盾在独立的菜单项中配置。</li></ul>
 <p>「技能命中」勾选<strong>到达时施加易伤</strong>后可编辑百分比和时长。<strong>命中后到首段的延迟</strong>用于把减益与第一段伤害分开。工作台时间轴横条表示动作的计划重复区间，投射物的在途时间根据实战距离另算。</p></section>
 <section id="build"><h2>从空白制作一招公式飞剑</h2>
 <ol><li>新建空白技能，加「实体存在判断」，让条件检查目标。时间轴添加「分段命中与公式结算」，将施加者接 Dealer、受术者接 Target。技能等级端口使用动态变量 <code>skill.level</code>，默认 1；正式调用方可在施放前用 <code>CombatDamage.SetDynamicValue("skill.level", 等级)</code> 传入该角色掌握的技能等级。</li>
@@ -110,7 +111,10 @@ body{margin:0;color:var(--ink);background:#f4f6f1;font:16px/1.75 "Microsoft YaHe
 <tr><td>共用表现材质</td><td><code>Assets/WhiteFog/Skills/Resources/MccSkillTrace.mat</code></td></tr>
 <tr><td>本手册</td><td><code>docs/MCC技能工作台操作手册.html</code>，可直接双击离线阅读，也可在工作台顶部点「使用手册」。</td></tr></tbody></table></div>
 <p>分享给同项目同事时，交付技能图和对应 <code>.meta</code>。跨项目移植还需要本版 MCC 自定义动作、接口描述、表现材质、运行脚本与反射保留配置。H5 工具单独保存网页 JSON，团结工作台直接修改项目中的原生 <code>.asset</code>。</p></section>
-</article></main>
+</article><section><h2>产生投射物与命中盒</h2>
+<p>在动作时间轴选择「添加动作 → 产生投射物」，为该发设置预制体、拖尾、挂点、移动轨迹和速度。命中盒的位置以飞行朝向为基准，开启时间从本发生成时计算。开启时长为 0 时持续到本发结束。</p>
+<p>目标可以直接使用 MCC Demo 的 DamageReciever，也可以在受击 Collider 的同一物体添加「战斗 / 受击体」。命中盒开启时，工作台按当前受击体检查重叠和飞行区间的扫掠。「可命中对象」默认是确定目标，只有瞄准的实体可以受击。选择非确定目标后，在「可命中 MCC 实体标签」添加允许受击的标签，预览场敌方为 <code>hostile</code>。命中盒会取路径上最先碰到的合格受击体，标签留空时不会产生接触结果。通过「添加命中后执行的动作」接入结算或后续表现，其延时以命中为起点。<a href="技能编辑器设计复盘.md">技能编辑器设计复盘</a></p></section>
+</main>
 <script>
 let foldedForPrint = [];
 window.addEventListener('beforeprint', () => {

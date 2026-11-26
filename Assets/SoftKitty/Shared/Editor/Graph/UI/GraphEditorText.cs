@@ -12,7 +12,10 @@ namespace SoftKitty
             { "FormulaImpact", "分段命中与公式结算" },
             { "每段伤害", "伤害输入（点）" }, // Existing graphs may retain the original port caption.
             { "SkillSignal", "施法提示" },
-            { "OriginalSkillVisual", "原作表现事件" },
+            { "Projectile", "产生投射物" },
+            { "发射飞剑", "产生投射物" },
+            { "原作表现事件", "表现动作" },
+            { "OriginalSkillVisual", "表现动作" },
             { "SkillVital", "护盾与回复" },
             { "Trigger", "触发器" },
             { "Condition", "条件" },
