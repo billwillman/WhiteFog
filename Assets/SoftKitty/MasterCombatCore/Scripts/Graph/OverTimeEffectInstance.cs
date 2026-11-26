@@ -25,6 +25,9 @@ namespace SoftKitty
         /// <param name="_dealer"></param>
         /// <param name="_target"></param>
         public void Execute(string _uid, int _layer, Entity _dealer, Entity _target)
+            => Execute(_uid, _layer, _dealer, _target, null);
+
+        internal void Execute(string _uid, int _layer, Entity _dealer, Entity _target, ulong? eventId)
         {
  #if MASTER_COMBAT_CORE
             foreach (var obj in mSetting.DynamicVariables) {
@@ -34,7 +37,7 @@ namespace SoftKitty
             mRuntime.RootState.SetDynamicVariableFloat("Layer", _layer);
             SetDealer(_dealer);
             SetTarget(_target);
-            bool _success = IfTriggerThenPerformAction();
+            bool _success = IfTriggerThenPerformAction(eventId);
             if (SGD_Settings.Instance.DebugLevel >= 2) Debug.Log("<OverTimeEffectInstance> -> Perform() > isTriggered:" + _success);
         }
         /// <summary>
@@ -42,10 +45,14 @@ namespace SoftKitty
         /// </summary>
         /// <returns></returns>
         public bool IfTriggerThenPerformAction()
+            => IfTriggerThenPerformAction(null);
+
+        private bool IfTriggerThenPerformAction(ulong? eventId)
         {
+            SetRandomKey(eventId);
             int _hash = currentRootInstance.GenerateInstanceHash();
             mRuntime.Hash = _hash;
-            bool _triggered = isTriggered(_hash);
+            bool _triggered = TestTriggers(_hash);
             if (_triggered)
             {
                 currentRootInstance.ExecuteAllAction(mRuntime);
@@ -86,6 +93,19 @@ namespace SoftKitty
         /// <param name="_hash"></param>
         /// <returns></returns>
         public bool isTriggered(int _hash)
+        {
+            SetRandomKey(unchecked((uint)_hash));
+            return TestTriggers(_hash);
+        }
+
+        private void SetRandomKey(ulong? eventId)
+        {
+            var root = mRuntime.RootState;
+            mRuntime.RootState.RandomKey = CombatRandom.Event("effect", root.GetInvolvedEntity("Dealer")?.CombatRandomId,
+                root.instanceUid, root.GetInvolvedEntity("Target")?.CombatRandomId, eventId);
+        }
+
+        private bool TestTriggers(int _hash)
         {
             ResetRuntime();
             mRuntime.Hash = _hash;

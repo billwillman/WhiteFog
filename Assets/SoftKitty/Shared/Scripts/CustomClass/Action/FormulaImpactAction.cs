@@ -11,6 +11,9 @@ namespace SoftKitty
         private FormulaImpactAction(Action data) : base(data) { }
         public FormulaImpactAction InitAction(Action data) => new FormulaImpactAction(data);
 
+        internal CombatRoll TargetRoll(GraphRuntimeState cast, Entity target)
+            => cast.EventKey.With("formulaImpact").With(Uid).With(target.CombatRandomId);
+
         public static int SegmentCount(Action action)
         {
             if (action.Type == ActionType.Multiple_Time) return Mathf.Max(1, action.Count);
@@ -31,6 +34,7 @@ namespace SoftKitty
                 int level = Mathf.RoundToInt(GetVariableValue(inputPort[3].connectedNodes[0], runtime));
                 calculation.ValidateShares(SegmentCount(this));
                 var context = calculation.Capture(runtime.RootState, caster, target, level);
+                context.RandomKey = TargetRoll(runtime, target).With("damage");
                 bool resolvesRecipientOnContact = (SkillPlayback.Style)IntValues[0] != SkillPlayback.Style.Direct &&
                     projectile?.hitRecipients == SkillProjectile.HitRecipients.FirstMatchingEntity;
                 var castInputs = resolvesRecipientOnContact ? calculation.damage.CaptureNonTargetAttributes(context) : null;
@@ -72,6 +76,7 @@ namespace SoftKitty
                 context.SetInvolvedEntity("Target", target);
                 if (castInputs != null)
                 {
+                    context.RandomKey = TargetRoll(cast, target).With("damage");
                     if (!TryEvaluate(calculation.damage, context, host, out var total, castInputs)) yield break;
                     context.DynamicVariableDic["hit.total"] = Mathf.Max(0, total);
                 }
@@ -79,17 +84,20 @@ namespace SoftKitty
 
             bool appliedWeakness = false;
             var vars = context.DynamicVariableDic;
+            var targetKey = TargetRoll(cast, target);
             for (int i = 0; i < weights.Length; i++)
             {
                 if (i > 0) yield return new WaitForSeconds(Mathf.Max(.01f, Interval));
                 if (!SkillPlayback.CanSettle(style, target, victim)) yield break;
                 if (style == SkillPlayback.Style.Direct && cast.CastInterrupted) yield break;
-                if (style == SkillPlayback.Style.Direct && !ConditionsMet(ref cast)) continue;
+                if (style == SkillPlayback.Style.Direct && !ConditionsMet(ref cast, (uint)i)) continue;
                 vars["hit.index"] = i + 1;
                 vars["hit.share"] = weights[i] * .01f;
                 vars["hit.raw"] = vars["hit.total"] * vars["hit.share"];
+                var segment = targetKey.With((uint)i);
+                context.RandomKey = segment.With("accuracy");
                 if (!TryEvaluate(calculation.accuracy, context, host, out var chance)) yield break;
-                if (chance <= 0 || (chance < 1 && UnityEngine.Random.value >= chance))
+                if (chance <= 0 || (chance < 1 && segment.With("hit").Unit >= chance))
                 {
                     host.Signal(victim, SkillPlayback.Position(target, victim), "未命中", .18f, Color.gray);
                     continue;
@@ -106,6 +114,7 @@ namespace SoftKitty
                 if (i == 0 && FloatValues[5] > 0) yield return new WaitForSeconds(FloatValues[5]);
                 if (!SkillPlayback.CanSettle(style, target, victim)) yield break;
                 if (style == SkillPlayback.Style.Direct && cast.CastInterrupted) yield break;
+                context.RandomKey = segment.With("settlement");
                 if (!TryEvaluate(calculation.settlement, context, host, out var defended)) yield break;
                 SkillPlayback.ApplyIncomingDamage(source, target, Mathf.Max(0, defended));
                 host.Signal(victim, SkillPlayback.Position(target, victim), "命中", .18f, new Color(1f,.55f,.22f));

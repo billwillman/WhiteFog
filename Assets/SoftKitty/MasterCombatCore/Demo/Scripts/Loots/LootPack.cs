@@ -19,6 +19,7 @@ namespace SoftKitty.MasterCombatCore.Demo
         public ParticleSystem [] Particles;
         private float life = 30F;
         private bool looted = false;
+        internal CombatRoll? DropKey;
 
         void Awake()
         {
@@ -40,7 +41,8 @@ namespace SoftKitty.MasterCombatCore.Demo
                     GameManager.GetPlayer().GetAttributeData(Uid).AddValue(Value);
                     break;
                 case LootTypes.TempAttributes:
-                    GameManager.GetPlayer().AddTempAttributes(Uid, Value,20F, BasicMathFunction.Add,"LootPack"+Random.Range(0,100).ToString()+ Random.Range(0, 100).ToString()+Random.Range(0, 100).ToString() + Random.Range(0, 100).ToString());
+                    var key = DropKey ?? CombatRandom.Event("lootPickup", GameManager.GetPlayer().CombatRandomId, Uid, null);
+                    GameManager.GetPlayer().AddTempAttributes(Uid, Value, 20F, BasicMathFunction.Add, "LootPack" + key.Key.ToString("X16"));
                     GameManager.GetPlayerInstance().GetComponent<PlayerControl>().AddBuff(VfxColor);
                     break;
                 case LootTypes.CustomData:

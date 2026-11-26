@@ -7,6 +7,9 @@ namespace SoftKitty
     public class GraphObject : GraphBase
     {
         public Root RootSet;
+        [Tooltip("Stable skill ID for combat rolls. Set this when assets share a name or must survive renaming.")]
+        public string combatRandomId;
+        public string CombatRandomId => string.IsNullOrEmpty(combatRandomId) ? name : combatRandomId;
         [HideInInspector] public bool previewAsOpponent;
         public bool autoSave = false;
         [HideInInspector]

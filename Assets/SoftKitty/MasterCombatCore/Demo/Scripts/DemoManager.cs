@@ -49,7 +49,11 @@ namespace SoftKitty.MasterCombatCore.Demo
             {
                 foreach (var uid in EnemyEntityList)
                 {
-                    if (GameManager.GetEntityInstance(uid) == null) SpawnEnemy(uid, SpawnPoints[Random.Range(0, SpawnPoints.Length)].position, true);
+                    if (GameManager.GetEntityInstance(uid) == null)
+                    {
+                        int point = CombatRandom.Event("spawn", uid, null, null).Index(SpawnPoints.Length);
+                        SpawnEnemy(uid, SpawnPoints[point].position, true);
+                    }
                     //Spawn a new enemy if any of them gets killed.
                 }
             }
@@ -61,6 +65,7 @@ namespace SoftKitty.MasterCombatCore.Demo
 
         private void RestartGame()
         {
+            CombatRandom.BeginBattle(CombatRandom.Seed);
             if (File.Exists(savePath)) File.Delete(savePath); //Delete the save file
             GameManager.DeleteAllEntityInstance();
             Level = 1F;
@@ -107,8 +112,12 @@ namespace SoftKitty.MasterCombatCore.Demo
         }
 
         public void DropRandomLoot(Vector3 _pos)
+            => DropRandomLoot(_pos, CombatRandom.Event("lootDrop", null, null, null));
+
+        internal void DropRandomLoot(Vector3 _pos, CombatRoll loot)
         {
-            GameObject _newLoot = Instantiate(LootPackPrefabs[Random.Range(0, LootPackPrefabs.Length)], _pos,Quaternion.identity);
+            GameObject _newLoot = Instantiate(LootPackPrefabs[loot.With("item").Index(LootPackPrefabs.Length)], _pos,Quaternion.identity);
+            if (_newLoot.TryGetComponent<LootPack>(out var pack)) pack.DropKey = loot;
             GameManager.PlaySound2D(LootSound,1F);
         }
 

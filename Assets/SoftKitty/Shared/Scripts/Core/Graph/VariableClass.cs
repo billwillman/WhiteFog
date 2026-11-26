@@ -99,7 +99,8 @@ namespace SoftKitty
                     if (_runtime.RootState.DynamicVariableDic.ContainsKey(VariableUid)) return _runtime.NodeStates[NodeIndex].SetHashCache(_runtime.Hash, _runtime.RootState.DynamicVariableDic[VariableUid]);
                     return _runtime.NodeStates[NodeIndex].SetHashCache(_runtime.Hash, Constant);
                 case VariableType.Random:
-                    return _runtime.NodeStates[NodeIndex].SetHashCache(_runtime.Hash, Random.Range(Constant,Max));
+                    return _runtime.NodeStates[NodeIndex].SetHashCache(_runtime.Hash,
+                        _runtime.RootState.RandomKey.With("variable").With(Uid).Range(Constant, Max));
             }
             return _runtime.NodeStates[NodeIndex].SetHashCache(_runtime.Hash, 0F);
         }

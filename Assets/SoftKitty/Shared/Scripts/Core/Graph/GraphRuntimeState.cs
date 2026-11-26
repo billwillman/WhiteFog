@@ -7,7 +7,23 @@ namespace SoftKitty
     {
         private Entity castOwner;
         private uint castVersion;
+        private CombatRoll? releaseKey;
+        internal CombatRoll EventKey => releaseKey ?? RootState.RandomKey;
         public bool CastInterrupted => castOwner != null && castOwner.CastInterruptionVersion != castVersion;
+
+        internal GraphRuntimeState ForRelease(string nodeUid, uint ordinal)
+        {
+            var release = this;
+            // Shared graph variables retain their once-per-evaluation cache across sibling actions.
+            release.releaseKey = EventKey.With("release").With(nodeUid).With(ordinal);
+            return release;
+        }
+
+        internal void SetContactKey(string targetId)
+        {
+            RootState.RandomKey = EventKey.With("contact").With(targetId);
+            releaseKey = null;
+        }
 
         public GraphRuntimeState ForCast(Entity owner)
         {

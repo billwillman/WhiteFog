@@ -27,6 +27,7 @@ namespace SoftKitty
     /// </summary>
     public struct RootRuntimeState
     {
+        public CombatRoll RandomKey;
         public GameObject RootInstance;
         public string instanceUid;
         public Dictionary<string, Entity> InvolvedEntityDic;
@@ -250,13 +251,15 @@ namespace SoftKitty
         #endregion
 
         /// <summary>
-        /// Generate a random instance hash string.
+        /// Allocate a positive cache generation. Action condition rechecks use negative generations.
         /// </summary>
         /// <returns></returns>
         public int GenerateInstanceHash()
         {
-            return UnityEngine.Random.Range(1, 100) * 1000000+UnityEngine.Random.Range(1, 100) * 10000 + UnityEngine.Random.Range(1, 100) * 100 + Time.frameCount % 100;
+            nextCacheGeneration = nextCacheGeneration == int.MaxValue ? 1 : nextCacheGeneration + 1;
+            return nextCacheGeneration;
         }
+        private int nextCacheGeneration;
 
         /// <summary>
         /// Generate a debug string for each graph calculation.

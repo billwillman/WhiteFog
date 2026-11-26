@@ -17,6 +17,7 @@ public sealed class OriginalSkillWebBattle : MonoBehaviour
     [Preserve]
     public void Begin(string encounter)
     {
+        CombatRandom.BeginBattle(CombatRandom.Seed);
         Time.timeScale = 1;
         StopAllCoroutines();
         ferry = encounter == "ferry";

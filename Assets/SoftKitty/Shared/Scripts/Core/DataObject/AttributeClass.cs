@@ -207,6 +207,9 @@ namespace SoftKitty
         /// For rogue-like game, call this method to decide whether this attribute should be locked and generate a random value for it.
         /// </summary>
         public void Init()
+            => Init(isFixed ? default : CombatRandom.Event("attributeInit", null, uid, null));
+
+        public void Init(CombatRoll roll)
         {
             if (isFixed)
             {
@@ -214,8 +217,8 @@ namespace SoftKitty
             }
             else
             {
-                SetLock (Random.Range(0, 100) > randomChange);
-                if (!setting.stringValue) floatValue = Random.Range(minValue, maxValue);
+                SetLock(roll.With("lock").Index(100) > randomChange);
+                if (!setting.stringValue) floatValue = roll.With("value").Range(minValue, maxValue);
             }
         }
 
@@ -224,7 +227,12 @@ namespace SoftKitty
         /// </summary>
         public void Randomize()
         {
-            if (!isFixed && !setting.stringValue) floatValue = Random.Range(minValue, maxValue);
+            if (!isFixed && !setting.stringValue) Randomize(CombatRandom.Event("attributeReroll", null, uid, null));
+        }
+
+        public void Randomize(CombatRoll roll)
+        {
+            if (!isFixed && !setting.stringValue) floatValue = roll.With("value").Range(minValue, maxValue);
         }
 
         /// <summary>

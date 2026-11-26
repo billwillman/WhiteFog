@@ -573,7 +573,8 @@ namespace SoftKitty
                 {
                     var _entity = obj.Copy();
                     foreach (var att in _entity.Attributes) {
-                        if(att!=null)att.Randomize();
+                        if (att != null && !att.isFixed)
+                            att.Randomize(CombatRandom.Event("entityAttribute", obj.uid, att.uid, null));
                     }
                     foreach (var module in _entity.Modules) {
                         module.Recreate();

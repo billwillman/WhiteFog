@@ -1,0 +1,7 @@
+{
+  "name": "SoftKitty.CombatRandom",
+  "rootNamespace": "SoftKitty",
+  "references": [],
+  "autoReferenced": true,
+  "noEngineReferences": true
+}

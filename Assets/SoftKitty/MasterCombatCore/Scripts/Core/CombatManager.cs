@@ -7,6 +7,9 @@ namespace SoftKitty.MasterCombatCore
     {
         private static Dictionary<string, OverTimeEffectInstance> OverTimeEffectDic = new Dictionary<string, OverTimeEffectInstance>();
 
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void ResetRandomSession() => CombatRandom.BeginBattle(0);
+
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void OnBeforeSceneLoad()
         {
@@ -17,20 +20,18 @@ namespace SoftKitty.MasterCombatCore
    
 
         public static void ExecuteOverTimeEffect(string _uid, int _layer, Entity _dealer, Entity _target)
+            => ExecuteOverTimeEffect(_uid, _layer, _dealer, _target, null);
+
+        public static void ExecuteOverTimeEffect(string _uid, int _layer, Entity _dealer, Entity _target, ulong? eventId)
         {
-            if (OverTimeEffectDic.ContainsKey(_uid))
-            {
-                OverTimeEffectDic[_uid].Execute(_uid,_layer, _dealer, _target);
-            }
-            else
+            if (!OverTimeEffectDic.TryGetValue(_uid, out var effect))
             {
                 OverTimeEffect _setting = GameManager.GetOverTimeEffect(_uid);
-                if (_setting != null)
-                {
-                    OverTimeEffectDic.Add(_uid, new OverTimeEffectInstance(_setting));
-                    OverTimeEffectDic[_uid].Execute(_uid, _layer, _dealer, _target);
-                }
+                if (_setting == null) return;
+                effect = new OverTimeEffectInstance(_setting);
+                OverTimeEffectDic.Add(_uid, effect);
             }
+            effect.Execute(_uid, _layer, _dealer, _target, eventId);
         }
 
 

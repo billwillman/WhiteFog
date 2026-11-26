@@ -65,7 +65,7 @@ namespace SoftKitty
                 if (i > 0) yield return new WaitForSeconds(interval);
                 if (!SkillPlayback.CanSettle(style, recipient, victim)) yield break;
                 if (style == SkillPlayback.Style.Direct && cast.CastInterrupted) yield break;
-                if (style == SkillPlayback.Style.Direct && !ConditionsMet(ref cast)) continue;
+                if (style == SkillPlayback.Style.Direct && !ConditionsMet(ref cast, (uint)i)) continue;
                 SkillPlayback.ApplyIncomingDamage(source, recipient, amount);
                 host.Signal(victim, SkillPlayback.Position(recipient, victim), "命中", .18f, new Color(1f,.55f,.22f));
             }

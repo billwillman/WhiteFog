@@ -22,9 +22,11 @@ namespace SoftKitty
             var host = SkillPlayback.On(instance);
             var fallback = host.OriginalProjectileImpact;
             state.NodeStates[node.NodeIndex].lastBool = true;
+            uint ordinal = 0;
             host.ScheduleReleases(state, source, node.WaitTime, FormulaImpactAction.SegmentCount(node), node.Interval, () =>
             {
-                if (node.ConditionsMet(ref state)) Launch(node, instance, state, source, target, fallback);
+                var release = state.ForRelease(node.Uid, ordinal++);
+                if (node.ConditionsMet(ref release)) Launch(node, instance, release, source, target, fallback);
             });
         }
 

@@ -177,6 +177,9 @@ namespace SoftKitty
         /// The unique string ID for this entity.
         /// </summary>
         public string uid;
+        // Set on spawned copies when multiple actors share the same entity definition.
+        [System.NonSerialized] public string CombatInstanceId;
+        public string CombatRandomId => string.IsNullOrEmpty(CombatInstanceId) ? uid : CombatInstanceId;
         /// <summary>
         /// The unique integer ID for this entity.
         /// </summary>

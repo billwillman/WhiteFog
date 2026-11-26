@@ -57,10 +57,14 @@ namespace SoftKitty.MasterCombatCore.Demo
             if (mAnimator.IsInTransition(0)) return;
             if (EntityInstance.GetCustomInt("specskill")==1)
             {
+                var volley = CombatRandom.Event("volley", EntityInstance.mData.CombatRandomId, null, null).With((uint)_id);
                 for (int i = 0; i < _id + 1; i++)
                 {
-                    GameObject _newProjectile = Instantiate(Projectile, new Vector3(SwordDamageScript.transform.position.x + Random.Range(-0.5F, 0.5F), Projectile.transform.position.y + Random.Range(-0.1F, 0.5F), SwordDamageScript.transform.position.z + Random.Range(-0.5F, 0.5F))
-                        , Projectile.transform.rotation);
+                    var shot = volley.With((uint)i);
+                    var origin = SwordDamageScript.transform.position;
+                    origin.y = Projectile.transform.position.y;
+                    var offset = new Vector3(shot.With("x").Range(-.5f, .5f), shot.With("y").Range(-.1f, .5f), shot.With("z").Range(-.5f, .5f));
+                    GameObject _newProjectile = Instantiate(Projectile, origin + offset, Projectile.transform.rotation);
                     _newProjectile.SetActive(true);
                     _newProjectile.GetComponent<CombatDamage>().SetDynamicValue("TargetOTE", EntityInstance.GetCustomInt("hit_dot"));
                     _newProjectile.GetComponent<CombatDamage>().SetDynamicValue("DealerOTE", EntityInstance.GetCustomInt("hit_buff"));

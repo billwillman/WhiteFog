@@ -639,6 +639,9 @@ namespace SoftKitty
         /// Manually triggers the damage calculation. Triggers are included in the calculation.
         /// </summary>
         public void DealDamage()
+            => DealDamageEvent(null);
+
+        private void DealDamageEvent(ulong? eventId)
         {
             if (!PhysicsDetection && TargetEntity != null && GetTargetEntity() == null) SetTargetEntity(TargetEntity.mData);
             if(DealerEntity!=null && GetDealerEntity() == null) SetDealerEntity(DealerEntity.mData);
@@ -661,7 +664,7 @@ namespace SoftKitty
                 }
                 if(DestroyOnHitTarget) Destroy(gameObject,Mathf.Clamp(DamageCoolDown*0.8F,Time.fixedDeltaTime*2F,0.3F));
             }
-            bool _success = IfTriggerThenPerformAction();
+            bool _success = IfTriggerThenPerformAction(eventId);
             if (SGD_Settings.Instance.DebugLevel >= 2) Debug.Log("<CombatDamage> -> DealDamage() > isTriggered:" + _success);
         }
         /// <summary>
@@ -692,6 +695,15 @@ namespace SoftKitty
             DealDamage();
         }
 
+        /// <summary>Replay/network entry point. Supply the same command ID for every target of a cast.</summary>
+        public void DealDamage(Entity dealer, Entity target, ulong eventId)
+        {
+            SetDealerEntity(dealer);
+            SetTargetEntity(target);
+            UpdateInstanceEntity();
+            DealDamageEvent(eventId);
+        }
+
         /// <summary>
         /// Ignores all triggers and directly performs all actions. An integer hash is required for caching the result.
         /// </summary>
@@ -699,6 +711,12 @@ namespace SoftKitty
         public void PerformAction(int _hash)
         {
             if (!inited) return;
+            SetCastRandomKey(unchecked((uint)_hash));
+            RunCastActions(_hash);
+        }
+
+        private void RunCastActions(int _hash)
+        {
             mRuntime.Hash = _hash;
             // A graph running on an already launched physical projectile owns its on-hit actions.
             var owner = projectileLaunched && ProjectileMode != ProjectileModes.Disable ? null : GetDealerEntity();
@@ -712,6 +730,12 @@ namespace SoftKitty
         public bool isTriggered(int _hash)
         {
             if (!inited) return false;
+            SetCastRandomKey(unchecked((uint)_hash));
+            return TestTriggers(_hash);
+        }
+
+        private bool TestTriggers(int _hash)
+        {
             ResetRuntime();
             mRuntime.Hash = _hash;
             bool _result = true;
@@ -728,11 +752,16 @@ namespace SoftKitty
         /// </summary>
         /// <returns></returns>
         public bool IfTriggerThenPerformAction()
+            => IfTriggerThenPerformAction(null);
+
+        private bool IfTriggerThenPerformAction(ulong? eventId)
         {
+            if (!inited) return false;
+            SetCastRandomKey(eventId);
             int _hash = currentRootInstance.GenerateInstanceHash();
             mRuntime.Hash = _hash;
-            bool _triggered = isTriggered(_hash);
-            if (_triggered) PerformAction(_hash);
+            bool _triggered = TestTriggers(_hash);
+            if (_triggered) RunCastActions(_hash);
 #if UNITY_EDITOR
             if (SGD_Settings.Instance.GraphDebugMode)
             {

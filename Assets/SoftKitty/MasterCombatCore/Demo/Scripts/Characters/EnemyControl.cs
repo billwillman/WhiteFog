@@ -13,7 +13,9 @@ namespace SoftKitty.MasterCombatCore.Demo
             {
                 _attacker.AddAttributeValue("xp", Exp);
             }
-            if(Random.Range(-5,50)< EntityInstance.GetAttributeInt("lvl")+GameManager.GetPlayer().GetAttributeInt("luck"))DemoManager.instance.DropRandomLoot(transform.position);
+            var loot = CombatRandom.Event("deathLoot", EntityInstance.mData.CombatRandomId, null, _attacker?.CombatRandomId);
+            if (loot.With("chance").Index(55) - 5 < EntityInstance.GetAttributeInt("lvl") + GameManager.GetPlayer().GetAttributeInt("luck"))
+                DemoManager.instance.DropRandomLoot(transform.position, loot);
         }
         public override void Update()
         {

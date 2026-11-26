@@ -50,13 +50,14 @@ namespace SoftKitty
         {
             yield return new WaitForSeconds(_delay);
             if (_interval < 0.01F) _interval = 0.01F;
+            uint ordinal = 0;
             for (int i = 0; i < _count; i++)
             {
                 float _timer = 0F;
                 while (_timer <= _keepTime)
                 {
                     if (_runtime.CastInterrupted) yield break;
-                    currentRootInstance.ExecuteAction(_node, _runtime);
+                    currentRootInstance.ExecuteAction(_node, _runtime.ForRelease(_node.Uid, ordinal++));
                     yield return new WaitForSeconds(_interval);
                     _timer += _interval;
                 }
@@ -87,6 +88,7 @@ namespace SoftKitty
             state.RootState.RootInstance = go;
             state.RootState.SetInvolvedEntity("Dealer", source);
             state.RootState.SetInvolvedEntity("Target", target);
+            state.SetContactKey(target.CombatRandomId);
             foreach (var next in output.connectedNodes) next.Run(instance, state);
         }
 
@@ -186,11 +188,18 @@ namespace SoftKitty
         public void UpdateAllConditions(int _hash)
         {
             if (currentRootInstance == null) Init();
+            SetCastRandomKey(unchecked((uint)_hash));
             mRuntime.Hash = _hash;
             foreach (var obj in currentRootInstance.ActiveTriggers)
             {
                 obj.Update(mRuntime);
             }
+        }
+
+        protected void SetCastRandomKey(ulong? eventId)
+        {
+            mRuntime.RootState.RandomKey = CombatRandom.Event("cast", GetDealerEntity()?.CombatRandomId,
+                mGraph.CombatRandomId, GetTargetEntity()?.CombatRandomId, eventId);
         }
 
         /// <summary>

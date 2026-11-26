@@ -138,6 +138,12 @@
       "depth": 3,
       "source": "builtin",
       "dependencies": {}
+    },
+    "com.whitefog.combat-random": {
+      "version": "file:com.whitefog.combat-random",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
     }
   }
 }

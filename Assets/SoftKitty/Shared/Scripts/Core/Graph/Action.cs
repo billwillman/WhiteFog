@@ -95,16 +95,24 @@ namespace SoftKitty
         }
 
         private static int nextExecutionHash;
-        public bool ConditionsMet(ref GraphRuntimeState state)
+        private static int NextExecutionHash()
+            => nextExecutionHash = nextExecutionHash == int.MinValue ? -1 : nextExecutionHash - 1;
+
+        public bool ConditionsMet(ref GraphRuntimeState state) => ConditionsMet(ref state, 0);
+
+        public bool ConditionsMet(ref GraphRuntimeState state, uint ordinal)
         {
             if (ExecutionConditionPort < 0) return true;
             var port = inputPort[ExecutionConditionPort];
             if (port.uid.Count == 0) return true;
             if (port.connectedNodes.Count != port.uid.Count) return false;
-            nextExecutionHash = nextExecutionHash == int.MinValue ? -1 : nextExecutionHash - 1;
-            state.Hash = nextExecutionHash;
+            var check = state;
+            check.Hash = NextExecutionHash();
+            check.RootState.RandomKey = state.EventKey.With("condition").With(Uid).With(ordinal);
+            // Re-evaluate live attributes for the action as well, with its own random context.
+            state.Hash = NextExecutionHash();
             foreach (var condition in port.connectedNodes)
-                if (!condition.isConditionActive(state)) return false;
+                if (!condition.isConditionActive(check)) return false;
             return true;
         }
 

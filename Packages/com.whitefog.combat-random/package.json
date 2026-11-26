@@ -1,0 +1,7 @@
+{
+  "name": "com.whitefog.combat-random",
+  "version": "1.0.0",
+  "displayName": "Combat Random",
+  "description": "Deterministic random sampling by battle seed, event identity and draw purpose.",
+  "unity": "2022.3"
+}

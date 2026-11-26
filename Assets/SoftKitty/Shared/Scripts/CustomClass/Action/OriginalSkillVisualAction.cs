@@ -27,8 +27,9 @@ namespace SoftKitty
             var impact = host.OriginalProjectileImpact;
             var cue = EffectFor(this, graph);
             if (cue == null) return;
+            uint ordinal = 0;
             host.ScheduleReleases(state, caster, WaitTime, FormulaImpactAction.SegmentCount(this), Interval,
-                () => { if (ConditionsMet(ref state)) PlayCue(host, cue, caster, target, impact); });
+                () => { if (ConditionsMet(ref state, ordinal++)) PlayCue(host, cue, caster, target, impact); });
         }
 
         public static OriginalSkillGraph.EffectCue EffectFor(Action node, OriginalSkillGraph graph)

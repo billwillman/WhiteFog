@@ -48,7 +48,7 @@ namespace SoftKitty.MasterCombatCore.Demo
             if (Time.frameCount % _decisionInterval == 0 )
             {
                 if(!EntityInstance.Engage) SearchForBattle();//Pay attention for possible battles.
-                randomDecision = Random.Range(0, 100);//Set a random number to add some randomness for decisions.
+                randomDecision = CombatRandom.Event("aiDecision", EntityInstance.mData.CombatRandomId, null, null).Index(100);
                 if (!EntityInstance.Engage)
                 {
                     if (trackingEntities.Count > 0)
@@ -123,7 +123,10 @@ namespace SoftKitty.MasterCombatCore.Demo
 
         private void PickNewPatrolPoint() {
             if (randomDecision < 60) return;
-            Vector3 _point = transform.position + new Vector3(Random.Range(15F, 30F) * (Random.Range(0, 2) == 0 ? 1 : -1), 100F, Random.Range(15F, 30F) * (Random.Range(0, 2) == 0 ? 1 : -1));
+            var patrol = CombatRandom.Event("patrol", EntityInstance.mData.CombatRandomId, null, null);
+            float x = patrol.With("x").Range(15, 30) * (patrol.With("signX").Index(2) == 0 ? 1 : -1);
+            float z = patrol.With("z").Range(15, 30) * (patrol.With("signZ").Index(2) == 0 ? 1 : -1);
+            Vector3 _point = transform.position + new Vector3(x, 100, z);
             RaycastHit _patrolHit;
             if (Physics.Raycast(_point,Vector3.down,out _patrolHit, 200F,SGD_Settings.Instance.GroundLayer,QueryTriggerInteraction.Ignore)) {
                 if(Mathf.Abs(transform.position.y- _patrolHit.point.y)<5F && _patrolHit.normal.y>0.8F) patrolTarget = _patrolHit.point;
@@ -185,7 +188,8 @@ namespace SoftKitty.MasterCombatCore.Demo
                 MovingSpeed = 0F;
                 Attack = false;
                 Block = true;
-                if(BlockTimer<=0F) BlockTimer = Random.Range(2F,3F);
+                if (BlockTimer <= 0F)
+                    BlockTimer = CombatRandom.Event("blockTime", EntityInstance.mData.CombatRandomId, null, _target.mData.CombatRandomId).Range(2, 3);
                 EntityInstance.Engage = true;
                 EntityInstance.EngagedEntity = _target;
             }
