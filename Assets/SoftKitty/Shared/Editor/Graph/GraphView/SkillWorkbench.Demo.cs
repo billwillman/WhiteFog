@@ -419,11 +419,18 @@ namespace SoftKitty
             if (SkillPlayback.FindActor(caster.mData) != caster || SkillPlayback.FindActor(receiver.mData) != receiver)
             { info = "场景中有多个角色共用同一份实体数据。请为所选角色使用独立实体或启用多实例。"; return false; }
             var original = skill as OriginalSkillGraph;
-            if (original && original.castMotion)
+            if (original)
             {
-                var animator = caster.GetComponentInChildren<Animator>();
-                if (!animator || !animator.runtimeAnimatorController || !animator.HasState(0, Animator.StringToHash("Base Layer." + original.castMotion.name)))
-                { info = "所选施放者缺少原作动作 " + original.castMotion.name; return false; }
+                foreach (var node in original.RootSet.Actions.Where(a => a.ClassName == "OriginalSkillVisual" && a.IntValues.FirstOrDefault() == 0))
+                {
+                    // Conditional and dynamic branches validate when the action actually runs.
+                    if (!original.RootSet.outputPort[0].uid.Contains(node.Uid + "#0")) continue;
+                    var entity = MotionEntity(original, node);
+                    var actor = entity == EntityType.Dealer ? caster : entity == EntityType.Target ? receiver : null;
+                    if (!actor) continue; // Dynamic entity bindings resolve when the graph reaches the action.
+                    string error = SkillMotion.For(node, original).Check(actor.GetComponentInChildren<Animator>());
+                    if (error != null) { info = node.Uid + " · " + error; return false; }
+                }
             }
             if (!ValidatePreviewLevel(skill, skillLevel, out info)) return false;
             if (!damage)

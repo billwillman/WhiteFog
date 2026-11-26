@@ -16,6 +16,13 @@ public static class OriginalSkillEditorExport
     {
         public string guid, path, name, motion, enemy, cast, weapon, projectile, trail, impact;
         public string[] cuePrefabs;
+        public NodeMotion[] motions;
+    }
+
+    [Serializable]
+    private sealed class NodeMotion
+    {
+        public string uid, mode, state, clip, clipName;
     }
 
     private static string AssetPath(UnityEngine.Object asset) => asset ? AssetDatabase.GetAssetPath(asset) : "";
@@ -30,7 +37,14 @@ public static class OriginalSkillEditorExport
             motion = AssetPath(graph.castMotion), enemy = AssetPath(graph.previewEnemy),
             cast = AssetPath(graph.castEffect), weapon = AssetPath(graph.weaponEffect),
             projectile = AssetPath(graph.projectile), trail = AssetPath(graph.tail), impact = AssetPath(graph.impact),
-            cuePrefabs = graph.effects.Select(cue => AssetPath(cue?.prefab)).ToArray()
+            cuePrefabs = graph.effects.Select(cue => AssetPath(cue?.prefab)).ToArray(),
+            motions = graph.RootSet.Actions.Where(a => a.ClassName == "OriginalSkillVisual" && a.IntValues.FirstOrDefault() == 0)
+                .Select(a => {
+                    var motion = SkillMotion.For(a, graph);
+                    var clip = motion.source == SkillMotion.Source.AnimationClip || a.motion == null ? motion.clip : null;
+                    return new NodeMotion { uid = a.Uid, mode = motion.source.ToString(), state = motion.StatePath,
+                        clip = AssetPath(clip), clipName = clip ? clip.name : "" };
+                }).ToArray()
         };
         return "{\"asset\":" + JsonUtility.ToJson(info) + ",\"graph\":" + EditorJsonUtility.ToJson(graph) + "}";
     }

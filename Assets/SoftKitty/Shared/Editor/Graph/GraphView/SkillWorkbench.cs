@@ -46,6 +46,8 @@ namespace SoftKitty
 
         private void SelectGraph(GraphObject asset)
         {
+            motionTimings.Clear();
+            motionParameters.Clear();
             if (asset is SkillFormula formula)
             {
                 MasterGraphWindow.CloseIfEditing(formula);
@@ -59,6 +61,7 @@ namespace SoftKitty
             sampleNumbers.Clear();
             MasterGraphWindow.CloseIfEditing(asset);
             graph = asset;
+            motionBrowserController = null;
             if (executor && executor.mGraph != graph) { executor = null; dealer = null; target = null; }
             selection = null;
             cursor = 0;
@@ -75,17 +78,19 @@ namespace SoftKitty
             GUI.FocusControl(null);
         }
 
-        private void OnProjectChange() { library = null; Repaint(); }
+        private void OnProjectChange() { library = null; RefreshMotionTimings(); }
         private void OnEnable()
         {
-            Undo.undoRedoPerformed += Repaint;
+            Undo.undoRedoPerformed += RefreshMotionTimings;
+            Undo.postprocessModifications += OnMotionAssetEdited;
             EditorApplication.update += UpdateDemoPreview;
             UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnPreviewSceneLoaded;
         }
         private void OnDisable()
         {
             ReleasePreviewCamera();
-            Undo.undoRedoPerformed -= Repaint;
+            Undo.undoRedoPerformed -= RefreshMotionTimings;
+            Undo.postprocessModifications -= OnMotionAssetEdited;
             EditorApplication.update -= UpdateDemoPreview;
             UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnPreviewSceneLoaded;
             if (componentEditor) DestroyImmediate(componentEditor);
@@ -286,7 +291,8 @@ namespace SoftKitty
                 menu.ShowAsContext();
             }
             EditorGUILayout.EndHorizontal();
-            float horizon = Mathf.Max(2, root.Actions.Select(x => x.WaitTime + Span(x) + .4f).DefaultIfEmpty(2).Max());
+            var motions = root.Actions.ToDictionary(a => a, MotionTimeline);
+            float horizon = Mathf.Max(2, root.Actions.Select(a => a.WaitTime + Span(a) + (motions[a]?.seconds ?? 0) + .4f).DefaultIfEmpty(2).Max());
             cursor = EditorGUILayout.Slider("时间游标（秒）", cursor, 0, horizon);
             foreach (var action in root.Actions.OrderBy(x => x.WaitTime))
             {
@@ -295,13 +301,15 @@ namespace SoftKitty
                 var lane = Rect.MinMaxRect(name.xMax + 4, row.y + 4, row.xMax - 5, row.yMax - 4);
                 var binding = action.inputPort[0].uid.FirstOrDefault();
                 string route = binding == null ? "未连接" : binding == "Node0#0" ? "直接" : "分支";
-                string label = action.WaitTime.ToString("0.00") + "s  " + ActionName(action) + "  ·  " + route;
+                var timing = motions[action];
+                string label = action.WaitTime.ToString("0.00") + "s  " + (timing == null ? ActionName(action) : "角色动画") + "  ·  " + (timing == null ? route : TimingLabel(timing));
                 if (GUI.Toggle(name, action.Uid == selection, new GUIContent(label, action.Uid), EditorStyles.miniButton) && selection != action.Uid)
                 { selection = action.Uid; cursor = action.WaitTime; }
                 EditorGUI.DrawRect(lane, new Color(.13f,.19f,.21f));
                 var bar = new Rect(lane.x + lane.width * action.WaitTime / horizon, lane.y + 2,
                     Mathf.Max(5, lane.width * Span(action) / horizon), lane.height - 4);
-                EditorGUI.DrawRect(bar, selection == action.Uid ? new Color(.32f,.83f,.66f) : new Color(.35f,.55f,.63f));
+                if (timing != null) DrawMotionBands(lane, horizon, action, timing);
+                else EditorGUI.DrawRect(bar, selection == action.Uid ? new Color(.32f,.83f,.66f) : new Color(.35f,.55f,.63f));
                 EditorGUI.DrawRect(new Rect(lane.x + cursor / horizon * lane.width, lane.y, 1, lane.height), Color.white);
                 if (Event.current.type == EventType.MouseDown && lane.Contains(Event.current.mousePosition))
                 { selection = action.Uid; cursor = Mathf.Clamp01((Event.current.mousePosition.x - lane.x) / lane.width) * horizon; Event.current.Use(); Repaint(); }
@@ -573,7 +581,11 @@ namespace SoftKitty
                     case NodeInterfaceElementType.Bool_Variable:
                         EditValue(action.BoolValues, i, false, v => EditorGUILayout.Toggle(label, v)); break;
                     case NodeInterfaceElementType.Enum:
-                        EditValue(action.IntValues, i, 0, v => EditorGUILayout.Popup(label, v, field.EnumOptions.Select(GraphEditorText.Localize).ToArray())); break;
+                        EditValue(action.IntValues, i, 0, v => EditorGUILayout.Popup(label, v, field.EnumOptions.Select(GraphEditorText.Localize).ToArray()));
+                        if (field.Uid == "stage" && action is Action motionAction && motionAction.ClassName == "OriginalSkillVisual" &&
+                            motionAction.IntValues.ElementAtOrDefault(i) == 0 && graph is OriginalSkillGraph original)
+                            DrawMotion(motionAction, original);
+                        break;
                 }
             }
         }

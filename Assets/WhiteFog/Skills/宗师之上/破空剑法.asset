@@ -23,7 +23,8 @@ MonoBehaviour:
       Type: RootIn
       acceptedTypes:
       - TriggerOut
-      uid: []
+      uid:
+      - Node25#0
       connectedNodes: []
       allowMutipleConnection: 1
       createByDefault: 1
@@ -81,7 +82,7 @@ MonoBehaviour:
     - mType: 0
       Name: Action
       Uid: Node1
-      Position: {x: 450, y: 0}
+      Position: {x: 818, y: -14.666668}
       NodeIndex: 0
       inputPort:
       - Name: Action
@@ -120,7 +121,9 @@ MonoBehaviour:
       ClassName: OriginalSkillVisual
       IntValues: 00000000
       FloatValues: []
-      StringValues: []
+      StringValues:
+      - 
+      - 
       BoolValues: 
       CustomInterface:
         Elements:
@@ -150,6 +153,16 @@ MonoBehaviour:
           - "\u53F3\u624B\u6B66\u5668"
           - "\u53D1\u5C04\u98DE\u5251"
           - "\u6536\u62DB\u6807\u8BB0"
+          - "\u4F4D\u79FB\u4E8B\u4EF6\u6807\u8BB0"
+          - "\u539F\u4F5C\u8F68\u9053\u7279\u6548\u6216\u547D\u4E2D"
+        - Uid: cue
+          Label: "\u539F\u4F5C\u8F68\u9053\u914D\u7F6E\u5E8F\u53F7"
+          ToolTips: "\u5BF9\u5E94\u6280\u80FD\u56FE\u7684\u7279\u6548\u914D\u7F6E\uFF0C\u4ECE
+            0 \u5F00\u59CB\u3002"
+          Type: 1
+          Index: 1
+          VisibleBind: stage#6
+          EnumOptions: []
       Type: 0
       Count: 1
       WaitTime: 0
@@ -160,7 +173,7 @@ MonoBehaviour:
     - mType: 0
       Name: Action
       Uid: Node4
-      Position: {x: 450, y: 420}
+      Position: {x: 450.66666, y: 420}
       NodeIndex: 0
       inputPort:
       - Name: Action
@@ -199,7 +212,9 @@ MonoBehaviour:
       ClassName: OriginalSkillVisual
       IntValues: 01000000
       FloatValues: []
-      StringValues: []
+      StringValues:
+      - 
+      - 
       BoolValues: 
       CustomInterface:
         Elements:
@@ -229,6 +244,16 @@ MonoBehaviour:
           - "\u53F3\u624B\u6B66\u5668"
           - "\u53D1\u5C04\u98DE\u5251"
           - "\u6536\u62DB\u6807\u8BB0"
+          - "\u4F4D\u79FB\u4E8B\u4EF6\u6807\u8BB0"
+          - "\u539F\u4F5C\u8F68\u9053\u7279\u6548\u6216\u547D\u4E2D"
+        - Uid: cue
+          Label: "\u539F\u4F5C\u8F68\u9053\u914D\u7F6E\u5E8F\u53F7"
+          ToolTips: "\u5BF9\u5E94\u6280\u80FD\u56FE\u7684\u7279\u6548\u914D\u7F6E\uFF0C\u4ECE
+            0 \u5F00\u59CB\u3002"
+          Type: 1
+          Index: 1
+          VisibleBind: stage#6
+          EnumOptions: []
       Type: 0
       Count: 1
       WaitTime: 0
@@ -278,7 +303,9 @@ MonoBehaviour:
       ClassName: OriginalSkillVisual
       IntValues: 02000000
       FloatValues: []
-      StringValues: []
+      StringValues:
+      - 
+      - 
       BoolValues: 
       CustomInterface:
         Elements:
@@ -308,6 +335,16 @@ MonoBehaviour:
           - "\u53F3\u624B\u6B66\u5668"
           - "\u53D1\u5C04\u98DE\u5251"
           - "\u6536\u62DB\u6807\u8BB0"
+          - "\u4F4D\u79FB\u4E8B\u4EF6\u6807\u8BB0"
+          - "\u539F\u4F5C\u8F68\u9053\u7279\u6548\u6216\u547D\u4E2D"
+        - Uid: cue
+          Label: "\u539F\u4F5C\u8F68\u9053\u914D\u7F6E\u5E8F\u53F7"
+          ToolTips: "\u5BF9\u5E94\u6280\u80FD\u56FE\u7684\u7279\u6548\u914D\u7F6E\uFF0C\u4ECE
+            0 \u5F00\u59CB\u3002"
+          Type: 1
+          Index: 1
+          VisibleBind: stage#6
+          EnumOptions: []
       Type: 0
       Count: 1
       WaitTime: 0
@@ -357,7 +394,9 @@ MonoBehaviour:
       ClassName: OriginalSkillVisual
       IntValues: 03000000
       FloatValues: []
-      StringValues: []
+      StringValues:
+      - 
+      - 
       BoolValues: 
       CustomInterface:
         Elements:
@@ -387,6 +426,16 @@ MonoBehaviour:
           - "\u53F3\u624B\u6B66\u5668"
           - "\u53D1\u5C04\u98DE\u5251"
           - "\u6536\u62DB\u6807\u8BB0"
+          - "\u4F4D\u79FB\u4E8B\u4EF6\u6807\u8BB0"
+          - "\u539F\u4F5C\u8F68\u9053\u7279\u6548\u6216\u547D\u4E2D"
+        - Uid: cue
+          Label: "\u539F\u4F5C\u8F68\u9053\u914D\u7F6E\u5E8F\u53F7"
+          ToolTips: "\u5BF9\u5E94\u6280\u80FD\u56FE\u7684\u7279\u6548\u914D\u7F6E\uFF0C\u4ECE
+            0 \u5F00\u59CB\u3002"
+          Type: 1
+          Index: 1
+          VisibleBind: stage#6
+          EnumOptions: []
       Type: 0
       Count: 1
       WaitTime: 1.12
@@ -436,7 +485,9 @@ MonoBehaviour:
       ClassName: OriginalSkillVisual
       IntValues: 03000000
       FloatValues: []
-      StringValues: []
+      StringValues:
+      - 
+      - 
       BoolValues: 
       CustomInterface:
         Elements:
@@ -466,6 +517,16 @@ MonoBehaviour:
           - "\u53F3\u624B\u6B66\u5668"
           - "\u53D1\u5C04\u98DE\u5251"
           - "\u6536\u62DB\u6807\u8BB0"
+          - "\u4F4D\u79FB\u4E8B\u4EF6\u6807\u8BB0"
+          - "\u539F\u4F5C\u8F68\u9053\u7279\u6548\u6216\u547D\u4E2D"
+        - Uid: cue
+          Label: "\u539F\u4F5C\u8F68\u9053\u914D\u7F6E\u5E8F\u53F7"
+          ToolTips: "\u5BF9\u5E94\u6280\u80FD\u56FE\u7684\u7279\u6548\u914D\u7F6E\uFF0C\u4ECE
+            0 \u5F00\u59CB\u3002"
+          Type: 1
+          Index: 1
+          VisibleBind: stage#6
+          EnumOptions: []
       Type: 0
       Count: 1
       WaitTime: 1.251
@@ -515,7 +576,9 @@ MonoBehaviour:
       ClassName: OriginalSkillVisual
       IntValues: 03000000
       FloatValues: []
-      StringValues: []
+      StringValues:
+      - 
+      - 
       BoolValues: 
       CustomInterface:
         Elements:
@@ -545,6 +608,16 @@ MonoBehaviour:
           - "\u53F3\u624B\u6B66\u5668"
           - "\u53D1\u5C04\u98DE\u5251"
           - "\u6536\u62DB\u6807\u8BB0"
+          - "\u4F4D\u79FB\u4E8B\u4EF6\u6807\u8BB0"
+          - "\u539F\u4F5C\u8F68\u9053\u7279\u6548\u6216\u547D\u4E2D"
+        - Uid: cue
+          Label: "\u539F\u4F5C\u8F68\u9053\u914D\u7F6E\u5E8F\u53F7"
+          ToolTips: "\u5BF9\u5E94\u6280\u80FD\u56FE\u7684\u7279\u6548\u914D\u7F6E\uFF0C\u4ECE
+            0 \u5F00\u59CB\u3002"
+          Type: 1
+          Index: 1
+          VisibleBind: stage#6
+          EnumOptions: []
       Type: 0
       Count: 1
       WaitTime: 1.443
@@ -594,7 +667,9 @@ MonoBehaviour:
       ClassName: OriginalSkillVisual
       IntValues: 04000000
       FloatValues: []
-      StringValues: []
+      StringValues:
+      - 
+      - 
       BoolValues: 
       CustomInterface:
         Elements:
@@ -624,6 +699,16 @@ MonoBehaviour:
           - "\u53F3\u624B\u6B66\u5668"
           - "\u53D1\u5C04\u98DE\u5251"
           - "\u6536\u62DB\u6807\u8BB0"
+          - "\u4F4D\u79FB\u4E8B\u4EF6\u6807\u8BB0"
+          - "\u539F\u4F5C\u8F68\u9053\u7279\u6548\u6216\u547D\u4E2D"
+        - Uid: cue
+          Label: "\u539F\u4F5C\u8F68\u9053\u914D\u7F6E\u5E8F\u53F7"
+          ToolTips: "\u5BF9\u5E94\u6280\u80FD\u56FE\u7684\u7279\u6548\u914D\u7F6E\uFF0C\u4ECE
+            0 \u5F00\u59CB\u3002"
+          Type: 1
+          Index: 1
+          VisibleBind: stage#6
+          EnumOptions: []
       Type: 0
       Count: 1
       WaitTime: 1.501
@@ -673,7 +758,9 @@ MonoBehaviour:
       ClassName: OriginalSkillVisual
       IntValues: 05000000
       FloatValues: []
-      StringValues: []
+      StringValues:
+      - 
+      - 
       BoolValues: 
       CustomInterface:
         Elements:
@@ -703,6 +790,16 @@ MonoBehaviour:
           - "\u53F3\u624B\u6B66\u5668"
           - "\u53D1\u5C04\u98DE\u5251"
           - "\u6536\u62DB\u6807\u8BB0"
+          - "\u4F4D\u79FB\u4E8B\u4EF6\u6807\u8BB0"
+          - "\u539F\u4F5C\u8F68\u9053\u7279\u6548\u6216\u547D\u4E2D"
+        - Uid: cue
+          Label: "\u539F\u4F5C\u8F68\u9053\u914D\u7F6E\u5E8F\u53F7"
+          ToolTips: "\u5BF9\u5E94\u6280\u80FD\u56FE\u7684\u7279\u6548\u914D\u7F6E\uFF0C\u4ECE
+            0 \u5F00\u59CB\u3002"
+          Type: 1
+          Index: 1
+          VisibleBind: stage#6
+          EnumOptions: []
       Type: 0
       Count: 1
       WaitTime: 1.5
@@ -710,16 +807,243 @@ MonoBehaviour:
       Interval: 0
       calculation:
         rid: -2
-    Triggers: []
+    Triggers:
+    - mType: 0
+      Name: Trigger
+      Uid: Node25
+      Position: {x: -400, y: 0}
+      NodeIndex: 0
+      inputPort:
+      - Name: Conditions To Trigger
+        Type: TriggerIn
+        acceptedTypes:
+        - ConditionOut
+        uid:
+        - Node26#0
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 1
+      - Name: Conditions To Reset
+        Type: TriggerIn
+        acceptedTypes:
+        - ConditionOut
+        uid: []
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 0
+      outputPort:
+      - Name: Trigger
+        Type: TriggerOut
+        acceptedTypes:
+        - RootIn
+        uid:
+        - Node0#0
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      minimized: 0
+      InstanceCache: 0
+      mRoot:
+        rid: 1000
+      TriggerConditions: []
+      ResetConditions: []
+      AutoReset: 1
     ConditionGroups: []
-    Handlers: []
+    Handlers:
+    - mType: 0
+      Name: Condition
+      Uid: Node26
+      Position: {x: -697.3333, y: -2.666668}
+      NodeIndex: 0
+      inputPort:
+      - Name: 0
+        Type: EntityIn
+        acceptedTypes:
+        - EntityOut
+        uid:
+        - Node27#0
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      - Name: 1
+        Type: EntityIn
+        acceptedTypes:
+        - EntityOut
+        uid:
+        - Node28#0
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      - Name: 2
+        Type: CustomVariable
+        acceptedTypes:
+        - Variable
+        uid:
+        - Node29#0
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 1
+      outputPort:
+      - Name: Condition
+        Type: ConditionOut
+        acceptedTypes:
+        - TriggerIn
+        - ConditionIn
+        - BranchIn
+        uid:
+        - Node25#0
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 1
+      minimized: 0
+      InstanceCache: 0
+      mRoot:
+        rid: 1000
+      ClassName: AngleDifference
+      IntValues: 0000000000000000
+      FloatValues: []
+      StringValues: []
+      BoolValues: 01
+      CustomInterface:
+        Elements:
+        - Uid: entityA
+          Label: EntityA
+          ToolTips: EntityA for comparison.
+          Type: 8
+          Index: 0
+          VisibleBind: 
+          EnumOptions: []
+        - Uid: entityB
+          Label: EntityB
+          ToolTips: EntityB for comparison.
+          Type: 8
+          Index: 1
+          VisibleBind: 
+          EnumOptions: []
+        - Uid: angleType
+          Label: Angle Type
+          ToolTips: Type of the angle for comparison.
+          Type: 7
+          Index: 0
+          VisibleBind: 
+          EnumOptions:
+          - fwdA bwdB
+          - fwdA fwdB
+          - fwdA Delta
+          - bwdA Delta
+        - Uid: Element3
+          Label: Compare forward direction of EntityA
+          ToolTips: 
+          Type: 5
+          Index: 0
+          VisibleBind: angleType#3!
+          EnumOptions: []
+        - Uid: Element8
+          Label: Compare backward direction of EntityA
+          ToolTips: 
+          Type: 5
+          Index: 1
+          VisibleBind: angleType#3
+          EnumOptions: []
+        - Uid: Element4
+          Label: with backward direction of EntityB.
+          ToolTips: 
+          Type: 5
+          Index: 2
+          VisibleBind: angleType#0
+          EnumOptions: []
+        - Uid: Element5
+          Label: with forward direction of EntityB.
+          ToolTips: 
+          Type: 5
+          Index: 3
+          VisibleBind: angleType#1
+          EnumOptions: []
+        - Uid: Element6
+          Label: with position vector of (posB-posA).
+          ToolTips: 
+          Type: 5
+          Index: 4
+          VisibleBind: angleType#2
+          EnumOptions: []
+        - Uid: Element7
+          Label: with position vector of (posB-posA).
+          ToolTips: 
+          Type: 5
+          Index: 5
+          VisibleBind: angleType#3
+          EnumOptions: []
+        - Uid: logic
+          Label: Comparison Method
+          ToolTips: Comparison logic.
+          Type: 7
+          Index: 1
+          VisibleBind: 
+          EnumOptions:
+          - Greater
+          - Equal
+          - Less
+        - Uid: angle
+          Label: Angle
+          ToolTips: Angle for comparison.
+          Type: 4
+          Index: 2
+          VisibleBind: 
+          EnumOptions: []
+        - Uid: ignoreY
+          Label: Ignore Height
+          ToolTips: Ignore Y axis difference.
+          Type: 0
+          Index: 0
+          VisibleBind: 
+          EnumOptions: []
+      ClassType: 0
+      StateType: 0
+      xTimeCount: 1
+      HandlerIndex: 0
     Maths: []
-    Variables: []
+    Variables:
+    - mType: 0
+      Name: Variable
+      Uid: Node29
+      Position: {x: -995, y: 260}
+      NodeIndex: 0
+      inputPort:
+      - Name: Entity
+        Type: EntityIn
+        acceptedTypes:
+        - EntityOut
+        uid: []
+        connectedNodes: []
+        allowMutipleConnection: 0
+        createByDefault: 0
+      outputPort:
+      - Name: Variable
+        Type: Variable
+        acceptedTypes:
+        - Variable
+        - MathIn
+        - CustomVariable
+        - BranchInValue
+        uid:
+        - Node26#2
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 1
+      minimized: 0
+      InstanceCache: 0
+      mRoot:
+        rid: 1000
+      Type: 0
+      Constant: 0
+      AttributeKey: Attack
+      VariableUid: 
+      Max: 1
     Entities:
     - mType: 0
       Name: Entity (Player)
       Uid: Node2
-      Position: {x: 205, y: 0}
+      Position: {x: 300.66666, y: 0}
       NodeIndex: 0
       inputPort: []
       outputPort:
@@ -742,7 +1066,7 @@ MonoBehaviour:
     - mType: 0
       Name: Entity (Player)
       Uid: Node3
-      Position: {x: 205, y: 130}
+      Position: {x: 300.66666, y: 146}
       NodeIndex: 0
       inputPort: []
       outputPort:
@@ -1084,18 +1408,104 @@ MonoBehaviour:
         rid: 6312275959612178432
       Type: 2
       EntityUid: 
+    - mType: 0
+      Name: Entity (Player)
+      Uid: Node27
+      Position: {x: -995, y: 0}
+      NodeIndex: 0
+      inputPort: []
+      outputPort:
+      - Name: Entity
+        Type: EntityOut
+        acceptedTypes:
+        - EntityIn
+        - BranchInEntity
+        uid:
+        - Node26#0
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 1
+      minimized: 0
+      InstanceCache: 0
+      mRoot:
+        rid: 1000
+      Type: 0
+      EntityUid: 
+    - mType: 0
+      Name: Entity (Player)
+      Uid: Node28
+      Position: {x: -995, y: 130}
+      NodeIndex: 0
+      inputPort: []
+      outputPort:
+      - Name: Entity
+        Type: EntityOut
+        acceptedTypes:
+        - EntityIn
+        - BranchInEntity
+        uid:
+        - Node26#1
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 1
+      minimized: 0
+      InstanceCache: 0
+      mRoot:
+        rid: 1000
+      Type: 1
+      EntityUid: 
     Notes: []
     Groups: []
     Branchs: []
     ActiveTriggers: []
   previewAsOpponent: 0
   autoSave: 0
-  NodeIconSprites: []
-  ActionClassNames: []
-  HandlerClassNames: []
-  RootClassNames: []
+  NodeIconSprites:
+  - {fileID: 580834057, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  - {fileID: 1828930907, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  - {fileID: -450080446, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  - {fileID: 936707919, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  - {fileID: -910347496, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  - {fileID: 2009228480, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  - {fileID: -787081704, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  ActionClassNames:
+  - Animation
+  - AttributeChange
+  - CustomData
+  - Destroy
+  - Event
+  - FormulaImpact
+  - Instantiate
+  - OriginalSkillVisual
+  - OverTimeEffect
+  - PlaySound
+  - SendMessage
+  - SkillImpact
+  - SkillSignal
+  - SkillVital
+  - Teleport
+  - TempAttributeChange
+  - Transform
+  HandlerClassNames:
+  - AngleDifference
+  - AttributeValue
+  - CustomData
+  - Distance
+  - EntityExist
+  - HeightDifference
+  - OverTimeEffect
+  - Raycast
+  - TagCompare
+  - Tag
+  - VariableCompare
+  RootClassNames:
+  - Combat
   pendingSave: 0
   summaryNoteId: 
+  effects: []
+  previewEnemy: {fileID: 0}
+  projectileBone: 
+  impactScale: 1
   sourceId: 25090
   sourceVersion: 1.3.0
   castMotion: {fileID: 7400000, guid: 69a44bd5c081a2c4a9c5271360b535d0, type: 2}
@@ -1116,6 +1526,1454 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 1000
+      type: {class: Root, ns: SoftKitty, asm: Assembly-CSharp}
+      data:
+        mType: 0
+        Name: Root
+        Uid: Node0
+        Position: {x: 0, y: 0}
+        NodeIndex: 0
+        inputPort:
+        - Name: Trigger
+          Type: RootIn
+          acceptedTypes:
+          - TriggerOut
+          uid:
+          - Node25#0
+          connectedNodes: []
+          allowMutipleConnection: 1
+          createByDefault: 1
+        outputPort:
+        - Name: Action
+          Type: RootOut
+          acceptedTypes:
+          - ActionIn
+          - BranchInAction
+          uid:
+          - Node1#0
+          - Node4#0
+          - Node7#0
+          - Node10#0
+          - Node13#0
+          - Node16#0
+          - Node19#0
+          - Node22#0
+          connectedNodes: []
+          allowMutipleConnection: 1
+          createByDefault: 1
+        minimized: 0
+        InstanceCache: 0
+        mRoot:
+          rid: -2
+        ClassName: Combat
+        IntValues: 
+        FloatValues: []
+        StringValues: []
+        BoolValues: 
+        CustomInterface:
+          Elements:
+          - Uid: Element2
+            Label: 
+            ToolTips: 
+            Type: 6
+            Index: 0
+            VisibleBind: 
+            EnumOptions: []
+          - Uid: Element0
+            Label: When the conditions matchs,
+            ToolTips: 
+            Type: 5
+            Index: 0
+            VisibleBind: 
+            EnumOptions: []
+          - Uid: Element1
+            Label: The actions will be performed.
+            ToolTips: 
+            Type: 5
+            Index: 1
+            VisibleBind: 
+            EnumOptions: []
+        Actions:
+        - mType: 0
+          Name: Action
+          Uid: Node1
+          Position: {x: 818, y: -14.666668}
+          NodeIndex: 0
+          inputPort:
+          - Name: Action
+            Type: ActionIn
+            acceptedTypes:
+            - RootOut
+            - BranchOutAction
+            uid:
+            - Node0#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: 1
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid:
+            - Node2#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: 2
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid:
+            - Node3#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          outputPort: []
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 6312275959582556160
+          ClassName: OriginalSkillVisual
+          IntValues: 00000000
+          FloatValues: []
+          StringValues:
+          - 
+          - 
+          BoolValues: 
+          CustomInterface:
+            Elements:
+            - Uid: caster
+              Label: "\u65BD\u653E\u8005"
+              ToolTips: "\u6280\u80FD\u7684\u52A8\u4F5C\u548C\u65BD\u6CD5\u7279\u6548\u8DDF\u968F\u6B64\u89D2\u8272"
+              Type: 8
+              Index: 0
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: target
+              Label: "\u8868\u73B0\u76EE\u6807"
+              ToolTips: "\u98DE\u5251\u53D1\u5C04\u65F6\u8BFB\u53D6\u76EE\u6807\u4F4D\u7F6E"
+              Type: 8
+              Index: 1
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: stage
+              Label: "\u539F\u4F5C\u8868\u73B0\u4E8B\u4EF6"
+              ToolTips: "\u5B9E\u9645\u8D44\u6E90\u7531\u539F\u4F5C\u6280\u80FD\u56FE\u5F15\u7528"
+              Type: 7
+              Index: 0
+              VisibleBind: 
+              EnumOptions:
+              - "\u64AD\u653E\u539F\u4F5C\u89D2\u8272\u52A8\u4F5C"
+              - "\u65BD\u6CD5\u7279\u6548"
+              - "\u53F3\u624B\u6B66\u5668"
+              - "\u53D1\u5C04\u98DE\u5251"
+              - "\u6536\u62DB\u6807\u8BB0"
+              - "\u4F4D\u79FB\u4E8B\u4EF6\u6807\u8BB0"
+              - "\u539F\u4F5C\u8F68\u9053\u7279\u6548\u6216\u547D\u4E2D"
+            - Uid: cue
+              Label: "\u539F\u4F5C\u8F68\u9053\u914D\u7F6E\u5E8F\u53F7"
+              ToolTips: "\u5BF9\u5E94\u6280\u80FD\u56FE\u7684\u7279\u6548\u914D\u7F6E\uFF0C\u4ECE
+                0 \u5F00\u59CB\u3002"
+              Type: 1
+              Index: 1
+              VisibleBind: stage#6
+              EnumOptions: []
+          Type: 0
+          Count: 1
+          WaitTime: 0
+          KeepTime: 0
+          Interval: 0
+          calculation:
+            rid: -2
+        - mType: 0
+          Name: Action
+          Uid: Node4
+          Position: {x: 450.66666, y: 420}
+          NodeIndex: 0
+          inputPort:
+          - Name: Action
+            Type: ActionIn
+            acceptedTypes:
+            - RootOut
+            - BranchOutAction
+            uid:
+            - Node0#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: 1
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid:
+            - Node5#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: 2
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid:
+            - Node6#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          outputPort: []
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 6312275959582556160
+          ClassName: OriginalSkillVisual
+          IntValues: 01000000
+          FloatValues: []
+          StringValues:
+          - 
+          - 
+          BoolValues: 
+          CustomInterface:
+            Elements:
+            - Uid: caster
+              Label: "\u65BD\u653E\u8005"
+              ToolTips: "\u6280\u80FD\u7684\u52A8\u4F5C\u548C\u65BD\u6CD5\u7279\u6548\u8DDF\u968F\u6B64\u89D2\u8272"
+              Type: 8
+              Index: 0
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: target
+              Label: "\u8868\u73B0\u76EE\u6807"
+              ToolTips: "\u98DE\u5251\u53D1\u5C04\u65F6\u8BFB\u53D6\u76EE\u6807\u4F4D\u7F6E"
+              Type: 8
+              Index: 1
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: stage
+              Label: "\u539F\u4F5C\u8868\u73B0\u4E8B\u4EF6"
+              ToolTips: "\u5B9E\u9645\u8D44\u6E90\u7531\u539F\u4F5C\u6280\u80FD\u56FE\u5F15\u7528"
+              Type: 7
+              Index: 0
+              VisibleBind: 
+              EnumOptions:
+              - "\u64AD\u653E\u539F\u4F5C\u89D2\u8272\u52A8\u4F5C"
+              - "\u65BD\u6CD5\u7279\u6548"
+              - "\u53F3\u624B\u6B66\u5668"
+              - "\u53D1\u5C04\u98DE\u5251"
+              - "\u6536\u62DB\u6807\u8BB0"
+              - "\u4F4D\u79FB\u4E8B\u4EF6\u6807\u8BB0"
+              - "\u539F\u4F5C\u8F68\u9053\u7279\u6548\u6216\u547D\u4E2D"
+            - Uid: cue
+              Label: "\u539F\u4F5C\u8F68\u9053\u914D\u7F6E\u5E8F\u53F7"
+              ToolTips: "\u5BF9\u5E94\u6280\u80FD\u56FE\u7684\u7279\u6548\u914D\u7F6E\uFF0C\u4ECE
+                0 \u5F00\u59CB\u3002"
+              Type: 1
+              Index: 1
+              VisibleBind: stage#6
+              EnumOptions: []
+          Type: 0
+          Count: 1
+          WaitTime: 0
+          KeepTime: 0
+          Interval: 0
+          calculation:
+            rid: -2
+        - mType: 0
+          Name: Action
+          Uid: Node7
+          Position: {x: 450, y: 840}
+          NodeIndex: 0
+          inputPort:
+          - Name: Action
+            Type: ActionIn
+            acceptedTypes:
+            - RootOut
+            - BranchOutAction
+            uid:
+            - Node0#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: 1
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid:
+            - Node8#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: 2
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid:
+            - Node9#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          outputPort: []
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 6312275959582556160
+          ClassName: OriginalSkillVisual
+          IntValues: 02000000
+          FloatValues: []
+          StringValues:
+          - 
+          - 
+          BoolValues: 
+          CustomInterface:
+            Elements:
+            - Uid: caster
+              Label: "\u65BD\u653E\u8005"
+              ToolTips: "\u6280\u80FD\u7684\u52A8\u4F5C\u548C\u65BD\u6CD5\u7279\u6548\u8DDF\u968F\u6B64\u89D2\u8272"
+              Type: 8
+              Index: 0
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: target
+              Label: "\u8868\u73B0\u76EE\u6807"
+              ToolTips: "\u98DE\u5251\u53D1\u5C04\u65F6\u8BFB\u53D6\u76EE\u6807\u4F4D\u7F6E"
+              Type: 8
+              Index: 1
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: stage
+              Label: "\u539F\u4F5C\u8868\u73B0\u4E8B\u4EF6"
+              ToolTips: "\u5B9E\u9645\u8D44\u6E90\u7531\u539F\u4F5C\u6280\u80FD\u56FE\u5F15\u7528"
+              Type: 7
+              Index: 0
+              VisibleBind: 
+              EnumOptions:
+              - "\u64AD\u653E\u539F\u4F5C\u89D2\u8272\u52A8\u4F5C"
+              - "\u65BD\u6CD5\u7279\u6548"
+              - "\u53F3\u624B\u6B66\u5668"
+              - "\u53D1\u5C04\u98DE\u5251"
+              - "\u6536\u62DB\u6807\u8BB0"
+              - "\u4F4D\u79FB\u4E8B\u4EF6\u6807\u8BB0"
+              - "\u539F\u4F5C\u8F68\u9053\u7279\u6548\u6216\u547D\u4E2D"
+            - Uid: cue
+              Label: "\u539F\u4F5C\u8F68\u9053\u914D\u7F6E\u5E8F\u53F7"
+              ToolTips: "\u5BF9\u5E94\u6280\u80FD\u56FE\u7684\u7279\u6548\u914D\u7F6E\uFF0C\u4ECE
+                0 \u5F00\u59CB\u3002"
+              Type: 1
+              Index: 1
+              VisibleBind: stage#6
+              EnumOptions: []
+          Type: 0
+          Count: 1
+          WaitTime: 0
+          KeepTime: 0
+          Interval: 0
+          calculation:
+            rid: -2
+        - mType: 0
+          Name: Action
+          Uid: Node10
+          Position: {x: 450, y: 1260}
+          NodeIndex: 0
+          inputPort:
+          - Name: Action
+            Type: ActionIn
+            acceptedTypes:
+            - RootOut
+            - BranchOutAction
+            uid:
+            - Node0#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: 1
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid:
+            - Node11#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: 2
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid:
+            - Node12#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          outputPort: []
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 6312275959582556160
+          ClassName: OriginalSkillVisual
+          IntValues: 03000000
+          FloatValues: []
+          StringValues:
+          - 
+          - 
+          BoolValues: 
+          CustomInterface:
+            Elements:
+            - Uid: caster
+              Label: "\u65BD\u653E\u8005"
+              ToolTips: "\u6280\u80FD\u7684\u52A8\u4F5C\u548C\u65BD\u6CD5\u7279\u6548\u8DDF\u968F\u6B64\u89D2\u8272"
+              Type: 8
+              Index: 0
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: target
+              Label: "\u8868\u73B0\u76EE\u6807"
+              ToolTips: "\u98DE\u5251\u53D1\u5C04\u65F6\u8BFB\u53D6\u76EE\u6807\u4F4D\u7F6E"
+              Type: 8
+              Index: 1
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: stage
+              Label: "\u539F\u4F5C\u8868\u73B0\u4E8B\u4EF6"
+              ToolTips: "\u5B9E\u9645\u8D44\u6E90\u7531\u539F\u4F5C\u6280\u80FD\u56FE\u5F15\u7528"
+              Type: 7
+              Index: 0
+              VisibleBind: 
+              EnumOptions:
+              - "\u64AD\u653E\u539F\u4F5C\u89D2\u8272\u52A8\u4F5C"
+              - "\u65BD\u6CD5\u7279\u6548"
+              - "\u53F3\u624B\u6B66\u5668"
+              - "\u53D1\u5C04\u98DE\u5251"
+              - "\u6536\u62DB\u6807\u8BB0"
+              - "\u4F4D\u79FB\u4E8B\u4EF6\u6807\u8BB0"
+              - "\u539F\u4F5C\u8F68\u9053\u7279\u6548\u6216\u547D\u4E2D"
+            - Uid: cue
+              Label: "\u539F\u4F5C\u8F68\u9053\u914D\u7F6E\u5E8F\u53F7"
+              ToolTips: "\u5BF9\u5E94\u6280\u80FD\u56FE\u7684\u7279\u6548\u914D\u7F6E\uFF0C\u4ECE
+                0 \u5F00\u59CB\u3002"
+              Type: 1
+              Index: 1
+              VisibleBind: stage#6
+              EnumOptions: []
+          Type: 0
+          Count: 1
+          WaitTime: 1.12
+          KeepTime: 0
+          Interval: 0
+          calculation:
+            rid: -2
+        - mType: 0
+          Name: Action
+          Uid: Node13
+          Position: {x: 450, y: 1680}
+          NodeIndex: 0
+          inputPort:
+          - Name: Action
+            Type: ActionIn
+            acceptedTypes:
+            - RootOut
+            - BranchOutAction
+            uid:
+            - Node0#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: 1
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid:
+            - Node14#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: 2
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid:
+            - Node15#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          outputPort: []
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 6312275959582556160
+          ClassName: OriginalSkillVisual
+          IntValues: 03000000
+          FloatValues: []
+          StringValues:
+          - 
+          - 
+          BoolValues: 
+          CustomInterface:
+            Elements:
+            - Uid: caster
+              Label: "\u65BD\u653E\u8005"
+              ToolTips: "\u6280\u80FD\u7684\u52A8\u4F5C\u548C\u65BD\u6CD5\u7279\u6548\u8DDF\u968F\u6B64\u89D2\u8272"
+              Type: 8
+              Index: 0
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: target
+              Label: "\u8868\u73B0\u76EE\u6807"
+              ToolTips: "\u98DE\u5251\u53D1\u5C04\u65F6\u8BFB\u53D6\u76EE\u6807\u4F4D\u7F6E"
+              Type: 8
+              Index: 1
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: stage
+              Label: "\u539F\u4F5C\u8868\u73B0\u4E8B\u4EF6"
+              ToolTips: "\u5B9E\u9645\u8D44\u6E90\u7531\u539F\u4F5C\u6280\u80FD\u56FE\u5F15\u7528"
+              Type: 7
+              Index: 0
+              VisibleBind: 
+              EnumOptions:
+              - "\u64AD\u653E\u539F\u4F5C\u89D2\u8272\u52A8\u4F5C"
+              - "\u65BD\u6CD5\u7279\u6548"
+              - "\u53F3\u624B\u6B66\u5668"
+              - "\u53D1\u5C04\u98DE\u5251"
+              - "\u6536\u62DB\u6807\u8BB0"
+              - "\u4F4D\u79FB\u4E8B\u4EF6\u6807\u8BB0"
+              - "\u539F\u4F5C\u8F68\u9053\u7279\u6548\u6216\u547D\u4E2D"
+            - Uid: cue
+              Label: "\u539F\u4F5C\u8F68\u9053\u914D\u7F6E\u5E8F\u53F7"
+              ToolTips: "\u5BF9\u5E94\u6280\u80FD\u56FE\u7684\u7279\u6548\u914D\u7F6E\uFF0C\u4ECE
+                0 \u5F00\u59CB\u3002"
+              Type: 1
+              Index: 1
+              VisibleBind: stage#6
+              EnumOptions: []
+          Type: 0
+          Count: 1
+          WaitTime: 1.251
+          KeepTime: 0
+          Interval: 0
+          calculation:
+            rid: -2
+        - mType: 0
+          Name: Action
+          Uid: Node16
+          Position: {x: 450, y: 2100}
+          NodeIndex: 0
+          inputPort:
+          - Name: Action
+            Type: ActionIn
+            acceptedTypes:
+            - RootOut
+            - BranchOutAction
+            uid:
+            - Node0#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: 1
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid:
+            - Node17#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: 2
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid:
+            - Node18#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          outputPort: []
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 6312275959582556160
+          ClassName: OriginalSkillVisual
+          IntValues: 03000000
+          FloatValues: []
+          StringValues:
+          - 
+          - 
+          BoolValues: 
+          CustomInterface:
+            Elements:
+            - Uid: caster
+              Label: "\u65BD\u653E\u8005"
+              ToolTips: "\u6280\u80FD\u7684\u52A8\u4F5C\u548C\u65BD\u6CD5\u7279\u6548\u8DDF\u968F\u6B64\u89D2\u8272"
+              Type: 8
+              Index: 0
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: target
+              Label: "\u8868\u73B0\u76EE\u6807"
+              ToolTips: "\u98DE\u5251\u53D1\u5C04\u65F6\u8BFB\u53D6\u76EE\u6807\u4F4D\u7F6E"
+              Type: 8
+              Index: 1
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: stage
+              Label: "\u539F\u4F5C\u8868\u73B0\u4E8B\u4EF6"
+              ToolTips: "\u5B9E\u9645\u8D44\u6E90\u7531\u539F\u4F5C\u6280\u80FD\u56FE\u5F15\u7528"
+              Type: 7
+              Index: 0
+              VisibleBind: 
+              EnumOptions:
+              - "\u64AD\u653E\u539F\u4F5C\u89D2\u8272\u52A8\u4F5C"
+              - "\u65BD\u6CD5\u7279\u6548"
+              - "\u53F3\u624B\u6B66\u5668"
+              - "\u53D1\u5C04\u98DE\u5251"
+              - "\u6536\u62DB\u6807\u8BB0"
+              - "\u4F4D\u79FB\u4E8B\u4EF6\u6807\u8BB0"
+              - "\u539F\u4F5C\u8F68\u9053\u7279\u6548\u6216\u547D\u4E2D"
+            - Uid: cue
+              Label: "\u539F\u4F5C\u8F68\u9053\u914D\u7F6E\u5E8F\u53F7"
+              ToolTips: "\u5BF9\u5E94\u6280\u80FD\u56FE\u7684\u7279\u6548\u914D\u7F6E\uFF0C\u4ECE
+                0 \u5F00\u59CB\u3002"
+              Type: 1
+              Index: 1
+              VisibleBind: stage#6
+              EnumOptions: []
+          Type: 0
+          Count: 1
+          WaitTime: 1.443
+          KeepTime: 0
+          Interval: 0
+          calculation:
+            rid: -2
+        - mType: 0
+          Name: Action
+          Uid: Node19
+          Position: {x: 450, y: 2520}
+          NodeIndex: 0
+          inputPort:
+          - Name: Action
+            Type: ActionIn
+            acceptedTypes:
+            - RootOut
+            - BranchOutAction
+            uid:
+            - Node0#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: 1
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid:
+            - Node20#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: 2
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid:
+            - Node21#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          outputPort: []
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 6312275959582556160
+          ClassName: OriginalSkillVisual
+          IntValues: 04000000
+          FloatValues: []
+          StringValues:
+          - 
+          - 
+          BoolValues: 
+          CustomInterface:
+            Elements:
+            - Uid: caster
+              Label: "\u65BD\u653E\u8005"
+              ToolTips: "\u6280\u80FD\u7684\u52A8\u4F5C\u548C\u65BD\u6CD5\u7279\u6548\u8DDF\u968F\u6B64\u89D2\u8272"
+              Type: 8
+              Index: 0
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: target
+              Label: "\u8868\u73B0\u76EE\u6807"
+              ToolTips: "\u98DE\u5251\u53D1\u5C04\u65F6\u8BFB\u53D6\u76EE\u6807\u4F4D\u7F6E"
+              Type: 8
+              Index: 1
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: stage
+              Label: "\u539F\u4F5C\u8868\u73B0\u4E8B\u4EF6"
+              ToolTips: "\u5B9E\u9645\u8D44\u6E90\u7531\u539F\u4F5C\u6280\u80FD\u56FE\u5F15\u7528"
+              Type: 7
+              Index: 0
+              VisibleBind: 
+              EnumOptions:
+              - "\u64AD\u653E\u539F\u4F5C\u89D2\u8272\u52A8\u4F5C"
+              - "\u65BD\u6CD5\u7279\u6548"
+              - "\u53F3\u624B\u6B66\u5668"
+              - "\u53D1\u5C04\u98DE\u5251"
+              - "\u6536\u62DB\u6807\u8BB0"
+              - "\u4F4D\u79FB\u4E8B\u4EF6\u6807\u8BB0"
+              - "\u539F\u4F5C\u8F68\u9053\u7279\u6548\u6216\u547D\u4E2D"
+            - Uid: cue
+              Label: "\u539F\u4F5C\u8F68\u9053\u914D\u7F6E\u5E8F\u53F7"
+              ToolTips: "\u5BF9\u5E94\u6280\u80FD\u56FE\u7684\u7279\u6548\u914D\u7F6E\uFF0C\u4ECE
+                0 \u5F00\u59CB\u3002"
+              Type: 1
+              Index: 1
+              VisibleBind: stage#6
+              EnumOptions: []
+          Type: 0
+          Count: 1
+          WaitTime: 1.501
+          KeepTime: 0
+          Interval: 0
+          calculation:
+            rid: -2
+        - mType: 0
+          Name: Action
+          Uid: Node22
+          Position: {x: 450, y: 2940}
+          NodeIndex: 0
+          inputPort:
+          - Name: Action
+            Type: ActionIn
+            acceptedTypes:
+            - RootOut
+            - BranchOutAction
+            uid:
+            - Node0#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: 1
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid:
+            - Node23#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: 2
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid:
+            - Node24#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          outputPort: []
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 6312275959612178432
+          ClassName: OriginalSkillVisual
+          IntValues: 05000000
+          FloatValues: []
+          StringValues:
+          - 
+          - 
+          BoolValues: 
+          CustomInterface:
+            Elements:
+            - Uid: caster
+              Label: "\u65BD\u653E\u8005"
+              ToolTips: "\u6280\u80FD\u7684\u52A8\u4F5C\u548C\u65BD\u6CD5\u7279\u6548\u8DDF\u968F\u6B64\u89D2\u8272"
+              Type: 8
+              Index: 0
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: target
+              Label: "\u8868\u73B0\u76EE\u6807"
+              ToolTips: "\u98DE\u5251\u53D1\u5C04\u65F6\u8BFB\u53D6\u76EE\u6807\u4F4D\u7F6E"
+              Type: 8
+              Index: 1
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: stage
+              Label: "\u539F\u4F5C\u8868\u73B0\u4E8B\u4EF6"
+              ToolTips: "\u5B9E\u9645\u8D44\u6E90\u7531\u539F\u4F5C\u6280\u80FD\u56FE\u5F15\u7528"
+              Type: 7
+              Index: 0
+              VisibleBind: 
+              EnumOptions:
+              - "\u64AD\u653E\u539F\u4F5C\u89D2\u8272\u52A8\u4F5C"
+              - "\u65BD\u6CD5\u7279\u6548"
+              - "\u53F3\u624B\u6B66\u5668"
+              - "\u53D1\u5C04\u98DE\u5251"
+              - "\u6536\u62DB\u6807\u8BB0"
+              - "\u4F4D\u79FB\u4E8B\u4EF6\u6807\u8BB0"
+              - "\u539F\u4F5C\u8F68\u9053\u7279\u6548\u6216\u547D\u4E2D"
+            - Uid: cue
+              Label: "\u539F\u4F5C\u8F68\u9053\u914D\u7F6E\u5E8F\u53F7"
+              ToolTips: "\u5BF9\u5E94\u6280\u80FD\u56FE\u7684\u7279\u6548\u914D\u7F6E\uFF0C\u4ECE
+                0 \u5F00\u59CB\u3002"
+              Type: 1
+              Index: 1
+              VisibleBind: stage#6
+              EnumOptions: []
+          Type: 0
+          Count: 1
+          WaitTime: 1.5
+          KeepTime: 0
+          Interval: 0
+          calculation:
+            rid: -2
+        Triggers:
+        - mType: 0
+          Name: Trigger
+          Uid: Node25
+          Position: {x: -400, y: 0}
+          NodeIndex: 0
+          inputPort:
+          - Name: Conditions To Trigger
+            Type: TriggerIn
+            acceptedTypes:
+            - ConditionOut
+            uid:
+            - Node26#0
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          - Name: Conditions To Reset
+            Type: TriggerIn
+            acceptedTypes:
+            - ConditionOut
+            uid: []
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 0
+          outputPort:
+          - Name: Trigger
+            Type: TriggerOut
+            acceptedTypes:
+            - RootIn
+            uid:
+            - Node0#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 1000
+          TriggerConditions: []
+          ResetConditions: []
+          AutoReset: 1
+        ConditionGroups: []
+        Handlers:
+        - mType: 0
+          Name: Condition
+          Uid: Node26
+          Position: {x: -697.3333, y: -2.666668}
+          NodeIndex: 0
+          inputPort:
+          - Name: 0
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid:
+            - Node27#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: 1
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid:
+            - Node28#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          - Name: 2
+            Type: CustomVariable
+            acceptedTypes:
+            - Variable
+            uid:
+            - Node29#0
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 1
+          outputPort:
+          - Name: Condition
+            Type: ConditionOut
+            acceptedTypes:
+            - TriggerIn
+            - ConditionIn
+            - BranchIn
+            uid:
+            - Node25#0
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 1000
+          ClassName: AngleDifference
+          IntValues: 0000000000000000
+          FloatValues: []
+          StringValues: []
+          BoolValues: 01
+          CustomInterface:
+            Elements:
+            - Uid: entityA
+              Label: EntityA
+              ToolTips: EntityA for comparison.
+              Type: 8
+              Index: 0
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: entityB
+              Label: EntityB
+              ToolTips: EntityB for comparison.
+              Type: 8
+              Index: 1
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: angleType
+              Label: Angle Type
+              ToolTips: Type of the angle for comparison.
+              Type: 7
+              Index: 0
+              VisibleBind: 
+              EnumOptions:
+              - fwdA bwdB
+              - fwdA fwdB
+              - fwdA Delta
+              - bwdA Delta
+            - Uid: Element3
+              Label: Compare forward direction of EntityA
+              ToolTips: 
+              Type: 5
+              Index: 0
+              VisibleBind: angleType#3!
+              EnumOptions: []
+            - Uid: Element8
+              Label: Compare backward direction of EntityA
+              ToolTips: 
+              Type: 5
+              Index: 1
+              VisibleBind: angleType#3
+              EnumOptions: []
+            - Uid: Element4
+              Label: with backward direction of EntityB.
+              ToolTips: 
+              Type: 5
+              Index: 2
+              VisibleBind: angleType#0
+              EnumOptions: []
+            - Uid: Element5
+              Label: with forward direction of EntityB.
+              ToolTips: 
+              Type: 5
+              Index: 3
+              VisibleBind: angleType#1
+              EnumOptions: []
+            - Uid: Element6
+              Label: with position vector of (posB-posA).
+              ToolTips: 
+              Type: 5
+              Index: 4
+              VisibleBind: angleType#2
+              EnumOptions: []
+            - Uid: Element7
+              Label: with position vector of (posB-posA).
+              ToolTips: 
+              Type: 5
+              Index: 5
+              VisibleBind: angleType#3
+              EnumOptions: []
+            - Uid: logic
+              Label: Comparison Method
+              ToolTips: Comparison logic.
+              Type: 7
+              Index: 1
+              VisibleBind: 
+              EnumOptions:
+              - Greater
+              - Equal
+              - Less
+            - Uid: angle
+              Label: Angle
+              ToolTips: Angle for comparison.
+              Type: 4
+              Index: 2
+              VisibleBind: 
+              EnumOptions: []
+            - Uid: ignoreY
+              Label: Ignore Height
+              ToolTips: Ignore Y axis difference.
+              Type: 0
+              Index: 0
+              VisibleBind: 
+              EnumOptions: []
+          ClassType: 0
+          StateType: 0
+          xTimeCount: 1
+          HandlerIndex: 0
+        Maths: []
+        Variables:
+        - mType: 0
+          Name: Variable
+          Uid: Node29
+          Position: {x: -995, y: 260}
+          NodeIndex: 0
+          inputPort:
+          - Name: Entity
+            Type: EntityIn
+            acceptedTypes:
+            - EntityOut
+            uid: []
+            connectedNodes: []
+            allowMutipleConnection: 0
+            createByDefault: 0
+          outputPort:
+          - Name: Variable
+            Type: Variable
+            acceptedTypes:
+            - Variable
+            - MathIn
+            - CustomVariable
+            - BranchInValue
+            uid:
+            - Node26#2
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 1000
+          Type: 0
+          Constant: 0
+          AttributeKey: Attack
+          VariableUid: 
+          Max: 1
+        Entities:
+        - mType: 0
+          Name: Entity (Player)
+          Uid: Node2
+          Position: {x: 300.66666, y: 0}
+          NodeIndex: 0
+          inputPort: []
+          outputPort:
+          - Name: Entity
+            Type: EntityOut
+            acceptedTypes:
+            - EntityIn
+            - BranchInEntity
+            uid:
+            - Node1#1
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 6312275959582556160
+          Type: 1
+          EntityUid: 
+        - mType: 0
+          Name: Entity (Player)
+          Uid: Node3
+          Position: {x: 300.66666, y: 146}
+          NodeIndex: 0
+          inputPort: []
+          outputPort:
+          - Name: Entity
+            Type: EntityOut
+            acceptedTypes:
+            - EntityIn
+            - BranchInEntity
+            uid:
+            - Node1#2
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 6312275959582556160
+          Type: 2
+          EntityUid: 
+        - mType: 0
+          Name: Entity (Player)
+          Uid: Node5
+          Position: {x: 205, y: 420}
+          NodeIndex: 0
+          inputPort: []
+          outputPort:
+          - Name: Entity
+            Type: EntityOut
+            acceptedTypes:
+            - EntityIn
+            - BranchInEntity
+            uid:
+            - Node4#1
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 6312275959582556160
+          Type: 1
+          EntityUid: 
+        - mType: 0
+          Name: Entity (Player)
+          Uid: Node6
+          Position: {x: 205, y: 550}
+          NodeIndex: 0
+          inputPort: []
+          outputPort:
+          - Name: Entity
+            Type: EntityOut
+            acceptedTypes:
+            - EntityIn
+            - BranchInEntity
+            uid:
+            - Node4#2
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 6312275959582556160
+          Type: 2
+          EntityUid: 
+        - mType: 0
+          Name: Entity (Player)
+          Uid: Node8
+          Position: {x: 205, y: 840}
+          NodeIndex: 0
+          inputPort: []
+          outputPort:
+          - Name: Entity
+            Type: EntityOut
+            acceptedTypes:
+            - EntityIn
+            - BranchInEntity
+            uid:
+            - Node7#1
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 6312275959582556160
+          Type: 1
+          EntityUid: 
+        - mType: 0
+          Name: Entity (Player)
+          Uid: Node9
+          Position: {x: 205, y: 970}
+          NodeIndex: 0
+          inputPort: []
+          outputPort:
+          - Name: Entity
+            Type: EntityOut
+            acceptedTypes:
+            - EntityIn
+            - BranchInEntity
+            uid:
+            - Node7#2
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 6312275959582556160
+          Type: 2
+          EntityUid: 
+        - mType: 0
+          Name: Entity (Player)
+          Uid: Node11
+          Position: {x: 205, y: 1260}
+          NodeIndex: 0
+          inputPort: []
+          outputPort:
+          - Name: Entity
+            Type: EntityOut
+            acceptedTypes:
+            - EntityIn
+            - BranchInEntity
+            uid:
+            - Node10#1
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 6312275959582556160
+          Type: 1
+          EntityUid: 
+        - mType: 0
+          Name: Entity (Player)
+          Uid: Node12
+          Position: {x: 205, y: 1390}
+          NodeIndex: 0
+          inputPort: []
+          outputPort:
+          - Name: Entity
+            Type: EntityOut
+            acceptedTypes:
+            - EntityIn
+            - BranchInEntity
+            uid:
+            - Node10#2
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 6312275959582556160
+          Type: 2
+          EntityUid: 
+        - mType: 0
+          Name: Entity (Player)
+          Uid: Node14
+          Position: {x: 205, y: 1680}
+          NodeIndex: 0
+          inputPort: []
+          outputPort:
+          - Name: Entity
+            Type: EntityOut
+            acceptedTypes:
+            - EntityIn
+            - BranchInEntity
+            uid:
+            - Node13#1
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 6312275959582556160
+          Type: 1
+          EntityUid: 
+        - mType: 0
+          Name: Entity (Player)
+          Uid: Node15
+          Position: {x: 205, y: 1810}
+          NodeIndex: 0
+          inputPort: []
+          outputPort:
+          - Name: Entity
+            Type: EntityOut
+            acceptedTypes:
+            - EntityIn
+            - BranchInEntity
+            uid:
+            - Node13#2
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 6312275959582556160
+          Type: 2
+          EntityUid: 
+        - mType: 0
+          Name: Entity (Player)
+          Uid: Node17
+          Position: {x: 205, y: 2100}
+          NodeIndex: 0
+          inputPort: []
+          outputPort:
+          - Name: Entity
+            Type: EntityOut
+            acceptedTypes:
+            - EntityIn
+            - BranchInEntity
+            uid:
+            - Node16#1
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 6312275959582556160
+          Type: 1
+          EntityUid: 
+        - mType: 0
+          Name: Entity (Player)
+          Uid: Node18
+          Position: {x: 205, y: 2230}
+          NodeIndex: 0
+          inputPort: []
+          outputPort:
+          - Name: Entity
+            Type: EntityOut
+            acceptedTypes:
+            - EntityIn
+            - BranchInEntity
+            uid:
+            - Node16#2
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 6312275959582556160
+          Type: 2
+          EntityUid: 
+        - mType: 0
+          Name: Entity (Player)
+          Uid: Node20
+          Position: {x: 205, y: 2520}
+          NodeIndex: 0
+          inputPort: []
+          outputPort:
+          - Name: Entity
+            Type: EntityOut
+            acceptedTypes:
+            - EntityIn
+            - BranchInEntity
+            uid:
+            - Node19#1
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 6312275959582556160
+          Type: 1
+          EntityUid: 
+        - mType: 0
+          Name: Entity (Player)
+          Uid: Node21
+          Position: {x: 205, y: 2650}
+          NodeIndex: 0
+          inputPort: []
+          outputPort:
+          - Name: Entity
+            Type: EntityOut
+            acceptedTypes:
+            - EntityIn
+            - BranchInEntity
+            uid:
+            - Node19#2
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 6312275959582556160
+          Type: 2
+          EntityUid: 
+        - mType: 0
+          Name: Entity (Player)
+          Uid: Node23
+          Position: {x: 205, y: 2940}
+          NodeIndex: 0
+          inputPort: []
+          outputPort:
+          - Name: Entity
+            Type: EntityOut
+            acceptedTypes:
+            - EntityIn
+            - BranchInEntity
+            uid:
+            - Node22#1
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 6312275959612178432
+          Type: 1
+          EntityUid: 
+        - mType: 0
+          Name: Entity (Player)
+          Uid: Node24
+          Position: {x: 205, y: 3070}
+          NodeIndex: 0
+          inputPort: []
+          outputPort:
+          - Name: Entity
+            Type: EntityOut
+            acceptedTypes:
+            - EntityIn
+            - BranchInEntity
+            uid:
+            - Node22#2
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 6312275959612178432
+          Type: 2
+          EntityUid: 
+        - mType: 0
+          Name: Entity (Player)
+          Uid: Node27
+          Position: {x: -995, y: 0}
+          NodeIndex: 0
+          inputPort: []
+          outputPort:
+          - Name: Entity
+            Type: EntityOut
+            acceptedTypes:
+            - EntityIn
+            - BranchInEntity
+            uid:
+            - Node26#0
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 1000
+          Type: 0
+          EntityUid: 
+        - mType: 0
+          Name: Entity (Player)
+          Uid: Node28
+          Position: {x: -995, y: 130}
+          NodeIndex: 0
+          inputPort: []
+          outputPort:
+          - Name: Entity
+            Type: EntityOut
+            acceptedTypes:
+            - EntityIn
+            - BranchInEntity
+            uid:
+            - Node26#1
+            connectedNodes: []
+            allowMutipleConnection: 1
+            createByDefault: 1
+          minimized: 0
+          InstanceCache: 0
+          mRoot:
+            rid: 1000
+          Type: 1
+          EntityUid: 
+        Notes: []
+        Groups: []
+        Branchs: []
+        ActiveTriggers: []
     - rid: 6312275959582556160
       type: {class: Root, ns: SoftKitty, asm: Assembly-CSharp}
       data:

@@ -91,14 +91,13 @@ namespace SoftKitty
             var graph = instance.mGraph as OriginalSkillGraph;
             var caster = SkillPlayback.FindActor(SkillPlayback.ReadEntity(this, 1, state));
             var target = SkillPlayback.FindActor(SkillPlayback.ReadEntity(this, 2, state));
-            if (!graph || !caster || !target) return;
+            if (!graph || !caster || (!target && IntValues[0] != 0)) return;
             switch (IntValues[0])
             {
                 case 0:
-                    var animator = caster.GetComponentInChildren<Animator>();
-                    if (animator && graph.castMotion && animator.HasState(0, Animator.StringToHash("Base Layer." + graph.castMotion.name)))
-                        animator.CrossFadeInFixedTime(Animator.StringToHash("Base Layer." + graph.castMotion.name),
-                            1f / Mathf.Max(1f, graph.castMotion.frameRate), 0, 0);
+                    var binding = SkillMotion.For(this, graph);
+                    if (!binding.Play(caster.GetComponentInChildren<Animator>(), state, out var error) && error != null)
+                        Debug.LogWarning(graph.name + " · " + Uid + " · " + error, caster);
                     break;
                 case 1:
                     var castRoot = ActorRoot(caster.transform);

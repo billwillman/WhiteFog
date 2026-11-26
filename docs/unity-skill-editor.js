@@ -13,7 +13,12 @@
   const stageNames = action.CustomInterface.Elements.find(item => item.Uid === 'stage')?.EnumOptions;
   const name = stageNames?.[stage] || (stage === 5 ? '位移事件标记' : action.ClassName);
   switch (stage) {
-   case 0: return {name, fields:[['角色动作', asset.motion]]};
+   case 0: {
+    const motion = asset.motions?.find(item => item.uid === action.Uid);
+    if (!motion) return {name, fields:[['角色动作', asset.motion]]};
+    if (motion.mode === 'AnimationClip') return {name, fields:[['Animation Clip',motion.clipName],['资源路径',motion.clip]]};
+    return {name, fields:[['Animator State',motion.state], ...(motion.clip ? [['原作绑定片段',motion.clip]] : [])]};
+   }
    case 1: return {name, fields:[['施法特效', asset.cast]]};
    case 2: return {name, fields:[['武器特效', asset.weapon], ['挂点', graph.weaponBone], ['显示时长', seconds(graph.weaponSeconds)]]};
    case 3: return {name, fields:[['飞行道具', asset.projectile], ['拖尾', asset.trail], ['命中特效', asset.impact],
