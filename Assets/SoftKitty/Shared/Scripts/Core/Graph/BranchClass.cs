@@ -29,11 +29,11 @@ namespace SoftKitty
         {
             if (AllConditionMatch(_runtime))
             {
-                foreach (var obj in outputPort[0].connectedNodes) obj.Execute(_runtime);
+                foreach (var obj in outputPort[0].connectedNodes) Action.ExecuteChecked(obj, _runtime);
             }
             else
             {
-                foreach (var obj in outputPort[1].connectedNodes) obj.Execute(_runtime);
+                foreach (var obj in outputPort[1].connectedNodes) Action.ExecuteChecked(obj, _runtime);
             }
         }
         public object ValueTrue(GraphRuntimeState _runtime)

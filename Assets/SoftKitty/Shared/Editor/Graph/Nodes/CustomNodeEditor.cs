@@ -80,7 +80,8 @@ namespace SoftKitty
                     _newPort.portColor = portColors[_data.inputPort[i].Type];
                     input.Add(_newPort);
                 }
-                input[i].style.display = DisplayStyle.None;
+                input[i].style.display = _data is Action action && action.ExecutionConditionPort == i
+                    ? DisplayStyle.Flex : DisplayStyle.None;
                 if (!inputContainer.Contains(input[i])) inputContainer.Add(input[i]);
             }
             if (extraSettings != null && extensionContainer.Contains(extraSettings))

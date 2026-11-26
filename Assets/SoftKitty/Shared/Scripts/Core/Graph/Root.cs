@@ -150,6 +150,7 @@ namespace SoftKitty
         /// </summary>
         [SerializeReference, HideInInspector]
         public List<Trigger> ActiveTriggers = new List<Trigger>();
+        private bool usesActionConditions;
 
 
 
@@ -467,8 +468,10 @@ namespace SoftKitty
             foreach (var obj in Handlers)
             {
                 obj.HandlerIndex = _handlerIndex;
+                if (NodeDic.TryGetValue(obj.Uid, out var handler)) ((Handler)handler).HandlerIndex = _handlerIndex;
                 _handlerIndex++;
             }
+            usesActionConditions = Actions.Exists(a => a.ExecutionConditionPort >= 0 && a.inputPort[a.ExecutionConditionPort].uid.Count > 0);
 
             foreach (var obj in ConditionGroups)
             {
@@ -551,6 +554,9 @@ namespace SoftKitty
         /// <param name="_hash"></param>
         public virtual void RunActions(GraphInstance _instance, GraphRuntimeState _runtime)
         {
+            // Later casts on this emitter reset its handler state while earlier timelines can still be waiting.
+            if (usesActionConditions)
+                _runtime.HandlerStates = (HandlerRuntimeState[])_runtime.HandlerStates.Clone();
             foreach (var obj in outputPort[0].connectedNodes)
             {
                 if (obj != null)
@@ -583,7 +589,7 @@ namespace SoftKitty
             {
                 if (obj != null)
                 {
-                    obj.Execute(_runtime);
+                    Action.ExecuteChecked(obj, _runtime);
                 }
             }
         }
@@ -594,7 +600,7 @@ namespace SoftKitty
         /// <param name="_hash"></param>
         public virtual void ExecuteAction(NodeBase _node, GraphRuntimeState _runtime)
         {
-            if (_node != null) _node.Execute(_runtime);
+            Action.ExecuteChecked(_node, _runtime);
         }
 
         /// <summary>

@@ -16,7 +16,8 @@ namespace SoftKitty
         private string filter = "";
         private bool showLibrary;
         private bool showConditions;
-        private string conditionId;
+        private static readonly string[] EntityRoleLabels = { "施法者（自己）", "本次目标", "按 UID 指定实体", "高级：全局玩家", "高级：技能执行实例" };
+        private static readonly int[] EntityRoleValues = { (int)EntityType.Dealer, (int)EntityType.Target, (int)EntityType.Specified, (int)EntityType.Player, (int)EntityType.Instance };
         [SerializeField] private CombatDamage executor;
         private Editor componentEditor;
         private bool showExecutor;
@@ -171,8 +172,9 @@ namespace SoftKitty
                         bool opponent = EditorGUILayout.Popup("默认施放方",
                             graph.previewAsOpponent ? 1 : 0, new[] { "主角", "怪物" }) == 1;
                         if (opponent != graph.previewAsOpponent) Change(() => graph.previewAsOpponent = opponent);
-                        showConditions = EditorGUILayout.Foldout(showConditions, "触发配置   " + root.Triggers.Count + " 个触发器 · " + root.Handlers.Count + " 个条件 · " + root.Branchs.Count + " 个分支", true);
-                        if (showConditions) DrawConditions(root);
+                        var entries = root.Triggers.Where(t => root.inputPort[0].uid.Contains(t.Uid + "#0")).ToList();
+                        showConditions = EditorGUILayout.Foldout(showConditions, "技能入口条件   " + entries.Sum(t => t.inputPort[0].uid.Count) + " 项", true);
+                        if (showConditions) DrawEntryConditions(root, entries);
                         DrawTimeline(root);
                         var action = root.Actions.Find(x => x.Uid == selection);
                         if (action != null) DrawAction(action);
@@ -331,31 +333,122 @@ namespace SoftKitty
             var trigger = new Trigger(root) { Position = new Vector2(-400, root.Triggers.Count * 300) };
             root.Triggers.Add(trigger);
             Wire(trigger, root, 0);
-            var handler = new Handler(root) { ClassName = key, Position = trigger.Position + Vector2.left * 350 };
+            return AddHandler(root, trigger, key);
+        }
+
+        private static Handler AddHandler(Root root, NodeBase owner, string key, int port = 0)
+        {
+            var handler = new Handler(root) { ClassName = key, Position = owner.Position + new Vector2(-350, owner.inputPort[port].uid.Count * 260) };
             handler.ResetInputPortSetting();
             root.Handlers.Add(handler);
-            Wire(handler, trigger, 0);
+            Wire(handler, owner, port);
             ConfigureInputs(root, handler, 0);
             return handler;
         }
 
-        private void DrawConditions(Root root)
+        internal static Handler AddActionCondition(Root root, Action action, string key) =>
+            AddHandler(root, action, key, action.EnsureExecutionConditionPort());
+
+        private void ShowConditionMenu(Func<string, Handler> add)
         {
-            if (GUILayout.Button("添加必须满足的条件"))
+            var menu = new GenericMenu();
+            void Relation(string label, TagCompareHandler.logics comparison)
             {
-                var menu = new GenericMenu();
-                foreach (var file in Directory.GetFiles(Application.dataPath + "/SoftKitty/Shared/Scripts/CustomClass/Handler", "*Handler_interface.txt").OrderBy(x => x))
+                menu.AddItem(new GUIContent("目标阵营/" + label), false, () => Change(() =>
                 {
-                    string key = Path.GetFileName(file).Replace("Handler_interface.txt", "");
-                    menu.AddItem(new GUIContent(GraphEditorText.Localize(key)), false, () => Change(() => conditionId = AddCondition(root, key).Uid));
-                }
-                menu.ShowAsContext();
+                    var h = add("TagCompare");
+                    h.IntValues[1] = (int)comparison;
+                }));
             }
-            if (root.Handlers.Count == 0) return;
-            int idx = Mathf.Max(0, root.Handlers.FindIndex(x => x.Uid == conditionId));
-            idx = EditorGUILayout.Popup("选择条件", idx, root.Handlers.Select(h => GraphEditorText.Localize(h.ClassName) + " · " + h.Uid).ToArray());
-            conditionId = root.Handlers[idx].Uid;
-            DrawFields(root.Handlers[idx], 0);
+            Relation("友方 · 与施法者同阵营（比较标签）", TagCompareHandler.logics.Same);
+            Relation("与施法者异阵营（比较标签）", TagCompareHandler.logics.Different);
+            foreach (var file in Directory.GetFiles(Application.dataPath + "/SoftKitty/Shared/Scripts/CustomClass/Handler", "*Handler_interface.txt").OrderBy(x => x))
+            {
+                string key = Path.GetFileName(file).Replace("Handler_interface.txt", "");
+                menu.AddItem(new GUIContent(GraphEditorText.Localize(key)), false, () => Change(() => add(key)));
+            }
+            menu.ShowAsContext();
+        }
+
+        private void DrawEntryConditions(Root root, List<Trigger> triggers)
+        {
+            if (GUILayout.Button("添加技能入口条件")) ShowConditionMenu(key => AddCondition(root, key));
+            foreach (var trigger in triggers) DrawConditionLinks(root, trigger, 0);
+        }
+
+        private void DrawActionConditions(Action action)
+        {
+            var root = graph.RootSet;
+            int port = action.ExecutionConditionPort;
+            int count = port >= 0 ? action.inputPort[port].uid.Count : 0;
+            EditorGUILayout.LabelField("动作前置条件 · " + count + " 项", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("每次执行前检查；全部满足才执行这一次。", EditorStyles.wordWrappedMiniLabel);
+            if (GUILayout.Button("添加此动作的前置条件")) ShowConditionMenu(key => AddActionCondition(root, action, key));
+            if (port >= 0) DrawConditionLinks(root, action, port);
+        }
+
+        private void DrawConditionLinks(Root root, NodeBase owner, int port)
+        {
+            foreach (var link in owner.inputPort[port].uid.ToArray())
+            {
+                var condition = (Condition)root.Handlers.Find(h => link == h.Uid + "#0")
+                    ?? root.ConditionGroups.Find(g => link == g.Uid + "#0");
+                var handler = condition as Handler;
+                using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
+                {
+                    using (new EditorGUILayout.HorizontalScope())
+                    {
+                        string name = handler != null ? GraphEditorText.Localize(handler.ClassName)
+                            : condition is ConditionGroup group ? "条件组 · " + GraphEditorText.Localize(group.Type.ToString()) : "缺少条件节点";
+                        EditorGUILayout.LabelField(name + " · " + (condition?.Uid ?? link), EditorStyles.boldLabel);
+                        if (GUILayout.Button("删除此条件", GUILayout.Width(95)))
+                        {
+                            Change(() => RemoveConditionLink(root, owner, port, link));
+                            return;
+                        }
+                    }
+                    if (condition != null && condition.outputPort[0].uid.Count > 1)
+                        EditorGUILayout.HelpBox("此条件被多处引用。改参数会影响所有引用，删除只断开此处。", MessageType.Info);
+                    if (handler != null)
+                    {
+                        if (handler.ClassName == "TagCompare")
+                            EditorGUILayout.HelpBox("两名实体须在相同标签序号填写阵营值。同值表示同阵营，异值表示不同阵营。", MessageType.None);
+                        DrawFields(handler, 0);
+                    }
+                    else if (condition != null && GUILayout.Button("打开节点图编辑条件组")) MasterGraphWindow.OpenWindow(graph);
+                }
+            }
+        }
+
+        internal static void RemoveConditionLink(Root root, NodeBase owner, int port, string link)
+        {
+            if (!owner.inputPort[port].uid.Remove(link)) return;
+            var handler = root.Handlers.Find(h => link == h.Uid + "#0");
+            Condition condition = (Condition)handler ?? root.ConditionGroups.Find(g => link == g.Uid + "#0");
+            if (condition != null)
+            {
+                condition.outputPort[0].uid.Remove(owner.Uid + "#" + port);
+                // Complex groups remain available on the canvas when their last use is disconnected.
+                if (handler != null && handler.outputPort[0].uid.Count == 0)
+                {
+                    var inputs = handler.inputPort.SelectMany(p => p.uid).ToArray();
+                    DisconnectNode(root, handler);
+                    root.Handlers.Remove(handler);
+                    foreach (var source in inputs)
+                    {
+                        NodeBase leaf = (NodeBase)root.Entities.Find(e => source == e.Uid + "#0") ?? root.Variables.Find(v => source == v.Uid + "#0");
+                        if (leaf == null || leaf.outputPort.Any(p => p.uid.Count > 0) || leaf.inputPort.Any(p => p.uid.Count > 0)) continue;
+                        DisconnectNode(root, leaf);
+                        if (leaf is EntityClass e) root.Entities.Remove(e);
+                        else root.Variables.Remove((VariableClass)leaf);
+                    }
+                }
+            }
+            if (owner is Trigger trigger && trigger.inputPort.All(p => p.uid.Count == 0))
+            {
+                DisconnectNode(root, trigger);
+                root.Triggers.Remove(trigger);
+            }
         }
 
         private static void ConfigureInputs(Root root, CustomNode action, int offset)
@@ -371,7 +464,7 @@ namespace SoftKitty
                     case NodeInterfaceElementType.Enum: Fill(action.IntValues, i, 0); break;
                     case NodeInterfaceElementType.Bool_Variable: Fill(action.BoolValues, i, false); break;
                     case NodeInterfaceElementType.Input_Entity:
-                        var entity = new EntityClass(root) { Type = EntityType.Target, Position = action.Position + new Vector2(-245, i * 130) };
+                        var entity = new EntityClass(root) { Type = field.Uid == "entityA" ? EntityType.Dealer : EntityType.Target, Position = action.Position + new Vector2(-245, i * 130) };
                         root.Entities.Add(entity);
                         Wire(entity, action, i + offset);
                         break;
@@ -403,6 +496,7 @@ namespace SoftKitty
         {
             EditorGUILayout.Space();
             EditorGUILayout.LabelField(ActionName(action) + " · " + action.Uid, EditorStyles.boldLabel);
+            DrawActionConditions(action);
             Edit("开始时间（秒）", action.WaitTime, x => action.WaitTime = x);
             var mode = (ActionType)EditorGUILayout.Popup("执行方式", (int)action.Type, Modes);
             if (mode != action.Type) Change(() => action.Type = mode);
@@ -430,15 +524,23 @@ namespace SoftKitty
 
         internal static void RemoveAction(Root root, Action action)
         {
+            int port = action.ExecutionConditionPort;
+            if (port >= 0)
+                foreach (var link in action.inputPort[port].uid.ToArray()) RemoveConditionLink(root, action, port, link);
+            DisconnectNode(root, action);
+            root.Actions.Remove(action);
+        }
+
+        private static void DisconnectNode(Root root, NodeBase removed)
+        {
             IEnumerable<NodeBase> nodes = new NodeBase[] { root }.Concat(root.Actions).Concat(root.Entities)
                 .Concat(root.Variables).Concat(root.Maths).Concat(root.Triggers).Concat(root.Branchs)
                 .Concat(root.ConditionGroups).Concat(root.Handlers);
-            string prefix = action.Uid + "#";
+            string prefix = removed.Uid + "#";
             foreach (var n in nodes)
                 foreach (var port in n.inputPort.Concat(n.outputPort))
                     port.uid.RemoveAll(link => link.StartsWith(prefix, StringComparison.Ordinal));
-            foreach (var group in root.Groups) group.Children.RemoveAll(id => id == action.Uid);
-            root.Actions.Remove(action);
+            foreach (var group in root.Groups) group.Children.RemoveAll(id => id == removed.Uid);
         }
 
         private void DrawFields(CustomNode action, int offset)
@@ -463,7 +565,11 @@ namespace SoftKitty
                     case NodeInterfaceElementType.Float_Variable:
                         EditValue(action.FloatValues, i, 0f, v => EditorGUILayout.DelayedFloatField(label, v)); break;
                     case NodeInterfaceElementType.Int_Variable:
-                        EditValue(action.IntValues, i, 0, v => EditorGUILayout.DelayedIntField(label, v)); break;
+                        EditValue(action.IntValues, i, 0, v =>
+                        {
+                            int next = EditorGUILayout.DelayedIntField(label, v);
+                            return action.ClassName == "TagCompare" && field.Uid == "index" ? Mathf.Max(0, next) : next;
+                        }); break;
                     case NodeInterfaceElementType.Bool_Variable:
                         EditValue(action.BoolValues, i, false, v => EditorGUILayout.Toggle(label, v)); break;
                     case NodeInterfaceElementType.Enum:
@@ -506,7 +612,7 @@ namespace SoftKitty
             if (source != null && source.outputPort[0].uid.Count > 1) label += "（共享）";
             if (entity != null)
             {
-                var type = (EntityType)EditorGUILayout.Popup(label, (int)entity.Type, Enum.GetNames(typeof(EntityType)).Select(GraphEditorText.Localize).ToArray());
+                var type = (EntityType)EditorGUILayout.IntPopup(label, (int)entity.Type, EntityRoleLabels, EntityRoleValues);
                 if (type != entity.Type) Change(() => entity.Type = type);
                 if (type == EntityType.Specified)
                 {

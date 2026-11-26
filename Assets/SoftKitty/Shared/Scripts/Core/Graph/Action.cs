@@ -67,6 +67,37 @@ namespace SoftKitty
             inputPort.Clear(); ;
             inputPort.Add(new PortSetting("Action", "ActionIn", new string[2] { "RootOut", "BranchOutAction" }, false));
             CustomInit("Action", ClassName);
+            EnsureExecutionConditionPort();
+        }
+
+        // Append after the class-specific inputs so all existing entity/value port numbers stay valid.
+        public int ExecutionConditionPort => inputPort.Count > 0 && inputPort[inputPort.Count - 1].Type == "ConditionIn"
+            ? inputPort.Count - 1 : -1;
+
+        public int EnsureExecutionConditionPort()
+        {
+            if (ExecutionConditionPort < 0)
+                inputPort.Add(new PortSetting("动作前置条件", "ConditionIn", new[] { "ConditionOut" }, true));
+            return ExecutionConditionPort;
+        }
+
+        private static int nextExecutionHash;
+        public static void ExecuteChecked(NodeBase node, GraphRuntimeState state)
+        {
+            if (node is Action action && action.ExecutionConditionPort >= 0)
+            {
+                var port = action.inputPort[action.ExecutionConditionPort];
+                if (port.uid.Count > 0)
+                {
+                    if (port.connectedNodes.Count != port.uid.Count) return;
+                    // Cast hashes are positive. Each execution needs a fresh cache key, even within one frame.
+                    nextExecutionHash = nextExecutionHash == int.MinValue ? -1 : nextExecutionHash - 1;
+                    state.Hash = nextExecutionHash;
+                    foreach (var condition in port.connectedNodes)
+                        if (!condition.isConditionActive(state)) return;
+                }
+            }
+            node?.Execute(state);
         }
 
         public Action Copy(bool _runtime=false)
