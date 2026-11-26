@@ -145,6 +145,20 @@ namespace SoftKitty
         }
 
         /// <summary>
+        /// Find the scene actor for this exact entity, including instanced copies that share a UID.
+        /// </summary>
+        public static EntityComponent FindEntityInstance(Entity entity)
+        {
+            if (entity == null) return null;
+            var first = GetEntityInstance(entity.uid);
+            if (first && first.mData == entity) return first;
+            foreach (var group in entityInstanceDic.Values)
+                foreach (var actor in group)
+                    if (actor && actor.mData == entity) return actor;
+            return null;
+        }
+
+        /// <summary>
         /// Clear all registered EntityComponents from the manager without verifying their deletion.
         /// </summary>
         public static void ClearAllEntityInstance()

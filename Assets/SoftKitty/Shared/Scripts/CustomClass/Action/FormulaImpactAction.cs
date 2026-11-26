@@ -34,15 +34,19 @@ namespace SoftKitty
                 context.DynamicVariableDic["hit.total"] = total;
                 var playback = SkillPlayback.On(instance);
                 runtime.NodeStates[NodeIndex].lastBool = true;
-                playback.Schedule(Strike(playback, caster, target, context, calculation.segmentPercent.ToArray()));
+                var weights = calculation.segmentPercent.ToArray();
+                playback.ScheduleReleases(runtime, caster, WaitTime, 1, 0, () =>
+                {
+                    var host = (SkillPlayback.Style)IntValues[0] == SkillPlayback.Style.Direct ? playback : playback.ProjectileHost();
+                    host.Schedule(Strike(host, caster, target, context, weights, runtime));
+                });
             }
             catch (Exception e) { Debug.LogError(instance.mGraph.name + " · " + Uid + "：" + e.Message, instance); }
         }
 
-        private IEnumerator Strike(SkillPlayback host, Entity source, Entity target, RootRuntimeState context, float[] weights)
+        private IEnumerator Strike(SkillPlayback host, Entity source, Entity target, RootRuntimeState context, float[] weights, GraphRuntimeState cast)
         {
-            yield return new WaitForSeconds(Mathf.Max(0, WaitTime));
-            if (!source.AvailableForInteraction || !target.AvailableForInteraction) yield break;
+            if (!target.AvailableForInteraction) yield break;
             var caster = SkillPlayback.FindActor(source);
             var victim = SkillPlayback.FindActor(target);
             var origin = SkillPlayback.Position(source, caster);
@@ -62,6 +66,7 @@ namespace SoftKitty
             {
                 if (i > 0) yield return new WaitForSeconds(Mathf.Max(.01f, Interval));
                 if (!target.AvailableForInteraction || (victim && !victim.isActiveAndEnabled)) yield break;
+                if (style == SkillPlayback.Style.Direct && cast.CastInterrupted) yield break;
                 vars["hit.index"] = i + 1;
                 vars["hit.share"] = weights[i] * .01f;
                 vars["hit.raw"] = vars["hit.total"] * vars["hit.share"];
@@ -82,6 +87,7 @@ namespace SoftKitty
                 }
                 if (i == 0 && FloatValues[5] > 0) yield return new WaitForSeconds(FloatValues[5]);
                 if (!target.AvailableForInteraction || (victim && !victim.isActiveAndEnabled)) yield break;
+                if (style == SkillPlayback.Style.Direct && cast.CastInterrupted) yield break;
                 if (!TryEvaluate(calculation.settlement, context, host, out var defended)) yield break;
                 float hp = target.GetAttributeFloat("chp");
                 float loss = Mathf.Clamp(SkillDefence.Incoming(health, Mathf.Max(0, defended)), 0, Mathf.Max(0, hp));

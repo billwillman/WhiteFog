@@ -1,0 +1,150 @@
+using System.Collections;
+using UnityEngine;
+
+namespace SoftKitty
+{
+    [UnityEngine.Scripting.Preserve]
+    public sealed class OriginalSkillVisualAction : Action
+    {
+        public OriginalSkillVisualAction() { }
+        private OriginalSkillVisualAction(Action data) : base(data) { }
+        [UnityEngine.Scripting.Preserve]
+        public OriginalSkillVisualAction InitAction(Action data) => new OriginalSkillVisualAction(data);
+
+        public override void Run(GraphInstance instance, GraphRuntimeState state)
+        {
+            if (IntValues[0] != 3)
+            {
+                base.Run(instance, state);
+                return;
+            }
+
+            var caster = SkillPlayback.ReadEntity(this, 1, state);
+            var target = SkillPlayback.ReadEntity(this, 2, state);
+            var graph = instance.mGraph as OriginalSkillGraph;
+            if (caster == null || target == null || !graph) return;
+            var host = SkillPlayback.On(instance);
+            state.NodeStates[NodeIndex].lastBool = true;
+            host.ScheduleReleases(state, caster, WaitTime, FormulaImpactAction.SegmentCount(this), Interval,
+                () => Launch(host, graph, caster, target));
+        }
+
+        private static void Launch(SkillPlayback host, OriginalSkillGraph graph, Entity source, Entity recipient)
+        {
+            var caster = SkillPlayback.FindActor(source);
+            var target = SkillPlayback.FindActor(recipient);
+            if (caster && target && target.AvailableForInteraction)
+                host.ProjectileHost().Schedule(Fly(graph, caster.transform, target.transform));
+        }
+
+        public override void Execute(GraphRuntimeState state)
+        {
+            var instance = state.RootState.RootInstance.GetComponent<GraphInstance>();
+            var graph = instance.mGraph as OriginalSkillGraph;
+            var caster = SkillPlayback.FindActor(SkillPlayback.ReadEntity(this, 1, state));
+            var target = SkillPlayback.FindActor(SkillPlayback.ReadEntity(this, 2, state));
+            if (!graph || !caster || !target) return;
+            switch (IntValues[0])
+            {
+                case 0:
+                    var animator = caster.GetComponentInChildren<Animator>();
+                    if (animator && graph.castMotion && animator.HasState(0, Animator.StringToHash("Base Layer." + graph.castMotion.name)))
+                        animator.CrossFadeInFixedTime(Animator.StringToHash("Base Layer." + graph.castMotion.name),
+                            1f / Mathf.Max(1f, graph.castMotion.frameRate), 0, 0);
+                    break;
+                case 1:
+                    var castRoot = ActorRoot(caster.transform);
+                    var cast = Spawn(graph.castEffect, castRoot.position, castRoot.rotation);
+                    if (cast) SkillPlayback.On(instance).ProjectileHost().Schedule(FollowPosition(cast.transform, castRoot));
+                    break;
+                case 2:
+                    var bones = caster.GetComponentsInChildren<Transform>(true);
+                    var hand = System.Array.Find(bones, bone => bone.name == graph.weaponBone);
+                    if (hand && graph.weaponEffect)
+                    {
+                        var weapon = Object.Instantiate(graph.weaponEffect, hand, false);
+                        weapon.SetActive(true);
+                        Object.Destroy(weapon, graph.weaponSeconds);
+                    }
+                    break;
+                case 3:
+                    Launch(SkillPlayback.On(instance), graph, caster.mData, target.mData);
+                    break;
+            }
+        }
+
+        private static GameObject Spawn(GameObject prefab, Vector3 at, Quaternion facing, Transform parent = null, bool timed = true)
+        {
+            if (!prefab) return null;
+            var effect = Object.Instantiate(prefab, at, facing, parent);
+            effect.SetActive(true);
+            if (timed)
+            {
+                float seconds = .1f;
+                foreach (var system in effect.GetComponentsInChildren<ParticleSystem>(true))
+                {
+                    var settings = system.main;
+                    seconds = Mathf.Max(seconds, settings.startDelay.constantMax + settings.duration + settings.startLifetime.constantMax);
+                }
+                Object.Destroy(effect, seconds);
+            }
+            return effect;
+        }
+
+        private static Transform ActorRoot(Transform actor)
+        {
+            var animator = actor.GetComponentInChildren<Animator>();
+            if (!animator) return actor;
+            var root = animator.transform.Find("root");
+            return root ? root : actor;
+        }
+
+        private static IEnumerator FollowPosition(Transform effect, Transform anchor)
+        {
+            while (effect && anchor)
+            {
+                effect.position = anchor.position;
+                yield return null;
+            }
+        }
+
+        private static IEnumerator Fly(OriginalSkillGraph graph, Transform caster, Transform target)
+        {
+            var releaseRoot = ActorRoot(caster);
+            var hitRoot = ActorRoot(target);
+            Vector3 start = releaseRoot.position + caster.rotation * graph.launchOffset;
+            Vector3 end = hitRoot.position + target.rotation * graph.impactOffset;
+            Vector3 delta = end - start;
+            float length = delta.magnitude;
+            var facing = length > .001f ? Quaternion.LookRotation(delta) : caster.rotation;
+            var bolt = Spawn(graph.projectile, start, facing, null, false);
+            var tail = Spawn(graph.tail, start, facing, null, false);
+            try
+            {
+                for (float t = 0; graph.projectileSpeed > 0 && t * (graph.projectileSpeed + .5f * graph.projectileAcceleration * t) < length; t += Time.deltaTime)
+                {
+                    var point = start + delta.normalized * (t * (graph.projectileSpeed + .5f * graph.projectileAcceleration * t));
+                    if (bolt) bolt.transform.position = point;
+                    if (tail) tail.transform.position = point;
+                    yield return null;
+                }
+                if (bolt) bolt.transform.position = end;
+                if (hitRoot && target)
+                    Spawn(graph.impact, hitRoot.position + target.rotation * graph.impactOffset, Quaternion.identity);
+                if (tail)
+                {
+                    tail.transform.position = end;
+                    foreach (var system in tail.GetComponentsInChildren<ParticleSystem>(true))
+                        system.Stop(false, ParticleSystemStopBehavior.StopEmitting);
+                    Object.Destroy(tail, graph.tailSeconds);
+                    tail = null;
+                }
+            }
+            finally
+            {
+                if (bolt) Object.Destroy(bolt);
+                if (tail) Object.Destroy(tail);
+            }
+        }
+    }
+}

@@ -55,6 +55,7 @@ namespace SoftKitty
                 float _timer = 0F;
                 while (_timer <= _keepTime)
                 {
+                    if (_runtime.CastInterrupted) yield break;
                     currentRootInstance.ExecuteAction(_node, _runtime);
                     yield return new WaitForSeconds(_interval);
                     _timer += _interval;

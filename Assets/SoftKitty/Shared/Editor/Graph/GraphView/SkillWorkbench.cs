@@ -79,11 +79,14 @@ namespace SoftKitty
         {
             Undo.undoRedoPerformed += Repaint;
             EditorApplication.update += UpdateDemoPreview;
+            UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnPreviewSceneLoaded;
         }
         private void OnDisable()
         {
+            ReleasePreviewCamera();
             Undo.undoRedoPerformed -= Repaint;
             EditorApplication.update -= UpdateDemoPreview;
+            UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnPreviewSceneLoaded;
             if (componentEditor) DestroyImmediate(componentEditor);
         }
 
@@ -194,9 +197,9 @@ namespace SoftKitty
             if (library == null)
                 library = AssetDatabase.FindAssets("t:GraphObject").Select(x => AssetDatabase.LoadAssetAtPath<GraphObject>(AssetDatabase.GUIDToAssetPath(x))).Where(x => x && !(x is SkillFormula)).OrderBy(x => x.name).ToArray();
             foreach (var group in library.Where(s => s.name.IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0)
-                .GroupBy(s => AssetDatabase.GetAssetPath(s).StartsWith("Assets/WhiteFog/Skills/", StringComparison.Ordinal)
+                .GroupBy(s => s is OriginalSkillGraph ? "宗师之上 · 原作表现" : AssetDatabase.GetAssetPath(s).StartsWith("Assets/WhiteFog/Skills/", StringComparison.Ordinal)
                     ? (s.previewAsOpponent ? "怪物技能" : "主角技能") : "其他技能图")
-                .OrderBy(g => g.Key == "主角技能" ? 0 : g.Key == "怪物技能" ? 1 : 2))
+                .OrderBy(g => g.Key == "宗师之上 · 原作表现" ? -1 : g.Key == "主角技能" ? 0 : g.Key == "怪物技能" ? 1 : 2))
             {
                 EditorGUILayout.LabelField(group.Key, EditorStyles.boldLabel);
                 foreach (var skill in group)
@@ -264,6 +267,12 @@ namespace SoftKitty
             if (GUILayout.Button("添加动作", GUILayout.Width(95)))
             {
                 var menu = new GenericMenu();
+                menu.AddItem(new GUIContent("打断施法"), false, () => Change(() =>
+                {
+                    var interrupt = AddAction(root, "Event", cursor);
+                    interrupt.StringValues[0] = Entity.InterruptCastEvent;
+                    selection = interrupt.Uid;
+                }));
                 var folder = Application.dataPath + "/SoftKitty/Shared/Scripts/CustomClass/Action";
                 foreach (string file in Directory.GetFiles(folder, "*Action_interface.txt").OrderBy(x => x))
                 {
@@ -283,7 +292,7 @@ namespace SoftKitty
                 var lane = Rect.MinMaxRect(name.xMax + 4, row.y + 4, row.xMax - 5, row.yMax - 4);
                 var binding = action.inputPort[0].uid.FirstOrDefault();
                 string route = binding == null ? "未连接" : binding == "Node0#0" ? "直接" : "分支";
-                string label = action.WaitTime.ToString("0.00") + "s  " + GraphEditorText.Localize(action.ClassName) + "  ·  " + route;
+                string label = action.WaitTime.ToString("0.00") + "s  " + ActionName(action) + "  ·  " + route;
                 if (GUI.Toggle(name, action.Uid == selection, new GUIContent(label, action.Uid), EditorStyles.miniButton) && selection != action.Uid)
                 { selection = action.Uid; cursor = action.WaitTime; }
                 EditorGUI.DrawRect(lane, new Color(.13f,.19f,.21f));
@@ -385,10 +394,14 @@ namespace SoftKitty
             to.inputPort[input].uid.Add(from.Uid + "#0");
         }
 
+        private static string ActionName(Action action) =>
+            action.ClassName == "Event" && action.StringValues.Count > 0 && action.StringValues[0] == Entity.InterruptCastEvent
+                ? "打断施法" : GraphEditorText.Localize(action.ClassName);
+
         private void DrawAction(Action action)
         {
             EditorGUILayout.Space();
-            EditorGUILayout.LabelField(GraphEditorText.Localize(action.ClassName) + " · " + action.Uid, EditorStyles.boldLabel);
+            EditorGUILayout.LabelField(ActionName(action) + " · " + action.Uid, EditorStyles.boldLabel);
             Edit("开始时间（秒）", action.WaitTime, x => action.WaitTime = x);
             var mode = (ActionType)EditorGUILayout.Popup("执行方式", (int)action.Type, Modes);
             if (mode != action.Type) Change(() => action.Type = mode);
@@ -553,14 +566,16 @@ namespace SoftKitty
             EditorGUILayout.LabelField("试放对象", EditorStyles.boldLabel);
             dealer = (EntityComponent)EditorGUILayout.ObjectField("施加者", dealer, typeof(EntityComponent), true);
             target = (EntityComponent)EditorGUILayout.ObjectField("目标", target, typeof(EntityComponent), true);
-            bool ready = Application.isPlaying && executor && executor.inited && executor.mGraph == graph && dealer && target;
-            if (!ready) EditorGUILayout.HelpBox("进入 Play，绑定使用当前技能图的 CombatDamage、施加者和目标。", MessageType.None);
+            if (UsesSkillLevel(graph)) demoSkillLevel = Mathf.Max(1, EditorGUILayout.DelayedIntField("试放技能等级", demoSkillLevel));
+            bool ready = Application.isPlaying && !EditorApplication.isPaused && dealer && target && (!executor || (executor.inited && executor.mGraph == graph));
+            if (!ready) EditorGUILayout.HelpBox("进入 Play，把场景中具体的施放者和目标拖到对应槽。伤害执行组件可留空。", MessageType.None);
             using (new EditorGUI.DisabledScope(!ready))
                 if (GUILayout.Button("试放当前技能"))
                 {
-                    if (dealer.mData != null && target.mData != null)
-                    { executor.DealDamage(dealer.mData, target.mData); message = "已调用 " + dealer.name + " → " + target.name + "，结果随动作延迟生效。"; }
-                    else message = "实体没有运行数据，请检查 Entity UID。";
+                    lastCaster = dealer;
+                    lastReceiver = target;
+                    healthBefore = target.mData != null ? target.GetAttributeFloat("chp") : 0;
+                    CastActors(graph, dealer, target, demoSkillLevel, out message, executor);
                 }
             if (!string.IsNullOrEmpty(message)) EditorGUILayout.LabelField(message, EditorStyles.wordWrappedLabel);
         }
@@ -570,7 +585,14 @@ namespace SoftKitty
             executor = damage;
             if (!damage) { dealer = null; target = null; return; }
             dealer = damage.DealerEntity ? damage.DealerEntity : damage.GetComponentInParent<EntityComponent>();
+            DrawInterruptButton(dealer, ref message);
             target = damage.TargetEntity;
+            if (Application.isPlaying && dealer && target && dealer.mData != null && target.mData != null)
+            {
+                if (lastCaster == dealer && lastReceiver == target)
+                    EditorGUILayout.LabelField("目标生命", target.name + "  " + healthBefore.ToString("0.##") + " → " + target.GetAttributeFloat("chp").ToString("0.##"));
+                DrawStageCamera(dealer, target);
+            }
             Repaint();
         }
     }

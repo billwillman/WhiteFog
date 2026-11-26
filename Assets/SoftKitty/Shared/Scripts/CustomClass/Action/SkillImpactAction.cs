@@ -19,13 +19,16 @@ namespace SoftKitty
             float amount = GetVariableValue(inputPort[3].connectedNodes[0], runtime);
             runtime.NodeStates[NodeIndex].lastBool = true;
             var host = SkillPlayback.On(instance);
-            host.Schedule(Strike(host, source, recipient, Mathf.Max(0, amount)));
+            host.ScheduleReleases(runtime, source, WaitTime, 1, 0, () =>
+            {
+                var playback = (SkillPlayback.Style)IntValues[0] == SkillPlayback.Style.Direct ? host : host.ProjectileHost();
+                playback.Schedule(Strike(playback, source, recipient, Mathf.Max(0, amount), runtime));
+            });
         }
 
-        private IEnumerator Strike(SkillPlayback host, Entity source, Entity recipient, float amount)
+        private IEnumerator Strike(SkillPlayback host, Entity source, Entity recipient, float amount, GraphRuntimeState cast)
         {
-            yield return new WaitForSeconds(Mathf.Max(0, WaitTime));
-            if (!source.AvailableForInteraction || !recipient.AvailableForInteraction) yield break;
+            if (!recipient.AvailableForInteraction) yield break;
             var caster = SkillPlayback.FindActor(source);
             var victim = SkillPlayback.FindActor(recipient);
             Vector3 start = SkillPlayback.Position(source, caster);
@@ -55,6 +58,7 @@ namespace SoftKitty
             {
                 if (i > 0) yield return new WaitForSeconds(interval);
                 if (!recipient.AvailableForInteraction) yield break;
+                if (style == SkillPlayback.Style.Direct && cast.CastInterrupted) yield break;
                 float hp = recipient.GetAttributeFloat("chp");
                 float loss = Mathf.Min(hp, SkillDefence.Incoming(health, amount));
                 health.SetValue(hp - loss, source);

@@ -700,7 +700,9 @@ namespace SoftKitty
         {
             if (!inited) return;
             mRuntime.Hash = _hash;
-            currentRootInstance.RunActions(this, mRuntime);
+            // A graph running on an already launched physical projectile owns its on-hit actions.
+            var owner = projectileLaunched && ProjectileMode != ProjectileModes.Disable ? null : GetDealerEntity();
+            currentRootInstance.RunActions(this, mRuntime.ForCast(owner));
         }
         /// <summary>
         /// Returns whether all trigger nodes are triggered. An integer hash is required for caching the result.

@@ -2,6 +2,8 @@ Shader "DOD/VFX/FogOfWar"
 {
     Properties
     {
+        [HideInInspector] _FogCull ("Cull", Float) = 2
+        [HideInInspector] _CloudMatcap ("Cloud MatCap", 2D) = "white" {}
         _BaseSpeed ("Base Speed", Float) = 0.0199999996
         _BaseClouds ("Base Clouds", 2D) = "white" {}
         _BaseCloudsScale ("Base Clouds Scale", Float) = 0.800000012
@@ -62,15 +64,17 @@ Shader "DOD/VFX/FogOfWar"
             Blend SrcAlpha OneMinusSrcAlpha, One OneMinusSrcAlpha
             ZWrite Off
             ZTest Always
-            Cull Back
+            Cull [_FogCull]
             HLSLPROGRAM
             #pragma target 3.5
             #pragma shader_feature_local _ FOG_MOBILE
+            #pragma multi_compile_local _ FOG_PORTRAIT_BATTLE
             #pragma vertex Vert
             #pragma fragment Frag
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl"
 
+            TEXTURE2D(_CloudMatcap); SAMPLER(sampler_CloudMatcap);
             TEXTURE2D(_BaseClouds); SAMPLER(sampler_BaseClouds);
             TEXTURE2D(_CloudsA); SAMPLER(sampler_CloudsA);
             TEXTURE2D(_CloudsB); SAMPLER(sampler_CloudsB);
@@ -149,8 +153,14 @@ Shader "DOD/VFX/FogOfWar"
             {
                 return lerp(lerp(lerp(outside, edge, bands.x), halfVisible, bands.y), full, bands.z);
             }
+            #if defined(FOG_PORTRAIT_BATTLE)
+            #include "PortraitBattleClouds.hlsl"
+            #endif
             Varyings Vert(Attributes input)
             {
+                #if defined(FOG_PORTRAIT_BATTLE)
+                return ProjectBattleClouds(input);
+                #else
                 Varyings o;
                 float3 pos = input.positionOS;
                 float2 xz = TransformObjectToWorld(pos).xz;
@@ -161,13 +171,19 @@ Shader "DOD/VFX/FogOfWar"
                 o.positionCS = TransformWorldToHClip(o.world);
                 o.normal = TransformObjectToWorldNormal(input.normalOS);
                 return o;
+                #endif
             }
             float4 Frag(Varyings input) : SV_Target
             {
                 float cloud = CloudValue(input.world.xz, false);
                 float3 bands = MaskBands(input.world.xz);
+                #if defined(FOG_PORTRAIT_BATTLE)
+                float3 cameraRay = normalize(input.world - Eye);
+                float3 view = -cameraRay;
+                #else
                 float3 cameraRay = normalize(input.world - _WorldSpaceCameraPos);
                 float3 view = unity_OrthoParams.w == 0 ? -cameraRay : UNITY_MATRIX_V[2].xyz;
+                #endif
                 float fresnel = pow(max(0.0001, 1 - dot(normalize(input.normal), view)), _FresnelPower);
                 fresnel = smoothstep(0, 1, fresnel * _FresnelScale) * cloud * _FresnelOpacity;
                 float sun = pow(saturate(dot(cameraRay, _Direction.xyz) * 0.5 + 0.5), _DirectionFalloff);
@@ -182,12 +198,18 @@ Shader "DOD/VFX/FogOfWar"
 
                 float reveal = Layers(0, _AlphaOuter - cloud * _CloudsOpacityOuter,
                                       _AlphaHalf - cloud * _CloudsOpacityHalf, _AlphaFull, bands);
+                #if defined(FOG_PORTRAIT_BATTLE)
+                float alpha = saturate(pow(abs(1 - reveal), _AlphaPower) * _AlphaMultiply);
+                rgb = lerp(darkLit * (1 + _EmissionStrength), rgb, alpha);
+                return float4(LightBattleClouds(rgb, input.world.xz), 1);
+                #else
                 float fadeDistance = Layers(_FadeDistanceOutside, _FadeDistanceEdge, _FadeDistanceHalf, _FadeDistanceFull, bands);
                 float depth = SampleSceneDepth(GetNormalizedScreenSpaceUV(input.positionCS));
                 float gap = LinearEyeDepth(depth, _ZBufferParams) - LinearEyeDepth(input.positionCS.z, _ZBufferParams);
                 float fade = fadeDistance == 0 ? 1 : saturate(abs(gap / fadeDistance));
                 fade = smoothstep(0, 1, pow(fade, _FadePower));
                 return float4(rgb, saturate(pow(abs((1 - reveal) * fade), _AlphaPower) * _AlphaMultiply));
+                #endif
             }
             ENDHLSL
         }

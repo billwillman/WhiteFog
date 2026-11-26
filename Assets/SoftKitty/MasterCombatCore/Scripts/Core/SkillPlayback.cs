@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 namespace SoftKitty
@@ -17,6 +19,50 @@ namespace SoftKitty
             return host ? host : instance.gameObject.AddComponent<SkillPlayback>();
         }
 
+        private static readonly Dictionary<Scene, SkillPlayback> projectileHosts = new Dictionary<Scene, SkillPlayback>();
+        private Scene projectileScene;
+
+        // A launched projectile lives in its scene, independently of the graph or actor that fired it.
+        public SkillPlayback ProjectileHost()
+        {
+            var scene = gameObject.scene;
+            if (projectileHosts.TryGetValue(scene, out var host) && host) return host;
+            var go = new GameObject("在途技能投射物");
+            SceneManager.MoveGameObjectToScene(go, scene);
+            host = go.AddComponent<SkillPlayback>();
+            host.projectileScene = scene;
+            projectileHosts[scene] = host;
+            return host;
+        }
+
+        private void OnDestroy()
+        {
+            if (projectileHosts.TryGetValue(projectileScene, out var host) && host == this)
+                projectileHosts.Remove(projectileScene);
+        }
+
+        public void ScheduleReleases(GraphRuntimeState cast, Entity caster, float wait, int count, float interval, System.Action release)
+        {
+            Schedule(WaitForRelease(cast, caster, wait, count, interval, release));
+        }
+
+        private static IEnumerator WaitForRelease(GraphRuntimeState cast, Entity caster, float wait, int count,
+            float interval, System.Action release)
+        {
+            float due = Time.time + Mathf.Max(0f, wait);
+            for (int i = 0; i < count; i++)
+            {
+                // Keep the initial frame boundary of the graph's action scheduler.
+                do
+                {
+                    yield return null;
+                    if (cast.CastInterrupted || !caster.AvailableForInteraction) yield break;
+                } while (Time.time < due);
+                release();
+                due = Time.time + Mathf.Max(.01f, interval);
+            }
+        }
+
         public static Entity ReadEntity(Action action, int port, GraphRuntimeState state)
         {
             var sources = action.inputPort[port].connectedNodes;
@@ -24,12 +70,7 @@ namespace SoftKitty
         }
 
         public static EntityComponent FindActor(Entity entity)
-        {
-            if (entity == null) return null;
-            var first = GameManager.GetEntityInstance(entity.uid);
-            if (first && first.mData == entity) return first;
-            return GameManager.GetEntityInstanceList().Find(x => x && x.mData == entity);
-        }
+            => GameManager.FindEntityInstance(entity);
 
         public static Vector3 Position(Entity entity, EntityComponent actor)
             => (actor ? actor.transform.position : entity.Position) + Vector3.up * 1.1f;

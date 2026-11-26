@@ -351,8 +351,18 @@ namespace SoftKitty
         {
             if (AttributeChangeCallback != null) AttributeChangeCallback(_uid, _value, _dealer);
         }
+        public const string InterruptCastEvent = "InterruptCast";
+        // Each pending release remembers the caster's revision at the start of its cast.
+        public uint CastInterruptionVersion { get; private set; }
+
+        public void InterruptCast(Entity source = null)
+        {
+            OnEntityEvent(InterruptCastEvent, 0f, source, false);
+        }
+
         public void OnEntityEvent(string _eventName, float _floatArg, Entity _entityArg, bool _boolArg)
         {
+            if (_eventName == InterruptCastEvent) unchecked { CastInterruptionVersion++; }
             if (EntityEventCallback != null) EntityEventCallback(_eventName, _floatArg, _entityArg, _boolArg);
         }
         public void OnOverTimeChange(string _uid, OverTimeEffectData _data, OverTimeEffectEventType _eventType)

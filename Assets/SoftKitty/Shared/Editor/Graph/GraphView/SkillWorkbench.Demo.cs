@@ -10,15 +10,167 @@ namespace SoftKitty
     public partial class SkillWorkbench
     {
         private const string DemoPath = "Assets/SoftKitty/MasterCombatCore/Demo/Scenes/DemoScene.unity";
+        private const string StagePath = "Assets/WhiteFog/SkillPreview/角色预览.unity";
+        private const string OriginalGraphPath = "Assets/WhiteFog/Skills/宗师之上/破空剑法.asset";
+        private const float PortraitAspect = 9f / 16f;
+        private static readonly Vector3 StageCenter = new Vector3(0, 10f, 20);
+        private const string PreviousStart = "SoftKitty.Workbench.PreviousPlayStart";
+        private const string OwnsStart = "SoftKitty.Workbench.OwnsPlayStart";
+        private Camera monitorCamera;
+        private RenderTexture monitor;
+        [SerializeField] private bool showGamePreview;
+        private Camera stageCamera;
+        private Rect savedStageRect;
+        private RenderTexture savedStageTarget;
+        private bool savedStageEnabled;
+        private static bool InPreviewStage => SceneManager.GetActiveScene().path == StagePath;
+
+        [InitializeOnLoadMethod]
+        private static void RegisterPreviewSceneRestore()
+        {
+            EditorApplication.playModeStateChanged -= RestorePreviewStart;
+            EditorApplication.playModeStateChanged += RestorePreviewStart;
+        }
+
+        private static void RestorePreviewStart(PlayModeStateChange change)
+        {
+            if ((change != PlayModeStateChange.EnteredPlayMode && change != PlayModeStateChange.EnteredEditMode) ||
+                !SessionState.GetBool(OwnsStart, false)) return;
+            if (AssetDatabase.GetAssetPath(EditorSceneManager.playModeStartScene) == StagePath)
+            {
+                string path = SessionState.GetString(PreviousStart, "");
+                EditorSceneManager.playModeStartScene = string.IsNullOrEmpty(path) ? null : AssetDatabase.LoadAssetAtPath<SceneAsset>(path);
+            }
+            SessionState.EraseBool(OwnsStart);
+            SessionState.EraseString(PreviousStart);
+        }
+
+        private void OnPreviewSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            if (demoQueued && scene.path == StagePath && Camera.main)
+                SetStageOutput(Camera.main);
+        }
+
+        private void EnsureMonitorTexture()
+        {
+            if (!monitor)
+                monitor = new RenderTexture(540, 960, 24) { name = "技能工作台 Preview", hideFlags = HideFlags.DontSave };
+        }
+
+        private void SetStageOutput(Camera cam)
+        {
+            if (!stageCamera)
+            {
+                stageCamera = cam;
+                savedStageRect = cam.rect;
+                savedStageTarget = cam.targetTexture;
+                savedStageEnabled = cam.enabled;
+            }
+            EnsureMonitorTexture();
+            cam.enabled = true;
+            if (showGamePreview)
+            {
+                cam.targetTexture = savedStageTarget;
+                float screenAspect = (float)Screen.width / Mathf.Max(1, Screen.height);
+                float w = Mathf.Min(1, PortraitAspect / screenAspect), h = Mathf.Min(1, screenAspect / PortraitAspect);
+                cam.rect = new Rect((1-w)*.5f, (1-h)*.5f, w, h);
+            }
+            else
+            {
+                if (monitorCamera) monitorCamera.enabled = false;
+                cam.targetTexture = monitor;
+                cam.rect = new Rect(0, 0, 1, 1);
+            }
+        }
+
+        private void RestoreStageOutput()
+        {
+            if (stageCamera)
+            {
+                stageCamera.targetTexture = savedStageTarget;
+                stageCamera.rect = savedStageRect;
+                stageCamera.enabled = savedStageEnabled;
+            }
+            stageCamera = null;
+            savedStageTarget = null;
+        }
+
+        private void FrameStageCamera()
+        {
+            var cam = stageCamera ? stageCamera : Camera.main;
+            if (!cam) return;
+            SetStageOutput(cam);
+            cam.transform.rotation = Quaternion.Euler(38, 0, 0);
+            cam.transform.position = StageCenter + Vector3.up * 1.05f - cam.transform.forward * 16;
+            cam.orthographicSize = Mathf.Max(3.75f, demoRange * .32f + 2.3f);
+        }
+
+        private void DrawStageCamera(EntityComponent from = null, EntityComponent to = null)
+        {
+            var cam = stageCamera ? stageCamera : Camera.main;
+            if (!cam && !from) return;
+            if (!from && InPreviewStage)
+            {
+                SetStageOutput(cam);
+                if (!showGamePreview)
+                {
+                    DrawMonitorTexture();
+                    return;
+                }
+            }
+            EnsureMonitorTexture();
+            if (!monitorCamera)
+            {
+                monitorCamera = new GameObject("工作台预览镜头").AddComponent<Camera>();
+                if (cam) monitorCamera.CopyFrom(cam);
+                if (cam && cam.TryGetComponent<OriginalSkillPreviewLight>(out var stageLight)) stageLight.monitorCamera = monitorCamera;
+                monitorCamera.targetTexture = monitor;
+                monitorCamera.rect = new Rect(0, 0, 1, 1);
+            }
+            monitorCamera.enabled = true;
+            monitorCamera.orthographic = true;
+            if (from && to)
+            {
+                Vector3 delta = to.transform.position - from.transform.position;
+                Vector3 forward = Vector3.ProjectOnPlane(delta, Vector3.up).normalized;
+                if (forward.sqrMagnitude < .01f) forward = Vector3.forward;
+                Vector3 center = (from.transform.position + to.transform.position) * .5f + Vector3.up;
+                monitorCamera.transform.position = center - forward * 12 + Vector3.up * 9.4f;
+                monitorCamera.transform.LookAt(center);
+                monitorCamera.orthographicSize = Mathf.Max(3.05f, delta.magnitude * .32f + 1.45f, Mathf.Abs(delta.y) * .5f + 2);
+            }
+            else
+            {
+                monitorCamera.transform.SetPositionAndRotation(cam.transform.position, cam.transform.rotation);
+                monitorCamera.orthographicSize = cam.orthographicSize;
+            }
+            DrawMonitorTexture();
+        }
+
+        private void DrawMonitorTexture()
+        {
+            float height = Mathf.Clamp(position.height - 315f, 225, 850);
+            var row = GUILayoutUtility.GetRect(1, height, GUILayout.ExpandWidth(true));
+            float width = Mathf.Min(row.width, height * PortraitAspect);
+            var rect = new Rect(row.center.x - width * .5f, row.y, width, width / PortraitAspect);
+            if (Event.current.type == EventType.Repaint) EditorGUI.DrawPreviewTexture(rect, monitor, null, ScaleMode.ScaleToFit);
+        }
+
+        private void ReleasePreviewCamera()
+        {
+            RestoreStageOutput();
+            if (monitorCamera) { monitorCamera.targetTexture = null; DestroyImmediate(monitorCamera.gameObject); }
+            if (monitor) { monitor.Release(); DestroyImmediate(monitor); }
+        }
         [SerializeField] private bool demoQueued;
-        [SerializeField] private bool stageActors = true;
         [SerializeField] private float demoRange = 8f;
         [SerializeField] private int demoSkillLevel = 1;
         [SerializeField] private int previewDirection;
         [SerializeField] private int previewMode;
         private Vector2 previewScroll;
         private static readonly string[] PreviewModes = { "快速试放", "当前场景试放" };
-        private double demoDeadline;
+        private float healthBefore;
+        private bool PreviewAsOpponent => !(graph is OriginalSkillGraph) && (previewDirection == 0 ? graph.previewAsOpponent : previewDirection == 2);
         private double nextReadout;
         private EntityComponent lastCaster, lastReceiver;
         private string demoResult;
@@ -54,23 +206,62 @@ namespace SoftKitty
 
         private void DrawQuickPreview()
         {
-            previewDirection = EditorGUILayout.Popup("本次施放方向", previewDirection,
-                new[] { graph.previewAsOpponent ? "按技能默认（怪物 → 主角）" : "按技能默认（主角 → 怪物）", "主角 → 怪物", "怪物 → 主角" });
-            stageActors = EditorGUILayout.Toggle("让怪物就位到主角前方", stageActors);
-            if (stageActors) demoRange = EditorGUILayout.Slider("起始距离（米）", demoRange, 2, 20);
-            if (UsesSkillLevel(graph)) demoSkillLevel = Mathf.Max(1, EditorGUILayout.DelayedIntField("试放技能等级", demoSkillLevel));
-            bool inDemo = SceneManager.GetActiveScene().path == DemoPath;
-            using (new EditorGUI.DisabledScope(demoQueued || (EditorApplication.isPlaying && !inDemo)))
-                if (GUILayout.Button(EditorApplication.isPlaying ? "在 Preview 中试放所选技能" : "打开 Preview 场景并试放"))
-                    QueueDemoPreview();
-            if (!string.IsNullOrEmpty(demoResult)) EditorGUILayout.HelpBox(demoResult, MessageType.Info);
-            if (Application.isPlaying && lastCaster && lastReceiver)
+            if (!(graph is OriginalSkillGraph))
             {
-                EditorGUILayout.LabelField("当前生命", lastCaster.uid + "  " + lastCaster.GetAttributeFloat("chp").ToString("0.#")
-                    + "     →     " + lastReceiver.uid + "  " + lastReceiver.GetAttributeFloat("chp").ToString("0.#"));
-                EditorGUILayout.LabelField("施放者状态", BuffReadout(lastCaster), EditorStyles.wordWrappedLabel);
-                EditorGUILayout.LabelField("目标状态", BuffReadout(lastReceiver), EditorStyles.wordWrappedLabel);
+                EditorGUILayout.LabelField("当前技能", "项目样例");
+                if (GUILayout.Button("选择原作技能 · 破空剑法（25090）"))
+                {
+                    var original = AssetDatabase.LoadAssetAtPath<OriginalSkillGraph>(OriginalGraphPath);
+                    if (original) SelectGraph(original);
+                    return;
+                }
             }
+            else EditorGUILayout.LabelField("来源", "《宗师之上》" + ((OriginalSkillGraph)graph).sourceVersion + " · " + ((OriginalSkillGraph)graph).sourceId);
+            if (!(graph is OriginalSkillGraph)) previewDirection = EditorGUILayout.Popup("本次施放方向", previewDirection,
+                new[] { graph.previewAsOpponent ? "按技能默认（怪物 → 主角）" : "按技能默认（主角 → 怪物）", "主角 → 怪物", "怪物 → 主角" });
+            bool reverse = PreviewAsOpponent;
+            EditorGUILayout.LabelField("施放者 → 目标", reverse ? "小雕 → 男角色 001" : "男角色 001 → 小雕");
+            demoRange = EditorGUILayout.Slider("双方距离（米）", demoRange, 2, 20);
+            if (UsesSkillLevel(graph)) demoSkillLevel = Mathf.Max(1, EditorGUILayout.DelayedIntField("试放技能等级", demoSkillLevel));
+            showGamePreview = EditorGUILayout.ToggleLeft(new GUIContent("同时在 Game 视图预览",
+                "快速试放只运行独立角色预览场景。勾选后同步显示竖屏战斗画面。"), showGamePreview);
+            bool inStage = InPreviewStage;
+            if (Application.isPlaying && !inStage)
+            {
+                EditorGUILayout.HelpBox("当前在运行「" + SceneManager.GetActiveScene().name + "」。要试放场上角色，请选「当前场景试放」；要看男角色 001与小雕，请先退出 Play。", MessageType.Info);
+                if (GUILayout.Button("退出当前 Play")) EditorApplication.isPlaying = false;
+                return;
+            }
+            using (new EditorGUI.DisabledScope(demoQueued || EditorApplication.isPaused))
+                if (GUILayout.Button(inStage && Application.isPlaying ? "再次试放所选技能" : "打开角色预览并试放"))
+                    QueueDemoPreview();
+            if (Application.isPlaying && EditorApplication.isPaused) EditorGUILayout.HelpBox("Play 已暂停，继续播放后可以试放。", MessageType.Info);
+            if (!string.IsNullOrEmpty(demoResult)) EditorGUILayout.HelpBox(demoResult, MessageType.Info);
+            if (inStage && Application.isPlaying)
+            {
+                DrawStageCamera();
+                if (graph is OriginalSkillGraph)
+                    EditorGUILayout.LabelField("表现回放", "原作动作、飞剑和抵达特效");
+                else if (lastCaster && lastReceiver)
+                {
+                    EditorGUILayout.LabelField("施放者生命", lastCaster.name + "  " + lastCaster.GetAttributeFloat("chp").ToString("0.##"));
+                    EditorGUILayout.LabelField("目标生命", lastReceiver.name + "  " + healthBefore.ToString("0.##") + " → " + lastReceiver.GetAttributeFloat("chp").ToString("0.##"));
+                    EditorGUILayout.LabelField("施放者状态", BuffReadout(lastCaster), EditorStyles.wordWrappedLabel);
+                    EditorGUILayout.LabelField("目标状态", BuffReadout(lastReceiver), EditorStyles.wordWrappedLabel);
+                }
+                DrawInterruptButton(lastCaster, ref demoResult);
+                if (GUILayout.Button("退出角色预览")) EditorApplication.isPlaying = false;
+            }
+        }
+
+        private static void DrawInterruptButton(EntityComponent caster, ref string status)
+        {
+            using (new EditorGUI.DisabledScope(!Application.isPlaying || EditorApplication.isPaused || !caster))
+                if (GUILayout.Button("打断施放者"))
+                {
+                    caster.InterruptCast();
+                    status = "已打断 " + caster.name + " 的施法。已离手的投射物继续飞行。";
+                }
         }
 
         private static string BuffReadout(EntityComponent actor)
@@ -82,33 +273,77 @@ namespace SoftKitty
         internal void QueueDemoPreview()
         {
             if (!graph || demoQueued) return;
-            if (SceneManager.GetActiveScene().path != DemoPath)
+            if (Application.isPlaying && !InPreviewStage) return;
+            if (!ValidatePreviewLevel(graph, demoSkillLevel, out demoResult)) return;
+            if (!Application.isPlaying)
             {
-                if (EditorApplication.isPlaying || !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
-                EditorSceneManager.OpenScene(DemoPath);
+                var start = AssetDatabase.LoadAssetAtPath<SceneAsset>(StagePath);
+                if (!start) { demoResult = "找不到角色预览场景：" + StagePath; return; }
+                var prior = EditorSceneManager.playModeStartScene;
+                SessionState.SetString(PreviousStart, prior ? AssetDatabase.GetAssetPath(prior) : "");
+                SessionState.SetBool(OwnsStart, true);
+                EditorSceneManager.playModeStartScene = start;
             }
             demoQueued = true;
-            demoDeadline = 0;
-            demoResult = "正在等待预览场景中的主角与怪物";
-            if (!EditorApplication.isPlaying) EditorApplication.isPlaying = true;
+            demoResult = "正在打开男角色 001与小雕的角色预览";
+            if (!Application.isPlaying) EditorApplication.isPlaying = true;
         }
 
         private void UpdateDemoPreview()
         {
-            if (!EditorApplication.isPlaying)
+            if (!Application.isPlaying)
             {
-                if (!EditorApplication.isPlayingOrWillChangePlaymode) demoQueued = false;
+                if (!EditorApplication.isPlayingOrWillChangePlaymode)
+                {
+                    demoQueued = false;
+                    if (monitor) ReleasePreviewCamera();
+                }
                 return;
             }
-            if (demoQueued && graph && SceneManager.GetActiveScene().path == DemoPath)
+            if (stageCamera && (!InPreviewStage || previewMode != 0))
+                RestoreStageOutput();
+            if (stageCamera && !showGamePreview)
+                stageCamera.enabled = page == PreviewPage;
+            if (monitorCamera && (page != PreviewPage || (previewMode == 1 && (!dealer || !target)))) monitorCamera.enabled = false;
+            if (demoQueued && InPreviewStage && !EditorApplication.isPaused && Time.timeSinceLevelLoad > 0)
             {
-                if (demoDeadline == 0) demoDeadline = EditorApplication.timeSinceStartup + 20;
-                if (TryDemoCast(graph, stageActors, demoRange, out lastCaster, out lastReceiver, out demoResult, demoSkillLevel,
-                    previewDirection == 0 ? graph.previewAsOpponent : previewDirection == 2)
-                    || EditorApplication.timeSinceStartup >= demoDeadline) demoQueued = false;
+                demoQueued = false;
+                var actors = SceneManager.GetActiveScene().GetRootGameObjects();
+                var hero = actors.FirstOrDefault(go => go.name == "男角色 001")?.GetComponent<EntityComponent>();
+                var monster = actors.FirstOrDefault(go => go.name == "小雕")?.GetComponent<EntityComponent>();
+                if (!hero || !monster || hero.mData == null || monster.mData == null)
+                    demoResult = "预览场缺少有效的男角色 001（player）或小雕（EnemyBot01）实体。";
+                else
+                {
+                    hero.SetPosition(StageCenter + Vector3.back * demoRange * .5f, false);
+                    monster.SetPosition(StageCenter + Vector3.forward * demoRange * .5f, false);
+                    hero.transform.forward = Vector3.forward;
+                    monster.transform.forward = Vector3.back;
+                    // The extracted bird faces local -Z. Keep the entity forward available for skill targeting.
+                    var birdModel = monster.transform.Find("小雕 · 飞行");
+                    if (birdModel) birdModel.rotation = Quaternion.LookRotation(-monster.transform.forward, monster.transform.up);
+                    hero.UpdateData();
+                    monster.UpdateData();
+                    FrameStageCamera();
+                    if (!showGamePreview) Focus();
+                    lastCaster = PreviewAsOpponent ? monster : hero;
+                    lastReceiver = PreviewAsOpponent ? hero : monster;
+                    healthBefore = lastReceiver.GetAttributeFloat("chp");
+                    CastActors(graph, lastCaster, lastReceiver, demoSkillLevel, out demoResult);
+                }
+                Repaint();
             }
-            if (EditorApplication.timeSinceStartup >= nextReadout && (demoQueued || lastCaster))
-            { nextReadout = EditorApplication.timeSinceStartup + .18; Repaint(); }
+            if (page == PreviewPage && EditorApplication.timeSinceStartup >= nextReadout)
+            { nextReadout = EditorApplication.timeSinceStartup + .05; Repaint(); }
+        }
+
+        private static bool ValidatePreviewLevel(GraphObject skill, int level, out string info)
+        {
+            foreach (var table in BoundLevelTables(skill))
+                if (!table.rows.Any(row => row.level == level))
+                { info = table.name + "没有 " + level + " 级，请选择已配置的等级。"; return false; }
+            info = "";
+            return true;
         }
 
         private static bool UsesSkillLevel(GraphObject skill) => skill && skill.RootSet != null &&
@@ -135,19 +370,43 @@ namespace SoftKitty
             bool opponent = asOpponent ?? skill.previewAsOpponent;
             caster = opponent ? enemy : player;
             receiver = opponent ? player : enemy;
-            var go = new GameObject("试放 · " + skill.name);
-            go.transform.position = caster.transform.position;
-            var damage = go.AddComponent<CombatDamage>();
-            damage.PhysicsDetection = false;
-            damage.mGraph = skill;
-            damage.Init();
-            if (!damage.inited) { Destroy(go); info = "技能图初始化失败，请检查 Console。"; return false; }
+            return CastActors(skill, caster, receiver, skillLevel, out info);
+        }
+
+        private static bool CastActors(GraphObject skill, EntityComponent caster, EntityComponent receiver, int skillLevel, out string info, CombatDamage damage = null)
+        {
+            if (!caster || !receiver || !caster.isActiveAndEnabled || !receiver.isActiveAndEnabled ||
+                !caster.AvailableForInteraction || !receiver.AvailableForInteraction)
+            { info = "施放者或目标不可交互，请检查实体数据和存活状态。"; return false; }
+            if (SkillPlayback.FindActor(caster.mData) != caster || SkillPlayback.FindActor(receiver.mData) != receiver)
+            { info = "场景中有多个角色共用同一份实体数据。请为所选角色使用独立实体或启用多实例。"; return false; }
+            var original = skill as OriginalSkillGraph;
+            if (original && original.castMotion)
+            {
+                var animator = caster.GetComponentInChildren<Animator>();
+                if (!animator || !animator.runtimeAnimatorController || !animator.HasState(0, Animator.StringToHash("Base Layer." + original.castMotion.name)))
+                { info = "所选施放者缺少原作动作 " + original.castMotion.name; return false; }
+            }
+            if (!ValidatePreviewLevel(skill, skillLevel, out info)) return false;
+            if (!damage)
+            {
+                var go = new GameObject("试放 · " + skill.name);
+                SceneManager.MoveGameObjectToScene(go, caster.gameObject.scene);
+                go.transform.position = caster.transform.position;
+                damage = go.AddComponent<CombatDamage>();
+                damage.PhysicsDetection = false;
+                damage.mGraph = skill;
+                damage.Init();
+                if (!damage.inited) { Destroy(go); info = "技能图初始化失败，请检查 Console。"; return false; }
+                SkillPlayback.On(damage).RetireAfter(1 + skill.RootSet.Actions.Select(a => a.WaitTime + Span(a)).DefaultIfEmpty(0).Max());
+            }
             if (UsesSkillLevel(skill)) damage.SetDynamicValue("skill.level", Mathf.Max(1, skillLevel));
-            // A separate executor owns each cast, including its delayed hits and visuals.
-            var host = SkillPlayback.On(damage);
-            host.RetireAfter(1 + skill.RootSet.Actions.Select(a => a.WaitTime + Span(a)).DefaultIfEmpty(0).Max());
+            SkillDamageNumbers.Observe(caster);
+            SkillDamageNumbers.Observe(receiver);
             damage.DealDamage(caster.mData, receiver.mData);
-            info = skill.name + "  ·  " + caster.uid + " → " + receiver.uid + "  ·  起始距离 "
+            var description = original ? "原作表现 " + original.sourceId
+                : UsesSkillLevel(skill) ? skillLevel + " 级" : "项目样例";
+            info = skill.name + "  ·  " + description + "  ·  " + caster.name + "（" + caster.uid + "） → " + receiver.name + "（" + receiver.uid + "）  ·  起始距离 "
                 + Vector3.Distance(caster.transform.position, receiver.transform.position).ToString("0.0") + " m";
             return true;
         }

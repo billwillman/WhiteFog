@@ -10,6 +10,12 @@ namespace SoftKitty
     public class EntityComponent : MonoBehaviour
     {
 
+        // Also callable from animation events and gameplay state transitions.
+        public void InterruptCast()
+        {
+            mData?.InterruptCast();
+        }
+
         #region Variables
         /// <summary>
         /// A reference to the entity's data.
