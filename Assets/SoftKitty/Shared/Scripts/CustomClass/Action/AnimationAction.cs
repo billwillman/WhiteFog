@@ -33,7 +33,7 @@ namespace SoftKitty{
                 {
                     var graph = _runtime.RootState.RootInstance.GetComponent<GraphInstance>().mGraph;
                     var binding = motion ?? SkillMotion.For(this, graph as OriginalSkillGraph);
-                    if (!binding.Play(actor.SkillAnimator, _runtime, out var error) && error != null)
+                    if (!binding.Play(actor.SkillAnimator, _runtime, out var error, actor) && error != null)
                         Debug.LogWarning(graph.name + " · " + Uid + " · " + error, actor);
                 }
                 return;

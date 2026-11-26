@@ -257,7 +257,7 @@ namespace SoftKitty
                 }
                 EditorGUILayout.Space();
                 EditorGUILayout.LabelField(graph.name, EditorStyles.largeLabel);
-                previewMode = GUILayout.Toolbar(previewMode, PreviewModes);
+                previewMode = DrawSubTabs("试放方式", previewMode, PreviewModes);
                 using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
                 {
                     if (previewMode == 0) DrawQuickPreview();
@@ -302,6 +302,10 @@ namespace SoftKitty
                     EditorGUILayout.LabelField("表现回放", "原作动作、施放与命中特效");
                 if (lastCaster && lastReceiver)
                 {
+                    EditorGUILayout.LabelField("施法输入", (lastCaster.mData.CanMoveByInput ? "移动已放行" : "移动受限") +
+                        "　·　" + (lastCaster.mData.CanStartSkill ? "接招已放行" : "接招受限"));
+                    if (graph.useInputTiming && GUILayout.Button("用当前角色接放此技能"))
+                        CastPreviewActors(lastCaster, lastReceiver, out demoResult);
                     EditorGUILayout.LabelField("施放者生命", PreviewActorName(lastCaster) + "  " + lastCaster.GetAttributeFloat("chp").ToString("0.##"));
                     EditorGUILayout.LabelField("目标生命", PreviewActorName(lastReceiver) + "  " + healthBefore.ToString("0.##") + " → " + lastReceiver.GetAttributeFloat("chp").ToString("0.##"));
                     EditorGUILayout.LabelField("施放者状态", BuffReadout(lastCaster), EditorStyles.wordWrappedLabel);
@@ -383,9 +387,7 @@ namespace SoftKitty
                 else
                 {
                     // The MCC entity database outlives scene loads. Recreate the same initial combatants on every quick trial.
-                    CombatRandom.BeginBattle(CombatRandom.Seed);
-                    GameManager.EntityManagerData.RuntimeInit();
-                    GameManager.SetPlayerInstance(hero);
+                    SkillPreviewTrial.Begin(hero);
                     hero.SetPosition(StageCenter + Vector3.back * demoRange * .5f, false);
                     monster.SetPosition(StageCenter + Vector3.forward * demoRange * .5f, false);
                     hero.transform.forward = Vector3.forward;
@@ -504,15 +506,21 @@ namespace SoftKitty
             if (UsesSkillLevel(skill)) damage.SetDynamicValue("skill.level", Mathf.Max(1, skillLevel));
             SkillDamageNumbers.Observe(caster);
             SkillDamageNumbers.Observe(receiver);
+            bool started;
             if (HasUnwiredHit(skill))
             {
                 var playback = SkillPlayback.On(damage);
                 var previousImpact = playback.OriginalProjectileImpact;
                 playback.OriginalProjectileImpact = (source, victim) => SkillPlayback.ApplyIncomingDamage(source, victim, previewHitDamage);
-                try { damage.DealDamageObserved(caster.mData, receiver.mData, onSettled); }
+                try { started = damage.TryCastSkill(caster.mData, receiver.mData, onSettled); }
                 finally { playback.OriginalProjectileImpact = previousImpact; }
             }
-            else damage.DealDamageObserved(caster.mData, receiver.mData, onSettled);
+            else started = damage.TryCastSkill(caster.mData, receiver.mData, onSettled);
+            if (!started)
+            {
+                info = caster.mData.CanStartSkill ? "本次试放未满足施法条件。" : "施放者尚不能接下一招。";
+                return false;
+            }
             var description = original ? "原作表现 " + original.sourceId
                 : UsesSkillLevel(skill) ? skillLevel + " 级" : "自定义技能图";
             info = skill.name + "  ·  " + description + "  ·  " + PreviewActorName(caster) + "（" + caster.uid + "） → " + PreviewActorName(receiver) + "（" + receiver.uid + "）  ·  起始距离 "

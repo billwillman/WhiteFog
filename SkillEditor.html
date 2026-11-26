@@ -194,9 +194,17 @@
   #unity-pane .details { overflow:auto; }
   #unity-pane a { color:var(--accent); }
   #unity-pane .toolbar { justify-content:space-between; }
+  #unity-views button { background:transparent; border:0; border-bottom:2px solid transparent; border-radius:0; }
+  #unity-views button[aria-pressed="true"] { color:var(--accent); border-bottom-color:currentColor; }
   #unity-pane .skill-title { min-width:0; }
   #unity-pane .step small { overflow-wrap:anywhere; }
   #unity-pane .library input { margin:8px 10px 0; width:calc(100% - 20px); }
+  #unity-camps, #unity-roles { display:flex; flex-wrap:wrap; align-items:center; gap:4px; padding:7px 10px 0; }
+  #unity-camps button { background:transparent; color:var(--soft); border:0; border-bottom:2px solid transparent; border-radius:0; padding:3px 6px; }
+  #unity-camps button[aria-pressed="true"] { color:var(--accent); border-bottom-color:currentColor; }
+  #unity-roles { padding-left:18px; font-size:12px; }
+  #unity-roles label { display:inline-flex; align-items:center; gap:4px; padding:2px 5px; }
+  #unity-pane #unity-roles input { width:auto; margin:0; accent-color:var(--accent); }
   #unity-pane .source-fields dl { grid-template-columns:minmax(74px,36%) minmax(0,1fr); }
   #unity-pane .section-bar { flex-wrap:wrap; }
   #unity-events { flex:1; min-height:100px; }
@@ -233,7 +241,9 @@
   <main class="workspace" id="unity-pane" aria-label="Unity 技能库">
     <aside class="library">
       <div class="section-bar"><h2>技能库</h2><small id="unity-count"></small></div>
-      <input type="search" id="unity-search" aria-label="查找技能" placeholder="查找名称或原作 ID">
+      <div id="unity-camps" role="group" aria-label="阵营"></div>
+      <div id="unity-roles" role="group" aria-label="角色" hidden></div>
+      <input type="search" id="unity-search" aria-label="查找角色或技能" placeholder="查找角色、技能或原作 ID">
       <nav id="unity-skills" class="skill-list" aria-label="选择技能"></nav>
     </aside>
     <section class="graph-panel">
@@ -245,11 +255,13 @@
       <div id="unity-events" class="source-events"></div>
       <section id="unity-preview" hidden aria-label="Unity 战斗预演">
         <div class="preview-controls">
-          <label>施放距离（米）<input id="unity-distance" type="number" min="2" max="20" step=".1" value="8"></label>
+          <label>施放距离（米）<input id="unity-distance" type="number" min="2" max="20" step=".1" value="8" required></label>
           <label id="unity-level-label" hidden>技能等级<select id="unity-level"></select></label>
+          <label hidden>技能等级<input id="unity-free-level" type="number" min="1" step="1" value="1" required></label>
           <label id="unity-damage-label" hidden>每段预览来伤<input id="unity-damage" type="number" min="0" step="any" value="10"></label>
           <label id="unity-direction-label" hidden>施放方<select id="unity-direction"><option value="hero">主角</option><option value="enemy">怪物</option></select></label>
           <button id="unity-play" class="primary" type="button">试放技能</button><button id="unity-interrupt" type="button" disabled>打断施法</button>
+          <button id="unity-chain" type="button" hidden disabled>用当前角色接放</button>
         </div>
         <p id="unity-play-status" role="status"></p><div id="unity-screen"></div>
         <p id="unity-readout"></p><ol id="unity-hits"></ol>
@@ -320,7 +332,7 @@
     <li>导出 JSON 保存整套技能库。浏览器允许本地存储时会自动保存。导入前可用撤销保留上一次状态。</li>
   </ol>
   <p>空白处拖动平移，滚轮缩放，Esc 取消连线。单个输入口接一条线，每个流程出口接一个后续节点。网页 JSON 包含 H5 的节点数据。</p>
-  <p>「Unity 技能库」展示引擎导出的原作动作与资源。切换「本机草稿」可以编辑、导入和导出网页草稿。团结技能库、源事件对照和引擎实录见<a href="docs/MCC技能工作台操作手册.html#catalog">宗师之上原作技能</a>。</p>
+  <p>「Unity 技能库」展示角色技能与项目技能图。选择技能可查看动作、命中分支与等级表，或在「战斗预演」中试放并查看实际扣血。切换「本机草稿」可编辑、导入和导出网页草稿。参见<a href="docs/MCC技能工作台操作手册.html#catalog">技能工作台操作手册</a>。</p>
 </dialog>
 <noscript>请在浏览器中启用 JavaScript 以编辑技能。</noscript>
 <script>

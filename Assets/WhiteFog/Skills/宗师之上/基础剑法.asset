@@ -3435,7 +3435,7 @@ MonoBehaviour:
     - rid: 6312275967726845953
       type: {class: SkillCalculation, ns: SoftKitty, asm: Assembly-CSharp}
       data:
-        mode: 3
+        mode: 1
         nativeGraph: {fileID: 0}
         nativeParameters: []
         accuracy: {fileID: 0}

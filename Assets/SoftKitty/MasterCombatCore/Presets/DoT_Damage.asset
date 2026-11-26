@@ -83,7 +83,8 @@ MonoBehaviour:
         acceptedTypes:
         - RootOut
         - BranchOutAction
-        uid: []
+        uid:
+        - Node0#0
         connectedNodes: []
         allowMutipleConnection: 0
         createByDefault: 1
@@ -91,7 +92,8 @@ MonoBehaviour:
         Type: EntityIn
         acceptedTypes:
         - EntityOut
-        uid: []
+        uid:
+        - Node2#0
         connectedNodes: []
         allowMutipleConnection: 0
         createByDefault: 1
@@ -99,7 +101,8 @@ MonoBehaviour:
         Type: CustomVariable
         acceptedTypes:
         - Variable
-        uid: []
+        uid:
+        - Node6#0
         connectedNodes: []
         allowMutipleConnection: 0
         createByDefault: 1
@@ -192,7 +195,8 @@ MonoBehaviour:
         acceptedTypes:
         - RootOut
         - BranchOutAction
-        uid: []
+        uid:
+        - Node0#0
         connectedNodes: []
         allowMutipleConnection: 0
         createByDefault: 1
@@ -200,7 +204,8 @@ MonoBehaviour:
         Type: EntityIn
         acceptedTypes:
         - EntityOut
-        uid: []
+        uid:
+        - Node2#0
         connectedNodes: []
         allowMutipleConnection: 0
         createByDefault: 1
@@ -208,7 +213,8 @@ MonoBehaviour:
         Type: CustomVariable
         acceptedTypes:
         - Variable
-        uid: []
+        uid:
+        - Node6#0
         connectedNodes: []
         allowMutipleConnection: 0
         createByDefault: 1

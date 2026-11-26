@@ -119,7 +119,7 @@ namespace SoftKitty
 
         private void OnGUI()
         {
-            page = GUILayout.Toolbar(page, Pages);
+            page = GUILayout.Toolbar(page, Pages, GUILayout.Height(26));
             if (page == PreviewPage)
             {
                 DrawPreviewPage();
@@ -204,6 +204,14 @@ namespace SoftKitty
                         bool opponent = EditorGUILayout.Popup("默认施放方",
                             graph.previewAsOpponent ? 1 : 0, new[] { "主角", "怪物" }) == 1;
                         if (opponent != graph.previewAsOpponent) Change(() => graph.previewAsOpponent = opponent);
+                        bool timed = EditorGUILayout.Toggle("施法输入时序", graph.useInputTiming);
+                        if (timed != graph.useInputTiming) Change(() => graph.useInputTiming = timed);
+                        if (timed)
+                        {
+                            Edit("允许移动（秒）", graph.moveAfterSeconds, value => graph.moveAfterSeconds = value);
+                            Edit("允许接招（秒）", graph.nextSkillAfterSeconds, value => graph.nextSkillAfterSeconds = value);
+                            EditorGUILayout.HelpBox("从施法成功算起，分别填写何时接受移动和下一招。例：移动 0.4、接招 0.7，在两者之间可以走动。填 0 表示这次施法立即放行该输入。打断会解除本次施法占用，其他控制状态仍生效。", MessageType.Info);
+                        }
                         var entries = root.Triggers.Where(t => root.inputPort[0].uid.Contains(t.Uid + "#0")).ToList();
                         showConditions = EditorGUILayout.Foldout(showConditions, "技能入口条件   " + entries.Sum(t => t.inputPort[0].uid.Count) + " 项", true);
                         if (showConditions) DrawEntryConditions(root, entries);
@@ -232,9 +240,21 @@ namespace SoftKitty
             characterFilter = "";
         }
 
+        private static int DrawSubTabs(string label, int selected, string[] options)
+        {
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                GUILayout.Label(label, EditorStyles.miniBoldLabel, GUILayout.Width(48));
+                return GUILayout.Toolbar(selected, options, EditorStyles.miniButton,
+                    GUILayout.Width(options.Length * 84), GUILayout.Height(EditorGUIUtility.singleLineHeight));
+            }
+        }
+
+        private static readonly string[] CampLabels = { "友方", "敌方", "未归属" };
+
         private void DrawLibrary()
         {
-            int camp = GUILayout.Toolbar(libraryCamp, new[] { "友方", "敌方", "未归属" });
+            int camp = DrawSubTabs("阵营", libraryCamp, CampLabels);
             if (camp != libraryCamp)
             {
                 libraryCamp = camp;
@@ -260,8 +280,16 @@ namespace SoftKitty
                     return;
                 }
                 int index = Mathf.Max(0, Array.IndexOf(roles, selectedLibraryCharacter));
-                int columns = Mathf.Clamp((int)(position.width / 130), 1, roles.Length);
-                index = GUILayout.SelectionGrid(index, roles.Select(c => c.name).ToArray(), columns, EditorStyles.miniButton);
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    GUILayout.Space(16);
+                    GUILayout.Label("角色", EditorStyles.miniLabel, GUILayout.Width(32));
+                    var labels = roles.Select(c => new GUIContent(c.name, AssetDatabase.GetAssetPath(c))).ToArray();
+                    float available = Mathf.Max(80, EditorGUIUtility.currentViewWidth - 90);
+                    float width = Mathf.Min(available, Mathf.Max(80, labels.Max(c => EditorStyles.radioButton.CalcSize(c).x) + 12));
+                    int columns = Mathf.Clamp((int)(available / width), 1, roles.Length);
+                    index = GUILayout.SelectionGrid(index, labels, columns, EditorStyles.radioButton, GUILayout.Width(columns * width));
+                }
                 if (selectedLibraryCharacter != roles[index]) filter = "";
                 selectedLibraryCharacter = roles[index];
             }
@@ -305,6 +333,7 @@ namespace SoftKitty
             if (string.IsNullOrEmpty(path)) return;
             path = AssetDatabase.GenerateUniqueAssetPath(path);
             var asset = CreateInstance<GraphObject>();
+            asset.useInputTiming = true;
             asset.libraryCharacter = selectedLibraryCharacter;
             asset.previewAsOpponent = selectedLibraryCharacter && selectedLibraryCharacter.camp == SkillLibraryCharacter.Camp.Enemy;
             asset.RootSet = requiredStatus == null ? CreateSkillRoot(count, healing) : CreateConditionalHeal(requiredStatus);

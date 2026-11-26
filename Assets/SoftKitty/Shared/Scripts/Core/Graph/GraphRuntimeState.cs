@@ -44,6 +44,8 @@ namespace SoftKitty
 
     public struct GraphRuntimeState
     {
+        internal bool timedInput;
+        internal bool TimesMovementOf(Entity actor) => timedInput && actor == castOwner && !CastInterrupted;
         private Entity castOwner;
         private uint castVersion;
         private CombatRoll? releaseKey;

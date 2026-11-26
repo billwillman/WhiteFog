@@ -17,6 +17,32 @@ namespace SoftKitty
         }
 
         private Animator skillAnimator;
+        private Animator timedMoveAnimator;
+        private int timedMoveState, timedMoveFrame;
+        private uint timedMoveRevision;
+        private SkillClipPlayer timedMoveClip;
+
+        internal void BindInputMotion(Animator animator, GraphRuntimeState cast, int stateHash, SkillClipPlayer clip)
+        {
+            timedMoveAnimator = cast.TimesMovementOf(mData) ? animator : null;
+            timedMoveState = stateHash;
+            timedMoveClip = clip;
+            timedMoveRevision = mData.CastInterruptionVersion;
+            timedMoveFrame = Time.frameCount;
+        }
+
+        // Only the caster's authored base-layer motion replaces the demo's attack-state movement rule.
+        public bool UsesSkillMovementTiming(Animator animator)
+        {
+            if (!timedMoveAnimator || timedMoveAnimator != animator || mData.CastInterruptionVersion != timedMoveRevision)
+                return false;
+            if (timedMoveClip ? timedMoveClip.isActiveAndEnabled :
+                (animator.GetCurrentAnimatorStateInfo(0).fullPathHash == timedMoveState ||
+                 animator.IsInTransition(0) && animator.GetNextAnimatorStateInfo(0).fullPathHash == timedMoveState))
+                return true;
+            if (Time.frameCount != timedMoveFrame) timedMoveAnimator = null;
+            return false;
+        }
 
         public Animator SkillAnimator
         {

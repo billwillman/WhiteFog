@@ -29,7 +29,7 @@ public static class OriginalSkillEditorExport
     [Serializable]
     private sealed class AssetInfo
     {
-        public string guid, path, name, enemy;
+        public string guid, path, name, enemy, character, camp;
         public bool original, unwiredHit;
         public ActionInfo[] actions;
         public Table[] levels;
@@ -50,7 +50,7 @@ public static class OriginalSkillEditorExport
         public List<Field> fields = new List<Field>();
         public float duration;
         public bool complete, onContact;
-        public string timing;
+        public string timing, sourceTime;
         public Band[] bands;
     }
     [Serializable] private sealed class Band { public string name; public float start; public bool blend; }
@@ -58,6 +58,7 @@ public static class OriginalSkillEditorExport
     private static ActionInfo Describe(GraphObject graph, SoftKitty.Action node)
     {
         var info = new ActionInfo { uid = node.Uid, title = SkillWorkbench.ActionName(node) };
+        if (SkillWorkbench.IsSourceTime(node)) info.sourceTime = SkillWorkbench.SourceTimeHelp(node);
         void Add(string label, object value)
         {
             string text = value is UnityEngine.Object asset ? AssetPath(asset) :
@@ -171,6 +172,8 @@ public static class OriginalSkillEditorExport
         var db = GameManager.OverTimeEffectData;
         var info = new AssetInfo {
             guid = guid, path = path, name = graph.name, original = original, enemy = original ? AssetPath(original.previewEnemy) : "",
+            character = graph.libraryCharacter ? graph.libraryCharacter.name : "",
+            camp = graph.libraryCharacter ? (graph.libraryCharacter.camp == SkillLibraryCharacter.Camp.Friendly ? "友方" : "敌方") : "未归属角色",
             actions = actions, unwiredHit = graph.RootSet.Actions.Where((a, i) => actions[i].onContact)
                 .Any(a => a.outputPort.Count == 0 || a.outputPort[0].uid.Count == 0),
             levels = graph.RootSet.Actions.Where(a => a.ClassName == "FormulaImpact").Select(a => a.calculation?.levels)
@@ -182,7 +185,7 @@ public static class OriginalSkillEditorExport
         return "{\"asset\":" + JsonUtility.ToJson(info) + ",\"graph\":" + EditorJsonUtility.ToJson(graph) + "}";
     }
 
-    [MenuItem("Tools/技能工作台/同步原作技能至 H5 编辑器")]
+    [MenuItem("Tools/技能工作台/同步全部技能至 H5 编辑器")]
     public static void Export()
     {
         var records = SkillIds().Select(Record);

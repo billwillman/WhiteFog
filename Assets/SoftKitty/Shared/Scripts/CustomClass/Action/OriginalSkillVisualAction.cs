@@ -113,7 +113,7 @@ namespace SoftKitty
                         legacyMotion = SkillMotion.For(this, graph);
                     binding = legacyMotion;
                 }
-                if (!binding.Play(caster.SkillAnimator, state, out var error) && error != null)
+                if (!binding.Play(caster.SkillAnimator, state, out var error, caster) && error != null)
                     Debug.LogWarning(instance.mGraph.name + " · " + Uid + " · " + error, caster);
                 return;
             }

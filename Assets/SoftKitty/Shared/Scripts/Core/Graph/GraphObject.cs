@@ -12,6 +12,9 @@ namespace SoftKitty
         public string CombatRandomId => string.IsNullOrEmpty(combatRandomId) ? name : combatRandomId;
         public SkillLibraryCharacter libraryCharacter;
         [HideInInspector] public bool previewAsOpponent;
+        [HideInInspector] public bool useInputTiming;
+        [Min(0)] public float moveAfterSeconds;
+        [Min(0)] public float nextSkillAfterSeconds;
         public bool autoSave = false;
         [HideInInspector]
         public List<Sprite> NodeIconSprites = new List<Sprite>();//0-Root 1-Node 2-Logic 3-Math 4-Variable 5-Entity

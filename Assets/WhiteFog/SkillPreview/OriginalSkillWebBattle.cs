@@ -18,7 +18,9 @@ public sealed class OriginalSkillWebBattle : MonoBehaviour
     private float elapsed;
     private bool ferry;
     private EntityComponent previewCaster, previewTarget;
-    private float nextReadout;
+    private float nextReadout, trialStart;
+    private GraphObject previewSkill;
+    private int previewCast;
 
     [System.Serializable]
     private sealed class EditorRequest
@@ -33,7 +35,8 @@ public sealed class OriginalSkillWebBattle : MonoBehaviour
     private sealed class Readout
     {
         public string kind, text, casterStates, targetStates;
-        public float casterHp, targetHp, loss, shield;
+        public float casterHp, targetHp, loss, shield, elapsed;
+        public bool canMove, canChain;
         public int segment;
     }
 
@@ -44,9 +47,11 @@ public sealed class OriginalSkillWebBattle : MonoBehaviour
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
         SkillEditorReadout(JsonUtility.ToJson(new Readout {
-            kind = kind, text = text, segment = segment, loss = loss, shield = shield,
+            kind = kind, text = text, segment = segment, loss = loss, shield = shield, elapsed = Time.time - trialStart,
             casterHp = previewCaster ? previewCaster.GetAttributeFloat("chp") : 0,
             targetHp = previewTarget ? previewTarget.GetAttributeFloat("chp") : 0,
+            canMove = previewCaster && previewCaster.mData.CanMoveByInput,
+            canChain = previewCaster && previewCaster.mData.CanStartSkill,
             casterStates = States(previewCaster), targetStates = States(previewTarget)
         }));
 #endif
@@ -68,6 +73,11 @@ public sealed class OriginalSkillWebBattle : MonoBehaviour
     private IEnumerator Preview(GraphObject skill, EditorRequest request)
     {
         while (hero.mData == null || enemy.mData == null) yield return null;
+        SkillPreviewTrial.Begin(hero);
+#if UNITY_WEBGL && !UNITY_EDITOR
+        WebGLInput.captureAllKeyboardInput = false;
+#endif
+        trialStart = Time.time;
         float distance = Mathf.Clamp(request.distance, 2, 20);
         hero.SetPosition(center + Vector3.back * distance * .5f, false);
         enemy.SetPosition(center + Vector3.forward * distance * .5f, false);
@@ -83,12 +93,27 @@ public sealed class OriginalSkillWebBattle : MonoBehaviour
         bool opponent = original ? original.previewAsOpponent : request.opponent;
         previewCaster = opponent ? enemy : hero;
         previewTarget = opponent ? hero : enemy;
+        previewSkill = skill;
+        CastPreview(request);
+    }
+
+    [Preserve]
+    public void ChainEditorSkill(string json)
+    {
+        if (previewSkill && previewSkill.useInputTiming && previewCaster && previewTarget)
+            CastPreview(JsonUtility.FromJson<EditorRequest>(json));
+    }
+
+    private void CastPreview(EditorRequest request)
+    {
+        var skill = previewSkill;
         var go = new GameObject(skill.name);
         go.transform.position = previewCaster.transform.position;
         var damage = go.AddComponent<CombatDamage>();
+        damage.PhysicsDetection = false;
         damage.mGraph = skill;
         damage.Init();
-        if (!damage.inited) { Destroy(go); Report("error", "技能图初始化失败"); yield break; }
+        if (!damage.inited) { Destroy(go); Report("error", "技能图初始化失败"); return; }
         damage.SetDynamicValue("skill.level", Mathf.Max(1, request.level));
         SkillDamageNumbers.Observe(previewCaster);
         SkillDamageNumbers.Observe(previewTarget);
@@ -97,9 +122,12 @@ public sealed class OriginalSkillWebBattle : MonoBehaviour
             (a.Type == ActionType.Multiple_Time ? Mathf.Max(0, a.Count-1) * a.Interval :
             a.Type == ActionType.For_X_Seconds ? a.KeepTime : 0)).DefaultIfEmpty(0).Max());
         host.OriginalProjectileImpact = (source, victim) => SkillPlayback.ApplyIncomingDamage(source, victim, Mathf.Max(0, request.fallbackDamage));
-        Report("cast", skill.name);
-        damage.DealDamageObserved(previewCaster.mData, previewTarget.mData,
-            (index, victim, loss, shield) => Report("hit", victim.CombatRandomId, index, loss, shield));
+        int sequence = ++previewCast;
+        bool started = damage.TryCastSkill(previewCaster.mData, previewTarget.mData, (index, victim, loss, shield) => {
+            if (previewCast == sequence) Report("hit", victim.CombatRandomId, index, loss, shield);
+        });
+        if (started) Report("cast", skill.name);
+        else Report("blocked", previewCaster.mData.CanStartSkill ? "本次试放未满足施法条件" : "施放者尚不能接下一招");
     }
 
     [Preserve]
@@ -192,8 +220,8 @@ public sealed class OriginalSkillWebBattle : MonoBehaviour
         foreach (var action in skill.RootSet.Actions) last = Mathf.Max(last, action.WaitTime);
         playback.RetireAfter(1 + last);
         playback.OriginalProjectileImpact = (source, victim) => SkillPlayback.ApplyIncomingDamage(source, victim, 1f);
-        damage.DealDamage(caster.mData, target.mData);
-        Debug.Log("Qingyun cast " + sourceId);
+        if (damage.TryCastSkill(caster.mData, target.mData))
+            Debug.Log("Qingyun cast " + sourceId);
     }
 
     [Preserve]

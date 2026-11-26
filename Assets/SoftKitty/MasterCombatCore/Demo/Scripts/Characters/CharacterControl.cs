@@ -551,7 +551,7 @@ namespace SoftKitty.MasterCombatCore.Demo
         #region Movement & Rotate
         protected bool DoJump()
         {
-            if (!isLocomotion || mAnimator.IsInTransition(0) || isJumping) return false;
+            if (!EntityInstance.mData.CanMoveByInput || !isLocomotion || mAnimator.IsInTransition(0) || isJumping) return false;
             Jump = true;
             gravity = Vector3.zero;
             JumpPower = 12F;
@@ -604,7 +604,9 @@ namespace SoftKitty.MasterCombatCore.Demo
                 gravity = (JumpPower - 9.8F) * Time.fixedDeltaTime * Vector3.up;
             }
             float _speed = mAnimator.GetFloat("Speed");
-            if (isAttacking || isBlocking || (!isLocomotion && !isLanding && Grounded))
+            bool skillMovement = EntityInstance.UsesSkillMovementTiming(mAnimator);
+            bool animationBlocksWalking = skillMovement ? isHeavyLanding : isAttacking || (!isLocomotion && !isLanding && Grounded);
+            if (!EntityInstance.mData.CanMoveByInput || isBlocking || animationBlocksWalking)
             {
                 MovingSpeed = 0F;
                 _speed = 0F;
@@ -623,7 +625,7 @@ namespace SoftKitty.MasterCombatCore.Demo
             mAnimator.SetBool("Grounded", Grounded);
             mAnimator.SetBool("FreeFall", FreeFall);
             mAnimator.SetBool("Jump", Jump);
-            mAnimator.SetBool("Attack", Grounded? Attack:false);
+            mAnimator.SetBool("Attack", Grounded && Attack && EntityInstance.mData.CanStartSkill);
             mAnimator.SetBool("Block", Block);
             mAnimator.speed = Forzen ? 0F: Mathf.Clamp( 1F - Mathf.Min(hitTimer,0.5F) * 2F- hitLag,0.1F,1F)* (1F+EntityInstance.GetAttributeFloat("agi")*0.01F);
             st = mAnimator.GetCurrentAnimatorStateInfo(0);

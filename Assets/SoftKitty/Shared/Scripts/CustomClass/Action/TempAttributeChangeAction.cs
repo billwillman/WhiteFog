@@ -33,7 +33,9 @@ namespace SoftKitty{
         public override void Execute(GraphRuntimeState _runtime){ //Execute this action once
             if (entity(_runtime) != null)
             {
-                entity(_runtime).AddTempAttributes(uid, value(_runtime), duration, (BasicMathFunction)operation, _runtime.RootState.instanceUid);
+                // Buff ticks supply a persistent effect UID. A standalone skill owns the modifier for this cast.
+                string source = _runtime.RootState.instanceUid ?? ("cast:" + _runtime.RootState.RandomKey.Key.ToString("X16"));
+                entity(_runtime).AddTempAttributes(uid, value(_runtime), duration, (BasicMathFunction)operation, source);
                 if (SGD_Settings.Instance.DebugLevel >= 3)
                     Debug.Log("<TempAttributeChangeAction> [Node:" + Uid + "] Executed() > (Entity)" 
                         + entity(_runtime).uid + ".AddTempAttributes("+ uid+", "+ value(_runtime)+", "+ duration+", "+ operation.ToString()+", "+ _runtime.RootState.instanceUid);
