@@ -320,7 +320,7 @@ MonoBehaviour:
       mRoot:
         rid: 6312275961689669632
       ClassName: OriginalSkillVisual
-      IntValues: 0000000001000000
+      IntValues: 0600000001000000
       FloatValues: []
       StringValues:
       - 
@@ -2559,7 +2559,7 @@ MonoBehaviour:
           mRoot:
             rid: 6312275961689669632
           ClassName: OriginalSkillVisual
-          IntValues: 0000000001000000
+          IntValues: 0600000001000000
           FloatValues: []
           StringValues:
           - 
