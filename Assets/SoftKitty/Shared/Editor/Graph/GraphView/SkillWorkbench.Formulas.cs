@@ -179,13 +179,16 @@ namespace SoftKitty
             {
                 string origin;
                 bool canConnect = false;
-                bool hitBox = action.ClassName == "OriginalSkillVisual" && action.IntValues.FirstOrDefault() == 6 &&
-                    OriginalSkillVisualAction.EffectFor(action, source as OriginalSkillGraph)?.triggerHit == true;
-                if (SkillProjectile.IsLaunch(action) || hitBox)
+                if (IsHitSource(action, source))
                 {
                     var links = action.outputPort.FirstOrDefault()?.uid;
                     if (links != null && links.Count > 0)
-                        origin = "命中后执行 " + string.Join("、", links.Select(link => link.Split('#')[0]));
+                        origin = "命中后执行 " + string.Join("、", links.Select(link =>
+                        {
+                            string uid = link.Split('#')[0];
+                            var target = actions.Find(a => a.Uid == uid);
+                            return target == null ? uid : HitActionLabel(target);
+                        }));
                     else
                     {
                         origin = "命中口未接线" + (hasCallback ? "，试放时使用每段预览来伤" : "");

@@ -102,14 +102,22 @@ namespace SoftKitty
             shot.impact = PrefabField("命中特效", shot.impact);
             if (shot.impact) shot.impactScale = Mathf.Max(0, EditorGUILayout.FloatField("命中特效缩放", shot.impactScale));
             if (EditorGUI.EndChangeCheck()) Change(() => node.projectile = shot);
+        }
 
+        private void DrawHitActions(Action node)
+        {
             EditorGUILayout.LabelField("命中后执行", EditorStyles.boldLabel);
-            if (node.outputPort.Count > 0)
+            if (node.outputPort.Count == 0 || node.outputPort[0].uid.Count == 0)
+                EditorGUILayout.LabelField("未连接命中动作。");
+            else
                 foreach (var link in node.outputPort[0].uid)
                 {
                     string uid = link.Split('#')[0];
                     var child = graph.RootSet.Actions.Find(a => a.Uid == uid);
-                    if (GUILayout.Button(child == null ? uid : ActionName(child) + " · " + uid) && child != null) selection = uid;
+                    if (child == null) { EditorGUILayout.LabelField("执行分支 " + uid); continue; }
+                    string label = HitActionLabel(child);
+                    if (child.ClassName == "FormulaImpact") label += "  ·  " + CalculationSource(child);
+                    if (GUILayout.Button("查看 " + label)) { selection = uid; Repaint(); }
                 }
             if (GUILayout.Button("添加命中后执行的动作"))
             {

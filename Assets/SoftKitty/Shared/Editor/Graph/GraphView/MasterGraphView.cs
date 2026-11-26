@@ -18,6 +18,21 @@ namespace SoftKitty
         public float saving = 0F;
         public MasterGraphView() { }
 
+        internal void FocusNode(string uid)
+        {
+            if (uid == null || !NodeDic.TryGetValue(uid, out var node)) return;
+            ClearSelection();
+            AddToSelection(node);
+            FrameSelection();
+        }
+
+        internal void RefreshHitLinks()
+        {
+            var sources = SkillWorkbench.ExecutionSources(graph.RootSet);
+            foreach (var node in NodeDic.Values.OfType<ActionNode>())
+                node.RefreshHitLinks(this, sources[node.data.Uid + "#0"]);
+        }
+
         public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
         {
             return ports.ToList();
@@ -90,6 +105,7 @@ namespace SoftKitty
             _newNode.Move(_data.Position);
             graph.RootSet.Actions.Add(_data);
             NodeDic.Add(_data.Uid, _newNode);
+            RefreshHitLinks();
             if(graph.autoSave) graph.pendingSave=true;
         }
 

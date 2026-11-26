@@ -5,6 +5,7 @@ using UnityEditor;
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SoftKitty
 {
@@ -53,6 +54,7 @@ namespace SoftKitty
                 RefreshProjectilePort();
                 LoadClassInterface(m_data,"Action",1);
                 DrawFormulaLinks();
+                GetFirstAncestorOfType<MasterGraphView>()?.RefreshHitLinks();
             });
 
             baseSettings.Q<DropdownField>("ExcuteType").choices.Clear();
@@ -74,6 +76,7 @@ namespace SoftKitty
             {
                 m_data.WaitTime = x.newValue;
                 if (SkillWorkbench.IsSourceTime(m_data)) DrawFormulaLinks();
+                if (SkillWorkbench.IsHitSource(m_data, mainDataObject)) GetFirstAncestorOfType<MasterGraphView>()?.RefreshHitLinks();
             });
 
             baseSettings.Q<IntegerField>("Count").value = m_data.Count;
@@ -97,22 +100,24 @@ namespace SoftKitty
             extensionContainer.Add(baseSettings);
             m_data.ResetInputPortSetting();
             LoadClassInterface(m_data,"Action",1);
+            if (SkillWorkbench.IsHitSource(m_data, mainDataObject) && output.Count == 0) RefreshProjectilePort();
             DrawFormulaLinks();
             RefreshExpandedState();
         }
 
-        protected override void OnEnumChanged(string uid)
+        protected override void OnIntegerSettingChanged(string uid)
         {
-            if (uid == "stage" && m_data.ClassName == "OriginalSkillVisual")
+            if ((uid == "stage" || uid == "cue") && m_data.ClassName == "OriginalSkillVisual")
             {
                 RefreshProjectilePort();
                 DrawFormulaLinks();
+                GetFirstAncestorOfType<MasterGraphView>()?.RefreshHitLinks();
             }
         }
 
         private void RefreshProjectilePort()
         {
-            if (SkillProjectile.IsLaunch(m_data))
+            if (SkillWorkbench.IsHitSource(m_data, mainDataObject))
             {
                 m_data.EnsureArrivalPort();
                 if (output.Count > 0) return;
@@ -122,7 +127,8 @@ namespace SoftKitty
                 output.Add(port);
                 outputContainer.Add(port);
             }
-            else if (m_data.outputPort.Count > 0)
+            // A different effect index can temporarily disable contact on the same track.
+            else if (m_data.outputPort.Count > 0 && !(m_data.ClassName == "OriginalSkillVisual" && m_data.IntValues.FirstOrDefault() == 6))
             {
                 if (output.Count > 0)
                 {
@@ -133,6 +139,55 @@ namespace SoftKitty
                 m_data.outputPort.Clear();
             }
             RefreshPorts();
+        }
+
+        internal void RefreshHitLinks(MasterGraphView view, IEnumerable<NodeBase> sources)
+        {
+            extensionContainer.Q<VisualElement>("hitLinks")?.RemoveFromHierarchy();
+            bool emits = SkillWorkbench.IsHitSource(m_data, mainDataObject);
+            var parents = sources.Where(n => SkillWorkbench.IsHitSource(n, mainDataObject)).OfType<Action>().Distinct().ToArray();
+            var color = new Color(.97f, .69f, .28f);
+            if (input.Count > 0)
+            {
+                bool onlyHits = parents.Length > 0 && sources.All(s => SkillWorkbench.IsHitSource(s, mainDataObject));
+                input[0].portName = onlyHits ? "命中输入" : GraphEditorText.Localize(m_data.inputPort[0].Name);
+                input[0].portColor = parents.Length > 0 ? color : portColors[m_data.inputPort[0].Type];
+            }
+            if (output.Count > 0)
+            {
+                output[0].portName = emits ? "命中后执行" : m_data.ClassName == "OriginalSkillVisual" ? "命中未启用" : GraphEditorText.Localize(m_data.outputPort[0].Name);
+                output[0].portColor = emits ? color : portColors[m_data.outputPort[0].Type];
+            }
+            if (!emits && parents.Length == 0) return;
+            var panel = new VisualElement { name = "hitLinks" };
+            var heading = new Label(emits ? SkillWorkbench.HitSourceLabel(m_data) : SkillWorkbench.HitActionLabel(m_data));
+            heading.style.unityFontStyleAndWeight = FontStyle.Bold;
+            panel.Add(heading);
+            void Link(string uid, string text)
+            {
+                var button = new Button(() => view.FocusNode(uid)) { text = text, tooltip = "定位 " + uid };
+                button.style.whiteSpace = WhiteSpace.Normal;
+                button.style.height = StyleKeyword.Auto;
+                panel.Add(button);
+            }
+            foreach (var parent in parents)
+                Link(parent.Uid, "来自 " + SkillWorkbench.HitSourceLabel(parent));
+            if (m_data.ClassName == "FormulaImpact") panel.Add(new Label(SkillWorkbench.CalculationSource(m_data)));
+            if (emits)
+            {
+                var links = m_data.outputPort.FirstOrDefault()?.uid;
+                if (links == null || links.Count == 0) panel.Add(new Label("未连接命中动作"));
+                else foreach (var link in links)
+                {
+                    string uid = link.Split('#')[0];
+                    if (!view.NodeDic.TryGetValue(uid, out var child)) continue;
+                    string target = child is ActionNode a ? SkillWorkbench.HitActionLabel(a.data) : child.title + " " + uid;
+                    if (child is ActionNode impact && impact.data.ClassName == "FormulaImpact")
+                        target += "\n" + SkillWorkbench.CalculationSource(impact.data);
+                    Link(uid, "命中 → " + target);
+                }
+            }
+            extensionContainer.Insert(0, panel);
         }
 
         private void DrawFormulaLinks()

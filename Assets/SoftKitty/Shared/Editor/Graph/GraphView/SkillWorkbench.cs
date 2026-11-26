@@ -164,7 +164,7 @@ namespace SoftKitty
                     if (AssetDatabase.CopyAsset(AssetDatabase.GetAssetPath(graph), path)) SelectGraph(AssetDatabase.LoadAssetAtPath<GraphObject>(path));
                 }
             }
-            if (graph && GUILayout.Button("打开节点图", EditorStyles.toolbarButton)) MasterGraphWindow.OpenWindow(graph);
+            if (graph && GUILayout.Button("打开节点图", EditorStyles.toolbarButton)) MasterGraphWindow.OpenWindow(graph, selection);
             if (graph && GUILayout.Button("保存", EditorStyles.toolbarButton)) SaveSkillAndLevels(graph);
             if (GUILayout.Button("使用手册", EditorStyles.toolbarButton))
             {
@@ -215,9 +215,10 @@ namespace SoftKitty
                         var entries = root.Triggers.Where(t => root.inputPort[0].uid.Contains(t.Uid + "#0")).ToList();
                         showConditions = EditorGUILayout.Foldout(showConditions, "技能入口条件   " + entries.Sum(t => t.inputPort[0].uid.Count) + " 项", true);
                         if (showConditions) DrawEntryConditions(root, entries);
-                        DrawTimeline(root);
+                        var sources = ExecutionSources(root);
+                        DrawTimeline(root, sources);
                         var action = root.Actions.Find(x => x.Uid == selection);
-                        if (action != null && !IsSourceTime(action)) DrawAction(action);
+                        if (action != null && !IsSourceTime(action)) DrawAction(action, sources[action.Uid + "#0"]);
                     }
                 }
             }
@@ -388,7 +389,52 @@ namespace SoftKitty
                 : "原作在施法后 " + time + " 记录位移时点。此处仅供对照原作时序。角色移动由实际的位移动作控制。手动新建技能无需添加。";
         }
 
-        private void DrawTimeline(Root root)
+        // MCC dispatches actions through the upstream node's output port.
+        internal static ILookup<string, NodeBase> ExecutionSources(Root root)
+        {
+            var owners = new NodeBase[] { root }.Concat(root.Branchs).Concat(root.Actions);
+            return (from owner in owners
+                    from port in owner.outputPort
+                    where port.Type == "RootOut" || port.Type == "BranchOutAction"
+                    from link in port.uid
+                    select new { link, owner }).ToLookup(edge => edge.link, edge => edge.owner);
+        }
+
+        internal static bool IsHitSource(NodeBase source, GraphObject skill) => source is Action action &&
+            (SkillProjectile.IsLaunch(action) || action.ClassName == "OriginalSkillVisual" && action.IntValues.FirstOrDefault() == 6 &&
+             OriginalSkillVisualAction.EffectFor(action, skill as OriginalSkillGraph)?.triggerHit == true);
+
+        internal static string HitSourceLabel(Action action) =>
+            action.WaitTime.ToString("0.###") + "s " + (SkillProjectile.IsLaunch(action) ? "投射物" : "轨道特效") + " " + action.Uid;
+
+        internal static string HitActionLabel(Action action)
+        {
+            if (action.ClassName != "FormulaImpact") return ActionName(action) + " " + action.Uid;
+            var calculation = action.calculation;
+            string segment = calculation?.independentSegment == true ? "第" + calculation.logicIndex + "段" : "";
+            return segment + "命中结算 " + action.Uid;
+        }
+
+        internal static string CalculationSource(Action action)
+        {
+            var c = action.calculation;
+            if (c == null) return "未配置结算";
+            if (c.EffectiveMode == SkillCalculation.Mode.NativeGraph) return c.nativeGraph ? c.nativeGraph.name : "未绑定伤害图";
+            return c.ActiveFlow ? c.ActiveFlow.name : c.UsesLinkedAssets ? "节点内的公式" : "未绑定伤害流程";
+        }
+
+        // A settlement with one contact source belongs underneath it. Shared settlements keep a single row.
+        private static ILookup<Action, Action> GroupHitSettlements(Action[] actions, ILookup<string, NodeBase> sources, GraphObject skill)
+        {
+            return actions.ToLookup(action =>
+            {
+                if (action.ClassName != "FormulaImpact") return null;
+                var parents = sources[action.Uid + "#0"].Distinct().ToArray();
+                return parents.Length == 1 && IsHitSource(parents[0], skill) ? (Action)parents[0] : null;
+            });
+        }
+
+        private void DrawTimeline(Root root, ILookup<string, NodeBase> sources)
         {
             EditorGUILayout.Space();
             EditorGUILayout.BeginHorizontal();
@@ -411,19 +457,33 @@ namespace SoftKitty
             var motions = actions.ToDictionary(a => a, MotionTimeline);
             float horizon = Mathf.Max(2, actions.Select(a => a.WaitTime + Span(a) + (motions[a]?.seconds ?? 0) + .4f).DefaultIfEmpty(2).Max());
             cursor = EditorGUILayout.Slider("时间游标（秒）", cursor, 0, horizon);
-            foreach (var action in actions)
+            var groups = GroupHitSettlements(actions, sources, graph);
+            foreach (var parentRow in groups[null])
+            foreach (var action in new[] { parentRow }.Concat(groups[parentRow]))
             {
                 var row = EditorGUILayout.GetControlRect(false, 24);
                 var name = new Rect(row.x, row.y, Mathf.Min(row.width * .49f, 285), row.height);
+                bool nested = action != parentRow;
+                if (nested) name.xMin += 16;
                 var lane = Rect.MinMaxRect(name.xMax + 4, row.y + 4, row.xMax - 5, row.yMax - 4);
-                var binding = action.inputPort[0].uid.FirstOrDefault();
-                bool onArrival = binding != null && root.Actions.Exists(a => binding == a.Uid + "#0" &&
-                    (SkillProjectile.IsLaunch(a) || a.visualEffect?.triggerHit == true));
-                string route = binding == null ? "未连接" : binding == "Node0#0" ? "直接" : onArrival ? "命中后" : "分支";
+                var parents = sources[action.Uid + "#0"];
+                bool onArrival = parents.Any(p => IsHitSource(p, graph));
+                string route = string.Join("、", parents.Select(parent => parent == root ? "直接" :
+                    IsHitSource(parent, graph) ? HitSourceLabel((Action)parent) + " 命中后" : "分支 " + parent.Uid));
+                if (route.Length == 0) route = "未连接";
                 var timing = motions[action];
                 string label = (onArrival ? "+" : "") + action.WaitTime.ToString("0.00") + "s  " + (timing == null ? ActionName(action) : "角色动画") + "  ·  " + (timing == null ? route : TimingLabel(timing));
-                if (GUI.Toggle(name, action.Uid == selection, new GUIContent(label, action.Uid), EditorStyles.miniButton) && selection != action.Uid)
-                { selection = action.Uid; cursor = action.WaitTime; }
+                if (IsHitSource(action, graph)) label = HitSourceLabel(action);
+                if (onArrival && action.ClassName == "FormulaImpact") label = (nested ? "↳ " : "") + HitActionLabel(action);
+                if (GUI.Toggle(name, action.Uid == selection, new GUIContent(label, action.Uid + " · " + route), EditorStyles.miniButton) && selection != action.Uid)
+                { selection = action.Uid; cursor = parentRow.WaitTime; }
+                if (onArrival && action.ClassName == "FormulaImpact")
+                {
+                    string delay = action.WaitTime > 0 ? "延迟 " + action.WaitTime.ToString("0.###") + " 秒" : "立即";
+                    string detail = (nested ? "命中后" : route + " · ") + delay + "  ·  " + CalculationSource(action);
+                    GUI.Label(lane, new GUIContent(detail, detail), EditorStyles.miniLabel);
+                    continue;
+                }
                 EditorGUI.DrawRect(lane, new Color(.13f,.19f,.21f));
                 var bar = new Rect(lane.x + lane.width * action.WaitTime / horizon, lane.y + 2,
                     Mathf.Max(5, lane.width * Span(action) / horizon), lane.height - 4);
@@ -633,12 +693,21 @@ namespace SoftKitty
             action.ClassName == "Event" && action.StringValues.Count > 0 && action.StringValues[0] == Entity.InterruptCastEvent
                 ? "打断施法" : GraphEditorText.Localize(action.ClassName);
 
-        private void DrawAction(Action action)
+        private void DrawAction(Action action, IEnumerable<NodeBase> sources)
         {
             EditorGUILayout.Space();
             EditorGUILayout.LabelField(ActionName(action) + " · " + action.Uid, EditorStyles.boldLabel);
+            bool afterHit = false;
+            foreach (var source in sources.Where(p => IsHitSource(p, graph)).Cast<Action>())
+            {
+                afterHit = true;
+                if (GUILayout.Button("查看命中来源   " + HitSourceLabel(source)))
+                { selection = source.Uid; cursor = source.WaitTime; Repaint(); }
+            }
+            if (afterHit) EditorGUILayout.HelpBox("从上游的「命中目标」端口触发。延迟填 0，碰到受击体时立即对本次命中的对象执行。", MessageType.Info);
+            if (IsHitSource(action, graph)) DrawHitActions(action);
             DrawActionConditions(action);
-            Edit("开始时间（秒）", action.WaitTime, x => action.WaitTime = x);
+            Edit(afterHit ? "命中后延迟（秒）" : "开始时间（秒）", action.WaitTime, x => action.WaitTime = x);
             var mode = (ActionType)EditorGUILayout.Popup("执行方式", (int)action.Type, Modes);
             if (mode != action.Type) Change(() => action.Type = mode);
             if (mode == ActionType.Multiple_Time)

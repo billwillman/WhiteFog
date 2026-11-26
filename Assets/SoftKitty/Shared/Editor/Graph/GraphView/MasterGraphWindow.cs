@@ -9,7 +9,9 @@ namespace SoftKitty
 {
     public class MasterGraphWindow : EditorWindow
     {
-        public static void OpenWindow(GraphObject _graphObject)
+        public static void OpenWindow(GraphObject _graphObject) => OpenWindow(_graphObject, null);
+
+        internal static void OpenWindow(GraphObject _graphObject, string selectedUid)
         {
             if (_graphObject == null) return;
             if (wnd != null) wnd.Close();
@@ -21,6 +23,8 @@ namespace SoftKitty
             wnd.openingSnapshot.name = _graphObject.name;
             wnd.openingSnapshot.hideFlags = HideFlags.HideAndDontSave;
             wnd.CreateElement();
+            var view = wnd.graphView;
+            if (selectedUid != null) view.schedule.Execute(() => view.FocusNode(selectedUid));
         }
 
         private static MasterGraphWindow wnd;
@@ -380,6 +384,7 @@ namespace SoftKitty
             }
 
 
+            foreach (var obj in graphObject.RootSet.Actions) ConnectByData(obj.Uid, obj.outputPort);
             foreach (var obj in graphObject.RootSet.Variables) ConnectByData(obj.Uid, obj.outputPort);
             foreach (var obj in graphObject.RootSet.Maths) ConnectByData(obj.Uid, obj.outputPort);
             foreach (var obj in graphObject.RootSet.Entities) ConnectByData(obj.Uid, obj.outputPort);
@@ -390,6 +395,7 @@ namespace SoftKitty
 
 
             ConnectByData(graphObject.RootSet.Uid, graphObject.RootSet.outputPort);
+            graphView.RefreshHitLinks();
 
             FormatDebugMode();
             rootVisualElement.MarkDirtyRepaint();
@@ -508,6 +514,7 @@ namespace SoftKitty
           
 
 
+           if (_save) graphView.RefreshHitLinks();
            if (_save && graphObject.autoSave) graphObject.pendingSave=true;
 
             return change;

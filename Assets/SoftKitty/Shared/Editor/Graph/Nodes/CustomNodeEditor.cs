@@ -65,7 +65,7 @@ namespace SoftKitty
 
         }
 
-        protected virtual void OnEnumChanged(string uid) { }
+        protected virtual void OnIntegerSettingChanged(string uid) { }
 
         public virtual void LoadClassInterface(CustomNode _data,string _typeName, int _baseInputCount)
         {
@@ -148,6 +148,7 @@ namespace SoftKitty
                                 newElement.Q<IntegerField>("Item").RegisterValueChangedCallback(x =>
                                 {
                                     _data.IntValues[_index] = x.newValue;
+                                    OnIntegerSettingChanged(_uid);
                                 });
                                 newElement.Q<Button>("AdjustUp").clicked += () =>
                                 {
@@ -205,7 +206,7 @@ namespace SoftKitty
                                 {
                                     if (x.target is not DropdownField field) return;
                                     _data.IntValues[_index] = field.index;
-                                    OnEnumChanged(_uid);
+                                    OnIntegerSettingChanged(_uid);
                                     CheckVisibleBinding(_uid, true, _data.IntValues[_index]);
                                 });
                                 _dropDowns.Add(_uid);
