@@ -12,6 +12,7 @@ namespace SoftKitty
         public float WaitTime = 0F;
         public float KeepTime = 0F;
         public float Interval = 0F;
+        [SerializeReference] public SkillCalculation calculation;
 
        
         public Action()
@@ -58,6 +59,7 @@ namespace SoftKitty
             this.WaitTime = _source.WaitTime;
             this.KeepTime = _source.KeepTime;
             this.Interval = _source.Interval;
+            calculation = _source.calculation;
         }
 
         public void ResetInputPortSetting()

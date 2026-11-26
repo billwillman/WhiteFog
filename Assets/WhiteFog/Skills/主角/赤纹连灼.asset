@@ -119,8 +119,8 @@ MonoBehaviour:
       minimized: 0
       InstanceCache: 0
       mRoot:
-        rid: 6312275950254948353
-      ClassName: SkillImpact
+        rid: 6312275957409906689
+      ClassName: FormulaImpact
       IntValues: 02000000
       FloatValues:
       - 0
@@ -147,9 +147,9 @@ MonoBehaviour:
           Index: 1
           VisibleBind: 
           EnumOptions: []
-        - Uid: power
-          Label: "\u6BCF\u6BB5\u4F24\u5BB3"
-          ToolTips: "\u6BCF\u6BB5\u4F24\u5BB3"
+        - Uid: level
+          Label: "\u6280\u80FD\u7B49\u7EA7"
+          ToolTips: "\u4ECE\u8C03\u7528\u65B9\u4F20\u5165\u6280\u80FD\u7B49\u7EA7\uFF0C\u67E5\u8BE5\u52A8\u4F5C\u7684\u7B49\u7EA7\u8868\u3002"
           Type: 4
           Index: 2
           VisibleBind: 
@@ -194,8 +194,8 @@ MonoBehaviour:
           VisibleBind: 
           EnumOptions: []
         - Uid: weak
-          Label: "\u5230\u8FBE\u65F6\u65BD\u52A0\u6613\u4F24"
-          ToolTips: "\u5230\u8FBE\u65F6\u65BD\u52A0\u6613\u4F24"
+          Label: "\u9996\u6B21\u547D\u4E2D\u65F6\u65BD\u52A0\u6613\u4F24"
+          ToolTips: "\u4EC5\u672C\u6B21\u65BD\u653E\u9996\u6B21\u5224\u5B9A\u6210\u529F\u65F6\u65BD\u52A0\u3002"
           Type: 0
           Index: 1
           VisibleBind: 
@@ -215,8 +215,8 @@ MonoBehaviour:
           VisibleBind: weak
           EnumOptions: []
         - Uid: delay
-          Label: "\u547D\u4E2D\u540E\u5230\u9996\u6BB5\u7684\u5EF6\u8FDF\uFF08\u79D2\uFF09"
-          ToolTips: "\u547D\u4E2D\u540E\u5230\u9996\u6BB5\u7684\u5EF6\u8FDF\uFF08\u79D2\uFF09"
+          Label: "\u9996\u6BB5\u547D\u4E2D\u540E\u7ED3\u7B97\u5EF6\u8FDF\uFF08\u79D2\uFF09"
+          ToolTips: "\u9996\u6BB5\u5224\u5B9A\u6210\u529F\u540E\u81F3\u8BFB\u53D6\u9632\u5FA1\u5E76\u7ED3\u7B97\u7684\u65F6\u95F4\u3002"
           Type: 2
           Index: 5
           VisibleBind: 
@@ -226,6 +226,8 @@ MonoBehaviour:
       WaitTime: 0.3
       KeepTime: 0
       Interval: 0.45
+      calculation:
+        rid: 6312275957338079233
     Triggers:
     - mType: 0
       Name: Trigger
@@ -263,7 +265,7 @@ MonoBehaviour:
       minimized: 0
       InstanceCache: 0
       mRoot:
-        rid: 6312275950254948353
+        rid: 6312275957409906689
       TriggerConditions: []
       ResetConditions: []
       AutoReset: 1
@@ -299,7 +301,7 @@ MonoBehaviour:
       minimized: 0
       InstanceCache: 0
       mRoot:
-        rid: 6312275950254948353
+        rid: 6312275957409906689
       ClassName: EntityExist
       IntValues: 00000000
       FloatValues: []
@@ -330,7 +332,7 @@ MonoBehaviour:
     Maths: []
     Variables:
     - mType: 0
-      Name: Variable
+      Name: "\u672C\u6B21\u65BD\u653E\u7684\u6280\u80FD\u7B49\u7EA7"
       Uid: Node7
       Position: {x: 400, y: 410}
       NodeIndex: 0
@@ -359,11 +361,11 @@ MonoBehaviour:
       minimized: 0
       InstanceCache: 0
       mRoot:
-        rid: 6312275950254948353
-      Type: 0
-      Constant: 16
+        rid: 6312275957409906689
+      Type: 2
+      Constant: 1
       AttributeKey: Attack
-      VariableUid: 
+      VariableUid: skill.level
       Max: 1
     Entities:
     - mType: 0
@@ -386,7 +388,7 @@ MonoBehaviour:
       minimized: 0
       InstanceCache: 0
       mRoot:
-        rid: 6312275950254948353
+        rid: 6312275957409906689
       Type: 2
       EntityUid: 
     - mType: 0
@@ -409,7 +411,7 @@ MonoBehaviour:
       minimized: 0
       InstanceCache: 0
       mRoot:
-        rid: 6312275950254948353
+        rid: 6312275957409906689
       Type: 1
       EntityUid: 
     - mType: 0
@@ -432,14 +434,14 @@ MonoBehaviour:
       minimized: 0
       InstanceCache: 0
       mRoot:
-        rid: 6312275950254948353
+        rid: 6312275957409906689
       Type: 2
       EntityUid: 
     Notes:
     - Uid: skillSummary
       Name: "\u8D64\u7EB9\u8FDE\u707C"
-      Text: "\u524D\u6447 0.30 \u79D2\uFF1B\u5149\u5F39\u5230\u8FBE\u540E\u6BCF 0.45
-        \u79D2\u9020\u6210 16 \u70B9\u4F24\u5BB3\uFF0C\u5171\u56DB\u6BB5\u3002"
+      Text: "\u524D\u6447 0.30 \u79D2\uFF0C\u5149\u5F39\u62B5\u8FBE\u540E\u5206\u56DB\u6BB5\uFF0C\u95F4\u9694
+        0.45 \u79D2\u3002\u6570\u503C\u4E0E\u6BB5\u5360\u6BD4\u89C1\u300C\u5206\u6BB5\u547D\u4E2D\u4E0E\u516C\u5F0F\u7ED3\u7B97\u300D\u3002"
       Position: {x: 0, y: -320}
       Size: {x: 420, y: 155}
       FontSize: 1
@@ -449,10 +451,45 @@ MonoBehaviour:
     ActiveTriggers: []
   previewAsOpponent: 0
   autoSave: 0
-  NodeIconSprites: []
-  ActionClassNames: []
-  HandlerClassNames: []
-  RootClassNames: []
+  NodeIconSprites:
+  - {fileID: 580834057, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  - {fileID: 1828930907, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  - {fileID: -450080446, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  - {fileID: 936707919, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  - {fileID: -910347496, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  - {fileID: 2009228480, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  - {fileID: -787081704, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  ActionClassNames:
+  - Animation
+  - AttributeChange
+  - CustomData
+  - Destroy
+  - Event
+  - FormulaImpact
+  - Instantiate
+  - OverTimeEffect
+  - PlaySound
+  - SendMessage
+  - SkillImpact
+  - SkillSignal
+  - SkillVital
+  - Teleport
+  - TempAttributeChange
+  - Transform
+  HandlerClassNames:
+  - AngleDifference
+  - AttributeValue
+  - CustomData
+  - Distance
+  - EntityExist
+  - HeightDifference
+  - OverTimeEffect
+  - Raycast
+  - TagCompare
+  - Tag
+  - VariableCompare
+  RootClassNames:
+  - Combat
   pendingSave: 0
   summaryNoteId: skillSummary
   references:
@@ -460,7 +497,19 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 6312275950254948353
+    - rid: 6312275957338079233
+      type: {class: SkillCalculation, ns: SoftKitty, asm: Assembly-CSharp}
+      data:
+        accuracy: {fileID: 11400000, guid: e9a7c00e6b7daf844b8b209b15cc9056, type: 2}
+        damage: {fileID: 11400000, guid: 94eaa40406d50b5489ba205f84c10a8b, type: 2}
+        settlement: {fileID: 11400000, guid: 6aa8cc93a02c7bc4d941c37de20c4f12, type: 2}
+        levels: {fileID: 11400000, guid: fd1308a2e1bde9e46af9bbe2f9890ae4, type: 2}
+        segmentPercent:
+        - 25
+        - 25
+        - 25
+        - 25
+    - rid: 6312275957409906689
       type: {class: Root, ns: SoftKitty, asm: Assembly-CSharp}
       data:
         mType: 0
@@ -569,8 +618,8 @@ MonoBehaviour:
           minimized: 0
           InstanceCache: 0
           mRoot:
-            rid: 6312275950254948353
-          ClassName: SkillImpact
+            rid: 6312275957409906689
+          ClassName: FormulaImpact
           IntValues: 02000000
           FloatValues:
           - 0
@@ -597,9 +646,9 @@ MonoBehaviour:
               Index: 1
               VisibleBind: 
               EnumOptions: []
-            - Uid: power
-              Label: "\u6BCF\u6BB5\u4F24\u5BB3"
-              ToolTips: "\u6BCF\u6BB5\u4F24\u5BB3"
+            - Uid: level
+              Label: "\u6280\u80FD\u7B49\u7EA7"
+              ToolTips: "\u4ECE\u8C03\u7528\u65B9\u4F20\u5165\u6280\u80FD\u7B49\u7EA7\uFF0C\u67E5\u8BE5\u52A8\u4F5C\u7684\u7B49\u7EA7\u8868\u3002"
               Type: 4
               Index: 2
               VisibleBind: 
@@ -644,8 +693,8 @@ MonoBehaviour:
               VisibleBind: 
               EnumOptions: []
             - Uid: weak
-              Label: "\u5230\u8FBE\u65F6\u65BD\u52A0\u6613\u4F24"
-              ToolTips: "\u5230\u8FBE\u65F6\u65BD\u52A0\u6613\u4F24"
+              Label: "\u9996\u6B21\u547D\u4E2D\u65F6\u65BD\u52A0\u6613\u4F24"
+              ToolTips: "\u4EC5\u672C\u6B21\u65BD\u653E\u9996\u6B21\u5224\u5B9A\u6210\u529F\u65F6\u65BD\u52A0\u3002"
               Type: 0
               Index: 1
               VisibleBind: 
@@ -665,8 +714,8 @@ MonoBehaviour:
               VisibleBind: weak
               EnumOptions: []
             - Uid: delay
-              Label: "\u547D\u4E2D\u540E\u5230\u9996\u6BB5\u7684\u5EF6\u8FDF\uFF08\u79D2\uFF09"
-              ToolTips: "\u547D\u4E2D\u540E\u5230\u9996\u6BB5\u7684\u5EF6\u8FDF\uFF08\u79D2\uFF09"
+              Label: "\u9996\u6BB5\u547D\u4E2D\u540E\u7ED3\u7B97\u5EF6\u8FDF\uFF08\u79D2\uFF09"
+              ToolTips: "\u9996\u6BB5\u5224\u5B9A\u6210\u529F\u540E\u81F3\u8BFB\u53D6\u9632\u5FA1\u5E76\u7ED3\u7B97\u7684\u65F6\u95F4\u3002"
               Type: 2
               Index: 5
               VisibleBind: 
@@ -676,6 +725,8 @@ MonoBehaviour:
           WaitTime: 0.3
           KeepTime: 0
           Interval: 0.45
+          calculation:
+            rid: 6312275957338079233
         Triggers:
         - mType: 0
           Name: Trigger
@@ -713,7 +764,7 @@ MonoBehaviour:
           minimized: 0
           InstanceCache: 0
           mRoot:
-            rid: 6312275950254948353
+            rid: 6312275957409906689
           TriggerConditions: []
           ResetConditions: []
           AutoReset: 1
@@ -749,7 +800,7 @@ MonoBehaviour:
           minimized: 0
           InstanceCache: 0
           mRoot:
-            rid: 6312275950254948353
+            rid: 6312275957409906689
           ClassName: EntityExist
           IntValues: 00000000
           FloatValues: []
@@ -780,7 +831,7 @@ MonoBehaviour:
         Maths: []
         Variables:
         - mType: 0
-          Name: Variable
+          Name: "\u672C\u6B21\u65BD\u653E\u7684\u6280\u80FD\u7B49\u7EA7"
           Uid: Node7
           Position: {x: 400, y: 410}
           NodeIndex: 0
@@ -809,11 +860,11 @@ MonoBehaviour:
           minimized: 0
           InstanceCache: 0
           mRoot:
-            rid: 6312275950254948353
-          Type: 0
-          Constant: 16
+            rid: 6312275957409906689
+          Type: 2
+          Constant: 1
           AttributeKey: Attack
-          VariableUid: 
+          VariableUid: skill.level
           Max: 1
         Entities:
         - mType: 0
@@ -836,7 +887,7 @@ MonoBehaviour:
           minimized: 0
           InstanceCache: 0
           mRoot:
-            rid: 6312275950254948353
+            rid: 6312275957409906689
           Type: 2
           EntityUid: 
         - mType: 0
@@ -859,7 +910,7 @@ MonoBehaviour:
           minimized: 0
           InstanceCache: 0
           mRoot:
-            rid: 6312275950254948353
+            rid: 6312275957409906689
           Type: 1
           EntityUid: 
         - mType: 0
@@ -882,14 +933,14 @@ MonoBehaviour:
           minimized: 0
           InstanceCache: 0
           mRoot:
-            rid: 6312275950254948353
+            rid: 6312275957409906689
           Type: 2
           EntityUid: 
         Notes:
         - Uid: skillSummary
           Name: "\u8D64\u7EB9\u8FDE\u707C"
-          Text: "\u524D\u6447 0.30 \u79D2\uFF1B\u5149\u5F39\u5230\u8FBE\u540E\u6BCF
-            0.45 \u79D2\u9020\u6210 16 \u70B9\u4F24\u5BB3\uFF0C\u5171\u56DB\u6BB5\u3002"
+          Text: "\u524D\u6447 0.30 \u79D2\uFF0C\u5149\u5F39\u62B5\u8FBE\u540E\u5206\u56DB\u6BB5\uFF0C\u95F4\u9694
+            0.45 \u79D2\u3002\u6570\u503C\u4E0E\u6BB5\u5360\u6BD4\u89C1\u300C\u5206\u6BB5\u547D\u4E2D\u4E0E\u516C\u5F0F\u7ED3\u7B97\u300D\u3002"
           Position: {x: 0, y: -320}
           Size: {x: 420, y: 155}
           FontSize: 1

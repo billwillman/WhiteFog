@@ -50,6 +50,7 @@ namespace SoftKitty
                 DeleteAllCustomPort(m_data,1);
                 m_data.ResetInputPortSetting();
                 LoadClassInterface(m_data,"Action",1);
+                DrawFormulaLinks();
             });
 
             baseSettings.Q<DropdownField>("ExcuteType").choices.Clear();
@@ -93,7 +94,34 @@ namespace SoftKitty
             extensionContainer.Add(baseSettings);
             m_data.ResetInputPortSetting();
             LoadClassInterface(m_data,"Action",1);
+            DrawFormulaLinks();
             RefreshExpandedState();
+        }
+
+        private void DrawFormulaLinks()
+        {
+            extensionContainer.Q<VisualElement>("formulaLinks")?.RemoveFromHierarchy();
+            if (m_data.ClassName != "FormulaImpact") return;
+            var panel = new VisualElement { name = "formulaLinks" };
+            var config = m_data.calculation;
+            if (config == null) panel.Add(new Label("请在工作台配置攻击公式"));
+            else
+            {
+                void Formula(string label, SkillFormula formula)
+                {
+                    var button = new Button(() => MasterGraphWindow.OpenWindow(formula))
+                        { text = label + " · " + (formula ? formula.name : "未绑定") };
+                    button.SetEnabled(formula);
+                    panel.Add(button);
+                }
+                Formula("施放时", config.damage);
+                Formula("逐段判定", config.accuracy);
+                Formula("命中后", config.settlement);
+                panel.Add(new Button(() => Selection.activeObject = config.levels)
+                    { text = "等级表 · " + (config.levels ? config.levels.name : "未绑定") });
+                panel.Add(new Label("各段占比（%）  " + string.Join(" / ", config.segmentPercent)));
+            }
+            extensionContainer.Add(panel);
         }
 
 

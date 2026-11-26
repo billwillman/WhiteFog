@@ -3,6 +3,7 @@
   <assembly fullname="Assembly-CSharp">
     <type fullname="SoftKitty.CombatRoot" preserve="all" />
     <type fullname="SoftKitty.SkillImpactAction" preserve="all" />
+    <type fullname="SoftKitty.FormulaImpactAction" preserve="all" />
     <type fullname="SoftKitty.SkillVitalAction" preserve="all" />
     <type fullname="SoftKitty.SkillSignalAction" preserve="all" />
     <type fullname="SoftKitty.AnimationAction" preserve="all" />

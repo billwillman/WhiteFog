@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace SoftKitty
 {
-    [CustomEditor(typeof(GraphObject))]
+    [CustomEditor(typeof(GraphObject), true)]
     public class GraphObject_Inspector : Editor
     {
 
@@ -15,6 +15,14 @@ namespace SoftKitty
         public override void OnInspectorGUI()
         {
             GraphObject myTarget = (GraphObject)target;
+            if (myTarget is SkillFormula formula)
+            {
+                EditorGUILayout.LabelField("运行时输出节点", formula.outputUid);
+                if (GUILayout.Button("在公式页编辑与试算")) SkillWorkbench.Open(formula);
+                using (new EditorGUI.DisabledScope(formula.RootSet == null))
+                    if (GUILayout.Button("打开公式节点树")) MasterGraphWindow.OpenWindow(formula);
+                return;
+            }
             _labelStyle = new GUIStyle(GUI.skin.label);
             _labelStyle.alignment = TextAnchor.MiddleLeft;
             _summaryStyle= new GUIStyle(GUI.skin.box);
@@ -66,6 +74,17 @@ namespace SoftKitty
                     foreach (var obj in myTarget.RootSet.Actions)
                     {
                         if (obj.ClassName.ToLower().Contains("attribute")) _hasAtt = true;
+                        var c = obj.calculation;
+                        if (obj.ClassName == "FormulaImpact" && c != null)
+                        {
+                            _hasAtt = true;
+                            foreach (var asset in new ScriptableObject[] { c.damage, c.accuracy, c.settlement, c.levels })
+                            {
+                                if (!asset) continue;
+                                string path = AssetDatabase.GetAssetPath(asset);
+                                if (!_fileList.Contains(path)) _fileList.Add(path);
+                            }
+                        }
                     }
                     foreach (var obj in myTarget.RootSet.Variables)
                     {

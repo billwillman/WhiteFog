@@ -25,6 +25,8 @@ namespace SoftKitty
         private float cursor;
         private string message = "";
         private static readonly string[] Modes = { "单次", "执行多次", "持续执行" };
+        private const int PreviewPage = 3;
+        private static readonly string[] Pages = { "技能编辑", "Buff 状态", "公式与数值", "Preview" };
 
         [MenuItem("Window/Soft Kitty/技能工作台")]
         private static void FromMenu() => Open(Selection.activeObject as GraphObject);
@@ -33,17 +35,37 @@ namespace SoftKitty
         {
             var window = GetWindow<SkillWorkbench>("技能工作台");
             window.minSize = new Vector2(590, 470);
-            if (asset) window.SelectGraph(asset);
+            if (asset)
+            {
+                window.page = 0;
+                window.SelectGraph(asset);
+            }
             window.Show();
         }
 
         private void SelectGraph(GraphObject asset)
         {
+            if (asset is SkillFormula formula)
+            {
+                MasterGraphWindow.CloseIfEditing(formula);
+                OpenFormulas(formula, false);
+                return;
+            }
+            if (page != PreviewPage) page = 0;
+            formulaGraph = asset;
+            formulaUid = null;
+            formulaFromBuff = false;
+            sampleNumbers.Clear();
             MasterGraphWindow.CloseIfEditing(asset);
             graph = asset;
             if (executor && executor.mGraph != graph) { executor = null; dealer = null; target = null; }
             selection = null;
             cursor = 0;
+            scroll = Vector2.zero;
+            previewScroll = Vector2.zero;
+            previewDirection = 0;
+            demoSkillLevel = 1;
+            formulaSampleLevel = 1;
             showLibrary = false;
             message = "";
             demoQueued = false;
@@ -67,10 +89,22 @@ namespace SoftKitty
 
         private void OnGUI()
         {
+            page = GUILayout.Toolbar(page, Pages);
+            if (page == PreviewPage)
+            {
+                DrawPreviewPage();
+                return;
+            }
+            if (page != 0)
+            {
+                pageScroll = EditorGUILayout.BeginScrollView(pageScroll);
+                if (page == 1) DrawBuffPage();
+                else DrawFormulaPage();
+                EditorGUILayout.EndScrollView();
+                return;
+            }
             EditorGUILayout.BeginHorizontal(EditorStyles.toolbar);
-            if (GUILayout.Button("技能库", EditorStyles.toolbarButton, GUILayout.Width(62))) showLibrary = !showLibrary;
-            var next = (GraphObject)EditorGUILayout.ObjectField(graph, typeof(GraphObject), false);
-            if (next != graph) SelectGraph(next);
+            DrawSkillPicker();
             if (GUILayout.Button("新建技能", EditorStyles.toolbarButton))
             {
                 var menu = new GenericMenu();
@@ -78,6 +112,15 @@ namespace SoftKitty
                 menu.AddItem(new GUIContent("单次伤害"), false, () => NewSkill("SingleHit", 1, false));
                 menu.AddItem(new GUIContent("三段伤害"), false, () => NewSkill("TripleHit", 3, false));
                 menu.AddItem(new GUIContent("单体治疗"), false, () => NewSkill("SingleHeal", 1, true));
+                var states = GameManager.OverTimeEffectData;
+                if (states && states.overTimeEffects.Count > 0)
+                    foreach (var effect in states.overTimeEffects)
+                    {
+                        string uid = effect.uid;
+                        menu.AddItem(new GUIContent("目标有状态时按攻击自疗/" + effect.name + " · " + uid),
+                            false, () => NewSkill("条件自疗", 0, true, uid));
+                    }
+                else menu.AddDisabledItem(new GUIContent("目标有状态时按攻击自疗（请先配置状态库）"));
                 menu.ShowAsContext();
             }
             if (graph && GUILayout.Button("复制技能", EditorStyles.toolbarButton))
@@ -92,7 +135,7 @@ namespace SoftKitty
                 }
             }
             if (graph && GUILayout.Button("打开节点图", EditorStyles.toolbarButton)) MasterGraphWindow.OpenWindow(graph);
-            if (graph && GUILayout.Button("保存", EditorStyles.toolbarButton)) AssetDatabase.SaveAssetIfDirty(graph);
+            if (graph && GUILayout.Button("保存", EditorStyles.toolbarButton)) SaveSkillAndLevels(graph);
             if (GUILayout.Button("使用手册", EditorStyles.toolbarButton))
             {
                 string manual = Path.GetFullPath(Path.Combine(Application.dataPath, "../docs/MCC技能工作台操作手册.html"));
@@ -121,24 +164,35 @@ namespace SoftKitty
                         EditorGUILayout.Space();
                         EditorGUILayout.LabelField(graph.name, EditorStyles.largeLabel);
                         if (!string.IsNullOrWhiteSpace(graph.GetSummary)) EditorGUILayout.HelpBox(graph.GetSummary, MessageType.None);
+                        foreach (var table in BoundLevelTables(graph)) DrawLevelTable(table);
+                        bool opponent = EditorGUILayout.Popup("默认施放方",
+                            graph.previewAsOpponent ? 1 : 0, new[] { "主角", "怪物" }) == 1;
+                        if (opponent != graph.previewAsOpponent) Change(() => graph.previewAsOpponent = opponent);
                         showConditions = EditorGUILayout.Foldout(showConditions, "触发配置   " + root.Triggers.Count + " 个触发器 · " + root.Handlers.Count + " 个条件 · " + root.Branchs.Count + " 个分支", true);
                         if (showConditions) DrawConditions(root);
                         DrawTimeline(root);
                         var action = root.Actions.Find(x => x.Uid == selection);
                         if (action != null) DrawAction(action);
                     }
-                    DrawDemoPreview();
-                    DrawPlayTest();
                 }
             }
             EditorGUILayout.EndScrollView();
+        }
+
+        private void DrawSkillPicker()
+        {
+            if (GUILayout.Button("技能库", EditorStyles.toolbarButton, GUILayout.Width(62))) showLibrary = !showLibrary;
+            var next = (GraphObject)EditorGUILayout.ObjectField(graph, typeof(GraphObject), false);
+            if (next == graph) return;
+            if (page == PreviewPage && next is SkillFormula) ShowNotification(new GUIContent("请选择一张技能图"));
+            else SelectGraph(next);
         }
 
         private void DrawLibrary()
         {
             filter = EditorGUILayout.TextField("查找技能", filter);
             if (library == null)
-                library = AssetDatabase.FindAssets("t:GraphObject").Select(x => AssetDatabase.LoadAssetAtPath<GraphObject>(AssetDatabase.GUIDToAssetPath(x))).Where(x => x).OrderBy(x => x.name).ToArray();
+                library = AssetDatabase.FindAssets("t:GraphObject").Select(x => AssetDatabase.LoadAssetAtPath<GraphObject>(AssetDatabase.GUIDToAssetPath(x))).Where(x => x && !(x is SkillFormula)).OrderBy(x => x.name).ToArray();
             foreach (var group in library.Where(s => s.name.IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0)
                 .GroupBy(s => AssetDatabase.GetAssetPath(s).StartsWith("Assets/WhiteFog/Skills/", StringComparison.Ordinal)
                     ? (s.previewAsOpponent ? "怪物技能" : "主角技能") : "其他技能图")
@@ -160,13 +214,13 @@ namespace SoftKitty
             return root;
         }
 
-        private void NewSkill(string nameHint, int count, bool healing)
+        private void NewSkill(string nameHint, int count, bool healing, string requiredStatus = null)
         {
             string path = EditorUtility.SaveFilePanelInProject("新建技能", nameHint, "asset", "选择新技能的位置");
             if (string.IsNullOrEmpty(path)) return;
             path = AssetDatabase.GenerateUniqueAssetPath(path);
             var asset = CreateInstance<GraphObject>();
-            asset.RootSet = CreateSkillRoot(count, healing);
+            asset.RootSet = requiredStatus == null ? CreateSkillRoot(count, healing) : CreateConditionalHeal(requiredStatus);
             AssetDatabase.CreateAsset(asset, path);
             SelectGraph(asset);
             library = null;
@@ -251,6 +305,14 @@ namespace SoftKitty
             root.Actions.Add(action);
             Wire(root, action, 0);
             ConfigureInputs(root, action, 1);
+            if (key == "FormulaImpact")
+            {
+                action.calculation = new SkillCalculation();
+                var level = root.Variables.Last();
+                level.Type = VariableType.DynamicVariable;
+                level.VariableUid = "skill.level";
+                level.Constant = 1;
+            }
             return action;
         }
 
@@ -338,6 +400,8 @@ namespace SoftKitty
             if (mode == ActionType.For_X_Seconds) Edit("持续时间（秒）", action.KeepTime, x => action.KeepTime = x);
             if (mode != ActionType.Only_Once) Edit("执行间隔（秒）", action.Interval, x => action.Interval = x);
             DrawFields(action, 1);
+            if (action.ClassName == "OverTimeEffect") DrawReferencedBuff(action);
+            if (action.ClassName == "FormulaImpact") DrawAttackCalculation(action);
             if (GUILayout.Button("移除当前动作"))
                 Change(() => { RemoveAction(graph.RootSet, action); selection = null; });
         }
@@ -365,6 +429,10 @@ namespace SoftKitty
                 switch (field.Type)
                 {
                     case NodeInterfaceElementType.Input_Float:
+                        if (action is Action stateAction && stateAction.ClassName == "OverTimeEffect" &&
+                            i + offset == 2 && DrawBuffChoice(stateAction)) break;
+                        DrawBinding(action, i + offset, label);
+                        break;
                     case NodeInterfaceElementType.Input_Entity:
                         DrawBinding(action, i + offset, label);
                         break;
@@ -426,16 +494,28 @@ namespace SoftKitty
             }
             else if (variable != null && (variable.Type == VariableType.Constant || variable.Type == VariableType.DynamicVariable))
             {
-                float num = EditorGUILayout.DelayedFloatField(label + (variable.Type == VariableType.DynamicVariable ? " · " + variable.VariableUid : ""), variable.Constant);
+                string sourceLabel = variable.Type == VariableType.DynamicVariable ? " · " + variable.VariableUid + " 默认值"
+                    : a.ClassName == "SkillImpact" && index == 3 ? " · 常量" : "";
+                float num = EditorGUILayout.DelayedFloatField(label + sourceLabel, variable.Constant);
                 if (num != variable.Constant) Change(() => variable.Constant = num);
+            }
+            else if (graph.RootSet.Maths.Find(m => m.Uid == uid) is MathClass math)
+            {
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    EditorGUILayout.LabelField(label, math.Name + " · " + math.Uid);
+                    if (GUILayout.Button("查看公式", GUILayout.Width(80)))
+                    {
+                        OpenFormulas(graph, false);
+                        formulaUid = math.Uid;
+                    }
+                }
             }
             else EditorGUILayout.LabelField(label, uid == null ? "未连接 · 可在节点图接线" : "来自节点 " + uid + " · 在节点图查看公式");
         }
 
         private void DrawPlayTest()
         {
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("执行组件与场景试放", EditorStyles.boldLabel);
             var picked = (CombatDamage)EditorGUILayout.ObjectField("伤害执行组件", executor, typeof(CombatDamage), true);
             if (picked != executor) Bind(picked);
             EditorGUILayout.BeginHorizontal();
