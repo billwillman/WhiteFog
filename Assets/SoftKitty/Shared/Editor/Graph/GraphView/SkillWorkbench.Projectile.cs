@@ -298,6 +298,15 @@ namespace SoftKitty
             });
         }
 
+        private static void DrawTrajectoryValue(string label, string value, string help)
+        {
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                EditorGUILayout.LabelField(label, value);
+                SkillFieldHelp.Button(label, help);
+            }
+        }
+
         internal static void DrawProjectileSettings(SkillProjectile settings,
             System.Action<ProjectileField, System.Action<SkillProjectile>> drawField = null, SkillProjectile effective = null)
         {
@@ -315,8 +324,12 @@ namespace SoftKitty
             Row(ProjectileField.TargetBone, shot => shot.targetBone = SkillFieldHelp.TextField("目标挂点", shot.targetBone ?? "", "在被瞄准角色的模型中查找这个名字的骨骼或子物体，将其作为飞行终点的参考位置。"));
             Row(ProjectileField.ImpactOffset, shot => shot.impactOffset = SkillFieldHelp.Vector3Field("目标偏移（角色局部）", shot.impactOffset, "从目标挂点出发，按目标自身朝向偏移飞行终点。X、Y、Z 分别对应右、上、前，单位为米。"));
             Row(ProjectileField.CastTargetIndex, shot => shot.castTargetIndex = Mathf.Max(0, SkillFieldHelp.DelayedIntField("瞄准名单序号", shot.castTargetIndex, "填 0 使用节点接入的目标。填 1、2 等会瞄准本次施法名单中对应的角色，缺少该角色时跳过这一发。")));
-            Row(ProjectileField.Path, shot => shot.path = (SkillProjectile.FlightPath)SkillFieldHelp.Popup("瞄准方式", (int)shot.path, new[] { "出手时锁点", "持续瞄准目标" }, "锁点会记录出手时的位置。持续瞄准会在飞行中读取目标挂点的位置，两种方式都能搭配任意轨迹。"));
-            Row(ProjectileField.Trajectory, shot => shot.trajectory = (SkillProjectile.TrajectoryType)SkillFieldHelp.Popup("位移轨迹", (int)shot.trajectory, new[] { "直线", "公式曲线（正弦）", "路径点" }, "用起点、瞄准点和进度计算位置。公式曲线适合规则弧线；路径点可逐段编辑。"));
+            Row(ProjectileField.Trajectory, shot => shot.trajectory = (SkillProjectile.TrajectoryType)SkillFieldHelp.Popup("位移轨迹", (int)shot.trajectory, new[] { "直线", "公式曲线（正弦）", "路径点", "从发射点向目标取点" }, "直线、正弦曲线和路径点可分别配置瞄准方式和进度。从发射点向目标取点会固定本段的起点，每帧读取目标挂点。飞行位移等于（初速度 + 加速度 × 已飞秒数）× 已飞秒数。转向下一目标时，从接触点重新起算。"));
+            bool launchToTarget = (effective ?? settings).UsesLaunchDisplacement;
+            if (launchToTarget)
+                DrawTrajectoryValue("瞄准方式", "持续瞄准目标", "此轨迹每帧使用目标挂点的当前位置。");
+            else
+                Row(ProjectileField.Path, shot => shot.path = (SkillProjectile.FlightPath)SkillFieldHelp.Popup("瞄准方式", (int)shot.path, new[] { "出手时锁点", "持续瞄准目标" }, "锁点会记录出手时的位置。持续瞄准会在飞行中读取目标挂点的位置，两种方式都能搭配任意轨迹。"));
             if (settings.trajectory == SkillProjectile.TrajectoryType.Sine || effective?.trajectory == SkillProjectile.TrajectoryType.Sine)
             {
                 Row(ProjectileField.SineAmplitude, shot => shot.sineAmplitude = SkillFieldHelp.Vector3Field("公式振幅（米）", shot.sineAmplitude, "沿右、上、前三个方向偏移的最大幅度。只想向上拱起时填 (0, 1, 0)。"));
@@ -324,13 +337,16 @@ namespace SoftKitty
             }
             if (settings.trajectory == SkillProjectile.TrajectoryType.Waypoints || effective?.trajectory == SkillProjectile.TrajectoryType.Waypoints)
                 Row(ProjectileField.PathPoints, DrawPathPoints);
-            Row(ProjectileField.ProgressMode, shot => shot.progressMode = (SkillProjectile.ProgressMode)SkillFieldHelp.Popup("飞行进度", (int)shot.progressMode, new[] { "按初速度和加速度", "指定飞行时长" }, "曲线的速度按出手时起终点的直线距离换算进度。固定时长会在指定秒数内走完全程。"));
-            if (settings.progressMode == SkillProjectile.ProgressMode.Duration || effective?.progressMode == SkillProjectile.ProgressMode.Duration)
+            if (launchToTarget)
+                DrawTrajectoryValue("飞行进度", "从发射点按位移取点", "位移 = (初速度 + 加速度 × 已飞秒数) × 已飞秒数，沿当前起点到目标的方向取点。");
+            else
+                Row(ProjectileField.ProgressMode, shot => shot.progressMode = (SkillProjectile.ProgressMode)SkillFieldHelp.Popup("飞行进度", (int)shot.progressMode, new[] { "按初速度和加速度", "指定飞行时长" }, "直线追踪按速度从当前位置继续飞。曲线按出手时起终点的直线距离换算进度。指定飞行时长会在设定的秒数内走完全程。"));
+            if (!launchToTarget && (settings.progressMode == SkillProjectile.ProgressMode.Duration || effective?.progressMode == SkillProjectile.ProgressMode.Duration))
                 Row(ProjectileField.FlightSeconds, shot => shot.flightSeconds = Mathf.Max(.001f, SkillFieldHelp.FloatField("飞行时长（秒）", shot.flightSeconds, "从这一发出手开始计时，每发独立。路径点进度 50% 对应固定时长的一半。")));
-            if (settings.progressMode == SkillProjectile.ProgressMode.Speed || effective?.progressMode == SkillProjectile.ProgressMode.Speed)
+            if (launchToTarget || settings.progressMode != SkillProjectile.ProgressMode.Duration || (effective != null && effective.progressMode != SkillProjectile.ProgressMode.Duration))
             {
                 Row(ProjectileField.Speed, shot => shot.speed = Mathf.Max(.01f, SkillFieldHelp.FloatField("初速度（米/秒）", shot.speed, "设置投射物刚发射时每秒飞行的距离。例如填 10，且加速度为 0 时，每秒飞行 10 米。")));
-                Row(ProjectileField.Acceleration, shot => shot.acceleration = SkillFieldHelp.FloatField("加速度（米/秒²）", shot.acceleration, "每秒改变多少飞行速度。正值加速，负值减速，填 0 则保持初速度。"));
+                Row(ProjectileField.Acceleration, shot => shot.acceleration = SkillFieldHelp.FloatField("加速度（米/秒²）", shot.acceleration, "逐步推进时，每秒按此值改变速度。从发射点按位移取点时，此值是位移公式中时间平方项的系数。填 0 时匀速飞行。"));
             }
             Row(ProjectileField.TrackingTimeout, shot => shot.trackingTimeout = Mathf.Max(.01f, SkillFieldHelp.FloatField("最长追踪（秒）", shot.trackingTimeout, "追踪移动目标时最多飞行多久。超过这段时间便结束追踪。")));
             Row(ProjectileField.HitRecipients, shot => shot.hitRecipients = (SkillProjectile.HitRecipients)SkillFieldHelp.Popup("可命中对象", (int)shot.hitRecipients,

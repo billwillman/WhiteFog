@@ -10,7 +10,7 @@ namespace SoftKitty
     public sealed class SkillProjectile
     {
         public enum FlightPath { LaunchPositionToTargetPosition, FollowTarget }
-        public enum TrajectoryType { Straight, Sine, Waypoints }
+        public enum TrajectoryType { Straight = 0, Sine = 1, Waypoints = 2, FromLaunchToTarget = 3 }
         public enum ProgressMode { Speed, Duration }
         public TrajectoryType trajectory;
         public ProgressMode progressMode;
@@ -20,6 +20,10 @@ namespace SoftKitty
         public List<ProjectilePathPoint> pathPoints = new List<ProjectilePathPoint>();
         // Zero uses the entity connected to the action's target input.
         public int castTargetIndex;
+
+        public bool UsesLaunchDisplacement => trajectory == TrajectoryType.FromLaunchToTarget;
+        public FlightPath EffectiveAim => UsesLaunchDisplacement ? FlightPath.FollowTarget : path;
+        internal bool IsStraight => trajectory == TrajectoryType.Straight || UsesLaunchDisplacement;
 
         public IProjectileTrajectory CreateTrajectory()
         {
@@ -34,7 +38,7 @@ namespace SoftKitty
         // End sweeps at authored waypoints even when a fast shot finishes within a single frame.
         internal float NextSampleProgress(float current)
         {
-            if (trajectory == TrajectoryType.Straight) return 1;
+            if (IsStraight) return 1;
             if (trajectory == TrajectoryType.Sine)
                 return Mathf.Min(1, current + .125f / Mathf.Clamp(sineHalfWaves, 1, 16));
             float next = Mathf.Min(1, current + .0625f);

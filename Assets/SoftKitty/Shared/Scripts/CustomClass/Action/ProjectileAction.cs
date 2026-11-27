@@ -137,6 +137,20 @@ namespace SoftKitty
             };
         }
 
+        // Distance along the launch-to-aim axis is (v0 + a*t) * t.
+        // Limit the final sweep to the time when the projectile reaches the aim point.
+        private static float SampleFromLaunch(SkillProjectile shot, float elapsed, float axisLength, ref float dt)
+        {
+            float time = elapsed + dt;
+            float displacement = (shot.speed + shot.acceleration * time) * time;
+            if (displacement < axisLength) return displacement / axisLength;
+
+            float endRate = Mathf.Sqrt(Mathf.Max(0, shot.speed * shot.speed + 4 * shot.acceleration * axisLength));
+            float arrivalTime = axisLength <= 0 ? 0 : 2 * axisLength / (shot.speed + endRate);
+            dt = Mathf.Clamp(arrivalTime - elapsed, 0, dt);
+            return 1;
+        }
+
         private static IEnumerator Fly(SkillProjectile shot, EntityComponent caster, EntityComponent victim,
             IReadOnlyList<Entity> targets, HashSet<Entity> castHits, System.Action<Entity, Vector3, ProjectileContact> impact)
         {
@@ -156,12 +170,17 @@ namespace SoftKitty
             var facing = delta.sqrMagnitude > .000001f ? Quaternion.LookRotation(delta) : caster.transform.rotation;
             var bolt = OriginalSkillVisualAction.Spawn(shot.prefab, point, facing, null, false);
             var trail = OriginalSkillVisualAction.Spawn(shot.trail, point, facing, null, false);
-            bool tracking = shot.path == SkillProjectile.FlightPath.FollowTarget;
+            bool tracking = shot.EffectiveAim == SkillProjectile.FlightPath.FollowTarget;
             var trajectory = shot.CreateTrajectory();
             var launchFacing = caster.transform.rotation;
-            bool timed = shot.progressMode == SkillProjectile.ProgressMode.Duration;
-            bool straight = shot.trajectory == SkillProjectile.TrajectoryType.Straight;
+            bool fromLaunch = shot.UsesLaunchDisplacement;
+            bool timed = !fromLaunch && shot.progressMode == SkillProjectile.ProgressMode.Duration;
+            bool straight = shot.IsStraight;
             float duration = Mathf.Max(.001f, shot.flightSeconds);
+            // A negative coefficient ends this forward leg at its maximum displacement.
+            float stopTime = fromLaunch && shot.acceleration < 0 ? -shot.speed / (2 * shot.acceleration) : float.PositiveInfinity;
+            bool canStartFromRest = fromLaunch && shot.speed == 0 && shot.acceleration > 0;
+            bool pursue = !fromLaunch && !timed && straight;
             try
             {
                 while (true)
@@ -170,9 +189,9 @@ namespace SoftKitty
                     var origin = point;
                     float referenceDistance = Vector3.Distance(origin, end);
                     float progress = 0, elapsed = 0, speed = shot.speed;
-                    bool instant = !timed && speed <= 0;
+                    bool instant = !timed && !fromLaunch && speed <= 0;
                     var contact = shot.Contact(query, point, instant ? end : point, facing, 0, 0, out var contactPoint);
-                    while (!contact && !instant && progress < 1 && (timed || speed > 0))
+                    while (!contact && !instant && progress < 1 && elapsed < stopTime && (timed || speed > 0 || canStartFromRest))
                     {
                         yield return null;
                         bool aimIsLive = query.AimIsLive;
@@ -181,15 +200,19 @@ namespace SoftKitty
                         float remaining = Time.deltaTime;
                         if (tracking) remaining = Mathf.Min(remaining, Mathf.Max(0, shot.trackingTimeout - elapsed));
                         var context = new ProjectilePathContext(origin, end, launchFacing);
-                        while (remaining > 0 && progress < 1 && !contact && (timed || speed > 0))
+                        if (fromLaunch)
                         {
-                            // Legacy straight pursuit advances from its current position at the configured speed.
-                            bool pursue = !timed && straight;
+                            referenceDistance = Vector3.Distance(origin, end);
+                            remaining = Mathf.Min(remaining, stopTime - elapsed);
+                        }
+                        while (remaining > 0 && progress < 1 && !contact && (timed || speed > 0 || canStartFromRest))
+                        {
                             float sampleEnd = shot.NextSampleProgress(progress);
-                            float distance = pursue ? Vector3.Distance(point, end) : referenceDistance * (sampleEnd - progress);
                             float dt = straight ? remaining : Mathf.Min(remaining, 1f / 120f);
                             float nextProgress;
-                            if (timed)
+                            if (fromLaunch)
+                                nextProgress = SampleFromLaunch(shot, elapsed, referenceDistance, ref dt);
+                            else if (timed)
                             {
                                 float toSample = duration * (sampleEnd - progress);
                                 nextProgress = dt >= toSample ? sampleEnd : progress + dt / duration;
@@ -197,6 +220,7 @@ namespace SoftKitty
                             }
                             else
                             {
+                                float distance = pursue ? Vector3.Distance(point, end) : referenceDistance * (sampleEnd - progress);
                                 if (shot.acceleration < 0) dt = Mathf.Min(dt, speed / -shot.acceleration);
                                 float step = dt * (speed + .5f * shot.acceleration * dt);
                                 if (step >= distance)
@@ -209,7 +233,8 @@ namespace SoftKitty
                             if (nextProgress >= .999999f) nextProgress = 1;
                             var segment = pursue ? new ProjectilePathContext(point, end, launchFacing) : context;
                             var next = trajectory.EvaluatePosition(segment, nextProgress);
-                            if ((end - point).sqrMagnitude > .000001f) facing = Quaternion.LookRotation(end - point);
+                            var direction = fromLaunch ? next - point : end - point;
+                            if (direction.sqrMagnitude > .000001f) facing = Quaternion.LookRotation(direction);
                             contact = shot.Contact(query, point, next, facing, elapsed, elapsed + dt, out contactPoint);
                             point = contact ? contactPoint : next;
                             elapsed += dt;

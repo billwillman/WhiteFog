@@ -167,7 +167,7 @@ public static class LocalBattleSkillExport
                     if (!x.projectileSnap || x.projectileSnap.settings == null)
                         throw new InvalidDataException(x.Uid + " 缺少投射物配置。");
                     var shot = x.projectileSnap.settings.WithOverrides(x);
-                    if (shot.path != SkillProjectile.FlightPath.LaunchPositionToTargetPosition)
+                    if (shot.EffectiveAim != SkillProjectile.FlightPath.LaunchPositionToTargetPosition)
                         throw new InvalidDataException("当前 H5 本地战场只支持出手时锁点。");
                     n.trajectory = (int)shot.trajectory; n.progressMode = (int)shot.progressMode;
                     n.flightSeconds = shot.flightSeconds; n.castTargetIndex = shot.castTargetIndex;

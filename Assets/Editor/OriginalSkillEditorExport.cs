@@ -135,9 +135,9 @@ public static class OriginalSkillEditorExport
                     info.onContact = SkillProjectile.IsLaunch(node);
                     Add("飞行道具", shot.prefab); Add("拖尾", shot.trail); Add("命中特效", shot.impact);
                     Add("发射挂点", shot.launchBone); Add("目标挂点", shot.targetBone); Add("发射偏移", shot.launchOffset);
-                    Add("命中偏移", shot.impactOffset); Add("瞄准方式", shot.path == SkillProjectile.FlightPath.FollowTarget ? "持续瞄准目标" : "出手时锁点");
+                    Add("命中偏移", shot.impactOffset); Add("瞄准方式", shot.EffectiveAim == SkillProjectile.FlightPath.FollowTarget ? "持续瞄准目标" : "出手时锁点");
                     Add("瞄准名单序号", shot.castTargetIndex);
-                    Add("位移轨迹", new[] { "直线", "公式曲线（正弦）", "路径点" }[(int)shot.trajectory]);
+                    Add("位移轨迹", new[] { "直线", "公式曲线（正弦）", "路径点", "从发射点向目标取点" }[(int)shot.trajectory]);
                     if (shot.trajectory == SkillProjectile.TrajectoryType.Waypoints)
                         foreach (var point in shot.pathPoints) Add($"路径点 {point.progress:P1}", point.offset);
                     if (shot.trajectory == SkillProjectile.TrajectoryType.Sine)
@@ -145,11 +145,12 @@ public static class OriginalSkillEditorExport
                         Add("公式振幅（米）", shot.sineAmplitude);
                         Add("半波数", shot.sineHalfWaves);
                     }
-                    Add("飞行进度", shot.progressMode == SkillProjectile.ProgressMode.Duration ? "指定飞行时长" : "按初速度和加速度");
-                    if (shot.progressMode == SkillProjectile.ProgressMode.Duration) Add("飞行时长（秒）", shot.flightSeconds);
+                    string progress = shot.progressMode == SkillProjectile.ProgressMode.Duration ? "指定飞行时长" : "按初速度和加速度";
+                    Add("飞行进度", shot.UsesLaunchDisplacement ? "从发射点按位移取点" : progress);
+                    if (!shot.UsesLaunchDisplacement && shot.progressMode == SkillProjectile.ProgressMode.Duration) Add("飞行时长（秒）", shot.flightSeconds);
                     Add("初速（米/秒）", shot.speed);
                     Add("加速度", shot.acceleration); Add("拖尾时长（秒）", shot.trailSeconds); Add("命中特效缩放", shot.impactScale);
-                    if (shot.path == SkillProjectile.FlightPath.FollowTarget) Add("追踪超时（秒）", shot.trackingTimeout);
+                    if (shot.EffectiveAim == SkillProjectile.FlightPath.FollowTarget) Add("追踪超时（秒）", shot.trackingTimeout);
                 }
                 Add("可命中对象", shot.hitRecipients.ToString()); Add("命中标签", string.Join("、", shot.hitTags));
                 Add("命中盒尺寸（米）", shot.hitBoxSize); Add("命中盒偏移", shot.hitBoxOffset); Add("受击层掩码", shot.hitLayers.value);
