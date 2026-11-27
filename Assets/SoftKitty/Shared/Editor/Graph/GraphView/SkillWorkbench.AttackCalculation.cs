@@ -28,7 +28,7 @@ namespace SoftKitty
         {
             foreach (var table in BoundLevelTables(skill)) AssetDatabase.SaveAssetIfDirty(table);
             if (skill && skill.RootSet != null)
-                foreach (var flow in skill.RootSet.Actions.Select(a => a.calculation?.ActiveFlow).Where(f => f).Distinct())
+                foreach (var flow in skill.RootSet.Actions.Select(a => a.calculation?.ActiveFlow).Where(f => f && f.ownsFormulas).Distinct())
                     AssetDatabase.SaveAssetIfDirty(flow);
             AssetDatabase.SaveAssetIfDirty(skill);
         }
@@ -152,7 +152,7 @@ namespace SoftKitty
             }
             if (native) DrawNativeDamageGraph(config);
             else DrawDamageFlow(config);
-            if (!native && !config.GetStageEntries().Any(s => s != null && s.kind == SkillDamageFlow.Kind.SegmentShare && config.IsStageEnabled(s.id))) return;
+            if (!native && config.GetStageEntries()?.Any(s => s != null && s.kind == SkillDamageFlow.Kind.SegmentShare && config.IsStageEnabled(s.id)) != true) return;
             int count = FormulaImpactAction.SegmentCount(action);
             if (native)
                 EditorGUILayout.LabelField("每段执行一次原生图。本段序号与占比分别通过 hit.index、hit.share 传给图内节点。", EditorStyles.wordWrappedMiniLabel);

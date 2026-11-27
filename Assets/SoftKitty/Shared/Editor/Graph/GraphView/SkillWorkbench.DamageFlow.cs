@@ -64,7 +64,7 @@ namespace SoftKitty
 
         private static void EditDamageFlow(SkillDamageFlow flow, System.Action edit)
         {
-            Undo.RegisterCompleteObjectUndo(flow, "编辑共享伤害流程");
+            Undo.RegisterCompleteObjectUndo(flow, "编辑本招专用流程");
             edit();
             EditorUtility.SetDirty(flow);
         }
@@ -153,6 +153,12 @@ namespace SoftKitty
                 var selected = (SkillDamageFlow)EditorGUILayout.ObjectField("流程资产", config.ActiveFlow, typeof(SkillDamageFlow), false);
                 if (selected != config.ActiveFlow)
                     Change(() => { config.SetActiveFlow(selected); config.ActiveDisabledStageIds.Clear(); });
+                using (new EditorGUI.DisabledScope(!config.ActiveFlow))
+                    if (GUILayout.Button("定位资源", GUILayout.Width(76)))
+                    {
+                        Selection.activeObject = config.ActiveFlow;
+                        EditorGUIUtility.PingObject(config.ActiveFlow);
+                    }
                 if (GUILayout.Button("新建公共流程", GUILayout.Width(98)))
                 {
                     string path = EditorUtility.SaveFilePanelInProject("新建共享伤害流程", graph.name + "_伤害流程", "asset", "选择保存位置");
@@ -190,10 +196,16 @@ namespace SoftKitty
                 }
                 return;
             }
+            if (flow && !flow.ownsFormulas)
+                EditorGUILayout.HelpBox("公共流程在此处只读。点「定位资源」可在项目窗口选中流程资产。调整本招的流程结构或公式时，请先制作本招专用流程。", MessageType.Info);
             if (flow && (flow.stages == null || flow.stages.Count == 0))
             {
-                if (GUILayout.Button("为此空流程创建完整环节"))
-                    EditDamageFlow(flow, () => InitializeDamageFlow(flow, config));
+                if (flow.ownsFormulas)
+                {
+                    if (GUILayout.Button("为此空流程创建完整环节"))
+                        EditDamageFlow(flow, () => InitializeDamageFlow(flow, config));
+                }
+                else EditorGUILayout.HelpBox("此公共流程没有结算环节。请定位资源后在 Inspector 中配置。", MessageType.Warning);
                 return;
             }
 
@@ -224,16 +236,14 @@ namespace SoftKitty
             try { config.ValidateFlow(); }
             catch (InvalidOperationException e) { EditorGUILayout.HelpBox(e.Message, MessageType.Warning); }
 
-            if (!flow) return;
+            if (!flow || !flow.ownsFormulas) return;
             bool expanded;
             using (new SkillFieldHelp.Row("编辑伤害流程", SkillDamageHelp.Stages))
                 expanded = EditorGUILayout.Foldout(editingDamageFlow == flow,
-                    (flow.ownsFormulas ? "编辑本招专用流程 · " : "编辑公共流程 · ") + flow.name, true);
+                    "编辑本招专用流程 · " + flow.name, true);
             if (expanded) editingDamageFlow = flow;
             else if (editingDamageFlow == flow) editingDamageFlow = null;
             if (!expanded) return;
-            if (!flow.ownsFormulas)
-                EditorGUILayout.HelpBox("修改公共流程会影响引用它的技能。若只想修改本招，请先制作本招专用流程。", MessageType.Info);
             for (int index = 0; index < flow.stages.Count; index++)
             {
                 var stage = flow.stages[index];
@@ -285,7 +295,7 @@ namespace SoftKitty
 
         internal static SkillDamageFlow CopyDamageFlowAsset(SkillDamageFlow flow, string path)
         {
-            AssetDatabase.SaveAssetIfDirty(flow);
+            if (flow.ownsFormulas) AssetDatabase.SaveAssetIfDirty(flow);
             return SavePrivateDamageFlow(Instantiate(flow), path);
         }
 
