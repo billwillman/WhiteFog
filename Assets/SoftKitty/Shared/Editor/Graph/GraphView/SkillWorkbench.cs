@@ -71,6 +71,7 @@ namespace SoftKitty
             if (page != PreviewPage) page = 0;
             if (asset != graph)
             {
+                selectedBuffUid = null;
                 friendlyTrial = new TrialRole();
                 enemyTrial = new TrialRole();
                 trialOpening = null;
@@ -122,7 +123,14 @@ namespace SoftKitty
 
         private void OnGUI()
         {
-            page = GUILayout.Toolbar(page, Pages, GUILayout.Height(26));
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                int nextPage = GUILayout.Toolbar(page, Pages, GUILayout.Height(26));
+                if (page == 0 && nextPage == 1) selectedBuffUid = null;
+                page = nextPage;
+                if (GUILayout.Button("制作流程", GUILayout.Width(80), GUILayout.Height(26)))
+                    SkillProductionGuideWindow.Open();
+            }
             if (page == PreviewPage)
             {
                 DrawPreviewPage();

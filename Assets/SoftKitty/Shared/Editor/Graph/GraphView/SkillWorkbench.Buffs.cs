@@ -9,7 +9,7 @@ namespace SoftKitty
     {
         [SerializeField] private int page;
         private Vector2 pageScroll;
-        [SerializeField] private string buffUid;
+        [SerializeField] private string selectedBuffUid;
         private int buffTemplate;
         private bool showBuffCreation;
         private string newBuffUid = "", newBuffName = "";
@@ -46,12 +46,21 @@ namespace SoftKitty
             {
                 if (showBuffCreation) DrawBuffCreation(db);
             }
-            if (db.overTimeEffects.Count == 0) return;
-            var names = db.overTimeEffects.Select(x => x.name + "  ·  " + x.uid).ToArray();
-            int selected = Mathf.Max(0, db.overTimeEffects.FindIndex(x => x.uid == buffUid));
+            if (db.overTimeEffects.Count == 0)
+            {
+                selectedBuffUid = null;
+                return;
+            }
+            var names = db.overTimeEffects.Select(x => x.name + "  ·  " + x.uid).Prepend("请选择状态").ToArray();
+            int selected = string.IsNullOrEmpty(selectedBuffUid) ? 0 : db.overTimeEffects.FindIndex(x => x.uid == selectedBuffUid) + 1;
             selected = EditorGUILayout.Popup("选择状态", selected, names);
-            var effect = db.overTimeEffects[selected];
-            buffUid = effect.uid;
+            if (selected == 0)
+            {
+                selectedBuffUid = null;
+                return;
+            }
+            var effect = db.overTimeEffects[selected - 1];
+            selectedBuffUid = effect.uid;
             EditorGUILayout.Space();
             using (new EditorGUI.DisabledScope(EditorApplication.isPlaying))
                 DrawBuffSettings(db, effect);
@@ -76,7 +85,7 @@ namespace SoftKitty
                 if (GUILayout.Button("创建状态并引用模板图"))
                 {
                     var effect = CreateBuff(db, buffTemplate, newBuffUid, newBuffName, preset);
-                    buffUid = effect.uid;
+                    selectedBuffUid = effect.uid;
                     showBuffCreation = false;
                     newBuffUid = newBuffName = "";
                     GUI.FocusControl(null);
@@ -212,7 +221,7 @@ namespace SoftKitty
             var mapping = db.IdManager.idToKey.Find(k => k.id == Mathf.FloorToInt(variable.Constant));
             var effect = mapping == null ? null : db.overTimeEffects.Find(e => e.uid == mapping.key);
             if (effect == null) { EditorGUILayout.HelpBox("当前状态 ID 没有对应定义。", MessageType.Warning); return; }
-            if (GUILayout.Button("查看 Buff：" + effect.name + " · " + effect.uid)) { buffUid = effect.uid; page = 1; }
+            if (GUILayout.Button("查看 Buff：" + effect.name + " · " + effect.uid)) { selectedBuffUid = effect.uid; page = 1; }
         }
     }
 }

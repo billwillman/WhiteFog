@@ -98,7 +98,7 @@ namespace SoftKitty
             {
                 if (graph && GUILayout.Button("使用当前技能图")) OpenFormulas(graph, false);
                 var db = GameManager.OverTimeEffectData;
-                var effect = db ? db.overTimeEffects.Find(e => e.uid == buffUid) : null;
+                var effect = db ? db.overTimeEffects.Find(e => e.uid == selectedBuffUid) : null;
                 if (effect != null && effect.DesignGraph is GraphObject asset && GUILayout.Button("使用选中 Buff 的效果图"))
                     OpenFormulas(asset, true);
             }
@@ -149,7 +149,7 @@ namespace SoftKitty
                 EditorGUILayout.LabelField("输入树", EditorStyles.boldLabel);
                 var inputs = new Dictionary<string, float>();
                 var db = GameManager.OverTimeEffectData;
-                var effect = formulaFromBuff && db ? db.overTimeEffects.Find(e => e.uid == buffUid && e.DesignGraph == source) : null;
+                var effect = formulaFromBuff && db ? db.overTimeEffects.Find(e => e.uid == selectedBuffUid && e.DesignGraph == source) : null;
                 try
                 {
                     var drawn = new HashSet<NodeBase>();
