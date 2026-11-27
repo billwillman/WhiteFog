@@ -1,0 +1,6 @@
+{
+    "name": "WhiteFog.FixedPoint",
+    "rootNamespace": "Dig.Framework",
+    "autoReferenced": true,
+    "noEngineReferences": true
+}
