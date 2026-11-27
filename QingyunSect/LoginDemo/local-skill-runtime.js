@@ -120,7 +120,9 @@ function create(pkg, actors, notify=()=>{}) {
         case 'Vulnerability': if(target.weakUntil>now)damage=Math.floor(damage*(1+target.weakPercent/100)+.5);break;
         case 'Shield': shield=target.shieldUntil>now?Math.min(target.shield,Math.max(0,damage)):0;damage-=shield;break;
         case 'ApplyHealth': {
-          const before=target.stats.chp;target.stats.chp=Math.fround(Math.max(0,before-Math.max(0,damage)));
+          const before=target.stats.chp,amount=Math.max(0,damage);
+          const loss=target.guardDamage?target.guardDamage(amount):amount;
+          target.stats.chp=Math.fround(Math.max(0,before-loss));
           if(shield)target.shield-=shield;
           emit('hit',c,n,{sourceNode:c.sourceNode,projectileNode:c.projectileNode,target:target.id,segment:n.segment,loss:before-target.stats.chp,shield,hp:target.stats.chp});break;
         }

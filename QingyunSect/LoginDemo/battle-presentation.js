@@ -1,3 +1,18 @@
+// Column-major orthographic transform, shared by opaque meshes, effects and their HUD anchors.
+function makeBattleCamera(degrees,offset){
+  const pitch=degrees*Math.PI/180,c=Math.cos(pitch),s=Math.sin(pitch);
+  const matrix=new Float32Array(16),depthScale=.04;
+  matrix[6]=-s*depthScale;matrix[10]=c*depthScale;matrix[14]=-1.05*matrix[6];matrix[15]=1;
+  function resize(aspect,span){
+    matrix[0]=1/(aspect*span);matrix[5]=c/span;matrix[9]=s/span;matrix[13]=offset-1.05*matrix[5];
+  }
+  function project(p){
+    return [p[0]*matrix[0],p[1]*matrix[5]+p[2]*matrix[9]+matrix[13]];
+  }
+  function depth(p){return p[1]*matrix[6]+p[2]*matrix[10]+matrix[14];}
+  return {matrix,resize,project,depth,depthScale,towardEye:[0,s,-c]};
+}
+
 // The workbench applies OriginalSkillPreviewLight after actors and particles, before the HUD.
 function makeBattlePresentation(gl){
   const vertex='attribute vec2 point;varying vec2 uv;void main(){uv=point;gl_Position=vec4(point*2.-1.,0.,1.);}';
@@ -67,9 +82,9 @@ function makeBattlePresentation(gl){
 
 function makeParticleRenderer(gl){
   const fragmentDepth=gl.getExtension('EXT_frag_depth');
-  const program=makeProgram(gl,`attribute vec2 point;uniform vec4 rect;varying vec2 uv;
-    void main(){gl_Position=vec4(rect.xy+(point-.5)*rect.zw,0.,1.);uv=vec2(point.x,1.-point.y);}`,
-    `uniform sampler2D coverage,radiance;uniform vec3 depth;uniform vec4 tile;uniform float inner;varying vec2 uv;
+  const program=makeProgram(gl,`attribute vec2 point;uniform vec4 rect;uniform vec3 depth;varying vec2 uv;
+    void main(){gl_Position=vec4(rect.xy+(point-.5)*rect.zw,2.*depth.x-1.,1.);uv=vec2(point.x,1.-point.y);}`,
+    `uniform sampler2D coverage,radiance;uniform vec3 depth;uniform vec4 tile;uniform float inner,coveragePass;varying vec2 uv;
     void main(){
       vec2 coord=uv*2.-1.,a=abs(coord);
       vec2 packedUV=min(a/inner,1.)*.75+max(a-inner,0.)*(.25/(1.-inner));
@@ -77,12 +92,13 @@ function makeParticleRenderer(gl){
       vec3 c=texture2D(radiance,sampleUV).rgb;c*=c;
       vec4 mask=texture2D(coverage,sampleUV);
       ${fragmentDepth?'gl_FragDepthEXT=mask.b>.5?clamp(depth.x+(mask.g/mask.b-.5)*depth.y,0.,1.):0.;':''}
+      ${fragmentDepth?'':'if((coveragePass>0.5&&mask.b<=.5)||(coveragePass<-.5&&mask.b>.5))discard;'}
       gl_FragColor=vec4(c/max(vec3(.0001),1.-c),mix(mask.a,mask.r,depth.z));}`,['point'],
     fragmentDepth?'#extension GL_EXT_frag_depth : require\n':'');
-  const loc=Object.fromEntries(['rect','tile','depth','inner'].map(n=>[n,gl.getUniformLocation(program,n)]));
+  const loc=Object.fromEntries(['rect','tile','depth','inner','coveragePass'].map(n=>[n,gl.getUniformLocation(program,n)]));
   gl.useProgram(program);gl.uniform1i(gl.getUniformLocation(program,'radiance'),1);
   const quad=buffer(gl,gl.ARRAY_BUFFER,new Float32Array([0,0,1,0,0,1,1,1]));
-  return (fx,i,x,y,w,h,eyeOffset,worldScale)=>{
+  return (fx,i,x,y,w,h,clipDepth,clipRange)=>{
     gl.useProgram(program);gl.bindBuffer(gl.ARRAY_BUFFER,quad);attribute(gl,0,2);
     bindTexture(gl,0,fx.coverage);bindTexture(gl,1,fx.radiance);
     const rows=Math.ceil(fx.count/fx.cols),inset=.5/fx.cell;
@@ -90,10 +106,47 @@ function makeParticleRenderer(gl){
     gl.uniform4f(loc.rect,x,y,w,h);
     gl.uniform1f(loc.inner,fx.innerFraction||.75);
     // Same orthographic depth transform as the actor vertices. The scene and particle FBOs share the actor depth buffer.
-    gl.uniform3f(loc.depth,.5+.02*eyeOffset,.02*fx.metres*worldScale,fx.depthCoverage?1:0);
-    if(fragmentDepth&&fx.depthCoverage){gl.enable(gl.DEPTH_TEST);gl.depthFunc(gl.LEQUAL);}
-    else gl.disable(gl.DEPTH_TEST);
+    gl.uniform3f(loc.depth,.5+.5*clipDepth,.5*clipRange,fx.depthCoverage?1:0);
     gl.enable(gl.BLEND);gl.blendFuncSeparate(gl.ONE,gl.ONE_MINUS_SRC_ALPHA,gl.ZERO,gl.ONE);
+    if(fx.depthCoverage){gl.enable(gl.DEPTH_TEST);gl.depthFunc(gl.LEQUAL);}
+    else gl.disable(gl.DEPTH_TEST);
+    // Without per-pixel depth, depth-tested materials use the effect's anchor plane.
+    // A mixed atlas also contains authored Always pixels, which keep their own pass.
+    if(!fragmentDepth)gl.uniform1f(loc.coveragePass,fx.depthCoverage?1:0);
     gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+    if(!fragmentDepth&&fx.depthCoverage){
+      gl.disable(gl.DEPTH_TEST);gl.uniform1f(loc.coveragePass,-1);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+    }
+  };
+}
+
+function makeWardRenderer(gl){
+  const program=makeProgram(gl,`attribute vec3 unit;uniform mat4 clipFromWorld;uniform vec3 center;
+    varying vec3 normal;void main(){
+      vec3 radii=vec3(.67,1.06,.67);normal=unit/radii;
+      gl_Position=clipFromWorld*vec4(center+unit*radii,1.);
+    }`,`uniform vec3 towardEye;uniform float opacity;varying vec3 normal;
+    void main(){float facing=dot(normalize(normal),towardEye);if(facing<0.)discard;
+      float rim=1.-smoothstep(0.,.32,facing);
+      gl_FragColor=vec4(.51,.86,.84,opacity*mix(.11,.82,rim));
+    }`,['unit']);
+  const vertices=[],indices=[],bands=16,sides=32;
+  for(let j=0;j<=bands;j++){
+    const lat=Math.PI*j/bands;
+    for(let i=0;i<=sides;i++){
+      const az=2*Math.PI*i/sides;
+      vertices.push(Math.sin(lat)*Math.cos(az),Math.cos(lat),Math.sin(lat)*Math.sin(az));
+      if(j<bands&&i<sides){const k=j*(sides+1)+i;indices.push(k,k+1,k+sides+1,k+1,k+sides+2,k+sides+1);}
+    }
+  }
+  const mesh=buffer(gl,gl.ARRAY_BUFFER,new Float32Array(vertices)),triangles=buffer(gl,gl.ELEMENT_ARRAY_BUFFER,new Uint16Array(indices));
+  const loc=Object.fromEntries(['clipFromWorld','center','towardEye','opacity'].map(k=>[k,gl.getUniformLocation(program,k)]));
+  return (camera,center,opacity)=>{
+    gl.useProgram(program);gl.bindBuffer(gl.ARRAY_BUFFER,mesh);attribute(gl,0,3);
+    gl.uniformMatrix4fv(loc.clipFromWorld,false,camera.matrix);gl.uniform3fv(loc.center,center);
+    gl.uniform3fv(loc.towardEye,camera.towardEye);gl.uniform1f(loc.opacity,opacity);
+    gl.enable(gl.DEPTH_TEST);gl.depthFunc(gl.LEQUAL);gl.enable(gl.BLEND);
+    gl.blendFuncSeparate(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA,gl.ZERO,gl.ONE);
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,triangles);gl.drawElements(gl.TRIANGLES,indices.length,gl.UNSIGNED_SHORT,0);
   };
 }

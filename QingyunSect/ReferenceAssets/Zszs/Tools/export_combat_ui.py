@@ -9,6 +9,8 @@ def extract(project):
     sources={}
     for name,bundle in {
         'worldcombat_skill_state_bg01':'atlas/worldcombat.ab','worldcombat_bg_skill_group':'atlas/worldcombat.ab',
+        'worldcombat_btn_switch':'atlas/worldcombat.ab','worldcombat_btn_combat':'atlas/worldcombat.ab',
+        '22020':'resourcesab/ui_new/uiimage/icon/skill.ab','22030':'resourcesab/ui_new/uiimage/icon/skill.ab','quality_skill_new_02':'resourcesab/ui_new/uiimage/icon/quality/idx2.ab',
         '21020':'resourcesab/ui_new/uiimage/icon/skill.ab','25090':'resourcesab/ui_new/uiimage/icon/skill.ab','25120':'resourcesab/ui_new/uiimage/icon/skill.ab',
         'quality_skill_new_01':'resourcesab/ui_new/uiimage/icon/quality/idx1.ab','quality_skill_new_05':'resourcesab/ui_new/uiimage/icon/quality/idx5.ab'
     }.items():

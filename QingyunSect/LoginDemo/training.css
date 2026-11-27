@@ -1,0 +1,18 @@
+#training-panel{width:min(92vw,430px);max-height:86dvh;overflow:auto;border:1px solid #94866a;border-radius:6px;padding:16px;color:#302d23;background:#f6efdf;font:15px/1.55 system-ui,"Microsoft YaHei",sans-serif}
+#training-panel::backdrop{background:#191c1bc4}
+#training-panel header,#training-panel nav,#training-content section>div{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+#training-panel header{justify-content:space-between}
+#training-panel h2,#training-panel h3{font-family:KaiTi,STKaiti,serif;margin:0}
+#training-panel h3{font-size:18px}
+#training-panel nav{margin:16px 0 8px}
+#training-panel p{margin:5px 0}
+#training-panel button{position:static;inset:auto;transform:none;width:auto;aspect-ratio:auto;min-height:36px;padding:4px 10px;border:1px solid #ab997a;border-radius:3px;color:#3d3427;background:#fff9eb;font:inherit;letter-spacing:0;text-indent:0}
+#training-panel button::before{display:none}
+#training-panel button[aria-pressed=true]{color:#fff8e6;background:#39564f}
+#training-panel button:disabled{opacity:.5;cursor:default}
+#training-materials{font-size:13px;color:#655238}
+#training-content section{border-top:1px solid #c9bda4;margin-top:12px;padding-top:12px}
+#training-status{color:#914331}
+#battle-entry #training-report{color:#fae4b1;background:#302a28de;max-height:15vh;overflow:auto;padding:4px 8px;font:clamp(11px,2.7cqw,19px)/1.4 system-ui;white-space:pre-line}
+
+#training-content .partner-portrait{float:left;width:3rem;height:3rem;object-fit:contain;margin:0 .7rem .4rem 0}

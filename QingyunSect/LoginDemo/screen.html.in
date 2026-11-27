@@ -22,6 +22,7 @@ button:focus-visible{outline:2px solid #fff0be;outline-offset:4px}
 #enter svg{display:block;width:100%;height:100%}
 </style>
 <style>/* STORY_STYLE */</style>
+<link rel="stylesheet" href="duel-hud.css"><link rel="stylesheet" href="training.css">
 </head>
 <body><main aria-label="重生之我在青云宗修仙">
 <canvas aria-label="金色云洞与悬停御剑的青衣弟子"></canvas>
@@ -41,6 +42,21 @@ button:focus-visible{outline:2px solid #fff0be;outline-offset:4px}
 </defs><use href="#seal-art" mask="url(#seal-mask)"/>
 </svg></button>
 <button id="again" type="button" hidden>重看</button>
+<button id="gm-open" type="button" aria-haspopup="dialog" aria-controls="gm-panel">GM</button>
+<dialog id="gm-panel" aria-labelledby="gm-title">
+  <header><h2 id="gm-title">GM 面板</h2><button id="gm-close" type="button" aria-label="关闭 GM 面板" autofocus>关闭</button></header>
+  <div id="gm-actions"><button id="gm-clear" type="button">清理进度</button></div>
+  <div id="gm-confirm" hidden>
+    <p>清理后将回到登录页。此浏览器中的章节进度、首通记录、功法背包、修行材料、伙伴、装备和出战栏都会恢复到初始状态。</p>
+    <div class="gm-buttons"><button id="gm-cancel" type="button">取消</button><button id="gm-reset" type="button">确认清理</button></div>
+  </div>
+  <p id="gm-status" role="status" hidden></p>
+</dialog>
+<dialog id="training-panel" aria-labelledby="training-title">
+  <header><h2 id="training-title">外院修行</h2><button type="button" id="training-close">返回舆图</button></header>
+  <nav aria-label="修行分类"></nav>
+  <p id="training-materials"></p><div id="training-content"></div><p id="training-status" role="status"></p>
+</dialog>
 <p id="notice" role="status">入云中…</p>
 <div id="story" hidden>
   <section id="region" aria-label="区域舆图">
@@ -63,7 +79,7 @@ button:focus-visible{outline:2px solid #fff0be;outline-offset:4px}
       <i id="route-seal" aria-hidden="true" hidden>任</i>
     </div></div>
     <nav class="map-foot" aria-label="修行手札">
-      <button data-note="修行">修行</button><button data-note="功法">功法</button><button data-note="伙伴">伙伴</button>
+      <button data-note="修行">修行</button><button data-note="功法">功法</button><button data-note="背包">背包</button><button data-note="伙伴">伙伴</button>
     </nav>
   </section>
   <section id="court" aria-label="青云宗外院" hidden>
@@ -71,13 +87,29 @@ button:focus-visible{outline:2px solid #fff0be;outline-offset:4px}
     <button id="to-map" type="button">‹ 舆图</button>
     <div class="court-chapter"><small>第一章　第三声渡钟</small><strong>外院的药包</strong></div>
   </section>
-  <section id="battle-entry" aria-label="旧渡云端战场" hidden>
+  <section id="battle-entry" aria-label="云端战场" hidden>
     <canvas id="battle-role" aria-label="后上方斜视，外门弟子踏剑飞过滚动的云雾"></canvas>
-    <canvas id="battle-props" width="540" height="960" aria-hidden="true" hidden></canvas>
     <span id="battle-skill" hidden></span>
+    <output id="battle-feedback" role="status" hidden></output>
     <ol id="battle-bar" aria-label="出战功法，自动施放"></ol>
+    <section id="battle-books" aria-label="待用武学" hidden><div></div><output aria-live="polite"></output></section>
+    <a id="skill-records" href="skill-records.html" hidden>功法图谱</a>
+    <div id="battle-controls" hidden>
+      <button type="button" id="battle-attack" aria-label="施放基础剑法" hidden></button>
+      <button type="button" id="battle-reset" hidden>重开试放</button>
+      <button type="button" id="battle-auto" aria-label="自动施放" aria-pressed="true">自动</button>
+    </div>
     <section id="battle-result" role="status" hidden>
-      <h2>药舟已入避风水面</h2><p>首通所得　修为 · 通用残页</p>
+      <h2></h2>
+      <div class="duel-report" hidden>
+        <h3>伤害统计</h3>
+        <details id="duel-damage">
+          <summary><span class="damage-icon"></span><span class="damage-category">武学伤害</span><b class="damage-total"></b><span class="damage-track"><i></i></span><span class="damage-share"></span></summary>
+          <ol></ol>
+        </details>
+        <p id="training-report" hidden></p>
+        <div class="lose-advice">胜败乃兵家常事，道友切莫气馁</div>
+      </div>
       <button type="button" id="battle-return">回到舆图</button>
     </section>
     <button id="battle-map" type="button">‹ 舆图</button>
@@ -94,6 +126,11 @@ button:focus-visible{outline:2px solid #fff0be;outline-offset:4px}
 </template>
 <canvas id="veil" aria-hidden="true" hidden></canvas>
 </main>
+<script src="battle-art/skills/index.js"></script>
+<script src="battle-art/skill-tables.js"></script>
+<script src="skill-rules.js"></script>
+<script src="battle-art/encounters.js"></script>
+<script src="battle-board.js"></script><script src="training.js"></script><script src="training-panel.js"></script><script src="battle-parties.js"></script><script src="battle-art/book-start.js"></script><script src="skill-inventory.js"></script>
 <script>
 'use strict';
 /* PACKED_ASSETS */
@@ -102,5 +139,6 @@ button:focus-visible{outline:2px solid #fff0be;outline-offset:4px}
 /* BATTLE_ENTRY */
 /* STORY_CODE */
 /* SCENE_CODE */
-</script></body></html>
+</script>
+<script src="gm-panel.js"></script></body></html>
 

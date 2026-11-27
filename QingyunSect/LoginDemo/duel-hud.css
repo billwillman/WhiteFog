@@ -1,0 +1,129 @@
+#training-cue{position:absolute;top:35%;left:50%;transform:translateX(-50%);max-width:88%;width:max-content;padding:.35em .75em;border-radius:.35em;color:#ffedc5;background:#373e37d9;pointer-events:none;text-align:center;font:600 clamp(11px,2.9cqw,18px)/1.4 system-ui}
+#training-cue[hidden]{display:none}
+/* WorldCombatMainWindow's 1080-unit portrait canvas. The two head bars are
+   positioned by the battle camera, so they also follow a moving combatant. */
+.world-duel main{container-type:inline-size}
+.world-duel.embedded header{display:none}
+.duel-heads{position:absolute;inset:0;pointer-events:none}
+.duel-head{position:absolute;transform:translate(-50%,-100%);--missing:0%;font:600 2.78cqw/1.2 "Microsoft YaHei",sans-serif;text-align:center;white-space:nowrap;color:white;text-shadow:0 .1em .15em #222}
+.head-name,.head-track,.head-track>*{position:absolute}
+.head-name{left:0;right:0}
+.head-track>*{inset:0;background-size:100% 100%;clip-path:inset(0 var(--missing) 0 0)}
+.head-track i{background-image:url(battle-art/duel-ui/delay-fill.webp);transition:clip-path .38s ease-out}
+.player-head{width:16.667cqw;height:8.333cqw;background:url(battle-art/duel-ui/player-bar.webp) 47% 78%/75% 35.56% no-repeat}
+.player-head .head-name{top:6%}
+.player-head .head-track{left:15.56%;top:55.6%;width:66.67%;height:12.22%}
+.player-head .head-track b{background-image:url(battle-art/duel-ui/player-fill.webp)}
+.flock-head .head-name{color:#ffc1b2}
+.flock-head .head-track b{background-image:url(battle-art/duel-ui/boss-fill.webp)}
+.boss-head{width:37.407cqw;height:8.889cqw;background:url(battle-art/duel-ui/boss-bar.webp) center/100% 100% no-repeat;color:#ff8080}
+.boss-head .head-name{left:8.9%;top:20%;text-shadow:0 .1em .15em #431b22}
+.boss-head .head-track{left:19.73%;top:59.58%;width:69.31%;height:20.83%}
+.boss-head .head-track b{background-image:url(battle-art/duel-ui/boss-fill.webp)}
+
+#battle-entry.formal-battle #battle-bar{
+  left:auto;right:13.29cqw;bottom:calc(30.23cqw + env(safe-area-inset-bottom));
+  width:53.70cqw;height:10.74cqw;padding:0 0 0 2.57cqw;
+  grid-template-columns:repeat(6,7.44cqw);gap:1.075cqw
+}
+#battle-entry.formal-battle #battle-bar::before{
+  inset:2.15% auto auto -1.72%;width:101.72%;height:100.86%;background-size:100% 100%;opacity:.102
+}
+#battle-entry.formal-battle #battle-bar li{transform:translateY(.28cqw);opacity:1;background-image:none}
+#battle-entry.formal-battle #battle-bar li::before{
+  content:"";position:absolute;inset:0;background:var(--slot-image) center/contain no-repeat;opacity:.902
+}
+/* UI_FX_Prefab_Item_New samples the square skill and quality plate with
+   different UV scales inside the same 162 × 186 Image. */
+#battle-entry.formal-battle #battle-bar img{left:50%;top:50.4%;transform:translate(-50%,-50%);width:118.73%;height:101.97%;object-fit:fill;border-radius:10%}
+#battle-entry.formal-battle #battle-bar img:nth-child(2){left:50.63%;top:49.38%;width:126.65%;height:123.33%;border-radius:0}
+#battle-entry.formal-battle #battle-bar small{display:none}
+#battle-entry.formal-battle #battle-bar span{inset:0;font-size:2.45cqw}
+#story #battle-entry.formal-battle #battle-auto{bottom:calc(30.79cqw + env(safe-area-inset-bottom));font-size:3.15cqw}
+#story #battle-entry.formal-battle #battle-map{background:transparent url(battle-art/duel-ui/back.webp) center/contain no-repeat;border:0;color:transparent;width:9cqw;height:9cqw;padding:0}
+#battle-entry.formal-battle .court-chapter{display:none}
+.world-cast-tip{
+  position:absolute;transform:translate(-50%,-45%);width:3.52cqw;height:25.74cqw;padding-top:2cqw;box-sizing:border-box;
+  writing-mode:vertical-rl;text-orientation:upright;text-align:start;font:600 3.33cqw/1 "Microsoft YaHei",sans-serif;
+  color:#fff7a4;text-shadow:0 .08em .12em #16100a;background:url(battle-art/duel-ui/skill-tip.webp) center/100% 100% no-repeat
+}
+
+#battle-entry.formal-battle.settled > :is(#battle-map,#battle-bar,#battle-skill,#battle-feedback){visibility:hidden}
+#battle-entry.formal-battle #battle-result{
+  position:absolute;inset:0;z-index:2;isolation:isolate;padding:0;background:rgba(0,0,0,.412);
+  backdrop-filter:blur(.8cqw);color:#fff;text-align:center;font-family:"Microsoft YaHei",sans-serif
+}
+#battle-result[data-outcome] h2{
+  position:absolute;left:0;width:100%;height:92.593cqw;top:32.7cqw;transform:translateY(-50%);
+  margin:0;color:transparent;pointer-events:none;background:center/100% 100% no-repeat
+}
+#battle-result[data-outcome="win"] h2{background-image:url(battle-art/duel-ui/win.webp)}
+@media(prefers-reduced-motion:no-preference){
+  #battle-result[data-outcome="win"] h2::after{content:"";position:absolute;left:21.32%;top:20.43cqw;width:57.36cqw;aspect-ratio:1;background:url(battle-art/duel-ui/win-aura.webp) center/contain no-repeat;mix-blend-mode:screen}
+}
+#battle-result[data-outcome="lose"] h2{background-image:url(battle-art/duel-ui/lose.webp)}
+#story #battle-result[data-outcome] #battle-return{
+  position:absolute;left:50%;top:auto;bottom:calc(8.15cqw + env(safe-area-inset-bottom));transform:translateX(-50%);
+  width:46.3cqw;min-height:44px;padding:0;border:0;background:transparent;color:#fff;font-size:3.33cqw;text-shadow:0 1px 2px #222
+}
+.duel-report{position:absolute;top:55.37cqw;left:2.22%;right:2.22%;bottom:20cqw;overflow-y:auto}
+.duel-report h3{display:flex;align-items:center;justify-content:center;gap:1.6cqw;margin:0 auto 2cqw;font-size:3.7cqw;font-weight:500}
+.duel-report h3::before,.duel-report h3::after{content:"";width:32%;height:2.04cqw;background:url(battle-art/duel-ui/divider.webp) center/100% 100% no-repeat}
+.duel-report h3::after{transform:scaleX(-1)}
+#duel-damage{background:rgba(0,0,0,.60);text-align:left}
+#duel-damage summary{height:10.3cqw;min-height:40px;position:relative;list-style:none;cursor:pointer;font-size:2.96cqw}
+#duel-damage summary::-webkit-details-marker{display:none}
+#duel-damage .damage-icon{position:absolute;left:5.3%;top:5%;height:90%;aspect-ratio:1;background:url(battle-art/duel-ui/damage-icon.webp) center/contain no-repeat}
+#duel-damage .damage-category,#duel-damage .damage-total{position:absolute;left:16.6%;top:13%}
+#duel-damage .damage-total{top:54%;font-weight:500;color:#ffc740}
+.damage-track{display:block;background:url(battle-art/duel-ui/damage-track.webp) center/100% 100% no-repeat}
+.damage-track i{display:block;height:100%;background:url(battle-art/duel-ui/damage-fill.webp) center/100% 100% no-repeat}
+#duel-damage summary .damage-track{position:absolute;left:31.9%;top:61%;width:42.8%;height:21.6%;padding:.18cqw}
+.damage-share{position:absolute;left:77%;top:52%}
+#duel-damage summary::after{content:"";position:absolute;right:5%;top:27%;width:5.37cqw;height:5.37cqw;background:url(battle-art/duel-ui/details-arrow.webp) center/contain no-repeat}
+#duel-damage.empty summary::after{display:none}
+#duel-damage[open] summary::after{transform:rotate(180deg)}
+#duel-damage ol{list-style:none;margin:0;padding:0 4% 0 10%}
+#duel-damage li{display:grid;grid-template-columns:21% 1fr 22%;align-items:center;gap:2%;min-height:4.63cqw;font-size:2.6cqw}
+#duel-damage li span:first-child{color:#ff9090}
+#duel-damage li .damage-track{height:2.22cqw;padding:.18cqw}
+#duel-damage li span:last-child{text-align:right}
+.lose-advice{display:none;align-content:center;margin:8cqw auto 0;height:7.4cqw;background:url(battle-art/duel-ui/lose-advice.webp) center/100% 100% no-repeat;font-size:3.3cqw}
+#battle-result[data-outcome="lose"] .lose-advice{display:grid}
+@media(prefers-reduced-motion:reduce){.head-track i{transition:none}}
+
+#battle-entry.formal-battle:has(#battle-books:not([hidden])) #battle-bar{
+  left:3%;right:3%;top:60%;bottom:auto;width:auto;height:auto;padding:0;
+  grid-template-columns:repeat(6,minmax(0,1fr));gap:2.4%;touch-action:none
+}
+#battle-entry.formal-battle:has(#battle-books:not([hidden])) #battle-bar li{aspect-ratio:1/1.13}
+#battle-books{position:absolute;left:2%;right:2%;top:calc(60% + 18cqw);bottom:max(5%,calc(env(safe-area-inset-bottom) + 2rem));padding:2cqw;
+  border-radius:1.5cqw;background:#303c3d80;color:#fff9db;touch-action:none}
+#battle-books[hidden]{display:none}
+#battle-books>div{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:1.6cqw}
+#story #battle-books button{position:relative;inset:auto;transform:none;width:100%;aspect-ratio:1;padding:0;
+  background:#3f555cdd;border:1px solid #c2b68d;border-radius:4px;color:#fff9dc;font:600 3cqw/1.1 serif}
+#battle-books img{display:block;width:100%;height:100%;object-fit:contain;pointer-events:none}
+#battle-books b{position:absolute;right:4%;bottom:0;text-shadow:0 1px 3px #111}
+#battle-books output{display:block;margin-top:2cqw;min-height:1.5em;text-align:center;font:500 3.2cqw/1.5 system-ui}
+#battle-books .picked,#battle-bar .picked{outline:2px solid #ffe078;outline-offset:1px}
+
+.battle-drag-book{position:fixed;z-index:100;pointer-events:none;transform:translate(-50%,-70%);width:clamp(42px,12vmin,78px);
+  aspect-ratio:1;border:2px solid #ffe078;border-radius:5px;background:#45595a;box-shadow:0 3px 10px #2229;color:white;text-align:center}
+.battle-drag-book img{display:block;width:100%;height:100%;object-fit:contain}
+
+/* The iframe owns the 3D scene and actor labels. Controls and results are painted above it. */
+#battle-entry{isolation:isolate}
+#battle-entry .battle-world{position:absolute;inset:0;width:100%;height:100%;border:0;z-index:0}
+#battle-entry :is(.court-chapter,#battle-skill,#battle-feedback,#battle-books,#battle-bar,#battle-map,#skill-records){z-index:1}
+#battle-entry #battle-controls{position:absolute;inset:0;z-index:1;pointer-events:none}
+#battle-controls button{pointer-events:auto}
+#battle-entry #battle-result{z-index:2}
+#battle-feedback{position:absolute;left:3%;right:3%;bottom:max(.6%,env(safe-area-inset-bottom));pointer-events:none;
+  text-align:center;width:fit-content;max-width:94%;margin:auto;padding:.25em .65em;border-radius:.35em;
+  background:#333e3be8;color:#fff2ce;font:600 clamp(11px,2.9cqw,18px)/1.35 system-ui}
+body.embedded main{width:100%;max-width:none}
+#field{z-index:0}
+#overlay{z-index:1}
+.duel-heads,#training-cue{z-index:2}
+#field~footer,#field~header{z-index:3}

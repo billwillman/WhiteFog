@@ -22,10 +22,6 @@ def uri(mime, data):
 
 
 def battle_art():
-    library = HERE.parent/'ReferenceAssets/Zszs/Library'
-    ward = library/'Effects/hudun/vfx_cha_buff_xinfa_hudun'
-    effect = json.loads(ward.with_suffix('.json').read_text('utf8'))
-    effect['image'] = uri('image/webp', ward.with_suffix('.webp').read_bytes())
     art = HERE/'battle-art'
     sprites = json.loads((art/'interface-source.json').read_text('utf8'))['sprites']
     bird_sprite = None
@@ -39,7 +35,7 @@ def battle_art():
             x, y, w, h = (frame[key] for key in ('x','y','w','h'))
             tile = image.crop((x, y, x+w, y+h)).convert('RGBA').transpose(Image.Transpose.FLIP_TOP_BOTTOM)
             bird_sprite = f'{w},{h},' + base64.b64encode(tile.tobytes()).decode('ascii')
-    return dict(ward=effect, birdSprite=bird_sprite, edgeClouds=uri('image/webp',(HERE/'edge-clouds.webp').read_bytes()), ui={key:uri('image/png', (art/(key+'.png')).read_bytes()) for key in sprites})
+    return dict(birdSprite=bird_sprite, ui={key:uri('image/png', (art/(key+'.png')).read_bytes()) for key in sprites})
 
 
 def smooth(lo, hi, value):
@@ -292,8 +288,21 @@ def skeleton():
 
 
 def main():
-    rig = skeleton()
     compact = lambda value: json.dumps(value,ensure_ascii=False,separators=(',',':'))
+    # Shared by the HUD and the local renderer, including when opened over file://.
+    party = json.loads((HERE.parent/'Config/Battle/encounters.json').read_text(encoding='utf8'))
+    tasks = json.loads((HERE.parent/'Config/Battle/chapter-tasks.json').read_text(encoding='utf8'))
+    seen = set()
+    for task in tasks:
+        if 'encounter' in task or 'stageId' in task:
+            stage = task['stageId']
+            if not stage or stage in seen or task['encounter'] not in party:
+                raise ValueError(f'章节战斗配置无效 {task}')
+            seen.add(stage)
+    start = json.loads((HERE.parent/'Config/Battle/book-start.json').read_text(encoding='utf8'))
+    (HERE/'battle-art/book-start.js').write_text('window.qingyunBookStart = '+compact(start)+';\n', encoding='utf8')
+    (HERE/'battle-art/encounters.js').write_text('window.qingyunBattleParties = '+compact(party)+';\nwindow.qingyunChapterTasks = '+compact(tasks)+';\n',encoding='utf8')
+    rig = skeleton()
     (HERE/'rider.json').write_text(compact(rig),encoding='utf-8')
     w,h = Image.open(HERE/'rider.png').size
     (HERE/'rider.atlas').write_text(
@@ -318,7 +327,7 @@ def main():
     html=html.replace('TITLE_PLATE',uri('image/webp',plate.getvalue()))
     html=html.replace('BUTTON_PLATE',uri('image/webp',stamp.getvalue()))
     html=html.replace('/* PACKED_ASSETS */', 'const assets='+compact(data)+';')
-    html=html.replace('/* SCENE_CODE */',(HERE/'scene.js').read_text(encoding='utf-8'))
+    html=html.replace('/* SCENE_CODE */',(HERE/'gl-tools.js').read_text(encoding='utf-8')+'\n'+(HERE/'scene.js').read_text(encoding='utf-8'))
     html=html.replace('/* STORY_CODE */',(HERE/'story.js').read_text(encoding='utf-8'))
     html=html.replace('/* BATTLE_ENTRY */',(HERE/'battle-entry.js').read_text(encoding='utf-8'))
     html=html.replace('/* DIALOGUE_CODE */',(HERE/'dialogue.js').read_text(encoding='utf-8'))

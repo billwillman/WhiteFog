@@ -1,0 +1,22 @@
+{
+  "openRecipeLevels": [
+    1
+  ],
+  "extraBooks": [
+    {
+      "book": 21020,
+      "count": 2
+    },
+    {
+      "book": 22020,
+      "count": 1
+    }
+  ],
+  "startingBooks": [
+    21020
+  ],
+  "ordinaryResults": [
+    22020,
+    22030
+  ]
+}

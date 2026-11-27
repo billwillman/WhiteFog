@@ -25,23 +25,24 @@ async function makeFlyingEnemy(gl,url) {
   const rows=model.skins[0].joints.length*3;
   const program=makeProgram(gl,`
     attribute vec3 position; attribute vec2 texcoord,joints,weights;
-    uniform vec4 palette[`+rows+`];uniform float aspect;uniform vec2 anchor;varying vec2 uv;
+    uniform vec4 palette[`+rows+`];uniform float birdScale;uniform mat4 clipFromWorld;uniform vec3 anchor;varying vec2 uv;
     vec3 skin(float joint,vec4 p){int k=int(joint)*3;return vec3(dot(palette[k],p),dot(palette[k+1],p),dot(palette[k+2],p));}
     void main(){
       vec4 p=vec4(position,1.);vec3 q=weights.x*skin(joints.x,p)+weights.y*skin(joints.y,p)-vec3(0.,2.10,0.);
-      float angle=`+BATTLE_PITCH.toFixed(9)+`,height=q.y*cos(angle)-q.z*sin(angle);
-      float depth=6.4-q.y*sin(angle)-q.z*cos(angle);
-      gl_Position=vec4(depth*anchor+1.16*vec2(q.x/aspect,height),depth-.35,depth);uv=texcoord;
+      // The imported bird faces the player along negative world Z.
+      q.z=-q.z;
+      gl_Position=clipFromWorld*vec4(anchor+birdScale*q,1.);uv=texcoord;
     }`,`uniform sampler2D paint;varying vec2 uv;void main(){vec4 c=texture2D(paint,uv);if(c.a<.45)discard;gl_FragColor=vec4(c.rgb,1.);}`,
     ['position','texcoord','joints','weights']);
-  const paletteLocation=gl.getUniformLocation(program,'palette[0]'),aspectLocation=gl.getUniformLocation(program,'aspect'),anchorLocation=gl.getUniformLocation(program,'anchor');
+  const paletteLocation=gl.getUniformLocation(program,'palette[0]'),viewLocation=gl.getUniformLocation(program,'clipFromWorld'),anchorLocation=gl.getUniformLocation(program,'anchor');
+  const scaleLocation=gl.getUniformLocation(program,'birdScale');
   const clips=model.animations.filter(a=>a.extras?.skinRows!==undefined).map(a=>({...a.extras,data:access(a.extras.skinRows)}));
   const fly=clips[0],hover=clips[1],size=rows*4,pose=new Float32Array(size);
   function sample(clip,t) {
     const cursor=(t*clip.rate)%(clip.frames-1),first=Math.floor(cursor);
     return {data:clip.data,a:first*size,b:(first+1)*size,u:cursor-first};
   }
-  return function draw(aspect,time,at){
+  return function draw(view,time,at,scale=1){
     const a=sample(fly,time),b=sample(hover,time),blend=smooth(1.25,1.7,time%4)*(1-smooth(3.05,3.55,time%4));
     for(let i=0;i<size;i++){
       const x=a.data[a.a+i]+(a.data[a.b+i]-a.data[a.a+i])*a.u;
@@ -49,7 +50,7 @@ async function makeFlyingEnemy(gl,url) {
       pose[i]=x+(y-x)*blend;
     }
     gl.enable(gl.DEPTH_TEST);gl.useProgram(program);
-    gl.uniform4fv(paletteLocation,pose);gl.uniform1f(aspectLocation,aspect);gl.uniform2f(anchorLocation,at[0],at[1]);
+    gl.uniform4fv(paletteLocation,pose);gl.uniformMatrix4fv(viewLocation,false,view);gl.uniform1f(scaleLocation,scale);gl.uniform3fv(anchorLocation,at);
     gl.bindBuffer(gl.ARRAY_BUFFER,vb);attribute(gl,0,3,36,0);attribute(gl,1,2,36,12);attribute(gl,2,2,36,20);attribute(gl,3,2,36,28);
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,ib);bindTexture(gl,0,paint);
     gl.drawElements(gl.TRIANGLES,indices.length,gl.UNSIGNED_SHORT,0);

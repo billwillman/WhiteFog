@@ -1,9 +1,9 @@
 const firstChapter=(()=>{
   const $=id=>document.getElementById(id);
-  const art=assets.story,storeKey='qingyun.third-bell.v1';
+  const art=assets.story,storeKey=trainingRules.storeKey;
   const preview=new URLSearchParams(location.search).get('preview');
   const ferryPreview=preview==='ferry'||preview==='passage';
-  const isolated=ferryPreview||preview==='skills';
+  const isolated=ferryPreview||preview==='skills'||preview==='battle';
   const medicine=[
     {speaker:'外院师兄',actor:'senior',expression:'kind',text:'来得正好。替我按住这头绳，别让药包散了。'},
     {speaker:'我 · 心声',actor:'hero',expression:'thoughtful',text:'他还是爱多绕半圈。上一世头一回下山，我一路攥着的，就是这个结。'},
@@ -18,21 +18,67 @@ const firstChapter=(()=>{
     {speaker:'我',actor:'hero',expression:'calling',text:'有，我看见火了！船头往左一点，我来给你引路。'},
     {speaker:'船上阵修',actor:'adept',expression:'relieved',text:'瞧见了，左边那点火。多谢！船身我来护，你在前头带路。',action:'护送药舟'}
   ];
-  const tasks=['到外院，找师兄领药','沿水路去云关送药','循着细烟去旧渡','在旧渡接应药舟','随药舟入雾','药舟已入避风水面，查看护舟所得'];
+  const tasks=window.qingyunChapterTasks;
+  const ferryTask=tasks.find(task=>task.stageId==='1-3');
+  let firstClears={},sceneLine=0;
   let progress=ferryPreview?3:0,line=0,ferryLine=preview==='passage'?ferryLines.length-1:0;
   try{
     const saved=!isolated&&JSON.parse(localStorage.getItem(storeKey));
     if(saved&&Number.isInteger(saved.progress)&&saved.progress>=0&&saved.progress<tasks.length){
       progress=saved.progress;
+      if(Number.isInteger(saved.sceneLine)&&tasks[progress].lines?.[saved.sceneLine])sceneLine=saved.sceneLine;
+      if(saved.firstClears&&typeof saved.firstClears==='object'&&!Array.isArray(saved.firstClears))firstClears=saved.firstClears;
+      // Early chapter saves only recorded the task reached after the ferry.
+      if(progress>tasks.indexOf(ferryTask)&&!Object.hasOwn(firstClears,ferryTask.stageId))
+        firstClears[ferryTask.stageId]=ferryTask.firstClear;
       if(Number.isInteger(saved.line)&&saved.line>=0&&saved.line<medicine.length)line=saved.line;
       if(Number.isInteger(saved.ferryLine)&&saved.ferryLine>=0&&saved.ferryLine<ferryLines.length)ferryLine=saved.ferryLine;
     }
   }catch(_){}
-  function save(){if(!isolated)try{localStorage.setItem(storeKey,JSON.stringify({progress,line,ferryLine,firstClears:progress>=5?{'1-3':{cultivation:true,universalPages:1}}:{}}));}catch(_){}}
+  function save(){if(!isolated)try{localStorage.setItem(storeKey,JSON.stringify({progress,line,ferryLine,sceneLine,firstClears}));}catch(_){}}
   const dialogue=createDialogue($('dialogue'),$('dialogue-template'),art.portraits);
-  const battle=makeBattleEntry(assets.battle,()=>{
-    if(progress===4){progress=5;save();}
+  const battle=makeBattleEntry(assets.battle,(snapshot,damage)=>training.recordTrial({
+    label:snapshot.baseline?'初始对照':'当前修行',attack:snapshot.attack,recovery:snapshot.breath ? .35 : 1,damage
+  }));
+  const previewTraining=trainingRules.initial();
+  async function trainingAccess(action,pick){
+    if(!isolated)return skillInventory.cultivate(action,pick);
+    const now=Date.now();
+    trainingRules.award(previewTraining,tasks,progress,firstClears,now);
+    if(action)trainingRules.change(previewTraining,action,pick,now);
+    return previewTraining;
+  }
+  function updateIdentity(s){document.querySelector('.identity b').textContent=s.realm===2?'炼气二层':'炼气一层';}
+  const training=makeTrainingPanel(trainingAccess,baseline=>openBattle('yard',null,baseline),updateIdentity);
+  async function prepareBattle(encounter,key,baseline,request){
+    const state=encounter==='skills'?null:await trainingAccess();
+    if(request&&request!==pendingBattle)throw Error('已取消进场');
+    const snapshot=state?trainingRules.snapshot(state):null;
+    if(baseline&&encounter==='yard'){snapshot.baseline=true;snapshot.breath=0;snapshot.attack-=2*state.swordRank;}
+    return battle.prepare(encounter,key,snapshot);
+  }
+  function showChapterBattle(task){
+    battle.show(task.encounter,null,won=>{
+      if(!won)return;
+      if(!Object.hasOwn(firstClears,task.stageId))firstClears[task.stageId]=task.firstClear??{};
+      if(tasks[progress]===task)advanceTask();else save();
+    });
+  }
+  window.addEventListener('storage',event=>{
+    if(event.key===storeKey&&event.newValue===null)location.reload();
   });
+  function advanceTask(){
+    sceneLine=0;
+    if(progress+1<tasks.length)progress++;
+    save();
+  }
+  async function clearProgress(){
+    await skillInventory.reset();
+    localStorage.removeItem(storeKey);
+    // Leave isolated previews as well so a reset always opens the normal login.
+    const login=new URL(location.href);
+    login.search='';login.hash='';location.replace(login.href);
+  }
   let enteringBattle=false;
   let motion,mapReady=false,shown=false,finished=false,revealStart=null,prepared=false;
   const veil=$('veil'),ctx=veil.getContext('2d');
@@ -56,10 +102,14 @@ const firstChapter=(()=>{
   }
   function map(){
     if(enteringBattle)return;
-    battle.stop();dialogue.hide();$('court').hidden=true;$('region').hidden=false;
-    $('task').textContent=tasks[progress];
-    $('home-seal').hidden=!progress;$('route-seal').hidden=!progress;
-    Object.assign($('route-seal').style,progress===1?{left:'74%',top:'22%'}:{left:'79%',top:'54%'});
+    pendingBattle=null;battle.stop();dialogue.hide();$('court').hidden=true;$('region').hidden=false;
+    $('task').textContent=tasks[progress].text;
+    trainingAccess().then(updateIdentity,()=>{});
+    $('home-seal').hidden=!progress;
+    const places={home:['36%','68%'],pass:['74%','22%'],ferry:['79%','54%'],road:['21%','34%']};
+    const position=places[tasks[progress].place];
+    $('route-seal').hidden=!progress||!position;
+    if(position)Object.assign($('route-seal').style,{left:position[0],top:position[1]});
     motion.setVisible(true);
   }
   function caption(speaker,text,action='回到舆图',done=map){
@@ -71,24 +121,26 @@ const firstChapter=(()=>{
       progress=1;line=0;save();map();$('task').focus({preventScroll:true});
     });
   }
-  function backdrop(place){
+  function backdrop(place,task){
     const ferry=place==='ferry';
     const title=ferry?(progress===4?'雾里有灯':'两响之后'):'外院的药包';
     const scene=$('court'),picture=$('court-art'),src=ferry?art.ferry:art.court;
     if(picture.getAttribute('src')!==src)picture.src=src;
     picture.alt=ferry?'旧渡岸边有人往火盆里添湿柴，雾中药舟正等着引路':'青云宗外院的石阶与廊庑';
     scene.setAttribute('aria-label',ferry?'旧渡':'青云宗外院');
-    scene.querySelector('.court-chapter strong').textContent=title;
+    const chapters=['第三声渡钟','云路上的灯','山外有人'];
+    const chapter=Number(task?.section.split('-')[0]??1);
+    scene.querySelector('.court-chapter small').textContent='第'+'一二三'[chapter-1]+'章　'+chapters[chapter-1];
+    scene.querySelector('.court-chapter strong').textContent=task?.title??title;
     $('region').hidden=true;scene.hidden=false;motion.setVisible(false);
   }
-  function atFerry(){
+  function atFerry(offerReplay=false){
     backdrop('ferry');
-    if(progress===5){
-      caption('旧渡 · 首通所得','阵修把药舟稳稳护进了避风水面。这一趟所得的修为和通用残页，已记在历练簿上。');return;
-    }
-    if(progress===4){
-      beginPassage();
-      return;
+    if(Object.hasOwn(firstClears,ferryTask.stageId)){
+      const claim=tasks[progress].afterStage===ferryTask.stageId&&progress+1<tasks.length;
+      const replay=offerReplay&&!claim;
+      caption('旧渡 · 首通所得','阵修把药舟稳稳护进了避风水面。这一趟所得的修为和通用残页，已记在历练簿上。',
+        replay?'重战旧渡':'回到舆图',replay?beginPassage:()=>{if(claim)advanceTask();map();});return;
     }
     dialogue.show(ferryLines[ferryLine],()=>{
       if(ferryLine+1===ferryLines.length){beginPassage();return;}
@@ -108,7 +160,7 @@ const firstChapter=(()=>{
     }
     function resetClock(){last=null;}
     document.addEventListener('visibilitychange',resetClock);
-    battle.prepare().then(()=>{ready=true;},()=>{
+    prepareBattle(ferryTask.encounter).then(()=>{ready=true;},()=>{
       cancelAnimationFrame(frame);reset();
       caption('旧渡 · 药舟','云路画面载入失败，可重新进入。','重试',beginPassage);
     });
@@ -122,14 +174,16 @@ const firstChapter=(()=>{
           speaker.style.opacity=1-smooth(0,.75,age);
           if(age>=1.32)fog(age,null);
           if(age>=2.55&&ready){
-            dialogue.hide();court.hidden=true;battle.show();openedAt=age;
-            progress=4;save();
+            dialogue.hide();court.hidden=true;
+            const stageIndex=tasks.indexOf(ferryTask);
+            if(progress===stageIndex-1){progress=stageIndex;save();}
+            showChapterBattle(ferryTask);openedAt=age;
           }
         }else{
           const opening=age-openedAt;
           fog(age,opening);
           if(opening>=1.55){
-            reset();$('battle-map').focus({preventScroll:true});return;
+            reset();($('battle-result').hidden?$('battle-map'):$('battle-return')).focus({preventScroll:true});return;
           }
         }
       }
@@ -137,8 +191,24 @@ const firstChapter=(()=>{
     }
     frame=requestAnimationFrame(advance);
   }
-  function visit(place){
-    if(!finished)return;
+  function playStoryTask(task){
+    if(task.place==='home'||task.place==='ferry')backdrop(task.place,task);
+    const line=task.lines[sceneLine];
+    dialogue.show(line,()=>{
+      if(sceneLine+1<task.lines.length){sceneLine++;save();playStoryTask(task);return;}
+      if(tasks[progress]!==task){map();return;}
+      advanceTask();
+      const next=tasks[progress];
+      const fight=next.encounter&&next.place===task.place?()=>openBattle(next.encounter,next):null;
+      if(task.trainingStop){map();training.open(task.trainingStop,fight);}
+      else if(fight)fight();else map();
+    });
+  }
+  function visit(place,fromMap=false){
+    if(!finished||pendingBattle||enteringBattle)return;
+    const task=tasks[progress];
+    if(task.lines&&task.place===place){playStoryTask(task);return;}
+    if(task.encounter&&task.place===place){openBattle(task.encounter,task);return;}
     if(place==='home'){
       backdrop('home');
       if(progress===0)courtLine();
@@ -149,9 +219,11 @@ const firstChapter=(()=>{
           progress=2;save();map();
         });
       });
+    }else if(place==='road'){
+      caption('古道 · 云端历练','独臂木侠正在云上候战。','挑战独臂木侠',()=>openBattle('duel'));
     }else if(place==='ferry'&&progress>=2){
       if(progress===2){progress=3;ferryLine=0;save();}
-      atFerry();
+      atFerry(fromMap);
     }else{
       const notes={pass:['云关','关楼管着这段水路，船来船往都听这里的收渡钟。'],
         ferry:['旧渡','乌篷船系在木桩上，钟亭正对着上游的关楼。'],
@@ -159,8 +231,8 @@ const firstChapter=(()=>{
       caption(...notes[place]);
     }
   }
-  document.querySelectorAll('[data-place]').forEach(el=>el.addEventListener('click',()=>visit(el.dataset.place)));
-  $('task').addEventListener('click',()=>visit(progress===0?'home':progress===1?'pass':'ferry'));
+  document.querySelectorAll('[data-place]').forEach(el=>el.addEventListener('click',()=>visit(el.dataset.place,true)));
+  $('task').addEventListener('click',()=>visit(tasks[progress].place));
   $('to-map').addEventListener('click',map);
   function returnFromBattle(){
     if(enteringBattle)return;
@@ -176,25 +248,27 @@ const firstChapter=(()=>{
   }
   $('battle-map').addEventListener('click',returnFromBattle);
   $('battle-return').addEventListener('click',returnFromBattle);
-  const hints={修行:'办完这趟差事，外院会给你留一席静修的蒲团。',功法:'护送药舟所得的残页，可以用来参悟行气诀。',伙伴:'下一趟巡灯差事，可以邀一位同道同行。'};
-  let openingSkills=false;
-  function openSkills(){
-    if(openingSkills)return;
+  let pendingBattle=null;
+  function openBattle(encounter='skills',task,baseline=false){
+    if(pendingBattle||enteringBattle)return;
     const id=preview==='skills' ? new URLSearchParams(location.search).get('skill') : null;
-    const key=Object.keys(sourceMoves).find(k=>String(sourceMoves[k].id)===id);
+    const key=id&&Object.keys(sourceMoves).find(k=>String(sourceMoves[k].id)===id);
     if(id && !key){caption('功法试放','当前战场版本尚未收录这门功法。','回到舆图',map);return;}
-    openingSkills=true;
-    caption('功法试放','正在载入云端战场……','回到舆图',()=>{openingSkills=false;map();});
-    battle.prepare().then(()=>{
-      if(!openingSkills)return;
-      openingSkills=false;dialogue.hide();$('region').hidden=true;motion.setVisible(false);battle.show('skills',key);
-    },()=>{
-      if(!openingSkills)return;
-      openingSkills=false;caption('功法试放','云端战场载入失败。','重试',openSkills);
+    const request={};
+    pendingBattle=request;
+    const title=battleParties[encounter]?.heading??'功法试放';
+    caption(title,'正在载入云端战场……','回到舆图',()=>{pendingBattle=null;map();});
+    prepareBattle(encounter,key,baseline,request).then(()=>{
+      if(pendingBattle!==request)return;
+      pendingBattle=null;dialogue.hide();$('region').hidden=true;$('court').hidden=true;motion.setVisible(false);
+      if(task)showChapterBattle(task);else battle.show(encounter,key);
+    },error=>{
+      if(pendingBattle!==request)return;
+      pendingBattle=null;caption(title,error.message||'云端战场载入失败。','重试',()=>openBattle(encounter,task,baseline));
     });
   }
   document.querySelectorAll('[data-note]').forEach(el=>el.addEventListener('click',()=>{
-    if(el.dataset.note==='功法')openSkills();else caption(el.dataset.note,hints[el.dataset.note]);
+    if(el.dataset.note==='功法')openBattle();else if(el.dataset.note==='背包')location.href='skill-records.html#bag';else training.open(el.dataset.note==='伙伴'?'partners':'practice');
   }));
   function prepare(onReady){
     if(prepared)return;prepared=true;
@@ -213,7 +287,9 @@ const firstChapter=(()=>{
       canvas.hidden=title.hidden=enter.hidden=again.hidden=notice.hidden=true;
       $('story').hidden=false;map();
       if(ferryPreview)visit('ferry');
-      if(preview==='skills')openSkills();
+      if(preview==='map'&&new URLSearchParams(location.search).get('training')==='practice')training.open('practice');
+      if(preview==='skills')openBattle();
+      if(preview==='battle')openBattle('duel');
     });
   }
   function transition(age){
@@ -232,5 +308,5 @@ const firstChapter=(()=>{
     }else $('task').focus({preventScroll:true});
     return true;
   }
-  return {prepare,transition,previewMap,get shown(){return shown;},get finished(){return finished;}};
+  return {prepare,transition,previewMap,clearProgress,get shown(){return shown;},get finished(){return finished;}};
 })();

@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>功法图谱 · 青云宗</title>
+<style>
+*{box-sizing:border-box}body{margin:0;color:#283a36;background:#f3eddd;font:16px/1.6 system-ui,serif}
+main{max-width:44rem;margin:auto;padding:1.2rem}h1,h2{font-family:serif}h1{margin:.65rem 0}h2{font-size:1.18rem;margin:0 0 .8rem}section{border-top:1px solid #b7ad92;padding:1rem 0}
+nav,.fields{display:flex;gap:.6rem;flex-wrap:wrap}a{color:#456a5b}label{display:grid;gap:.2rem;color:#4b564d;font-size:.87rem}
+select{max-width:100%;font:inherit;padding:.35rem;background:#fffaf0;color:#253a34;border:1px solid #a4987b;border-radius:4px}
+output{display:block;white-space:pre-line;margin-top:.65rem}small{color:#685f53}
+#owned{display:grid;margin-bottom:.75rem}#owned>div{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.5rem 0;border-bottom:1px solid #d7ceb6}
+button{font:inherit;color:#fff;background:#355d50;border:0;padding:.38rem .85rem;border-radius:3px;cursor:pointer}button:disabled{background:#d8d1c2;color:#57584e;cursor:default}#craft-cost{color:#5e5143}
+</style></head><body><main>
+<nav><a href="index.html?preview=map">舆图</a><a href="index.html?preview=skills">技能试放</a><a href="local-battle.html">云端历练</a></nav>
+<h1>功法图谱</h1>
+<section id="bag"><h2>功法背包</h2><p id="training-stock"></p><a href="index.html?preview=map&amp;training=practice">使用修行材料</a><div id="owned"></div><p>进入章节战斗后，把武学从下排拖到上排即可出招。</p>
+<output id="inventory-notice" role="status" aria-live="polite"></output></section>
+<section><h2>功法进阶</h2><div class="fields"><label>功法<select id="book"></select></label><label>阶<select id="advance"></select></label><label>级<select id="level"></select></label></div><output id="growth"></output></section>
+<section><h2>指定功法合成</h2><div class="fields"><label>第一本<select id="first"></select></label><label>第二本<select id="second"></select></label><label>第三本<select id="third"></select></label></div><output id="recipe"></output><p id="craft-cost"></p><button id="craft" type="button" disabled>合成入包</button></section>
+<details><summary>查看其他合成规则与特殊产出</summary><div class="fields"><label>原表<select id="table"><option value="recipes">合成规则</option><option value="specialRates">特殊合成概率</option><option value="dropPools">特殊产出池</option></select></label><label>记录<select id="rule"></select></label></div><output id="rule-data"></output></details>
+<section><h2>出战组合</h2><output id="links"></output></section>
+</main>
+<script src="battle-art/skills/index.js"></script><script src="battle-art/skill-tables.js"></script><script src="skill-rules.js"></script><script src="battle-art/encounters.js"></script><script src="battle-parties.js"></script><script src="battle-art/book-start.js"></script><script src="training.js"></script><script src="skill-inventory.js"></script>
+<script>
+'use strict';
+const el=id=>document.getElementById(id), books=[...skillRules.books.values()];
+const option=(label,value)=>new Option(label,String(value));
+function bookList(id,selected,optional=false){
+  const select=el(id);
+  if(optional)select.add(option('空',0));
+  for(const book of books)select.add(option(book.name,book.id));
+  select.value=String(selected);
+}
+bookList('book',25090);bookList('first',21010);bookList('second',21020);bookList('third',0,true);
+function setNumbers(id,values){
+  el(id).replaceChildren(...[...new Set(values)].sort((a,b)=>a-b).map(v=>option(v,v)));
+}
+function showGrowth(change){
+  const book=skillRules.books.get(+el('book').value),rows=skillRules.levels.filter(r=>r.id===book.levelup_id);
+  if(change==='book')setNumbers('advance',rows.map(r=>r.advance));
+  if(change!=='level')setNumbers('level',rows.filter(r=>r.advance===+el('advance').value).map(r=>r.level));
+  const row=skillRules.resolve(book.id,+el('advance').value,+el('level').value);
+  const name=skillRules.combat.get(row.skill)?.name||'';
+  const cost=(row.resource||[]).map(([type,id,n])=>type+'/'+id+' × '+n).join('、')||'无';
+  el('growth').textContent='战斗技能 '+row.skill+' '+name+'　'+(window.localBattleSkillIds.includes(row.skill)?'已导出技能包':'技能包待导出')+
+    '\n等级表 '+row.id+'　伤害参数 '+JSON.stringify(row.damage)+'\n本行资源（类型 / ID）　'+cost;
+}
+function showRecipes(){
+  const ids=['first','second','third'].map(id=>+el(id).value).filter(Boolean);
+  const matches=skillRules.fixedRecipes(ids);
+  el('recipe').textContent=matches.length?matches.map(r=>{
+    const gains=(r.success_item||[]).map(([type,id,n])=>(type===4?skillRules.books.get(id)?.name:null)||('资源 '+type+'/'+id))
+    const counts=(r.success_item||[]).map((item,i)=>gains[i]+' × '+item[2]);
+    return counts.join('、')+'　开放条件 ID '+r.level_id+'　成功参数 '+r.success+
+      (r.requirement?'　额外条件 '+JSON.stringify(r.requirement):'')+(r.limited_time?'　限时标记 '+r.limited_time:'');
+  }).join('\n'):'原表没有这组指定功法配方。';
+}
+function showRule(reload){
+  const list=skillRules[el('table').value];
+  if(reload)el('rule').replaceChildren(...list.map((r,i)=>option(
+    r.quality!==undefined?'品质 '+r.quality+' · 数量 '+r.num:'类型 '+r.type+' · '+[r.value,r.value2,r.value3].filter(Boolean).join(' / '),i)));
+  el('rule-data').textContent=Object.entries(list[Number(el('rule').value)]).filter(([,v])=>v!==null)
+    .map(([k,v])=>k+'　'+JSON.stringify(v)).join('\n');
+}
+el('table').onchange=()=>showRule(true);el('rule').onchange=()=>showRule(false);showRule(true);
+for(const id of ['book','advance','level'])el(id).onchange=()=>showGrowth(id);
+for(const id of ['first','second','third'])el(id).onchange=()=>{showRecipes();showInventory();};
+showGrowth('book');showRecipes();
+let bag,busy=false;
+const label=id=>skillRules.books.get(id)?.name||String(id);
+const picked=()=>['first','second','third'].map(k=>+el(k).value).filter(Boolean);
+function showInventory(){
+  if(!bag)return;
+  const owned=Object.entries(bag.books).map(([key,item])=>{
+    const id=Number(key),row=document.createElement('div');
+    row.textContent=label(id)+' × '+item.count+(bag.slots.includes(id)?'　上排生效':'');
+    return row;
+  });
+  el('owned').replaceChildren(...owned);
+  const ids=picked(),cost=ids.map(label).join(' ＋ ');
+  try{
+    skillInventory.check(bag,ids);
+    el('craft-cost').textContent='消耗下排藏本　'+cost;
+    el('craft').disabled=busy;
+  }catch(err){el('craft-cost').textContent=err.message;el('craft').disabled=true;}
+  const equipped=skillInventory.loadout(bag).map(slot=>slot.book);
+  el('links').textContent=equipped.map(label).join('、')+'\n'+skillRules.equippedLinks(equipped,battleParties.duel.world)
+    .map(link=>link.name+' · '+link.appear_num+' 本　'+link.link_skill_direction.replace(/#ex_\d+#/g,'本门功法')).join('\n');
+}
+async function refresh(){try{bag=await skillInventory.read();showInventory();
+  const s=await skillInventory.cultivate();el('training-stock').textContent='通用残页 '+s.pages+'　招募帖 '+s.tickets+'　灵砂 '+s.sand+'　云髓 '+s.marrow;}catch(err){el('inventory-notice').textContent='背包读取失败　'+err.message;}}
+async function run(change,message){
+ if(busy)return;busy=true;showInventory();
+ try{bag=await change();el('inventory-notice').textContent=message;}
+ catch(err){el('inventory-notice').textContent=err.message;await refresh();}
+ finally{busy=false;showInventory();}
+}
+el('craft').onclick=()=>{const ids=picked(),row=skillInventory.check(bag,ids);run(()=>skillInventory.craft(ids),
+  '已消耗'+ids.map(label).join('、')+'。获得'+row.success_item.map(([,id,n])=>label(id)+' × '+n).join('、')+'，已放入背包。');};
+window.addEventListener('pageshow',refresh);window.addEventListener('focus',refresh);
+</script></body></html>

@@ -1,0 +1,210 @@
+{
+  "ferry": {
+    "heading": "第一章　第三声渡钟",
+    "title": "雾里有灯",
+    "world": 1,
+    "player": [
+      {
+        "book": 21020,
+        "advance": 1,
+        "level": 0
+      }
+    ],
+    "enemyModel": "",
+    "enemySkills": [],
+    "flock": {
+      "name": "雾鸢",
+      "health": 36,
+      "attack": 14,
+      "diveInterval": 4.8,
+      "formation": [
+        {
+          "x": -1.2,
+          "z": 0.1,
+          "firstDive": 2.2
+        },
+        {
+          "x": 1.2,
+          "z": 0.55,
+          "firstDive": 4.6
+        }
+      ]
+    }
+  },
+  "duel": {
+    "heading": "古道 · 云端历练",
+    "title": "独臂木侠",
+    "world": 1,
+    "player": [
+      {
+        "book": 21020,
+        "advance": 1,
+        "level": 0
+      }
+    ],
+    "enemyModel": "独臂木侠",
+    "enemySkills": [
+      102412
+    ]
+  },
+  "firstLamp": {
+    "heading": "第二章　云路上的灯",
+    "title": "第一座灯桩",
+    "world": 1,
+    "player": [
+      {
+        "book": 21020,
+        "advance": 1,
+        "level": 0
+      }
+    ],
+    "waves": [
+      {
+        "enemyModel": "",
+        "enemySkills": [],
+        "flock": {
+          "name": "雾鸢",
+          "health": 37,
+          "attack": 15,
+          "diveInterval": 4.2,
+          "formation": [
+            {
+              "x": 0,
+              "z": 0,
+              "firstDive": 2.2
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "secondLamp": {
+    "heading": "第二章　云路上的灯",
+    "title": "第二座灯桩",
+    "world": 1,
+    "player": [
+      {
+        "book": 21020,
+        "advance": 1,
+        "level": 0
+      }
+    ],
+    "waves": [
+      {
+        "enemyModel": "",
+        "enemySkills": [],
+        "flock": {
+          "name": "雾鸢",
+          "health": 32,
+          "attack": 13,
+          "diveInterval": 4.3,
+          "formation": [
+            {
+              "x": -1.25,
+              "z": 0,
+              "firstDive": 2.2
+            },
+            {
+              "x": 1.2,
+              "z": 0.25,
+              "firstDive": 3.9000000000000004
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "stonePass": {
+    "heading": "第三章　山外有人",
+    "title": "送油的人迟了",
+    "world": 1,
+    "player": [
+      {
+        "book": 21020,
+        "advance": 1,
+        "level": 0
+      }
+    ],
+    "waves": [
+      {
+        "enemyModel": "石傀",
+        "enemySkills": [],
+        "health": 82,
+        "attack": 24,
+        "slam": {
+          "first": 2.7,
+          "windup": 1.1,
+          "interval": 4.8
+        }
+      }
+    ]
+  },
+  "rearCart": {
+    "heading": "第三章　山外有人",
+    "title": "谁去护最后一车",
+    "world": 1,
+    "player": [
+      {
+        "book": 21020,
+        "advance": 1,
+        "level": 0
+      }
+    ],
+    "waves": [
+      {
+        "enemyModel": "",
+        "enemySkills": [],
+        "flock": {
+          "name": "雾鸢",
+          "health": 26,
+          "attack": 12,
+          "diveInterval": 4,
+          "formation": [
+            {
+              "x": 0,
+              "z": 0,
+              "firstDive": 2.2
+            }
+          ]
+        }
+      },
+      {
+        "enemyModel": "",
+        "enemySkills": [],
+        "flock": {
+          "name": "雾鸢",
+          "health": 33,
+          "attack": 14,
+          "diveInterval": 4.2,
+          "formation": [
+            {
+              "x": -1.25,
+              "z": 0,
+              "firstDive": 2.2
+            },
+            {
+              "x": 1.25,
+              "z": 0.25,
+              "firstDive": 3.9000000000000004
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "yard": {
+    "heading": "外院 · 剑坪",
+    "title": "云流木人",
+    "practice": true,
+    "world": 1,
+    "player": [
+      {
+        "book": 21020,
+        "advance": 1,
+        "level": 0
+      }
+    ],
+    "enemyModel": "剑坪木人",
+    "enemySkills": []
+  }
+}

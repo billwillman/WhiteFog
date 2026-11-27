@@ -1,0 +1,296 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "H5 战斗出战配置",
+  "type": "object",
+  "minProperties": 1,
+  "additionalProperties": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "heading",
+      "title",
+      "world",
+      "player"
+    ],
+    "properties": {
+      "heading": {
+        "type": "string",
+        "minLength": 1
+      },
+      "title": {
+        "type": "string",
+        "minLength": 1
+      },
+      "world": {
+        "type": "integer",
+        "minimum": 1,
+        "description": "匹配 kungfu_link_info.worldid"
+      },
+      "player": {
+        "type": "array",
+        "minItems": 1,
+        "maxItems": 6,
+        "uniqueItems": true,
+        "description": "按技能栏顺序填写我方功法；同一本功法只能占一格。",
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "book",
+            "advance",
+            "level"
+          ],
+          "properties": {
+            "book": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "kungfu_info.id"
+            },
+            "advance": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "skill_lvlup_info.advance"
+            },
+            "level": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "skill_lvlup_info.level；与阶和 levelup_id 一起定位运行技能"
+            }
+          }
+        }
+      },
+      "enemyModel": {
+        "type": "string",
+        "description": "Unity 技能包使用的敌方角色资源名，空字符串使用预览场的小雕。"
+      },
+      "flock": {
+        "$ref": "#/$defs/flock"
+      },
+      "enemySkills": {
+        "type": "array",
+        "uniqueItems": true,
+        "items": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "description": "敌方 AI 可释放的 skill_info.id，按数组顺序选择可用技能，冷却使用原表毫秒值。"
+      },
+      "waves": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "$ref": "#/$defs/wave"
+        }
+      },
+      "practice": {
+        "type": "boolean",
+        "description": "以基础剑法和固定木人对照修行效果。"
+      }
+    },
+    "oneOf": [
+      {
+        "required": [
+          "enemyModel",
+          "enemySkills"
+        ],
+        "not": {
+          "required": [
+            "waves"
+          ]
+        }
+      },
+      {
+        "required": [
+          "waves"
+        ],
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "enemyModel"
+              ]
+            },
+            {
+              "required": [
+                "enemySkills"
+              ]
+            },
+            {
+              "required": [
+                "flock"
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "$defs": {
+    "wave": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "enemyModel",
+        "enemySkills"
+      ],
+      "properties": {
+        "enemyModel": {
+          "type": "string",
+          "description": "Unity 技能包使用的敌方角色资源名，空字符串使用预览场的小雕。"
+        },
+        "enemySkills": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "description": "敌方 AI 可释放的 skill_info.id，按数组顺序选择可用技能，冷却使用原表毫秒值。"
+        },
+        "flock": {
+          "$ref": "#/$defs/flock"
+        },
+        "health": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "attack": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "slam": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "first",
+            "windup",
+            "interval"
+          ],
+          "properties": {
+            "first": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "windup": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "interval": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "slam"
+            ]
+          },
+          "then": {
+            "properties": {
+              "enemyModel": {
+                "const": "石傀"
+              },
+              "enemySkills": {
+                "maxItems": 0
+              }
+            },
+            "not": {
+              "required": [
+                "flock"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "enemyModel": {
+                "const": "石傀"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "slam"
+            ]
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "flock"
+            ]
+          },
+          "then": {
+            "properties": {
+              "enemyModel": {
+                "const": ""
+              },
+              "enemySkills": {
+                "maxItems": 0
+              }
+            }
+          }
+        }
+      ]
+    },
+    "flock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "health",
+        "attack",
+        "diveInterval",
+        "formation"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "health": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "attack": {
+          "type": "number",
+          "minimum": 1
+        },
+        "diveInterval": {
+          "type": "number",
+          "minimum": 2
+        },
+        "formation": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "x",
+              "z",
+              "firstDive"
+            ],
+            "properties": {
+              "x": {
+                "type": "number"
+              },
+              "z": {
+                "type": "number"
+              },
+              "firstDive": {
+                "type": "number",
+                "minimum": 0
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

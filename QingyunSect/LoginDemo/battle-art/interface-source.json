@@ -55,6 +55,46 @@
         154,
         178
       ]
+    },
+    "worldcombat_btn_switch": {
+      "bundle": "atlas/worldcombat.ab",
+      "pathId": "-1855005170789868540",
+      "size": [
+        100,
+        100
+      ]
+    },
+    "worldcombat_btn_combat": {
+      "bundle": "atlas/worldcombat.ab",
+      "pathId": "8068014671635003943",
+      "size": [
+        212,
+        212
+      ]
+    },
+    "22020": {
+      "bundle": "resourcesab/ui_new/uiimage/icon/skill.ab",
+      "pathId": "6839494479826813362",
+      "size": [
+        128,
+        128
+      ]
+    },
+    "quality_skill_new_02": {
+      "bundle": "resourcesab/ui_new/uiimage/icon/quality/idx2.ab",
+      "pathId": "8329101370266765232",
+      "size": [
+        154,
+        178
+      ]
+    },
+    "22030": {
+      "bundle": "resourcesab/ui_new/uiimage/icon/skill.ab",
+      "pathId": "2701509085356694056",
+      "size": [
+        128,
+        128
+      ]
     }
   },
   "prefab": "resourcesab/prefabs_ui/worldcombat.ab",
