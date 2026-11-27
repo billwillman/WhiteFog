@@ -44,8 +44,8 @@ function makeTrainingPanel(access,onPractice,onState){
         const trial=(label,baseline)=>button(label,()=>{dismiss(false);onPractice(baseline);});
         const buttons=[trial('试打木人',false)];
         if(s.swordRank||s.breath)buttons.push(trial('对照未温养、未参悟',true));
-        const results=[...samples.values()].map(s=>s.label+'（攻击 '+s.attack+'）首击 '+Number(s.damage.toFixed(2))+'，恢复 '+s.recovery+' 秒');
-        row('剑坪试招',results.length?results.join('；'):'同一具木人、同一股云流，用基础剑法核对恢复时间和实际伤害。',buttons);
+        const results=[...samples.values()].map(s=>s.label+'（攻击 '+s.attack+'）受冲击后 '+s.secondsToCast.toFixed(2)+' 秒出招，首击扣血 '+Number(s.damage.toFixed(2)));
+        row('剑坪试招',results.length?results.join('；'):'同一具木人、同一股云流，记录实际出招时间和首击扣血。',buttons);
       }
     }else if(tab==='partners'){
       if(!s.recruit)row('外院招募帖',has('invite')?'用帖随机结识巡山剑修或护阵弟子，结识后自动同行。':'与许舟在剑坪校完航图后领取。',[action('用帖招募（'+s.tickets+'）','recruit',null,!s.tickets)]);

@@ -528,7 +528,7 @@ const sourceMoves = {
 const sourceEncounters = {
   skills: {slots:['entry','pierce','rain',null,null,'boss'], casts:[[.6,'entry'],[3.7,'pierce'],[7.1,'rain'],[10.8,'boss']], period:14.5}
 };
-function makeBattleEntry(art,onPracticeHit) {
+function makeBattleEntry(art,onPracticeTrial) {
   const byId = id => document.getElementById(id);
   const scene=byId('battle-entry'),canvas=byId('battle-role'),bar=byId('battle-bar');
   const label=byId('battle-skill'),result=byId('battle-result');
@@ -567,10 +567,10 @@ function makeBattleEntry(art,onPracticeHit) {
     details.querySelector('summary').setAttribute('aria-label','武学伤害 '+Math.round(total)+(hits.length?'，查看各功法伤害':''));
     details.querySelector('summary').setAttribute('aria-disabled',String(!hits.length));
     details.querySelector('summary').tabIndex=hits.length?0:-1;
-    trainingReport.textContent=[...trainingEvents.values()].join('\n');
-    trainingReport.hidden=!trainingEvents.size;
+    const reward=onResult?.(won);
+    trainingReport.textContent=[reward,...trainingEvents.values()].filter(Boolean).join('\n');
+    trainingReport.hidden=!trainingReport.textContent;
     report.hidden=false;
-    onResult?.(won);
     byId('battle-return').focus({preventScroll:true});
   }
   byId('duel-damage').querySelector('summary').addEventListener('click',event=>{
@@ -626,6 +626,7 @@ function makeBattleEntry(art,onPracticeHit) {
     frame=document.createElement('iframe');frame.title='云端战斗';frame.className='battle-world';
     const trial=frame;
     ready=new Promise((resolve,reject)=>{
+      let secondsToCast;
       const timeout=setTimeout(()=>fail(Error('战场载入超时，请重试。')),30000);
       function dispose(){
         clearTimeout(timeout);window.removeEventListener('message',receive);trial.remove();
@@ -641,7 +642,9 @@ function makeBattleEntry(art,onPracticeHit) {
           const event=data.data;
           trainingEvents.set(event.key,event.text);
           if(!victory){feedback.textContent=event.text;feedback.hidden=false;feedbackUntil=age+1.5;}
-          if(party.practice&&event.key==='practiceHit')onPracticeHit?.(training,event.amount);
+          if(party.practice&&event.key==='practiceResume')secondsToCast=event.amount;
+          if(party.practice&&event.key==='practiceHit'&&Number.isFinite(secondsToCast))
+            onPracticeTrial?.(training,{secondsToCast,damage:event.amount});
         }
         if(party&&mode&&data.data.kind==='cast'){
           const move=party.player.find(m=>m.id===data.data.skillId);
@@ -765,7 +768,8 @@ function makeBattleEntry(art,onPracticeHit) {
     age=0;castIndex=0;active=null;victory=false;cooldowns.clear();nextAutoPoll=.25;feedbackUntil=0;feedback.hidden=true;defeated=false;automatic=true;readyAt=0;
     trainingEvents.clear();trainingReport.hidden=true;
     damageBySkill.clear();report.hidden=true;scene.classList.remove('settled');delete result.dataset.outcome;
-    byId('battle-return').textContent=party?'点击继续':'回到舆图';
+    byId('battle-return').textContent=party?.practice?'返回修行':party?'点击继续':'回到舆图';
+    byId('battle-map').textContent=party?.practice?'‹ 修行':'‹ 舆图';
     attack.setAttribute('aria-label','施放'+(sourceMoves[primarySlot()]?.name||'功法'));
     scene.dataset.encounter=mode;scene.classList.toggle('formal-battle',!!party);controls.hidden=false;byId('skill-records').hidden=mode!=='skills';updateControls();
     result.hidden=label.hidden=true;scene.hidden=false;
@@ -830,8 +834,8 @@ const firstChapter=(()=>{
   }catch(_){}
   function save(){if(!isolated)try{localStorage.setItem(storeKey,JSON.stringify({progress,line,ferryLine,sceneLine,firstClears}));}catch(_){}}
   const dialogue=createDialogue($('dialogue'),$('dialogue-template'),art.portraits);
-  const battle=makeBattleEntry(assets.battle,(snapshot,damage)=>training.recordTrial({
-    label:snapshot.baseline?'初始对照':'当前修行',attack:snapshot.attack,recovery:snapshot.breath ? .35 : 1,damage
+  const battle=makeBattleEntry(assets.battle,(snapshot,trial)=>training.recordTrial({
+    label:snapshot.baseline?'未参悟、未温养':'当前修行',attack:snapshot.attack,...trial
   }));
   const previewTraining=trainingRules.initial();
   async function trainingAccess(action,pick){
@@ -847,14 +851,24 @@ const firstChapter=(()=>{
     const state=encounter==='skills'?null:await trainingAccess();
     if(request&&request!==pendingBattle)throw Error('已取消进场');
     const snapshot=state?trainingRules.snapshot(state):null;
-    if(baseline&&encounter==='yard'){snapshot.baseline=true;snapshot.breath=0;snapshot.attack-=2*state.swordRank;}
+    if(encounter==='yard'){
+      snapshot.baseline=baseline||(!state.breath&&!state.swordRank);
+      if(baseline){snapshot.breath=0;snapshot.attack-=2*state.swordRank;}
+    }
     return battle.prepare(encounter,key,snapshot);
   }
   function showChapterBattle(task){
     battle.show(task.encounter,null,won=>{
       if(!won)return;
-      if(!Object.hasOwn(firstClears,task.stageId))firstClears[task.stageId]=task.firstClear??{};
+      const first=!Object.hasOwn(firstClears,task.stageId);
+      if(first)firstClears[task.stageId]=task.firstClear??{};
       if(tasks[progress]===task)advanceTask();else save();
+      if(!first||!task.trainingReward)return;
+      const {cultivation,tickets,sand,marrow}=task.trainingReward;
+      const pages=task.firstClear?.universalPages;
+      const rewards=[[cultivation,'修为'],[pages,'通用残页'],[tickets,'招募帖'],[sand,'灵砂'],[marrow,'云髓']]
+        .filter(([amount])=>amount>0).map(([amount,name])=>name+' +'+amount);
+      if(rewards.length)return '首通所得 · '+rewards.join('　');
     });
   }
   window.addEventListener('storage',event=>{
@@ -993,7 +1007,10 @@ const firstChapter=(()=>{
   $('to-map').addEventListener('click',map);
   function returnFromBattle(){
     if(enteringBattle)return;
-    map();$('task').focus({preventScroll:true});
+    const practice=$('battle-entry').dataset.encounter==='yard';
+    map();
+    if(practice){training.open('practice');return;}
+    $('task').focus({preventScroll:true});
     const start=performance.now(),reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
     if(reduced)return;
     cancelAnimationFrame(returnFogFrame);

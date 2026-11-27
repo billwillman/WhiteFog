@@ -246,6 +246,11 @@ try {
       frameSeconds:time-(t-e.elapsed),text:name==='cast'?pkg.name:(e.target||''),motion:e.motion,effect:e.effect||e.shot?.n.fx,bone:e.bone,
       impact:e.shot?.n.impact,target:e.target,attribute:e.attribute,actor:e.actor?.id||source.id,enemyModel:enemy.name,
       segment:e.segment||0,loss:e.loss||0,shield:e.shield||0,casterHp:source.stats.chp,targetHp:recipient.stats.chp,targetStates:[...buffs].join('、')};
+    if(party?.practice&&source===hero&&name==='cast'&&practiceImpactAt!==null){
+      const seconds=t-practiceImpactAt;
+      practiceImpactAt=null;
+      trainingLog('practiceResume','云流冲击后 '+seconds.toFixed(2)+' 秒，基础剑法实际出手',seconds);
+    }
     if(party?.practice&&name==='hit'&&source===hero&&e.loss>0&&!practiceHit){
       practiceHit=true;trainingLog('practiceHit','基础剑法首次命中木人，实际扣血 '+Number(e.loss.toFixed(2))+' 点',e.loss);
     }
@@ -343,7 +348,7 @@ try {
   const allyImpact=packages.flatMap(p=>p.opponent?[]:p.graphs.find(g=>g.key===p.entry).nodes)
     .find(n=>n.op==='Projectile'&&n.impact&&effects.has(keyFor(n.impact,false)));
   const wards=new Map();
-  let cueUntil=0,defenses,recoverAt=0,gustDone=false,practiceHit=false;
+  let cueUntil=0,defenses,recoverAt=0,gustDone=false,practiceHit=false,practiceImpactAt=null;
   function trainingLog(key,text,amount){
     send({kind:'training',key,text,amount,time});
     if(!embedded){trainingCue.textContent=text;trainingCue.hidden=false;cueUntil=time+1.25;}
@@ -351,7 +356,8 @@ try {
   function recoverFromImpact(){
     const seconds=training.breath?0.35:1;
     recoverAt=time+seconds;
-    trainingLog('recovery',(training.breath?'行气诀':'平息云流')+' · 受冲击后 '+seconds+' 秒恢复出招',seconds);
+    if(party?.practice)practiceImpactAt=time;
+    trainingLog('recovery',(training.breath?'行气诀':'平息云流')+' · 受冲击后 '+seconds+' 秒可再次出招',seconds);
   }
   function guardDamage(damage){
     if(!ally||ally.stats.chp<=0||defenses.wards<=0||damage<=0)return damage;
@@ -460,7 +466,7 @@ try {
     defenses={bead:training.bead===2?9:training.bead===1?5:0,guard:false,seal:false,
       wards:training.ally==='adept'?1:training.ally==='ward'?1+training.allyRank:0,
       intercepts:training.ally==='blade'?1+training.allyRank:0,intercepted:0};
-    recoverAt=0;gustDone=false;practiceHit=false;cueUntil=0;trainingCue.hidden=true;wards.clear();
+    recoverAt=0;gustDone=false;practiceHit=false;practiceImpactAt=null;cueUntil=0;trainingCue.hidden=true;wards.clear();
     groups.forEach((group,index)=>{
       const wave=waves[index];
       for(const actor of group){

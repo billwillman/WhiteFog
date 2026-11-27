@@ -37,8 +37,8 @@ const firstChapter=(()=>{
   }catch(_){}
   function save(){if(!isolated)try{localStorage.setItem(storeKey,JSON.stringify({progress,line,ferryLine,sceneLine,firstClears}));}catch(_){}}
   const dialogue=createDialogue($('dialogue'),$('dialogue-template'),art.portraits);
-  const battle=makeBattleEntry(assets.battle,(snapshot,damage)=>training.recordTrial({
-    label:snapshot.baseline?'初始对照':'当前修行',attack:snapshot.attack,recovery:snapshot.breath ? .35 : 1,damage
+  const battle=makeBattleEntry(assets.battle,(snapshot,trial)=>training.recordTrial({
+    label:snapshot.baseline?'未参悟、未温养':'当前修行',attack:snapshot.attack,...trial
   }));
   const previewTraining=trainingRules.initial();
   async function trainingAccess(action,pick){
@@ -54,14 +54,24 @@ const firstChapter=(()=>{
     const state=encounter==='skills'?null:await trainingAccess();
     if(request&&request!==pendingBattle)throw Error('已取消进场');
     const snapshot=state?trainingRules.snapshot(state):null;
-    if(baseline&&encounter==='yard'){snapshot.baseline=true;snapshot.breath=0;snapshot.attack-=2*state.swordRank;}
+    if(encounter==='yard'){
+      snapshot.baseline=baseline||(!state.breath&&!state.swordRank);
+      if(baseline){snapshot.breath=0;snapshot.attack-=2*state.swordRank;}
+    }
     return battle.prepare(encounter,key,snapshot);
   }
   function showChapterBattle(task){
     battle.show(task.encounter,null,won=>{
       if(!won)return;
-      if(!Object.hasOwn(firstClears,task.stageId))firstClears[task.stageId]=task.firstClear??{};
+      const first=!Object.hasOwn(firstClears,task.stageId);
+      if(first)firstClears[task.stageId]=task.firstClear??{};
       if(tasks[progress]===task)advanceTask();else save();
+      if(!first||!task.trainingReward)return;
+      const {cultivation,tickets,sand,marrow}=task.trainingReward;
+      const pages=task.firstClear?.universalPages;
+      const rewards=[[cultivation,'修为'],[pages,'通用残页'],[tickets,'招募帖'],[sand,'灵砂'],[marrow,'云髓']]
+        .filter(([amount])=>amount>0).map(([amount,name])=>name+' +'+amount);
+      if(rewards.length)return '首通所得 · '+rewards.join('　');
     });
   }
   window.addEventListener('storage',event=>{
@@ -200,7 +210,10 @@ const firstChapter=(()=>{
   $('to-map').addEventListener('click',map);
   function returnFromBattle(){
     if(enteringBattle)return;
-    map();$('task').focus({preventScroll:true});
+    const practice=$('battle-entry').dataset.encounter==='yard';
+    map();
+    if(practice){training.open('practice');return;}
+    $('task').focus({preventScroll:true});
     const start=performance.now(),reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
     if(reduced)return;
     cancelAnimationFrame(returnFogFrame);
