@@ -132,7 +132,68 @@ namespace SoftKitty
             return actor;
         }
 
-        public float LaunchSpeed(Action node) => node.projectileSpeedOverride > 0 ? node.projectileSpeedOverride : speed;
+        [Flags]
+        public enum Field
+        {
+            None = 0,
+            Prefab = 1 << 0,
+            Trail = 1 << 1,
+            TrailSeconds = 1 << 2,
+            LaunchBone = 1 << 3,
+            LaunchOffset = 1 << 4,
+            TargetBone = 1 << 5,
+            ImpactOffset = 1 << 6,
+            Path = 1 << 7,
+            Speed = 1 << 8,
+            Acceleration = 1 << 9,
+            TrackingTimeout = 1 << 10,
+            HitRecipients = 1 << 11,
+            HitTags = 1 << 12,
+            HitBoxSize = 1 << 13,
+            HitBoxStart = 1 << 14,
+            HitBoxSeconds = 1 << 15,
+            HitBoxOffset = 1 << 16,
+            HitLayers = 1 << 17,
+            Impact = 1 << 18,
+            ImpactScale = 1 << 19,
+        }
+
+        public SkillProjectile WithOverrides(Action node)
+        {
+            var result = Copy();
+            if (node.projectileOverrides != null)
+                result.CopyFieldsFrom(node.projectileOverrides, node.projectileOverrideFields);
+            result.speed = LaunchSpeed(node);
+            return result;
+        }
+
+        internal void CopyFieldsFrom(SkillProjectile source, Field fields)
+        {
+            if ((fields & Field.Prefab) != 0) prefab = source.prefab;
+            if ((fields & Field.Trail) != 0) trail = source.trail;
+            if ((fields & Field.TrailSeconds) != 0) trailSeconds = source.trailSeconds;
+            if ((fields & Field.LaunchBone) != 0) launchBone = source.launchBone;
+            if ((fields & Field.LaunchOffset) != 0) launchOffset = source.launchOffset;
+            if ((fields & Field.TargetBone) != 0) targetBone = source.targetBone;
+            if ((fields & Field.ImpactOffset) != 0) impactOffset = source.impactOffset;
+            if ((fields & Field.Path) != 0) path = source.path;
+            if ((fields & Field.Speed) != 0) speed = source.speed;
+            if ((fields & Field.Acceleration) != 0) acceleration = source.acceleration;
+            if ((fields & Field.TrackingTimeout) != 0) trackingTimeout = source.trackingTimeout;
+            if ((fields & Field.HitRecipients) != 0) hitRecipients = source.hitRecipients;
+            if ((fields & Field.HitTags) != 0) hitTags = source.hitTags == null ? new List<string>() : new List<string>(source.hitTags);
+            if ((fields & Field.HitBoxSize) != 0) hitBoxSize = source.hitBoxSize;
+            if ((fields & Field.HitBoxStart) != 0) hitBoxStart = source.hitBoxStart;
+            if ((fields & Field.HitBoxSeconds) != 0) hitBoxSeconds = source.hitBoxSeconds;
+            if ((fields & Field.HitBoxOffset) != 0) hitBoxOffset = source.hitBoxOffset;
+            if ((fields & Field.HitLayers) != 0) hitLayers = source.hitLayers;
+            if ((fields & Field.Impact) != 0) impact = source.impact;
+            if ((fields & Field.ImpactScale) != 0) impactScale = source.impactScale;
+        }
+
+        public float LaunchSpeed(Action node) =>
+            (node.projectileOverrideFields & Field.Speed) != 0 && node.projectileOverrides != null
+                ? node.projectileOverrides.speed : node.projectileSpeedOverride > 0 ? node.projectileSpeedOverride : speed;
 
         public SkillProjectile Copy()
         {

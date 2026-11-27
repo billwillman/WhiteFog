@@ -72,8 +72,7 @@ namespace SoftKitty
         {
             if (!node.projectileSnap || node.projectileSnap.settings == null) return;
             var actions = BuildContactHandler(node, skill, host, state, caster.mData, fallback);
-            var shot = node.projectileSnap.settings.Copy();
-            shot.speed = shot.LaunchSpeed(node);
+            var shot = node.projectileSnap.settings.WithOverrides(node);
             host.Schedule(Fly(shot, caster, victim, state.orderedTargets, (hit, point, contact) =>
             {
                 settle?.Invoke(hit, point);

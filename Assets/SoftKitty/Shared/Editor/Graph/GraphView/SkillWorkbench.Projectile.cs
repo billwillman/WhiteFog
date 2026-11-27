@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using ProjectileField = SoftKitty.SkillProjectile.Field;
 
 namespace SoftKitty
 {
@@ -155,7 +156,7 @@ namespace SoftKitty
         private static SkillProjectileSnap ProjectileConfigField(SkillProjectileSnap config)
         {
             const string title = "投射物配置";
-            const string help = "选择这次发射使用的配置文件。节点里可以单独改发射初速度。要修改共用的 Prefab 或命中盒，点「打开投射物 Asset」，在 Inspector 里编辑。";
+            const string help = "选择这次发射使用的配置文件。每项默认跟随配置。点「复写」为当前节点单独设置，点「恢复」重新跟随配置。要修改共用的 Prefab 或命中盒，点「打开投射物 Asset」，在 Inspector 里编辑。";
             using (new EditorGUILayout.HorizontalScope())
             {
                 using (new EditorGUILayout.HorizontalScope(GUILayout.Width(EditorGUIUtility.labelWidth)))
@@ -193,7 +194,7 @@ namespace SoftKitty
             }
             string saveLabel = snap ? "另存投射物配置" : "新建投射物配置";
             string saveHelp = snap
-                ? "复制投射参数并让当前节点使用新配置。其他节点继续使用原来的配置。"
+                ? "将配置原值和本节点的复写合并为新配置。当前节点改用新配置并清除复写，其他节点继续使用原配置。"
                 : "从当前投射参数创建配置资产，并绑定到这个节点。保存后，其他技能也可以选择这份配置。";
             bool save;
             using (new SkillFieldHelp.Row(saveLabel, saveHelp))
@@ -203,13 +204,8 @@ namespace SoftKitty
                 string path = EditorUtility.SaveFilePanelInProject("保存投射物配置", "投射物配置", "asset", "选择投射物配置的保存位置。");
                 if (!string.IsNullOrEmpty(path))
                 {
-                    var asset = CreateInstance<SkillProjectileSnap>();
-                    asset.settings = SkillProjectile.For(node, graph).Copy();
-                    if (impactNode && !snap && node.IntValues[0] != (int)SkillPlayback.Style.Projectile && node.FloatValues.Count > 1 && node.FloatValues[1] > 0)
-                        asset.settings.speed = node.FloatValues[1];
-                    AssetDatabase.CreateAsset(asset, AssetDatabase.GenerateUniqueAssetPath(path));
-                    Change(() => SetProjectileSnap(node, asset, impactNode));
-                    snap = asset;
+                    SaveProjectileConfig(node, impactNode, path);
+                    snap = node.projectileSnap;
                 }
             }
             bool bound = snap && snap.settings != null;
@@ -220,50 +216,127 @@ namespace SoftKitty
                     : "请选择或新建投射物配置。绑定后才能发射。";
                 EditorGUILayout.HelpBox(hint, MessageType.Info);
             }
-            var settings = SkillProjectile.For(node, graph);
-            using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
-            {
-                EditorGUILayout.LabelField("本次发射的动态参数（可编辑）", EditorStyles.boldLabel);
-                using (new SkillFieldHelp.Row("本次发射初速度", "默认使用配置里的初速度。改这里仅影响本节点的起始速度。点「用配置速度」恢复跟随配置。"))
-                {
-                    float speed = settings.LaunchSpeed(node);
-                    float next = Mathf.Max(.01f, EditorGUILayout.DelayedFloatField("本次发射初速度（米/秒）", speed));
-                    if (next != Mathf.Max(.01f, speed)) Change(() => node.projectileSpeedOverride = next);
-                    using (new EditorGUI.DisabledScope(node.projectileSpeedOverride <= 0))
-                        if (GUILayout.Button("用配置速度", GUILayout.ExpandWidth(false))) Change(() => node.projectileSpeedOverride = 0);
-                }
-            }
+            var defaults = SkillProjectile.For(node, graph);
+            var effective = defaults.WithOverrides(node);
             using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
             {
                 using (new EditorGUILayout.HorizontalScope())
                 {
-                    EditorGUILayout.LabelField(bound ? "投射物 Asset 参数（只读）" : "待绑定的投射参数（只读预览）", EditorStyles.boldLabel);
+                    EditorGUILayout.LabelField(bound ? "投射物配置值（只读）" : "待绑定的投射参数（只读预览）", EditorStyles.boldLabel);
                     using (new EditorGUI.DisabledScope(!snap))
                         if (GUILayout.Button("打开投射物 Asset", GUILayout.ExpandWidth(false)))
                             EditorUtility.OpenPropertyEditor(snap);
                 }
-                using (new EditorGUI.DisabledScope(true))
-                    DrawProjectileSettings(settings.Copy());
+                var preview = defaults.Copy();
+                DrawProjectileSettings(preview, (field, draw) =>
+                {
+                    bool overridden = node.OverridesProjectileField(field);
+                    using (new EditorGUILayout.HorizontalScope())
+                    {
+                        using (new EditorGUILayout.VerticalScope())
+                        using (new EditorGUI.DisabledScope(true)) draw(preview);
+                        using (new EditorGUI.DisabledScope(!bound && !overridden))
+                            if (GUILayout.Button(overridden ? "恢复" : "复写", GUILayout.Width(52)))
+                                Change(() => node.SetProjectileOverride(field, overridden ? null : defaults));
+                    }
+                    if (!overridden) return;
+                    using (new EditorGUILayout.HorizontalScope())
+                    {
+                        GUILayout.Label("本节点", EditorStyles.boldLabel, GUILayout.Width(52));
+                        using (new EditorGUILayout.VerticalScope())
+                        using (var change = new EditorGUI.ChangeCheckScope())
+                        {
+                            draw(effective);
+                            if (change.changed) Change(() => node.SetProjectileOverride(field, effective));
+                        }
+                    }
+                });
             }
         }
 
-        internal static void DrawProjectileSettings(SkillProjectile shot)
+        private void SaveProjectileConfig(Action node, bool impactNode, string path)
         {
-            shot.prefab = PrefabField("飞行特效 Prefab", shot.prefab, "飞行中的投射物外观。拖入飞剑、法球等预制体；飞行速度和命中范围分别由下方设置控制。");
-            shot.trail = PrefabField("拖尾特效 Prefab", shot.trail, "投射物飞行时跟随的尾迹预制体。留空会省略尾迹。");
-            if (shot.trail) shot.trailSeconds = Mathf.Max(0, SkillFieldHelp.FloatField("拖尾消散（秒）", shot.trailSeconds, "飞行结束后停止发射尾迹粒子，并在这里指定的秒数后移除拖尾对象。"));
-            shot.launchBone = SkillFieldHelp.TextField("发射挂点", shot.launchBone ?? "", "在施法者模型中查找这个名字的骨骼或子物体，将其作为投射物起点。留空时使用角色根部。");
-            shot.launchOffset = SkillFieldHelp.Vector3Field("发射偏移（角色局部）", shot.launchOffset, "在发射挂点上，按施法者自身朝向移动起点。X、Y、Z 分别对应角色的右方、上方、前方，单位为米。");
-            shot.targetBone = SkillFieldHelp.TextField("目标挂点", shot.targetBone ?? "", "在被瞄准角色的模型中查找这个名字的骨骼或子物体，将其作为飞行终点的参考位置。");
-            shot.impactOffset = SkillFieldHelp.Vector3Field("目标偏移（角色局部）", shot.impactOffset, "从目标挂点出发，按目标自身朝向偏移飞行终点。X、Y、Z 分别对应右、上、前，单位为米。");
-            shot.path = (SkillProjectile.FlightPath)SkillFieldHelp.Popup("飞行方式", (int)shot.path, new[] { "飞向出手时的锁定点", "追踪移动目标" }, "锁定点模式会飞向出手时记录的位置；追踪模式会随目标移动更新终点，直到命中或追踪结束。");
-            shot.speed = Mathf.Max(.01f, SkillFieldHelp.FloatField("配置默认初速度（米/秒）", shot.speed, "设置投射物刚发射时每秒飞行的距离。例如填 10，且加速度为 0 时，每秒飞行 10 米。"));
-            shot.acceleration = SkillFieldHelp.FloatField("加速度（米/秒²）", shot.acceleration, "每秒改变多少飞行速度。正值加速，负值减速，填 0 则保持初速度。");
-            if (shot.path == SkillProjectile.FlightPath.FollowTarget)
-                shot.trackingTimeout = Mathf.Max(.01f, SkillFieldHelp.FloatField("最长追踪（秒）", shot.trackingTimeout, "追踪移动目标时最多飞行多久。超过这段时间便结束追踪。"));
-            DrawHitBoxFields(shot);
-            shot.impact = PrefabField("命中特效 Prefab", shot.impact, "投射物接触有效受击体时，在接触点生成的特效预制体。");
-            if (shot.impact) shot.impactScale = Mathf.Max(0, SkillFieldHelp.FloatField("命中特效缩放", shot.impactScale, "按比例缩放命中特效的外观。1 为原尺寸，2 为两倍；碰撞范围由命中盒尺寸控制。"));
+            var settings = SkillProjectile.For(node, graph).WithOverrides(node);
+            if (impactNode && !node.projectileSnap && !node.OverridesProjectileField(ProjectileField.Speed)
+                && node.IntValues[0] != (int)SkillPlayback.Style.Projectile && node.FloatValues.Count > 1 && node.FloatValues[1] > 0)
+                settings.speed = node.FloatValues[1];
+            var asset = CreateInstance<SkillProjectileSnap>();
+            asset.settings = settings;
+            string uniquePath = AssetDatabase.GenerateUniqueAssetPath(path);
+            AssetDatabase.CreateAsset(asset, uniquePath);
+            if (!AssetDatabase.Contains(asset))
+            {
+                DestroyImmediate(asset);
+                return;
+            }
+            Change(() =>
+            {
+                SetProjectileSnap(node, asset, impactNode);
+                node.ClearProjectileOverrides();
+            });
+        }
+
+        internal static void DrawProjectileSettings(SkillProjectile settings,
+            System.Action<ProjectileField, System.Action<SkillProjectile>> drawField = null)
+        {
+            void Row(ProjectileField field, System.Action<SkillProjectile> draw)
+            {
+                if (drawField == null) draw(settings);
+                else drawField(field, draw);
+            }
+
+            Row(ProjectileField.Prefab, shot => shot.prefab = PrefabField("飞行特效 Prefab", shot.prefab, "飞行中的投射物外观。拖入飞剑、法球等预制体；飞行速度和命中范围分别由下方设置控制。"));
+            Row(ProjectileField.Trail, shot => shot.trail = PrefabField("拖尾特效 Prefab", shot.trail, "投射物飞行时跟随的尾迹预制体。留空会省略尾迹。"));
+            Row(ProjectileField.TrailSeconds, shot => shot.trailSeconds = Mathf.Max(0, SkillFieldHelp.FloatField("拖尾消散（秒）", shot.trailSeconds, "飞行结束后停止发射尾迹粒子，并在这里指定的秒数后移除拖尾对象。")));
+            Row(ProjectileField.LaunchBone, shot => shot.launchBone = SkillFieldHelp.TextField("发射挂点", shot.launchBone ?? "", "在施法者模型中查找这个名字的骨骼或子物体，将其作为投射物起点。留空时使用角色根部。"));
+            Row(ProjectileField.LaunchOffset, shot => shot.launchOffset = SkillFieldHelp.Vector3Field("发射偏移（角色局部）", shot.launchOffset, "在发射挂点上，按施法者自身朝向移动起点。X、Y、Z 分别对应角色的右方、上方、前方，单位为米。"));
+            Row(ProjectileField.TargetBone, shot => shot.targetBone = SkillFieldHelp.TextField("目标挂点", shot.targetBone ?? "", "在被瞄准角色的模型中查找这个名字的骨骼或子物体，将其作为飞行终点的参考位置。"));
+            Row(ProjectileField.ImpactOffset, shot => shot.impactOffset = SkillFieldHelp.Vector3Field("目标偏移（角色局部）", shot.impactOffset, "从目标挂点出发，按目标自身朝向偏移飞行终点。X、Y、Z 分别对应右、上、前，单位为米。"));
+            Row(ProjectileField.Path, shot => shot.path = (SkillProjectile.FlightPath)SkillFieldHelp.Popup("飞行方式", (int)shot.path, new[] { "飞向出手时的锁定点", "追踪移动目标" }, "锁定点模式会飞向出手时记录的位置；追踪模式会随目标移动更新终点，直到命中或追踪结束。"));
+            Row(ProjectileField.Speed, shot => shot.speed = Mathf.Max(.01f, SkillFieldHelp.FloatField("初速度（米/秒）", shot.speed, "设置投射物刚发射时每秒飞行的距离。例如填 10，且加速度为 0 时，每秒飞行 10 米。")));
+            Row(ProjectileField.Acceleration, shot => shot.acceleration = SkillFieldHelp.FloatField("加速度（米/秒²）", shot.acceleration, "每秒改变多少飞行速度。正值加速，负值减速，填 0 则保持初速度。"));
+            Row(ProjectileField.TrackingTimeout, shot => shot.trackingTimeout = Mathf.Max(.01f, SkillFieldHelp.FloatField("最长追踪（秒）", shot.trackingTimeout, "追踪移动目标时最多飞行多久。超过这段时间便结束追踪。")));
+            Row(ProjectileField.HitRecipients, shot => shot.hitRecipients = (SkillProjectile.HitRecipients)SkillFieldHelp.Popup("可命中对象", (int)shot.hitRecipients,
+                new[] { "确定目标 · 仅瞄准实体", "非确定目标 · 首个符合标签的受击体" }, "「仅瞄准实体」只检测本次目标。「首个符合标签的受击体」会在飞行路径上查找匹配任一指定标签的实体。"));
+            Row(ProjectileField.HitTags, DrawProjectileHitTags);
+            Row(ProjectileField.HitBoxSize, shot => shot.hitBoxSize = Vector3.Max(Vector3.one * .01f, SkillFieldHelp.Vector3Field("命中盒尺寸（米）", shot.hitBoxSize, "投射物检测受击体所用盒子的完整宽、高、深，对应 X、Y、Z。增大数值会扩大飞行路径上的接触范围。")));
+            Row(ProjectileField.HitBoxStart, shot => shot.hitBoxStart = Mathf.Max(0, SkillFieldHelp.FloatField("命中盒开启（发射后秒数）", shot.hitBoxStart, "从投射物发射开始，延迟多久才允许检测接触。填 0 会从发射位置开始检测。")));
+            Row(ProjectileField.HitBoxSeconds, shot => shot.hitBoxSeconds = Mathf.Max(0, SkillFieldHelp.FloatField("开启时长（0 至飞行结束）", shot.hitBoxSeconds, "从命中盒开启开始，可以检测接触的持续秒数。填 0 会一直检测到飞行结束。")));
+            Row(ProjectileField.HitBoxOffset, shot => shot.hitBoxOffset = SkillFieldHelp.Vector3Field("命中盒偏移（飞行局部）", shot.hitBoxOffset, "相对于投射物的位置移动命中盒中心。Z 沿飞行方向，X 和 Y 分别向右、向上，单位为米。"));
+            Row(ProjectileField.HitLayers, shot =>
+            {
+                int mask = UnityEditorInternal.InternalEditorUtility.LayerMaskToConcatenatedLayersMask(shot.hitLayers);
+                int picked = SkillFieldHelp.MaskField("受击层", mask, UnityEditorInternal.InternalEditorUtility.layers, "选择参与接触检测的 Unity 物理层。");
+                if (picked != mask) shot.hitLayers = UnityEditorInternal.InternalEditorUtility.ConcatenatedLayersMaskToLayerMask(picked);
+            });
+            Row(ProjectileField.Impact, shot => shot.impact = PrefabField("命中特效 Prefab", shot.impact, "投射物接触有效受击体时，在接触点生成的特效预制体。"));
+            Row(ProjectileField.ImpactScale, shot => shot.impactScale = Mathf.Max(0, SkillFieldHelp.FloatField("命中特效缩放", shot.impactScale, "按比例缩放命中特效的外观。1 为原尺寸，2 为两倍；碰撞范围由命中盒尺寸控制。")));
+        }
+
+        private static void DrawProjectileHitTags(SkillProjectile shot)
+        {
+            using (new SkillFieldHelp.Row("可命中 MCC 实体标签", "「首个符合标签的受击体」模式使用此列表，请至少填写一个受击方标签。飞行时选择路径上第一个匹配任一标签的受击体。"))
+                EditorGUILayout.LabelField("可命中 MCC 实体标签（匹配任一项）");
+            for (int i = 0; i < shot.hitTags.Count; i++)
+            {
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    shot.hitTags[i] = EditorGUILayout.TextField(shot.hitTags[i]).Trim();
+                    SkillFieldHelp.Button("可命中标签", "填写受击方的 MCC 实体标签。列表中任一项匹配即可，预览中的敌人使用 hostile，主角使用 friendly。");
+                    if (GUILayout.Button("移除", GUILayout.Width(48)))
+                    {
+                        shot.hitTags.RemoveAt(i--);
+                        GUI.changed = true;
+                    }
+                }
+            }
+            if (GUILayout.Button("添加可命中标签"))
+            {
+                shot.hitTags.Add("");
+                GUI.changed = true;
+            }
+            if (shot.hitRecipients == SkillProjectile.HitRecipients.FirstMatchingEntity && !shot.hitTags.Any(tag => !string.IsNullOrWhiteSpace(tag)))
+                EditorGUILayout.HelpBox("请填写受击方的 MCC 实体标签。预览场中，敌方为 hostile，主角为 friendly。", MessageType.Info);
         }
 
         private static void SetProjectileSnap(Action node, SkillProjectileSnap snap, bool impactNode)
@@ -303,44 +376,6 @@ namespace SoftKitty
                 "有效接触后，对实际碰到的实体执行状态动作。若 Buff 依赖伤害图的命中率判定，请将状态动作放在该图的判定成功分支。";
             if (GUILayout.Button(new GUIContent("添加命中后施加 Buff", buffHelp)))
                 Change(() => selection = AddConfiguredAction(graph.RootSet, "OverTimeEffect", 0, 0, node).Uid);
-        }
-
-        private static void DrawHitBoxFields(SkillProjectile shot)
-        {
-            shot.hitRecipients = (SkillProjectile.HitRecipients)SkillFieldHelp.Popup("可命中对象", (int)shot.hitRecipients,
-                new[] { "确定目标 · 仅瞄准实体", "非确定目标 · 首个符合标签的受击体" }, "「仅瞄准实体」只检测本次目标。「首个符合标签的受击体」会在飞行路径上查找匹配任一指定标签的实体。");
-            if (shot.hitRecipients == SkillProjectile.HitRecipients.FirstMatchingEntity)
-            {
-                using (new SkillFieldHelp.Row("可命中 MCC 实体标签", "列表至少填写一个受击方的 MCC 实体标签。飞行时选择路径上第一个匹配任一标签的受击体。"))
-                    EditorGUILayout.LabelField("可命中 MCC 实体标签（匹配任一项）");
-                for (int i = 0; i < shot.hitTags.Count; i++)
-                {
-                    using (new EditorGUILayout.HorizontalScope())
-                    {
-                        shot.hitTags[i] = EditorGUILayout.TextField(shot.hitTags[i]).Trim();
-                        SkillFieldHelp.Button("可命中标签", "填写受击方的 MCC 实体标签。列表中任一项匹配即可，预览中的敌人使用 hostile，主角使用 friendly。");
-                        if (GUILayout.Button("移除", GUILayout.Width(48)))
-                        {
-                            shot.hitTags.RemoveAt(i--);
-                            GUI.changed = true;
-                        }
-                    }
-                }
-                if (GUILayout.Button("添加可命中标签"))
-                {
-                    shot.hitTags.Add("");
-                    GUI.changed = true;
-                }
-                if (!shot.hitTags.Any(tag => !string.IsNullOrWhiteSpace(tag)))
-                    EditorGUILayout.HelpBox("请填写受击方的 MCC 实体标签。预览场中，敌方为 hostile，主角为 friendly。", MessageType.Info);
-            }
-            shot.hitBoxSize = Vector3.Max(Vector3.one * .01f, SkillFieldHelp.Vector3Field("命中盒尺寸（米）", shot.hitBoxSize, "投射物检测受击体所用盒子的完整宽、高、深，对应 X、Y、Z。增大数值会扩大飞行路径上的接触范围。"));
-            shot.hitBoxStart = Mathf.Max(0, SkillFieldHelp.FloatField("命中盒开启（发射后秒数）", shot.hitBoxStart, "从投射物发射开始，延迟多久才允许检测接触。填 0 会从发射位置开始检测。"));
-            shot.hitBoxSeconds = Mathf.Max(0, SkillFieldHelp.FloatField("开启时长（0 至飞行结束）", shot.hitBoxSeconds, "从命中盒开启开始，可以检测接触的持续秒数。填 0 会一直检测到飞行结束。"));
-            shot.hitBoxOffset = SkillFieldHelp.Vector3Field("命中盒偏移（飞行局部）", shot.hitBoxOffset, "相对于投射物的位置移动命中盒中心。Z 沿飞行方向，X 和 Y 分别向右、向上，单位为米。");
-            var layerMask = UnityEditorInternal.InternalEditorUtility.LayerMaskToConcatenatedLayersMask(shot.hitLayers);
-            int pickedLayers = SkillFieldHelp.MaskField("受击层", layerMask, UnityEditorInternal.InternalEditorUtility.layers, "选择参与接触检测的 Unity 物理层。受击体的碰撞器必须在勾选的层内。");
-            if (pickedLayers != layerMask) shot.hitLayers = UnityEditorInternal.InternalEditorUtility.ConcatenatedLayersMaskToLayerMask(pickedLayers);
         }
 
         private void DrawVisualAction(Action node)

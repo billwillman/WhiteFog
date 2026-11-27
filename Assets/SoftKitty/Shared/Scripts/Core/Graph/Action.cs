@@ -17,7 +17,10 @@ namespace SoftKitty
         [SerializeReference] public SkillProjectile projectile;
         public SkillProjectileSnap projectileSnap;
         public bool requiresProjectileSnap;
-        public float projectileSpeedOverride; // Zero uses the initial speed from the shared configuration.
+        public float projectileSpeedOverride; // Speed overrides saved before per-field overrides were introduced.
+        public SkillProjectile.Field projectileOverrideFields;
+        [SerializeReference] public SkillProjectile projectileOverrides;
+
         [SerializeReference] public OriginalSkillGraph.EffectCue visualEffect;
 
        
@@ -70,8 +73,38 @@ namespace SoftKitty
             projectile = _source.projectile?.Copy();
             projectileSnap = _source.projectileSnap;
             projectileSpeedOverride = _source.projectileSpeedOverride;
+            projectileOverrideFields = _source.projectileOverrideFields;
+            projectileOverrides = _source.projectileOverrides?.Copy();
             requiresProjectileSnap = _source.requiresProjectileSnap;
             visualEffect = _source.visualEffect?.Copy();
+        }
+
+        public bool OverridesProjectileField(SkillProjectile.Field field) =>
+            (projectileOverrideFields & field) != 0 || (field == SkillProjectile.Field.Speed && projectileSpeedOverride > 0);
+
+        // A null source restores inheritance. A null prefab or an empty tag list inside a source is a real override.
+        public void SetProjectileOverride(SkillProjectile.Field field, SkillProjectile source)
+        {
+            if (field == SkillProjectile.Field.Speed) projectileSpeedOverride = 0;
+            if (source != null)
+            {
+                projectileOverrides ??= new SkillProjectile();
+                projectileOverrides.CopyFieldsFrom(source, field);
+                projectileOverrideFields |= field;
+            }
+            else
+            {
+                projectileOverrideFields &= ~field;
+                if (projectileOverrideFields == SkillProjectile.Field.None) projectileOverrides = null;
+                else projectileOverrides?.CopyFieldsFrom(new SkillProjectile(), field);
+            }
+        }
+
+        public void ClearProjectileOverrides()
+        {
+            projectileOverrides = null;
+            projectileOverrideFields = SkillProjectile.Field.None;
+            projectileSpeedOverride = 0;
         }
 
         public void ResetInputPortSetting()

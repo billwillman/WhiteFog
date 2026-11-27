@@ -146,13 +146,13 @@ public static class LocalBattleSkillExport
                 case "Projectile":
                     if (!x.projectileSnap || x.projectileSnap.settings == null)
                         throw new InvalidDataException(x.Uid + " 缺少投射物配置。");
-                    var shot = SkillProjectile.For(x, asset as OriginalSkillGraph);
+                    var shot = x.projectileSnap.settings.WithOverrides(x);
                     if (shot.path != SkillProjectile.FlightPath.LaunchPositionToTargetPosition)
                         throw new InvalidDataException("当前本地战场只支持向发射时目标位置直射。");
                     n.bone = shot.launchBone; n.targetBone = shot.targetBone;
                     n.fx = shot.prefab ? shot.prefab.name : ""; n.trail = shot.trail ? shot.trail.name : "";
                     n.impact = shot.impact ? shot.impact.name : ""; n.impactScale = shot.impactScale; n.trailSeconds = shot.trailSeconds;
-                    n.speed = shot.LaunchSpeed(x); n.acceleration = shot.acceleration; n.from = shot.launchOffset; n.to = shot.impactOffset;
+                    n.speed = shot.speed; n.acceleration = shot.acceleration; n.from = shot.launchOffset; n.to = shot.impactOffset;
                     n.size = shot.hitBoxSize; n.offset = shot.hitBoxOffset; n.open = shot.hitBoxStart; n.window = shot.hitBoxSeconds;
                     n.mask = shot.hitLayers.value; n.recipients = (int)shot.hitRecipients; n.tags = shot.hitTags.ToArray();
                     break;
