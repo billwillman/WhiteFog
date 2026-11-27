@@ -136,7 +136,8 @@ namespace SoftKitty
                 formulaUid = result.Uid;
                 if (source is SkillFormula formula)
                 {
-                    EditorGUILayout.LabelField("运行时公式输出", formula.outputUid);
+                    using (new SkillFieldHelp.Row("运行时公式输出", SkillDamageHelp.Output))
+                        EditorGUILayout.LabelField("运行时公式输出", formula.outputUid);
                     using (new EditorGUI.DisabledScope(EditorApplication.isPlaying || formula.outputUid == result.Uid))
                         if (GUILayout.Button("把当前节点设为运行时输出"))
                         {
@@ -155,7 +156,8 @@ namespace SoftKitty
                     var drawn = new HashSet<NodeBase>();
                     DrawExpression(root, result, inputs, new HashSet<NodeBase>(), drawn, effect);
                     float value = EvaluateFormula(root, result, inputs);
-                    EditorGUILayout.LabelField("当前试算结果", value.ToString("G7"), EditorStyles.boldLabel);
+                    using (new SkillFieldHelp.Row("当前试算结果", "这一次试算用上面的样本输入算出了多少。若这张公式用于触发概率，0.3 就是 30%。更换试算输入可以再看一次结果。"))
+                        EditorGUILayout.LabelField("当前试算结果", value.ToString("G7"), EditorStyles.boldLabel);
                 }
                 catch (InvalidOperationException error) { EditorGUILayout.HelpBox(error.Message, MessageType.Warning); }
             }

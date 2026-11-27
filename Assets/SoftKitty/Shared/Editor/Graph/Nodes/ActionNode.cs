@@ -226,12 +226,12 @@ namespace SoftKitty
             if (config == null) panel.Add(new Label("请在工作台配置攻击公式"));
             else
             {
-                void Formula(string label, SkillFormula formula)
+                void Formula(string label, SkillFormula formula, string explanation)
                 {
                     var button = new Button(() => MasterGraphWindow.OpenWindow(formula))
                         { text = label + " · " + (formula ? formula.name : "未绑定") };
                     button.SetEnabled(formula);
-                    panel.Add(button);
+                    panel.Add(SkillDamageHelp.WithButton(button, label, explanation));
                 }
                 if (config.EffectiveMode == SkillCalculation.Mode.NativeGraph)
                 {
@@ -252,8 +252,8 @@ namespace SoftKitty
                     {
                         if (stage == null || !config.IsStageEnabled(stage.id)) continue;
                         if (stage.kind == SkillDamageFlow.Kind.ModifyDamage && stage.conditionChance)
-                            Formula(stage.label + "触发概率", stage.conditionChance);
-                        if (stage.formula) Formula(stage.label, stage.formula);
+                            Formula(stage.label + "触发概率", stage.conditionChance, SkillDamageHelp.Condition);
+                        if (stage.formula) Formula(stage.label, stage.formula, SkillDamageHelp.Formula(stage.kind));
                         else panel.Add(new Label(stage.label));
                     }
                 }

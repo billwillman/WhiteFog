@@ -225,8 +225,10 @@ namespace SoftKitty
             catch (InvalidOperationException e) { EditorGUILayout.HelpBox(e.Message, MessageType.Warning); }
 
             if (!flow) return;
-            bool expanded = EditorGUILayout.Foldout(editingDamageFlow == flow,
-                (flow.ownsFormulas ? "编辑本招专用流程 · " : "编辑公共流程 · ") + flow.name, true);
+            bool expanded;
+            using (new SkillFieldHelp.Row("编辑伤害流程", SkillDamageHelp.Stages))
+                expanded = EditorGUILayout.Foldout(editingDamageFlow == flow,
+                    (flow.ownsFormulas ? "编辑本招专用流程 · " : "编辑公共流程 · ") + flow.name, true);
             if (expanded) editingDamageFlow = flow;
             else if (editingDamageFlow == flow) editingDamageFlow = null;
             if (!expanded) return;
@@ -255,15 +257,17 @@ namespace SoftKitty
                             }
                     }
                     if (UsesStageFormula(stage.kind))
-                        DrawFormulaSlot("公式", stage.formula, config.levels, f => stage.formula = f, flow);
+                        DrawFormulaSlot("公式", stage.formula, config.levels, f => stage.formula = f, flow, SkillDamageHelp.Formula(stage.kind));
                     if (stage.kind == Kind.ModifyDamage)
                     {
-                        bool showCondition = EditorGUILayout.Foldout(editingStageCondition == stage.id,
-                            stage.conditionChance ? "触发条件 · " + stage.conditionChance.name : "触发条件 · 每次执行", true);
+                        bool showCondition;
+                        using (new SkillFieldHelp.Row("触发概率（Condition Chance）", SkillDamageHelp.Condition))
+                            showCondition = EditorGUILayout.Foldout(editingStageCondition == stage.id,
+                                stage.conditionChance ? "触发概率 · " + stage.conditionChance.name : "触发概率 · 每次执行", true);
                         if (showCondition)
                         {
                             editingStageCondition = stage.id;
-                            DrawFormulaSlot("触发概率（0～1）", stage.conditionChance, config.levels, f => stage.conditionChance = f, flow);
+                            DrawFormulaSlot("触发概率（0～1）", stage.conditionChance, config.levels, f => stage.conditionChance = f, flow, SkillDamageHelp.Condition);
                             EditorGUILayout.LabelField("概率可以来自角色属性、目标属性或常量。未触发时，沿用上一环节的伤害继续结算。", EditorStyles.wordWrappedMiniLabel);
                             if (stage.conditionChance && GUILayout.Button("清除条件，改为每次执行"))
                                 EditDamageFlow(flow, () => stage.conditionChance = null);

@@ -201,7 +201,7 @@ namespace SoftKitty
         }
 
         private void DrawFormulaSlot(string label, SkillFormula current, SkillLevelTable table,
-            System.Action<SkillFormula> assign, SkillDamageFlow owner)
+            System.Action<SkillFormula> assign, SkillDamageFlow owner, string help)
         {
             SkillFormula Bind(SkillFormula value)
             {
@@ -212,7 +212,7 @@ namespace SoftKitty
             }
             using (new EditorGUILayout.HorizontalScope())
             {
-                var next = (SkillFormula)EditorGUILayout.ObjectField(label, current, typeof(SkillFormula), false);
+                var next = (SkillFormula)SkillFieldHelp.ObjectField(label, current, typeof(SkillFormula), false, help);
                 if (next != current) Bind(next);
                 if (!current && GUILayout.Button("新建公式", GUILayout.Width(68)))
                 {

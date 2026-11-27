@@ -17,7 +17,8 @@ namespace SoftKitty
             GraphObject myTarget = (GraphObject)target;
             if (myTarget is SkillFormula formula)
             {
-                EditorGUILayout.LabelField("运行时输出节点", formula.outputUid);
+                using (new SkillFieldHelp.Row("运行时输出节点", SkillDamageHelp.Output))
+                    EditorGUILayout.LabelField("运行时输出节点", formula.outputUid);
                 if (GUILayout.Button("在公式页编辑与试算")) SkillWorkbench.Open(formula);
                 using (new EditorGUI.DisabledScope(formula.RootSet == null))
                     if (GUILayout.Button("打开公式节点树")) MasterGraphWindow.OpenWindow(formula);
