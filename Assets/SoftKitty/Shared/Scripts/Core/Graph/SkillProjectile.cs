@@ -132,6 +132,8 @@ namespace SoftKitty
             return actor;
         }
 
+        public float LaunchSpeed(Action node) => node.projectileSpeedOverride > 0 ? node.projectileSpeedOverride : speed;
+
         public SkillProjectile Copy()
         {
             var copy = (SkillProjectile)MemberwiseClone();

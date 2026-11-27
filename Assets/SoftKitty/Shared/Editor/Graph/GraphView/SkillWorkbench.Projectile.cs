@@ -155,10 +155,16 @@ namespace SoftKitty
         private static SkillProjectileSnap ProjectileConfigField(SkillProjectileSnap config)
         {
             const string title = "投射物配置";
-            const string help = "多个节点可共用一份投射物配置，包括外观、弹道、命中窗口和命中特效。修改配置会影响所有引用它的节点。只想调整当前节点时，点「另存投射物配置」。";
-            using (new SkillFieldHelp.Row(title, help))
+            const string help = "选择这次发射使用的配置文件。节点里可以单独改发射初速度。要修改共用的 Prefab 或命中盒，点「打开投射物 Asset」，在 Inspector 里编辑。";
+            using (new EditorGUILayout.HorizontalScope())
             {
-                var field = EditorGUI.PrefixLabel(EditorGUILayout.GetControlRect(), new GUIContent(title));
+                using (new EditorGUILayout.HorizontalScope(GUILayout.Width(EditorGUIUtility.labelWidth)))
+                {
+                    GUILayout.Label(title, GUILayout.ExpandWidth(false));
+                    SkillFieldHelp.Button(title, help);
+                    GUILayout.FlexibleSpace();
+                }
+                var field = EditorGUILayout.GetControlRect(false);
                 bool repaint = Event.current.type == EventType.Repaint;
                 // Keep Unity's picker and drag handling, and draw the value without its generated type suffix.
                 Color color = GUI.contentColor;
@@ -169,12 +175,9 @@ namespace SoftKitty
                     selected = (SkillProjectileSnap)EditorGUI.ObjectField(field, config, typeof(SkillProjectileSnap), false);
                 }
                 finally { GUI.contentColor = color; }
-                if (repaint)
-                {
-                    field.xMin += 3;
-                    field.xMax -= 20; // Leave the native picker button visible.
-                    GUI.Label(field, config ? config.name : "未选择", EditorStyles.label);
-                }
+                field.xMin += 3;
+                field.xMax -= 20; // Leave the native picker button visible.
+                GUI.Label(field, config ? config.name : "请选择投射物配置", EditorStyles.label);
                 return selected;
             }
         }
@@ -188,7 +191,14 @@ namespace SoftKitty
                 Change(() => SetProjectileSnap(node, selected, impactNode));
                 snap = selected;
             }
-            if (GUILayout.Button(snap ? "另存投射物配置" : "新建投射物配置"))
+            string saveLabel = snap ? "另存投射物配置" : "新建投射物配置";
+            string saveHelp = snap
+                ? "复制投射参数并让当前节点使用新配置。其他节点继续使用原来的配置。"
+                : "从当前投射参数创建配置资产，并绑定到这个节点。保存后，其他技能也可以选择这份配置。";
+            bool save;
+            using (new SkillFieldHelp.Row(saveLabel, saveHelp))
+                save = GUILayout.Button(saveLabel);
+            if (save)
             {
                 string path = EditorUtility.SaveFilePanelInProject("保存投射物配置", "投射物配置", "asset", "选择投射物配置的保存位置。");
                 if (!string.IsNullOrEmpty(path))
@@ -202,37 +212,58 @@ namespace SoftKitty
                     snap = asset;
                 }
             }
-            if (!snap)
+            bool bound = snap && snap.settings != null;
+            if (!bound)
             {
-                var text = node.requiresProjectileSnap || SkillProjectile.IsImpactLaunch(node)
-                    ? "请选择或新建投射物配置。绑定后才会发射。"
-                    : "此节点沿用原有的投射设置。点「新建投射物配置」可将这些设置保存为配置，也可以直接选择已有配置。";
-                EditorGUILayout.HelpBox(text, MessageType.Info);
-                return;
+                string hint = node.projectile != null
+                    ? "尚未绑定配置。下方显示旧节点保存的参数，点「新建投射物配置」可将它们保存成文件并绑定。"
+                    : "请选择或新建投射物配置。绑定后才能发射。";
+                EditorGUILayout.HelpBox(hint, MessageType.Info);
             }
-            // Draw into a copy so opening the inspector doesn't migrate assets or bypass Undo.
-            var shot = SkillProjectile.For(node, graph).Copy();
-            EditorGUI.BeginChangeCheck();
-            shot.prefab = PrefabField("投射物 Prefab", shot.prefab, "飞行中的投射物外观。拖入飞剑、法球等预制体；飞行速度和命中范围分别由下方设置控制。");
-            shot.trail = PrefabField("拖尾 Prefab", shot.trail, "投射物飞行时跟随的尾迹预制体。留空会省略尾迹。");
+            var settings = SkillProjectile.For(node, graph);
+            using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
+            {
+                EditorGUILayout.LabelField("本次发射的动态参数（可编辑）", EditorStyles.boldLabel);
+                using (new SkillFieldHelp.Row("本次发射初速度", "默认使用配置里的初速度。改这里仅影响本节点的起始速度。点「用配置速度」恢复跟随配置。"))
+                {
+                    float speed = settings.LaunchSpeed(node);
+                    float next = Mathf.Max(.01f, EditorGUILayout.DelayedFloatField("本次发射初速度（米/秒）", speed));
+                    if (next != Mathf.Max(.01f, speed)) Change(() => node.projectileSpeedOverride = next);
+                    using (new EditorGUI.DisabledScope(node.projectileSpeedOverride <= 0))
+                        if (GUILayout.Button("用配置速度", GUILayout.ExpandWidth(false))) Change(() => node.projectileSpeedOverride = 0);
+                }
+            }
+            using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
+            {
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    EditorGUILayout.LabelField(bound ? "投射物 Asset 参数（只读）" : "待绑定的投射参数（只读预览）", EditorStyles.boldLabel);
+                    using (new EditorGUI.DisabledScope(!snap))
+                        if (GUILayout.Button("打开投射物 Asset", GUILayout.ExpandWidth(false)))
+                            EditorUtility.OpenPropertyEditor(snap);
+                }
+                using (new EditorGUI.DisabledScope(true))
+                    DrawProjectileSettings(settings.Copy());
+            }
+        }
+
+        internal static void DrawProjectileSettings(SkillProjectile shot)
+        {
+            shot.prefab = PrefabField("飞行特效 Prefab", shot.prefab, "飞行中的投射物外观。拖入飞剑、法球等预制体；飞行速度和命中范围分别由下方设置控制。");
+            shot.trail = PrefabField("拖尾特效 Prefab", shot.trail, "投射物飞行时跟随的尾迹预制体。留空会省略尾迹。");
             if (shot.trail) shot.trailSeconds = Mathf.Max(0, SkillFieldHelp.FloatField("拖尾消散（秒）", shot.trailSeconds, "飞行结束后停止发射尾迹粒子，并在这里指定的秒数后移除拖尾对象。"));
             shot.launchBone = SkillFieldHelp.TextField("发射挂点", shot.launchBone ?? "", "在施法者模型中查找这个名字的骨骼或子物体，将其作为投射物起点。留空时使用角色根部。");
             shot.launchOffset = SkillFieldHelp.Vector3Field("发射偏移（角色局部）", shot.launchOffset, "在发射挂点上，按施法者自身朝向移动起点。X、Y、Z 分别对应角色的右方、上方、前方，单位为米。");
             shot.targetBone = SkillFieldHelp.TextField("目标挂点", shot.targetBone ?? "", "在被瞄准角色的模型中查找这个名字的骨骼或子物体，将其作为飞行终点的参考位置。");
             shot.impactOffset = SkillFieldHelp.Vector3Field("目标偏移（角色局部）", shot.impactOffset, "从目标挂点出发，按目标自身朝向偏移飞行终点。X、Y、Z 分别对应右、上、前，单位为米。");
             shot.path = (SkillProjectile.FlightPath)SkillFieldHelp.Popup("飞行方式", (int)shot.path, new[] { "飞向出手时的锁定点", "追踪移动目标" }, "锁定点模式会飞向出手时记录的位置；追踪模式会随目标移动更新终点，直到命中或追踪结束。");
-            shot.speed = Mathf.Max(.01f, SkillFieldHelp.FloatField("初速度（米/秒）", shot.speed, "设置投射物刚发射时每秒飞行的距离。例如填 10，且加速度为 0 时，每秒飞行 10 米。"));
+            shot.speed = Mathf.Max(.01f, SkillFieldHelp.FloatField("配置默认初速度（米/秒）", shot.speed, "设置投射物刚发射时每秒飞行的距离。例如填 10，且加速度为 0 时，每秒飞行 10 米。"));
             shot.acceleration = SkillFieldHelp.FloatField("加速度（米/秒²）", shot.acceleration, "每秒改变多少飞行速度。正值加速，负值减速，填 0 则保持初速度。");
             if (shot.path == SkillProjectile.FlightPath.FollowTarget)
                 shot.trackingTimeout = Mathf.Max(.01f, SkillFieldHelp.FloatField("最长追踪（秒）", shot.trackingTimeout, "追踪移动目标时最多飞行多久。超过这段时间便结束追踪。"));
             DrawHitBoxFields(shot);
-            shot.impact = PrefabField("命中特效", shot.impact, "投射物接触有效受击体时，在接触点生成的特效预制体。");
+            shot.impact = PrefabField("命中特效 Prefab", shot.impact, "投射物接触有效受击体时，在接触点生成的特效预制体。");
             if (shot.impact) shot.impactScale = Mathf.Max(0, SkillFieldHelp.FloatField("命中特效缩放", shot.impactScale, "按比例缩放命中特效的外观。1 为原尺寸，2 为两倍；碰撞范围由命中盒尺寸控制。"));
-            if (!EditorGUI.EndChangeCheck()) return;
-            Undo.RecordObject(snap, "修改投射物配置");
-            snap.settings = shot;
-            EditorUtility.SetDirty(snap);
-            AssetDatabase.SaveAssetIfDirty(snap);
         }
 
         private static void SetProjectileSnap(Action node, SkillProjectileSnap snap, bool impactNode)
@@ -331,6 +362,23 @@ namespace SoftKitty
                 fx.hitBoxSize = Vector3.Max(Vector3.one * .01f, EditorGUILayout.Vector3Field("判定盒尺寸（米）", fx.hitBoxSize));
             }
             if (EditorGUI.EndChangeCheck()) Change(() => node.visualEffect = fx);
+        }
+    }
+
+    [CustomEditor(typeof(SkillProjectileSnap))]
+    internal sealed class SkillProjectileConfigEditor : Editor
+    {
+        public override void OnInspectorGUI()
+        {
+            var config = (SkillProjectileSnap)target;
+            var shot = config.settings?.Copy() ?? new SkillProjectile();
+            EditorGUI.BeginChangeCheck();
+            SkillWorkbench.DrawProjectileSettings(shot);
+            if (!EditorGUI.EndChangeCheck()) return;
+            Undo.RecordObject(config, "修改投射物配置");
+            config.settings = shot;
+            EditorUtility.SetDirty(config);
+            AssetDatabase.SaveAssetIfDirty(config);
         }
     }
 }

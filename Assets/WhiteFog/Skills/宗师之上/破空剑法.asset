@@ -469,7 +469,9 @@ MonoBehaviour:
       motion:
         rid: -2
       projectile:
-        rid: 6312275966157651973
+        rid: -2
+      projectileSnap: {fileID: 11400000, guid: 281c3b8111a8405598b45be52c1bdd1f, type: 2}
+      requiresProjectileSnap: 1
       visualEffect:
         rid: -2
     - mType: 0
@@ -560,7 +562,9 @@ MonoBehaviour:
       motion:
         rid: -2
       projectile:
-        rid: 6312275966157651974
+        rid: -2
+      projectileSnap: {fileID: 11400000, guid: 281c3b8111a8405598b45be52c1bdd1f, type: 2}
+      requiresProjectileSnap: 1
       visualEffect:
         rid: -2
     - mType: 0
@@ -651,7 +655,9 @@ MonoBehaviour:
       motion:
         rid: -2
       projectile:
-        rid: 6312275966157651975
+        rid: -2
+      projectileSnap: {fileID: 11400000, guid: 281c3b8111a8405598b45be52c1bdd1f, type: 2}
+      requiresProjectileSnap: 1
       visualEffect:
         rid: -2
     - mType: 0
@@ -4423,7 +4429,9 @@ MonoBehaviour:
           motion:
             rid: -2
           projectile:
-            rid: 6312275966157651973
+            rid: -2
+          projectileSnap: {fileID: 11400000, guid: 281c3b8111a8405598b45be52c1bdd1f, type: 2}
+          requiresProjectileSnap: 1
           visualEffect:
             rid: -2
         - mType: 0
@@ -4513,7 +4521,9 @@ MonoBehaviour:
           motion:
             rid: -2
           projectile:
-            rid: 6312275966157651974
+            rid: -2
+          projectileSnap: {fileID: 11400000, guid: 281c3b8111a8405598b45be52c1bdd1f, type: 2}
+          requiresProjectileSnap: 1
           visualEffect:
             rid: -2
         - mType: 0
@@ -4603,7 +4613,9 @@ MonoBehaviour:
           motion:
             rid: -2
           projectile:
-            rid: 6312275966157651975
+            rid: -2
+          projectileSnap: {fileID: 11400000, guid: 281c3b8111a8405598b45be52c1bdd1f, type: 2}
+          requiresProjectileSnap: 1
           visualEffect:
             rid: -2
         - mType: 0
@@ -7722,81 +7734,6 @@ MonoBehaviour:
         state: chr_male_001@jian_pokong_25090
         clip: {fileID: 7400000, guid: 69a44bd5c081a2c4a9c5271360b535d0, type: 2}
         transitionSeconds: 0.033333335
-    - rid: 6312275966157651973
-      type: {class: SkillProjectile, ns: SoftKitty, asm: Assembly-CSharp}
-      data:
-        hitRecipients: 0
-        hitTags: []
-        prefab: {fileID: 7884749451932359468, guid: 1297505c5b30f674daed6742a8274ce5, type: 3}
-        trail: {fileID: 7992197306841058336, guid: f7ad6ebb5cbac9c49861429f73a487da, type: 3}
-        impact: {fileID: 5456840448491255236, guid: 15b57bdd460214742b1e27ea533215af, type: 3}
-        launchBone: 
-        targetBone: 
-        launchOffset: {x: 0, y: 1, z: 0.7}
-        impactOffset: {x: 0, y: 1.4, z: 0}
-        path: 0
-        speed: 20
-        acceleration: 30
-        trailSeconds: 0.2
-        impactScale: 1
-        trackingTimeout: 10
-        hitBoxSize: {x: 1.3, y: 1.3, z: 1.3}
-        hitBoxOffset: {x: 0, y: 0, z: 0}
-        hitLayers:
-          serializedVersion: 2
-          m_Bits: 4294967295
-        hitBoxStart: 0
-        hitBoxSeconds: 0
-    - rid: 6312275966157651974
-      type: {class: SkillProjectile, ns: SoftKitty, asm: Assembly-CSharp}
-      data:
-        hitRecipients: 0
-        hitTags: []
-        prefab: {fileID: 7884749451932359468, guid: 1297505c5b30f674daed6742a8274ce5, type: 3}
-        trail: {fileID: 7992197306841058336, guid: f7ad6ebb5cbac9c49861429f73a487da, type: 3}
-        impact: {fileID: 5456840448491255236, guid: 15b57bdd460214742b1e27ea533215af, type: 3}
-        launchBone: 
-        targetBone: 
-        launchOffset: {x: 0, y: 1, z: 0.7}
-        impactOffset: {x: 0, y: 1.4, z: 0}
-        path: 0
-        speed: 20
-        acceleration: 30
-        trailSeconds: 0.2
-        impactScale: 1
-        trackingTimeout: 10
-        hitBoxSize: {x: 1.3, y: 1.3, z: 1.3}
-        hitBoxOffset: {x: 0, y: 0, z: 0}
-        hitLayers:
-          serializedVersion: 2
-          m_Bits: 4294967295
-        hitBoxStart: 0
-        hitBoxSeconds: 0
-    - rid: 6312275966157651975
-      type: {class: SkillProjectile, ns: SoftKitty, asm: Assembly-CSharp}
-      data:
-        hitRecipients: 0
-        hitTags: []
-        prefab: {fileID: 7884749451932359468, guid: 1297505c5b30f674daed6742a8274ce5, type: 3}
-        trail: {fileID: 7992197306841058336, guid: f7ad6ebb5cbac9c49861429f73a487da, type: 3}
-        impact: {fileID: 5456840448491255236, guid: 15b57bdd460214742b1e27ea533215af, type: 3}
-        launchBone: 
-        targetBone: 
-        launchOffset: {x: 0, y: 1, z: 0.7}
-        impactOffset: {x: 0, y: 1.4, z: 0}
-        path: 0
-        speed: 20
-        acceleration: 30
-        trailSeconds: 0.2
-        impactScale: 1
-        trackingTimeout: 10
-        hitBoxSize: {x: 1.3, y: 1.3, z: 1.3}
-        hitBoxOffset: {x: 0, y: 0, z: 0}
-        hitLayers:
-          serializedVersion: 2
-          m_Bits: 4294967295
-        hitBoxStart: 0
-        hitBoxSeconds: 0
     - rid: 6312275968427819008
       type: {class: Root, ns: SoftKitty, asm: Assembly-CSharp}
       data:
@@ -8256,7 +8193,9 @@ MonoBehaviour:
           motion:
             rid: -2
           projectile:
-            rid: 6312275966157651973
+            rid: -2
+          projectileSnap: {fileID: 11400000, guid: 281c3b8111a8405598b45be52c1bdd1f, type: 2}
+          requiresProjectileSnap: 1
           visualEffect:
             rid: -2
         - mType: 0
@@ -8347,7 +8286,9 @@ MonoBehaviour:
           motion:
             rid: -2
           projectile:
-            rid: 6312275966157651974
+            rid: -2
+          projectileSnap: {fileID: 11400000, guid: 281c3b8111a8405598b45be52c1bdd1f, type: 2}
+          requiresProjectileSnap: 1
           visualEffect:
             rid: -2
         - mType: 0
@@ -8438,7 +8379,9 @@ MonoBehaviour:
           motion:
             rid: -2
           projectile:
-            rid: 6312275966157651975
+            rid: -2
+          projectileSnap: {fileID: 11400000, guid: 281c3b8111a8405598b45be52c1bdd1f, type: 2}
+          requiresProjectileSnap: 1
           visualEffect:
             rid: -2
         - mType: 0

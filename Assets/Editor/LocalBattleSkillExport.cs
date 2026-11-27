@@ -144,7 +144,7 @@ public static class LocalBattleSkillExport
                     n.triggerHit = cue.triggerHit; n.hitDelay = cue.hitDelay; n.size = cue.hitBoxSize;
                     break;
                 case "Projectile":
-                    if (x.requiresProjectileSnap && (!x.projectileSnap || x.projectileSnap.settings == null))
+                    if (!x.projectileSnap || x.projectileSnap.settings == null)
                         throw new InvalidDataException(x.Uid + " 缺少投射物配置。");
                     var shot = SkillProjectile.For(x, asset as OriginalSkillGraph);
                     if (shot.path != SkillProjectile.FlightPath.LaunchPositionToTargetPosition)
@@ -152,7 +152,7 @@ public static class LocalBattleSkillExport
                     n.bone = shot.launchBone; n.targetBone = shot.targetBone;
                     n.fx = shot.prefab ? shot.prefab.name : ""; n.trail = shot.trail ? shot.trail.name : "";
                     n.impact = shot.impact ? shot.impact.name : ""; n.impactScale = shot.impactScale; n.trailSeconds = shot.trailSeconds;
-                    n.speed = shot.speed; n.acceleration = shot.acceleration; n.from = shot.launchOffset; n.to = shot.impactOffset;
+                    n.speed = shot.LaunchSpeed(x); n.acceleration = shot.acceleration; n.from = shot.launchOffset; n.to = shot.impactOffset;
                     n.size = shot.hitBoxSize; n.offset = shot.hitBoxOffset; n.open = shot.hitBoxStart; n.window = shot.hitBoxSeconds;
                     n.mask = shot.hitLayers.value; n.recipients = (int)shot.hitRecipients; n.tags = shot.hitTags.ToArray();
                     break;

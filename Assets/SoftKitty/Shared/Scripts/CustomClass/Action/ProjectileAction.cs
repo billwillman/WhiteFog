@@ -70,9 +70,10 @@ namespace SoftKitty
         private static void StartFlight(Action node, GraphObject skill, SkillPlayback host, GraphRuntimeState state,
             EntityComponent caster, EntityComponent victim, System.Action<Entity, Entity> fallback, System.Action<Entity, Vector3> settle)
         {
-            if (node.requiresProjectileSnap && (!node.projectileSnap || node.projectileSnap.settings == null)) return;
+            if (!node.projectileSnap || node.projectileSnap.settings == null) return;
             var actions = BuildContactHandler(node, skill, host, state, caster.mData, fallback);
-            var shot = SkillProjectile.For(node, skill).Copy();
+            var shot = node.projectileSnap.settings.Copy();
+            shot.speed = shot.LaunchSpeed(node);
             host.Schedule(Fly(shot, caster, victim, state.orderedTargets, (hit, point, contact) =>
             {
                 settle?.Invoke(hit, point);

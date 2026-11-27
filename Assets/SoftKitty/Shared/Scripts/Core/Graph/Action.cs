@@ -17,6 +17,7 @@ namespace SoftKitty
         [SerializeReference] public SkillProjectile projectile;
         public SkillProjectileSnap projectileSnap;
         public bool requiresProjectileSnap;
+        public float projectileSpeedOverride; // Zero uses the initial speed from the shared configuration.
         [SerializeReference] public OriginalSkillGraph.EffectCue visualEffect;
 
        
@@ -68,6 +69,7 @@ namespace SoftKitty
             motion = _source.motion?.Copy();
             projectile = _source.projectile?.Copy();
             projectileSnap = _source.projectileSnap;
+            projectileSpeedOverride = _source.projectileSpeedOverride;
             requiresProjectileSnap = _source.requiresProjectileSnap;
             visualEffect = _source.visualEffect?.Copy();
         }

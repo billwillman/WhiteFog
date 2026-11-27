@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:yousandi.cn,2023:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: vfx_m_xuantiejianfa_02
+  m_Shader: {fileID: 4800000, guid: 2ddc51bdc463420197b2e00864c193c4, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 2800000, guid: 0a1a17c126cfc3a448703f5698c45591, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _Alpha: 1
+    - _AlphaAdjust: 1
+    - _AlphaRange: -1.2
+    - _AlphaReverseDir: 0
+    - _AlphaScale: 1
+    - _CelShade: 1
+    - _CelShadeMidPoint: 0.614
+    - _CelShadeSmoothness: 0.247
+    - _Cull: 2
+    - _OutlineColorLerp: 0.5
+    - _RenderMode: 0
+    - _StateFalloffAlpha: 0
+    - _StateFalloffPow: 1.42
+    - _ZTest: 4
+    - _ZWrite: 1
+    - _normalizeViewNormalXYScale: 30.1
+    m_Colors:
+    - _OutlineColor: {r: 0.3018868, g: 0.3018868, b: 0.3018868, a: 1}
+    - _SFCol: {r: 1, g: 1, b: 1, a: 1}
+    - _SLCol: {r: 0.6556604, g: 0.84058344, b: 1, a: 1}
+    - _StateFalloffColor: {r: 5.3403134, g: 4.5483046, b: 2.5981848, a: 1}
+  m_BuildTextureStacks: []

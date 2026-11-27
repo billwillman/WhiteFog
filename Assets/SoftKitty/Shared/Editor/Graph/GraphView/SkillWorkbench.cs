@@ -239,6 +239,7 @@ namespace SoftKitty
                         DrawTimeline(root, sources);
                         var action = root.Actions.Find(x => x.Uid == selection);
                         if (action != null && !IsSourceTime(action)) DrawAction(action, sources[action.Uid + "#0"]);
+                        DrawSourceTimes(root);
                     }
                 }
             }
@@ -535,7 +536,10 @@ namespace SoftKitty
             }
             if (actions.Length == 0) EditorGUILayout.HelpBox("将游标移到起始时间，点击「添加动作」。", MessageType.Info);
             if (!actions.Any(x => x.Uid == selection)) selection = actions.FirstOrDefault()?.Uid;
+        }
 
+        private void DrawSourceTimes(Root root)
+        {
             var sourceTimes = root.Actions.Where(IsSourceTime).OrderBy(a => a.WaitTime).ToArray();
             if (sourceTimes.Length == 0) return;
             showSourceTimes = EditorGUILayout.Foldout(showSourceTimes, "原作时间参考", true);
@@ -743,6 +747,8 @@ namespace SoftKitty
         {
             EditorGUILayout.Space();
             EditorGUILayout.LabelField(ActionName(action) + " · " + action.Uid, EditorStyles.boldLabel);
+            bool launch = SkillProjectile.IsLaunch(action);
+            if (launch) DrawProjectile(action);
             bool afterHit = false;
             foreach (var source in sources.Where(p => IsHitSource(p, graph)).Cast<Action>())
             {
@@ -770,9 +776,8 @@ namespace SoftKitty
             if (mode == ActionType.For_X_Seconds) Edit("持续时间（秒）", action.KeepTime, x => action.KeepTime = x);
             if (mode != ActionType.Only_Once) Edit("执行间隔（秒）", action.Interval, x => action.Interval = x);
             DrawFields(action, 1);
-            if (SkillProjectile.IsLaunch(action)) DrawProjectile(action);
-            else if (SkillMotion.UsesBinding(action)) DrawMotion(action, graph);
-            else if (action.ClassName == "OriginalSkillVisual") DrawVisualAction(action);
+            if (SkillMotion.UsesBinding(action)) DrawMotion(action, graph);
+            else if (!launch && action.ClassName == "OriginalSkillVisual") DrawVisualAction(action);
             else if ((action.ClassName == "SkillImpact" || action.ClassName == "FormulaImpact") &&
                      action.IntValues.ElementAtOrDefault(0) != (int)SkillPlayback.Style.Direct) DrawProjectile(action, true);
             // Older graphs keep their original interface until opened in the node editor.

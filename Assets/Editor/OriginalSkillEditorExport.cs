@@ -115,7 +115,7 @@ public static class OriginalSkillEditorExport
         if (SkillProjectile.IsLaunch(node) || ((node.ClassName == "SkillImpact" || node.ClassName == "FormulaImpact") && node.IntValues.ElementAtOrDefault(0) != 0))
         {
             Add("投射物配置", node.projectileSnap);
-            var shot = (node.requiresProjectileSnap || SkillProjectile.IsImpactLaunch(node)) && !node.projectileSnap
+            var shot = (SkillProjectile.IsLaunch(node) || SkillProjectile.IsImpactLaunch(node)) && (!node.projectileSnap || node.projectileSnap.settings == null)
                 ? null : SkillProjectile.For(node, graph);
             if (shot != null)
             {
@@ -124,7 +124,7 @@ public static class OriginalSkillEditorExport
                     info.onContact = SkillProjectile.IsLaunch(node);
                     Add("飞行道具", shot.prefab); Add("拖尾", shot.trail); Add("命中特效", shot.impact);
                     Add("发射挂点", shot.launchBone); Add("目标挂点", shot.targetBone); Add("发射偏移", shot.launchOffset);
-                    Add("命中偏移", shot.impactOffset); Add("飞行路径", shot.path.ToString()); Add("初速（米/秒）", shot.speed);
+                    Add("命中偏移", shot.impactOffset); Add("飞行路径", shot.path.ToString()); Add("初速（米/秒）", shot.LaunchSpeed(node));
                     Add("加速度", shot.acceleration); Add("拖尾时长（秒）", shot.trailSeconds); Add("命中特效缩放", shot.impactScale);
                     if (shot.path == SkillProjectile.FlightPath.FollowTarget) Add("追踪超时（秒）", shot.trackingTimeout);
                 }

@@ -465,7 +465,9 @@ MonoBehaviour:
       motion:
         rid: -2
       projectile:
-        rid: 6312275966157651969
+        rid: -2
+      projectileSnap: {fileID: 11400000, guid: fe7953377a094c70bd0546d2180318f3, type: 2}
+      requiresProjectileSnap: 1
       visualEffect:
         rid: -2
     - mType: 0
@@ -2224,31 +2226,6 @@ MonoBehaviour:
         state: chr_male_001@jian_jichu_21020
         clip: {fileID: 7400000, guid: 21644ad213eaf8b478c839072e7c14d2, type: 2}
         transitionSeconds: 0.033333335
-    - rid: 6312275966157651969
-      type: {class: SkillProjectile, ns: SoftKitty, asm: Assembly-CSharp}
-      data:
-        hitRecipients: 0
-        hitTags: []
-        prefab: {fileID: 4431011336059065422, guid: f6f794ad486a5e84bb50aa8e7e732791, type: 3}
-        trail: {fileID: 0}
-        impact: {fileID: 5977169057033045098, guid: f355f664df3d9224c9c9860c39df4bef, type: 3}
-        launchBone: weapon_r
-        targetBone: 
-        launchOffset: {x: 0, y: 0, z: 0}
-        impactOffset: {x: 0, y: 1.4, z: 0}
-        path: 0
-        speed: 15
-        acceleration: 35
-        trailSeconds: 0
-        impactScale: 1.3
-        trackingTimeout: 10
-        hitBoxSize: {x: 1.3, y: 1.3, z: 1.3}
-        hitBoxOffset: {x: 0, y: 0, z: 0}
-        hitLayers:
-          serializedVersion: 2
-          m_Bits: 4294967295
-        hitBoxStart: 0
-        hitBoxSeconds: 0
     - rid: 6312275967726845952
       type: {class: Root, ns: SoftKitty, asm: Assembly-CSharp}
       data:
@@ -2704,7 +2681,9 @@ MonoBehaviour:
           motion:
             rid: -2
           projectile:
-            rid: 6312275966157651969
+            rid: -2
+          projectileSnap: {fileID: 11400000, guid: fe7953377a094c70bd0546d2180318f3, type: 2}
+          requiresProjectileSnap: 1
           visualEffect:
             rid: -2
         - mType: 0
