@@ -336,7 +336,17 @@ namespace SoftKitty
                 Row(ProjectileField.SineHalfWaves, shot => shot.sineHalfWaves = Mathf.Clamp(SkillFieldHelp.DelayedIntField("半波数", shot.sineHalfWaves, "1 表示单侧拱起，2 表示先向一侧、再向另一侧。范围 1 至 16。"), 1, 16));
             }
             if (settings.trajectory == SkillProjectile.TrajectoryType.Waypoints || effective?.trajectory == SkillProjectile.TrajectoryType.Waypoints)
-                Row(ProjectileField.PathPoints, DrawPathPoints);
+            {
+                using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
+                {
+                    using (new SkillFieldHelp.Row("路径点", "进度按全程百分比填写。偏移单位为米，沿起点看向瞄准点，X 向右、Y 向上、Z 向前。起点与终点的偏移为零。下图按当前生效的配置，在相距 8 米的起点和目标之间绘制飞行曲线。"))
+                        EditorGUILayout.LabelField("路径点", EditorStyles.boldLabel);
+                    Row(ProjectileField.PathPoints, DrawPathPoints);
+                    var active = effective ?? settings;
+                    if (active.trajectory == SkillProjectile.TrajectoryType.Waypoints)
+                        ProjectilePathPreview.Draw(active);
+                }
+            }
             if (launchToTarget)
                 DrawTrajectoryValue("飞行进度", "从发射点按位移取点", "位移 = (初速度 + 加速度 × 已飞秒数) × 已飞秒数，沿当前起点到目标的方向取点。");
             else
@@ -368,8 +378,6 @@ namespace SoftKitty
 
         private static void DrawPathPoints(SkillProjectile shot)
         {
-            using (new SkillFieldHelp.Row("路径点", "进度按全程百分比填写。偏移单位为米，沿起点看向瞄准点，X 向右、Y 向上、Z 向前。两个端点自动归零，各点之间平滑过渡。"))
-                EditorGUILayout.LabelField("路径点", EditorStyles.boldLabel);
             for (int i = 0; i < shot.pathPoints.Count; i++)
             {
                 var point = shot.pathPoints[i];
@@ -377,7 +385,7 @@ namespace SoftKitty
                 float upper = i + 1 == shot.pathPoints.Count ? 99.99f : shot.pathPoints[i + 1].progress * 100 - .01f;
                 using (new EditorGUILayout.HorizontalScope())
                 {
-                    point.progress = Mathf.Clamp(SkillFieldHelp.FloatField("全程进度（%）", point.progress * 100, "这个点位于整条轨迹的百分之几。0% 是起点，100% 是瞄准点。"), lower, upper) / 100;
+                    point.progress = Mathf.Clamp(SkillFieldHelp.FloatField($"点 {i + 1} · 全程进度（%）", point.progress * 100, "这个点位于整条轨迹的百分之几。0% 是起点，100% 是瞄准点。"), lower, upper) / 100;
                     if (GUILayout.Button("移除", GUILayout.Width(48)))
                     {
                         shot.pathPoints.RemoveAt(i--);
