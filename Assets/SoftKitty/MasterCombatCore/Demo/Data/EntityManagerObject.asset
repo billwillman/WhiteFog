@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff6002efa7c07d34184f04325fbac21d, type: 3}
   m_Name: EntityManagerObject
   m_EditorClassIdentifier: Assembly-CSharp::SoftKitty.EntityManagerObject
-  Hash: 4cb6862c0253e9a73ad80a7cf54c9aa4
+  Hash: 06aabfc0d8cf9037a86e48bba12000e8
   EntityData:
     EntityList:
     - uid: player
@@ -1635,6 +1635,186 @@ MonoBehaviour:
       CustomIntList: []
       CustomIdIntList: []
       CustomIdFloatList: []
+    - uid: DubiMuxia
+      Attributes:
+      - uid: name
+        stringValue: "独臂木侠"
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: lvl
+        stringValue: 1
+        floatValue: 1
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: atk
+        stringValue: 10
+        floatValue: 20
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: def
+        stringValue: 5
+        floatValue: 1
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: resist
+        stringValue: 5
+        floatValue: 1
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: hp
+        stringValue: 100
+        floatValue: 100
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: sp
+        stringValue: 100
+        floatValue: 100
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: agi
+        stringValue: 10
+        floatValue: 2
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: crit
+        stringValue: 5
+        floatValue: 5
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: luck
+        stringValue: 5
+        floatValue: 5
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: steal
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: stunrate
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: mxp
+        stringValue: 100
+        floatValue: 80
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: xp
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: chp
+        stringValue: 100
+        floatValue: 80
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: shield
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: reflect
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: dmgrange
+        stringValue: 100
+        floatValue: 100
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: kockback
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: death
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: speed
+        stringValue: 100
+        floatValue: 100
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: invincible
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: stun
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: chaos
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: forzen
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: hyperarmor
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      - uid: block
+        stringValue: 0
+        floatValue: 0
+        locked: 0
+        mAttributeSetting:
+          rid: -2
+      AttributesUpgradeLevel: 0
+      Position: {x: -28.626177, y: 6.8913016, z: 29.558058}
+      Forward: {x: -0.29719222, y: 0.000085242034, z: -0.9548178}
+      Scale: {x: 1, y: 1, z: 1}
+      Tags:
+      - hostile
+      - character
+      AvailableForInteraction: 1
+      CustomFloat:
+      - 0
+      CustomInt: ffffffffffffffffffffffffffffffff
+      CustomBool:
+      CustomString: []
+      CustomIntList: []
+      CustomIdIntList: []
+      CustomIdFloatList: []
     ExtraInfo: 
   IdManager:
     idToKey:
@@ -1656,6 +1836,8 @@ MonoBehaviour:
       key: EnemyBot07
     - id: 8
       key: EnemyBot08
+    - id: 9
+      key: DubiMuxia
     uiFold: 0
   CustomDataSetting:
   - uid: hit_dot

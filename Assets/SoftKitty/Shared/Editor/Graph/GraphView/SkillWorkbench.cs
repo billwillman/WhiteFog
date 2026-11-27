@@ -33,7 +33,7 @@ namespace SoftKitty
         private string message = "";
         private static readonly string[] Modes = { "单次", "执行多次", "持续执行" };
         private const int PreviewPage = 3;
-        private static readonly string[] Pages = { "技能编辑", "Buff 状态", "公式与数值", "Preview", "属性定义" };
+        private static readonly string[] Pages = { "技能编辑", "Buff 状态", "公式与数值", "Preview", "属性定义", "角色属性" };
 
         [MenuItem("Window/Soft Kitty/技能工作台")]
         private static void FromMenu() => Open(Selection.activeObject as GraphObject);
@@ -71,6 +71,9 @@ namespace SoftKitty
             if (page != PreviewPage) page = 0;
             if (asset != graph)
             {
+                friendlyTrial = new TrialRole();
+                enemyTrial = new TrialRole();
+                trialOpening = null;
                 previewDamageReport = null;
                 measuredHits = null;
                 measuredCaster = null;
@@ -128,7 +131,8 @@ namespace SoftKitty
             if (page != 0)
             {
                 pageScroll = EditorGUILayout.BeginScrollView(pageScroll);
-                if (page == 4) DrawAttributePage();
+                if (page == 5) DrawRolePage();
+                else if (page == 4) DrawAttributePage();
                 else if (page == 1) DrawBuffPage();
                 else DrawFormulaPage();
                 EditorGUILayout.EndScrollView();
@@ -202,6 +206,11 @@ namespace SoftKitty
                             Change(() => graph.libraryCharacter = owner);
                             FocusLibraryRole(owner);
                         }
+                        if (owner && GUILayout.Button("编辑「" + owner.name + "」角色属性"))
+                        {
+                            FocusLibraryRole(owner);
+                            page = 5;
+                        }
                         bool opponent = EditorGUILayout.Popup("默认施放方",
                             graph.previewAsOpponent ? 1 : 0, new[] { "主角", "怪物" }) == 1;
                         var limit = Mathf.Max(1, EditorGUILayout.IntField("本次施法目标上限", Mathf.Max(1, graph.castTargetLimit)));
@@ -256,9 +265,15 @@ namespace SoftKitty
 
         private static readonly string[] CampLabels = { "友方", "敌方", "未归属" };
 
-        private void DrawLibrary()
+        private SkillLibraryCharacter[] LibraryRoles => libraryCharacters ??= AssetDatabase.FindAssets("t:SkillLibraryCharacter", new[] { "Assets" })
+            .Select(id => AssetDatabase.LoadAssetAtPath<SkillLibraryCharacter>(AssetDatabase.GUIDToAssetPath(id)))
+            .Where(c => c).OrderBy(c => c.name).ThenBy(c => AssetDatabase.GetAssetPath(c)).ToArray();
+
+        private static readonly string[] RoleCamps = { "友方", "敌方" };
+
+        private bool DrawRoleSelector(bool includeUnassigned)
         {
-            int camp = DrawSubTabs("阵营", libraryCamp, CampLabels);
+            int camp = DrawSubTabs("阵营", includeUnassigned ? libraryCamp : Mathf.Min(libraryCamp, 1), includeUnassigned ? CampLabels : RoleCamps);
             if (camp != libraryCamp)
             {
                 libraryCamp = camp;
@@ -268,20 +283,15 @@ namespace SoftKitty
             }
             if (camp < 2)
             {
-                if (libraryCharacters == null)
-                    libraryCharacters = AssetDatabase.FindAssets("t:SkillLibraryCharacter", new[] { "Assets" })
-                        .Select(id => AssetDatabase.LoadAssetAtPath<SkillLibraryCharacter>(AssetDatabase.GUIDToAssetPath(id)))
-                        .Where(c => c).OrderBy(c => c.name).ThenBy(c => AssetDatabase.GetAssetPath(c)).ToArray();
-
                 characterFilter = EditorGUILayout.TextField("查找角色", characterFilter);
-                var roles = libraryCharacters.Where(c => c && (int)c.camp == camp &&
+                var roles = LibraryRoles.Where(c => c && (int)c.camp == camp &&
                     c.name.IndexOf(characterFilter, StringComparison.OrdinalIgnoreCase) >= 0).ToArray();
                 if (roles.Length == 0)
                 {
                     selectedLibraryCharacter = null;
                     EditorGUILayout.HelpBox(string.IsNullOrEmpty(characterFilter) ?
                         "此阵营还没有角色。可在 Project 中创建「Soft Kitty/技能库角色」。" : "没有匹配的角色。", MessageType.Info);
-                    return;
+                    return false;
                 }
                 int index = Mathf.Max(0, Array.IndexOf(roles, selectedLibraryCharacter));
                 using (new EditorGUILayout.HorizontalScope())
@@ -298,6 +308,13 @@ namespace SoftKitty
                 selectedLibraryCharacter = roles[index];
             }
 
+            return true;
+        }
+
+        private void DrawLibrary()
+        {
+            if (!DrawRoleSelector(true)) return;
+            int camp = libraryCamp;
             filter = EditorGUILayout.TextField("查找技能", filter);
             if (library == null)
                 library = AssetDatabase.FindAssets("t:OriginalSkillGraph", new[] { "Assets/WhiteFog/Skills/宗师之上" })

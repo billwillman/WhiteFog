@@ -43,16 +43,28 @@ namespace SoftKitty
         private static readonly Dictionary<Scene, SkillPlayback> projectileHosts = new Dictionary<Scene, SkillPlayback>();
         private Scene projectileScene;
 
+#if UNITY_EDITOR
+        public static event System.Action<GameObject> TemporaryObjectCreated;
+#endif
+        [System.Diagnostics.Conditional("UNITY_EDITOR")]
+        public static void TrackTemporaryObject(GameObject obj)
+        {
+#if UNITY_EDITOR
+            TemporaryObjectCreated?.Invoke(obj);
+#endif
+        }
+
         // A launched projectile lives in its scene, independently of the graph or actor that fired it.
         public SkillPlayback ProjectileHost()
         {
             var scene = gameObject.scene;
-            if (projectileHosts.TryGetValue(scene, out var host) && host) return host;
+            if (projectileHosts.TryGetValue(scene, out var host) && host && host.isActiveAndEnabled) return host;
             var go = new GameObject("在途技能投射物");
             SceneManager.MoveGameObjectToScene(go, scene);
             host = go.AddComponent<SkillPlayback>();
             host.projectileScene = scene;
             projectileHosts[scene] = host;
+            TrackTemporaryObject(go);
             return host;
         }
 
@@ -96,7 +108,11 @@ namespace SoftKitty
         public static Vector3 Position(Entity entity, EntityComponent actor)
             => (actor ? actor.transform.position : entity.Position) + Vector3.up * 1.1f;
 
-        public void RetireAfter(float seconds) => retireAt = Time.time + seconds;
+        public void RetireAfter(float seconds)
+        {
+            retireAt = Time.time + seconds;
+            TrackTemporaryObject(gameObject);
+        }
         private void LateUpdate()
         {
             if (!Busy && Time.time >= retireAt) Destroy(gameObject);

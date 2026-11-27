@@ -138,6 +138,7 @@ namespace SoftKitty
                     if (hand && graph.weaponEffect)
                     {
                         var weapon = Object.Instantiate(graph.weaponEffect, hand, false);
+                        SkillPlayback.TrackTemporaryObject(weapon);
                         weapon.SetActive(true);
                         Object.Destroy(weapon, graph.weaponSeconds);
                     }
@@ -161,6 +162,7 @@ namespace SoftKitty
         {
             if (!prefab) return null;
             var effect = Object.Instantiate(prefab, at, facing, parent);
+            SkillPlayback.TrackTemporaryObject(effect);
             effect.SetActive(true);
             if (timed)
             {

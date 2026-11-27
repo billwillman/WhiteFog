@@ -571,16 +571,7 @@ namespace SoftKitty
             foreach (var obj in EntityData.EntityList) {
                 if (!EntityDataDic.ContainsKey(GetId(obj.uid)))
                 {
-                    var _entity = obj.Copy();
-                    foreach (var att in _entity.Attributes) {
-                        if (att != null && !att.isFixed)
-                            att.Randomize(CombatRandom.Event("entityAttribute", obj.uid, att.uid, null));
-                    }
-                    foreach (var module in _entity.Modules) {
-                        module.Recreate();
-                        module.GetModule().RuntimeInit();
-                    }
-                    EntityDataDic.Add(GetId(obj.uid), _entity);
+                    EntityDataDic.Add(GetId(obj.uid), CreateRuntimeEntity(obj));
                 }
             }
             CustomDataDic.Clear();
@@ -602,6 +593,37 @@ namespace SoftKitty
                 GameManager.RefreshCallback();
             }
         }
+
+        private static Entity CreateRuntimeEntity(Entity template)
+        {
+            var entity = template.Copy();
+            foreach (var attribute in entity.Attributes)
+                if (attribute != null && !attribute.isFixed)
+                    attribute.Randomize(CombatRandom.Event("entityAttribute", template.uid, attribute.uid, null));
+            foreach (var module in entity.Modules)
+            {
+                module.Recreate();
+                module.GetModule().RuntimeInit();
+            }
+            return entity;
+        }
+
+#if UNITY_EDITOR
+        internal void ResetPreviewEntity(EntityComponent actor, Entity template, bool independent)
+        {
+            var runtime = CreateRuntimeEntity(template);
+            if (independent) runtime.MultipleInstances = true;
+            EntityDataDic[GetId(template.uid)] = runtime;
+            if (actor.uid != template.uid)
+            {
+                GameManager.RemoveEntityInstance(actor.uid, actor);
+                actor.uid = template.uid;
+                GameManager.SetEntityInstance(actor.uid, actor);
+            }
+            actor.RefreshData();
+            actor.ApplyData();
+        }
+#endif
 
         #endregion
 

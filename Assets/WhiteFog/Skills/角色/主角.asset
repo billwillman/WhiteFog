@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: "\u4e3b\u89d2"
   m_EditorClassIdentifier:
   camp: 0
+  entityUid: player
+  defaultForPreview: 1

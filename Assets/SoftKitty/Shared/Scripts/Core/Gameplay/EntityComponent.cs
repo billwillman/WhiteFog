@@ -355,6 +355,8 @@ namespace SoftKitty
         /// </summary>
         public void RefreshData()
         {
+            internalTimer = 0f;
+            id = -1;
             _data = null;
             _multipleInstanceData = null;
         }

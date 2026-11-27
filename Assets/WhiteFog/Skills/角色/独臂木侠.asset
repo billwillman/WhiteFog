@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: "\u72ec\u81c2\u6728\u4fa0"
   m_EditorClassIdentifier:
   camp: 1
+  entityUid: DubiMuxia
+  enemyPreviewModel: {fileID: 7655099464299141099, guid: 3b2dc3c0d5072b24eaff891765bbafe4, type: 3}

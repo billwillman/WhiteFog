@@ -250,6 +250,14 @@ namespace SoftKitty
         }
 
 
+#if UNITY_EDITOR
+        public static void SetPreviewPlayer(EntityComponent actor)
+        {
+            SetPlayerInstance(actor);
+            player = actor.mData;
+        }
+#endif
+
         /// <summary>
         /// Retrieves the player entity data.
         /// </summary>

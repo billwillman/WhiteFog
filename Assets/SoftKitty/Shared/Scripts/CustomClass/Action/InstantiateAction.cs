@@ -53,6 +53,7 @@ namespace SoftKitty{
                 GameObject _newObj = GameManager.InstantiateGameObject(_source,
                         asChild ? GameManager.GetEntityInstance(entity(_runtime).uid).transform : null
                         );
+                SkillPlayback.TrackTemporaryObject(_newObj);
 
                 if (asChild )
                 {

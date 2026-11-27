@@ -103,7 +103,7 @@ namespace SoftKitty
             cam.transform.rotation = Quaternion.Euler(38, 0, 0);
             cam.transform.position = StageCenter + Vector3.up * 1.05f - cam.transform.forward * 16;
             cam.orthographicSize = Mathf.Max(3.75f, demoRange * .32f + 2.3f);
-            if ((graph as OriginalSkillGraph)?.previewEnemy)
+            if (TrialEnemyModel())
                 cam.orthographicSize = Mathf.Max(cam.orthographicSize, 5.9f);
         }
 
@@ -165,7 +165,6 @@ namespace SoftKitty
             if (monitor) { monitor.Release(); DestroyImmediate(monitor); }
         }
         [SerializeField] private bool demoQueued;
-        private AsyncOperation stageReload;
         [SerializeField] private float demoRange = 8f;
         [SerializeField] private int demoSkillLevel = 1;
         [SerializeField] private float previewHitDamage = 10f;
@@ -281,7 +280,9 @@ namespace SoftKitty
             if (!(graph is OriginalSkillGraph)) previewDirection = EditorGUILayout.Popup("本次施放方向", previewDirection,
                 new[] { graph.previewAsOpponent ? "按技能默认（怪物 → 主角）" : "按技能默认（主角 → 怪物）", "主角 → 怪物", "怪物 → 主角" });
             bool reverse = PreviewAsOpponent;
-            EditorGUILayout.LabelField("施放者 → 目标", reverse ? ((graph as OriginalSkillGraph)?.previewEnemy?.name ?? "小雕") + " → 男角色 001" : "男角色 001 → 小雕");
+            DrawTrialRole(false);
+            DrawTrialRole(true);
+            EditorGUILayout.LabelField("施放者 → 目标", reverse ? "敌方 → 友方" : "友方 → 敌方");
             if (!reverse && graph.castTargetLimit > 1)
                 previewTargetPair = EditorGUILayout.Toggle("试放目标 A、B", previewTargetPair);
             demoRange = EditorGUILayout.Slider("双方距离（米）", demoRange, 2, 20);
@@ -296,11 +297,12 @@ namespace SoftKitty
                 if (GUILayout.Button("退出当前 Play")) EditorApplication.isPlaying = false;
                 return;
             }
-            using (new EditorGUI.DisabledScope(demoQueued || EditorApplication.isPaused))
+            using (new EditorGUI.DisabledScope(demoQueued || EditorApplication.isPaused || TrialTemplate(false) == null || TrialTemplate(true) == null))
                 if (GUILayout.Button(inStage && Application.isPlaying ? "再次试放所选技能" : "打开角色预览并试放"))
                     QueueDemoPreview();
             if (Application.isPlaying && EditorApplication.isPaused) EditorGUILayout.HelpBox("Play 已暂停，继续播放后可以试放。", MessageType.Info);
             if (!string.IsNullOrEmpty(demoResult)) EditorGUILayout.HelpBox(demoResult, MessageType.Info);
+            if (inStage && !string.IsNullOrEmpty(trialOpening)) EditorGUILayout.LabelField("本次开场实值", trialOpening, EditorStyles.wordWrappedLabel);
             if (inStage && Application.isPlaying)
             {
                 DrawStageCamera();
@@ -354,16 +356,11 @@ namespace SoftKitty
                 EditorSceneManager.playModeStartScene = start;
             }
             demoQueued = true;
+            trialOpening = null;
             measuredHits = null;
             lastCaster = lastReceiver = null;
             demoResult = "正在准备本次试放";
             if (!Application.isPlaying) EditorApplication.isPlaying = true;
-            else
-            {
-                // Replacing the preview scene also retires airborne projectiles, particles and delayed actions.
-                ReleasePreviewCamera();
-                stageReload = EditorSceneManager.LoadSceneAsyncInPlayMode(StagePath, new LoadSceneParameters(LoadSceneMode.Single));
-            }
         }
 
         private void UpdateDemoPreview()
@@ -382,10 +379,9 @@ namespace SoftKitty
             if (stageCamera && !showGamePreview)
                 stageCamera.enabled = page == PreviewPage;
             if (monitorCamera && (page != PreviewPage || (previewMode == 1 && (!dealer || !target)))) monitorCamera.enabled = false;
-            if (demoQueued && (stageReload == null || stageReload.isDone) && InPreviewStage && !EditorApplication.isPaused && Time.timeSinceLevelLoad > 0)
+            if (demoQueued && InPreviewStage && !EditorApplication.isPaused && Time.timeSinceLevelLoad > 0)
             {
                 demoQueued = false;
-                stageReload = null;
                 var actors = SceneManager.GetActiveScene().GetRootGameObjects();
                 var hero = actors.FirstOrDefault(go => go.name == "男角色 001")?.GetComponent<EntityComponent>();
                 var monster = actors.FirstOrDefault(go => go.name == "小雕")?.GetComponent<EntityComponent>();
@@ -393,9 +389,17 @@ namespace SoftKitty
                     demoResult = "预览场缺少有效的男角色 001（player）或小雕（EnemyBot01）实体。";
                 else
                 {
-                    // The MCC entity database outlives scene loads. Recreate the same initial combatants on every quick trial.
                     quickSecondTarget = null;
-                    SkillPreviewTrial.Begin(hero);
+                    var friendly = TrialTemplate(false);
+                    var hostile = TrialTemplate(true);
+                    if (friendly == null || hostile == null)
+                    {
+                        demoResult = "请先在角色属性中绑定有效实体。";
+                        trialOpening = null;
+                        Repaint();
+                        return;
+                    }
+                    SkillPreviewTrial.BeginQuickPreview(hero, monster, friendly, hostile);
                     hero.SetPosition(StageCenter + Vector3.back * demoRange * .5f, false);
                     monster.SetPosition(StageCenter + Vector3.forward * demoRange * .5f, false);
                     hero.transform.forward = Vector3.forward;
@@ -403,12 +407,11 @@ namespace SoftKitty
                     // The extracted bird faces local -Z. Keep the entity forward available for skill targeting.
                     var birdModel = monster.transform.Find("小雕 · 飞行");
                     if (birdModel) birdModel.rotation = Quaternion.LookRotation(-monster.transform.forward, monster.transform.up);
-                    var enemyPrefab = (graph as OriginalSkillGraph)?.previewEnemy;
+                    var enemyPrefab = TrialEnemyModel();
                     if (birdModel) birdModel.gameObject.SetActive(!enemyPrefab);
                     const string enemySlot = EnemyModelSlot;
                     var previous = monster.transform.Find(enemySlot);
-                    if (previous && (!enemyPrefab || previous.gameObject.GetComponentInChildren<Animator>(true)?.runtimeAnimatorController !=
-                        enemyPrefab.GetComponentInChildren<Animator>(true)?.runtimeAnimatorController))
+                    if (previous && (!enemyPrefab || activeTrialPrefab != enemyPrefab))
                     {
                         previous.gameObject.SetActive(false);
                         previous.name = enemySlot + "（退出）";
@@ -420,24 +423,36 @@ namespace SoftKitty
                         var view = Instantiate(enemyPrefab, monster.transform, false);
                         view.name = enemySlot;
                     }
+                    activeTrialPrefab = enemyPrefab;
                     hero.UpdateData();
                     monster.UpdateData();
+                    Physics.SyncTransforms();
                     FrameStageCamera();
                     if (!showGamePreview) Focus();
                     lastCaster = PreviewAsOpponent ? monster : hero;
                     lastReceiver = PreviewAsOpponent ? hero : monster;
                     if (previewTargetPair && !PreviewAsOpponent && graph.castTargetLimit > 1)
                     {
+                        // BeginQuickPreview has just created the runtime entity copy for this trial.
                         GameManager.GetEntity(monster.uid).MultipleInstances = true;
                         monster.RefreshData();
                         monster.ApplyData();
                         quickSecondTarget = Instantiate(monster);
                         quickSecondTarget.name = "试放目标 B";
+                        SkillPlayback.TrackTemporaryObject(quickSecondTarget.gameObject);
                         var center = monster.transform.position;
                         monster.SetPosition(center + Vector3.left * 1.5f, false);
                         quickSecondTarget.SetPosition(center + Vector3.right * 1.5f, false);
                         Physics.SyncTransforms();
                     }
+                    friendlyTrial.Apply(hero.mData);
+                    enemyTrial.Apply(monster.mData);
+                    if (quickSecondTarget)
+                    {
+                        enemyTrial.Apply(quickSecondTarget.mData);
+                        GameManager.SetPreviewPlayer(hero);
+                    }
+                    trialOpening = "施放者 " + OpeningStats(lastCaster) + "\n目标 " + OpeningStats(lastReceiver);
                     healthBefore = lastReceiver.GetAttributeFloat("chp");
                     CastPreviewActors(lastCaster, lastReceiver, out demoResult);
                 }
