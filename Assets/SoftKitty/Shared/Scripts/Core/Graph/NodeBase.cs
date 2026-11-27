@@ -37,6 +37,7 @@ namespace SoftKitty
         public uint InstanceCache = 0;
         [SerializeReference, HideInInspector]
         protected Root mRoot;
+        internal Root RuntimeRoot => mRoot;
 
         public void SetRoot(Root _root)
         {

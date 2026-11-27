@@ -14,7 +14,7 @@ namespace SoftKitty
         private readonly List<VariableClass> inputs = new List<VariableClass>();
 
         public void Invalidate() { compiled = null; }
-        private void OnValidate() { Invalidate(); }
+        protected override void OnValidate() { base.OnValidate(); Invalidate(); }
 
         private void Compile()
         {

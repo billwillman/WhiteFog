@@ -7,6 +7,48 @@ namespace SoftKitty
     public class GraphObject : GraphBase
     {
         public Root RootSet;
+
+        // Keep the public MCC cache bounded even if callers continually create transient graph assets.
+        private const int MaxCachedGraphs = 128;
+        [System.NonSerialized] private Root compiledFrom;
+        [System.NonSerialized] private int lastUsedFrame;
+#if UNITY_EDITOR
+        [System.NonSerialized] private int compiledDirtyCount;
+#endif
+
+        internal bool IsCompiledGraphCurrent()
+        {
+            lastUsedFrame = Time.frameCount;
+#if UNITY_EDITOR
+            if (compiledDirtyCount != UnityEditor.EditorUtility.GetDirtyCount(this)) return false;
+#endif
+            return ReferenceEquals(compiledFrom, RootSet);
+        }
+
+        internal void CacheCompiledGraph(Root compiled)
+        {
+            var cache = GraphInstance.runtimeInitializedGraph;
+            if (cache.Count >= MaxCachedGraphs && !cache.ContainsKey(this))
+            {
+                GraphObject oldest = null;
+                foreach (var graph in cache.Keys)
+                    if (ReferenceEquals(oldest, null) || graph.lastUsedFrame < oldest.lastUsedFrame) oldest = graph;
+                cache.Remove(oldest);
+            }
+            cache[this] = compiled;
+            compiledFrom = RootSet;
+            lastUsedFrame = Time.frameCount;
+#if UNITY_EDITOR
+            compiledDirtyCount = UnityEditor.EditorUtility.GetDirtyCount(this);
+#endif
+        }
+
+        public void InvalidateCompiledGraph() => compiledFrom = null;
+
+        protected virtual void OnValidate() => InvalidateCompiledGraph();
+
+        protected virtual void OnDisable() => GraphInstance.runtimeInitializedGraph.Remove(this);
+
         [Tooltip("Stable skill ID for combat rolls. Set this when assets share a name or must survive renaming.")]
         public string combatRandomId;
         public string CombatRandomId => string.IsNullOrEmpty(combatRandomId) ? name : combatRandomId;

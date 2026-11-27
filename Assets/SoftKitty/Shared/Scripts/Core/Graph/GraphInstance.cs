@@ -36,13 +36,22 @@ namespace SoftKitty
 
         protected GraphRuntimeState mRuntime;
 
-        public virtual void Awake()
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void ResetCompiledGraphs()
         {
             runtimeInitializedGraph.Clear();
+            Application.quitting -= ClearCompiledGraphs;
+            Application.quitting += ClearCompiledGraphs;
         }
+
+        private static void ClearCompiledGraphs() => runtimeInitializedGraph.Clear();
+
+        public virtual void Awake() { }
 
         public virtual void Start()
         {
+            // An impact host is initialized before its first frame and can already be running delayed actions.
+            if (impactHost) return;
             inited = false;
             Init();
         }
@@ -79,27 +88,33 @@ namespace SoftKitty
         internal static void RunOnProjectileHit(GraphObject skill, PortSetting output, GraphRuntimeState state, GameObject projectileHost,
             Vector3 point, Entity source, Entity target)
         {
+            if (output == null || output.connectedNodes.Count == 0) return;
+            // The port belongs to the graph compiled at launch, even if the asset has since been edited.
+            var root = output.connectedNodes[0].RuntimeRoot;
             var go = new GameObject(skill.name + " · 命中");
             UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(go, projectileHost.scene);
             go.transform.position = point;
             var instance = go.AddComponent<GraphInstance>();
             instance.mGraph = skill;
-            instance.Init();
+            instance.currentRootInstance = root;
             instance.impactHost = SkillPlayback.On(instance);
             instance.impactHost.RetireAfter(0);
             // Hit branches read the struck entity's attributes, even if the parent graph cached the aim target's.
-            state.NodeStates = instance.mRuntime.NodeStates;
+            state.NodeStates = new NodeRuntimeState[root.NodeDic.Count];
             state.RootState.RootInstance = go;
             state.RootState.SetInvolvedEntity("Dealer", source);
             state.RootState.SetInvolvedEntity("Target", target);
             state.SetContactKey(target.CombatRandomId);
+            instance.mRuntime = state;
+            instance.inited = true;
             foreach (var next in output.connectedNodes) next.Run(instance, state);
         }
 
         private void GetRootInstance()
         {
-            if (!runtimeInitializedGraph.ContainsKey(mGraph))
+            if (!runtimeInitializedGraph.TryGetValue(mGraph, out var compiled) || !mGraph.IsCompiledGraphCurrent())
             {
+                compiled = null;
                 string _className = "SoftKitty." + mGraph.RootSet.ClassName + "Root";
                 Type realRootType = Type.GetType(_className);
                 if (realRootType == null)
@@ -120,7 +135,8 @@ namespace SoftKitty
                     Root initializedRoot = result as Root;
                     if (initializedRoot != null)
                     {
-                        runtimeInitializedGraph.Add(mGraph, initializedRoot);
+                        mGraph.CacheCompiledGraph(initializedRoot);
+                        compiled = initializedRoot;
                         if (SGD_Settings.Instance.DebugLevel >= 3) Debug.Log("<GraphInstance> -> GetRootInstance [" + realRootType.ToString() + "] has added with key: " + mGraph.name);
                     }
                     else
@@ -130,9 +146,9 @@ namespace SoftKitty
                 }
             }
 
-            if (runtimeInitializedGraph.ContainsKey(mGraph))
+            if (compiled != null)
             {
-                currentRootInstance = runtimeInitializedGraph[mGraph];
+                currentRootInstance = compiled;
                 mRuntime = new GraphRuntimeState();
                 currentRootInstance.InitRuntimeState(ref mRuntime);
             }
