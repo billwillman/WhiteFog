@@ -10,11 +10,10 @@ namespace SoftKitty
         [SerializeField] private int page;
         private Vector2 pageScroll;
         [SerializeField] private string buffUid;
-        private int buffTemplate, buffOperation, buffRecipient;
+        private int buffTemplate;
         private bool showBuffCreation;
         private string newBuffUid = "", newBuffName = "";
         private static readonly string[] BuffTypes = { "属性增减", "持续伤害", "持续治疗", "吸收护盾", "行为控制" };
-        private static readonly string[] BuffOperations = { "施加状态", "驱散一层", "强制移除全部层" };
         private const string Presets = "Assets/SoftKitty/MasterCombatCore/Presets/";
         internal const string RegenPath = "Assets/WhiteFog/SkillTemplates/持续治疗.asset";
         private static readonly string[] BuffPaths = { Presets + "Buff_Berserker.asset", Presets + "DoT_Damage.asset",
@@ -35,7 +34,13 @@ namespace SoftKitty
                 EditorGUILayout.HelpBox("请先在 Soft Kitty Data Settings 绑定 OverTimeEffectObject 状态库。", MessageType.Info);
                 return;
             }
-            EditorGUILayout.LabelField("状态库", db.name + "  ·  公共节拍 " + db.OverTimeEffectInterval + " 秒");
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                EditorGUILayout.LabelField("状态库", db.name + "  ·  公共节拍 " + db.OverTimeEffectInterval + " 秒");
+                using (new EditorGUI.DisabledScope(EditorApplication.isPlaying))
+                    if (GUILayout.Button("保存状态库", EditorStyles.miniButton, GUILayout.ExpandWidth(false)))
+                        AssetDatabase.SaveAssetIfDirty(db);
+            }
             showBuffCreation = EditorGUILayout.Foldout(showBuffCreation || db.overTimeEffects.Count == 0, "从 Buff 模板新建", true);
             using (new EditorGUI.DisabledScope(EditorApplication.isPlaying))
             {
@@ -49,11 +54,7 @@ namespace SoftKitty
             buffUid = effect.uid;
             EditorGUILayout.Space();
             using (new EditorGUI.DisabledScope(EditorApplication.isPlaying))
-            {
                 DrawBuffSettings(db, effect);
-                DrawBuffBinding(db, effect);
-                if (GUILayout.Button("保存状态库")) AssetDatabase.SaveAssetIfDirty(db);
-            }
         }
 
         private void DrawBuffCreation(OverTimeEffectObject db)
@@ -168,35 +169,6 @@ namespace SoftKitty
                     }
                 }
             }
-        }
-
-        private void DrawBuffBinding(OverTimeEffectObject db, OverTimeEffect effect)
-        {
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("挂到技能根节点", EditorStyles.boldLabel);
-            EditorGUILayout.LabelField("当前技能", graph ? graph.name : "请先在技能页选一张图");
-            cursor = Mathf.Max(0, EditorGUILayout.DelayedFloatField("开始时间（秒）", cursor));
-            buffRecipient = EditorGUILayout.Popup("受术者", buffRecipient, new[] { "目标", "施加者" });
-            buffOperation = EditorGUILayout.Popup("操作", buffOperation, BuffOperations);
-            // Looking up a missing UID through GetId would allocate an ID during repaint.
-            var mapping = db.IdManager.idToKey.Find(k => k.key == effect.uid);
-            bool validGraph = graph && graph.RootSet != null && graph.RootSet.Uid == "Node0";
-            if (mapping == null) EditorGUILayout.HelpBox("原生库中缺少该状态的 ID 映射，请在数据检查器核对。", MessageType.Warning);
-            if (validGraph && MasterGraphWindow.IsEditing(graph))
-            {
-                if (GUILayout.Button("保存节点图并返回工作台编辑")) MasterGraphWindow.CloseIfEditing(graph);
-                return;
-            }
-            using (new EditorGUI.DisabledScope(!validGraph || mapping == null || !(effect.DesignGraph is GraphObject design) || design.RootSet == null))
-                if (GUILayout.Button("在游标处添加动作，返回技能页"))
-                {
-                    Change(() => selection = AddBuffAction(graph.RootSet, mapping.id, buffOperation,
-                        buffRecipient == 0 ? EntityType.Target : EntityType.Dealer, cursor).Uid);
-                    AssetDatabase.SaveAssetIfDirty(db);
-                    AssetDatabase.SaveAssetIfDirty(graph);
-                    page = 0;
-                }
-            EditorGUILayout.LabelField("此按钮添加直接动作。需要接触或命中后触发时，请在相应执行入口或成功分支接线。", EditorStyles.wordWrappedLabel);
         }
 
         internal static Action AddBuffAction(Root root, int id, int operation, EntityType recipient, float time)
