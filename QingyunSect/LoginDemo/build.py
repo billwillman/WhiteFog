@@ -317,11 +317,14 @@ def main():
         clip.convert('RGB').save(plate,format='WEBP',quality=94)
         stamp = io.BytesIO()
         concept.crop((250,1364,685,1515)).convert('RGB').save(stamp,format='WEBP',quality=96)
+    story=story_art()
+    mist={key:story.pop(key) for key in ('mist','mistWidth','mistHeight')}
+    (HERE/'battle-art/battle-mist.js').write_text('const qingyunBattleMist = '+compact(mist)+';\n',encoding='utf8')
     data = dict(mesh=base64.b64encode((ART/'Funnel.bytes').read_bytes()).decode(),
                 shader=(CLOUD/'rolling.txt').read_text(encoding='utf-8-sig'),
                 painting=uri('image/jpeg',(HERE/'portrait-clouds.jpg').read_bytes()),
                 flow=uri('image/png',(ART/'CloudFlow.png').read_bytes()),
-                rider=uri('image/png',(HERE/'rider.png').read_bytes()),rig=rig,story=story_art(),
+                rider=uri('image/png',(HERE/'rider.png').read_bytes()),rig=rig,story=story,
                 battle=battle_art())
     html=(HERE/'screen.html.in').read_text(encoding='utf-8')
     html=html.replace('TITLE_PLATE',uri('image/webp',plate.getvalue()))

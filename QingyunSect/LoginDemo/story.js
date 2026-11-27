@@ -92,24 +92,10 @@ const firstChapter=(()=>{
   let enteringBattle=false,returnFogFrame=0;
   let motion,mapReady=false,shown=false,finished=false,revealStart=null,prepared=false;
   const entrance=makeBattleTransition($('battle-transition'));
-  const veil=$('veil'),ctx=veil.getContext('2d');
-  veil.width=art.mistWidth;veil.height=art.mistHeight;
-  const mask=Uint8Array.from(atob(art.mist),c=>c.charCodeAt(0));
-  const overlay=ctx.createImageData(veil.width,veil.height);
+  const veil=$('veil'),paintVeil=makeMistPainter(veil);
   function fog(age,opening){
     veil.hidden=false;
-    const coverTime=(age-1.32)/1.18;
-    const openTime=opening===null?0:opening/1.48;
-    const warm=smooth(0,1,Math.max(0,(age-1.4)/2.3));
-    for(let i=0,p=0;i<mask.length;i+=3,p+=4){
-      const cover=mask[i]*1.4/255-.2, radius=mask[i+1]*1.2/255-.12;
-      const shade=(mask[i+2]-155)*.27;
-      overlay.data[p]=239-6*warm+shade;overlay.data[p+1]=223+5*warm+shade;
-      overlay.data[p+2]=198+21*warm+shade;
-      overlay.data[p+3]=255*(opening===null?smooth(0,.22,1.55*coverTime-.25-cover):
-        1-smooth(0,.25,openTime*1.2-radius+.09));
-    }
-    ctx.putImageData(overlay,0,0);
+    paintVeil(age,opening);
   }
   function map(){
     if(enteringBattle)return;
@@ -238,18 +224,28 @@ const firstChapter=(()=>{
     enteringBattle=true;pendingBattle=request;story.inert=true;
     $('gm-open').inert=true;
     cancelAnimationFrame(returnFogFrame);veil.hidden=true;
-    const dock=ferry&&!matchMedia('(prefers-reduced-motion: reduce)').matches
-      ?$('court-art').animate([{transform:'scale(1)'},{transform:'scale(1.13)'}],
-        {duration:1100,fill:'forwards',easing:'ease-out'}):null;
+    const painting=$('court-art'),speaker=$('dialogue');
+    const ferryIntro=ferry?age=>{
+      painting.style.transform='scale('+(1+.13*smooth(0,1.65,age))+')';
+      speaker.style.opacity=1-smooth(0,.75,age);
+    }:null;
     function restore(){
       pendingBattle=null;enteringBattle=false;story.inert=false;$('gm-open').inert=false;
-      dock?.cancel();entrance.close();
+      if(ferry){painting.style.transform='';speaker.style.opacity='';}
+      entrance.close();
     }
     try{
-      await entrance.cover(ferry);
-      battle.stop();
-      entrance.wait('正在载入云端战场…',()=>{restore();map();$('task').focus({preventScroll:true});});
-      await prepareBattle(encounter,key,baseline,request);
+      let ready=false;
+      async function prepare(){
+        battle.stop();
+        await prepareBattle(encounter,key,baseline,request);
+        ready=true;
+      }
+      const covered=entrance.cover(ferryIntro);
+      const preparation=$('battle-entry').hidden?prepare():covered.then(prepare);
+      await Promise.all([preparation,covered.then(()=>{
+        if(!ready)entrance.wait('正在载入云端战场…',()=>{restore();map();$('task').focus({preventScroll:true});});
+      })]);
       if(pendingBattle!==request)return;
       dialogue.hide();region.hidden=true;court.hidden=true;motion.setVisible(false);
       if(onReady)onReady();else battle.show(encounter,key);
