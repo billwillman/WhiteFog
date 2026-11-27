@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:yousandi.cn,2023:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fead20ef971451f9156121c8580af59, type: 3}
+  m_Name: "\u9690\u98CE\u523A-\u6295\u5C04\u7269"
+  m_EditorClassIdentifier: 
+  settings:
+    trajectory: 0
+    progressMode: 0
+    flightSeconds: 0.5
+    sineAmplitude: {x: 0, y: 1, z: 0}
+    sineHalfWaves: 1
+    pathPoints: []
+    castTargetIndex: 0
+    hitRecipients: 0
+    hitTags: []
+    prefab: {fileID: 5232707877002248070, guid: eb4c1799a8ae93d41ab810dd0b870551, type: 3}
+    trail: {fileID: 3935706875957271478, guid: ac127bc0cdb638c49b776001a39b3eee, type: 3}
+    impact: {fileID: 3000908681209841111, guid: 4ea3afe3d8ee23040835e76fbbdbd6f7, type: 3}
+    launchBone: weapon_r
+    targetBone: vfx_p_hit
+    launchOffset: {x: 0, y: 0, z: 0}
+    impactOffset: {x: 0, y: 0, z: 0}
+    path: 0
+    speed: 20
+    acceleration: 20
+    trailSeconds: 0.3
+    impactScale: 1
+    trackingTimeout: 10
+    hitBoxSize: {x: 1.3, y: 1.3, z: 1.3}
+    hitBoxOffset: {x: 0, y: 0, z: 0}
+    hitLayers:
+      serializedVersion: 2
+      m_Bits: 4294967295
+    hitBoxStart: 0
+    hitBoxSeconds: 0
