@@ -247,7 +247,7 @@ namespace SoftKitty
                 else if (config.ActiveFlow || config.UsesLinkedAssets)
                 {
                     panel.Add(new Label("技能伤害流程 · " + (config.ActiveFlow ? config.ActiveFlow.name : "动作内置流程")));
-                    if (config.independentSegment) panel.Add(new Label("逻辑段 " + config.logicIndex + (config.segmentRatioVerified ? " · 倍率已核实" : " · 倍率待核")));
+                    if (config.independentSegment) panel.Add(new Label("逻辑段 " + config.logicIndex));
                     foreach (var stage in config.GetStageEntries())
                     {
                         if (stage == null || !config.IsStageEnabled(stage.id)) continue;

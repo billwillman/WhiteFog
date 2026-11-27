@@ -150,7 +150,7 @@ public static class OriginalSkillEditorExport
         {
             var c = node.calculation;
             Add("结算方式", c.EffectiveMode == SkillCalculation.Mode.NativeGraph ? "MCC 原生图" : "伤害流程");
-            Add("逻辑段", c.logicIndex); Add("分段倍率（%）", string.Join(" / ", c.segmentPercent)); Add("倍率已核实", c.segmentRatioVerified);
+            Add("逻辑段", c.logicIndex); Add("分段倍率（%）", string.Join(" / ", c.segmentPercent));
             Add("等级表", c.levels);
             if (c.EffectiveMode == SkillCalculation.Mode.NativeGraph)
             {

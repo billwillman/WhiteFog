@@ -208,7 +208,7 @@ namespace SoftKitty
                         origin = "MCC 伤害图 " + (c.nativeGraph ? c.nativeGraph.name : "未绑定");
                     else if (c != null && c.ActiveFlow)
                         origin = "技能伤害流程 " + c.ActiveFlow.name +
-                            (c.independentSegment ? " · 逻辑段 " + c.logicIndex + (c.segmentRatioVerified ? " · 倍率已核实" : " · 倍率待核") : "");
+                            (c.independentSegment ? " · 逻辑段 " + c.logicIndex : "");
                     else if (c != null && c.UsesLinkedAssets)
                         origin = "技能伤害流程 · 沿用本招的公式引用";
                     else origin = "技能伤害流程未绑定";

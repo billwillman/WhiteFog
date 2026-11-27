@@ -17,7 +17,6 @@ namespace SoftKitty
         [UnityEngine.Serialization.FormerlySerializedAs("reportLogicIndex")]
         public int logicIndex = 1;
         public bool independentSegment;
-        public bool segmentRatioVerified;
         public SkillDamageFlow flow;
         public List<string> disabledStageIds = new List<string>();
         public List<float> segmentPercent = new List<float> { 100 };

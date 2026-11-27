@@ -1502,7 +1502,6 @@ MonoBehaviour:
         levels: {fileID: 11400000, guid: acdb4ccb35700304586f91f97cc8cf7b, type: 2}
         logicIndex: 1
         independentSegment: 1
-        segmentRatioVerified: 0
         flow: {fileID: 11400000, guid: 95ee0b9157c527c4ea3a225ec10be8ad, type: 2}
         disabledStageIds: []
         segmentPercent:

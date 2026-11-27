@@ -10140,7 +10140,6 @@ MonoBehaviour:
         levels: {fileID: 11400000, guid: 73b0f8a20f4293f4d8d8b893bd90346a, type: 2}
         logicIndex: 1
         independentSegment: 1
-        segmentRatioVerified: 0
         flow: {fileID: 11400000, guid: 95ee0b9157c527c4ea3a225ec10be8ad, type: 2}
         disabledStageIds: []
         segmentPercent:
@@ -10160,7 +10159,6 @@ MonoBehaviour:
         levels: {fileID: 11400000, guid: 73b0f8a20f4293f4d8d8b893bd90346a, type: 2}
         logicIndex: 2
         independentSegment: 1
-        segmentRatioVerified: 0
         flow: {fileID: 11400000, guid: 95ee0b9157c527c4ea3a225ec10be8ad, type: 2}
         disabledStageIds: []
         segmentPercent:
@@ -10180,7 +10178,6 @@ MonoBehaviour:
         levels: {fileID: 11400000, guid: 73b0f8a20f4293f4d8d8b893bd90346a, type: 2}
         logicIndex: 3
         independentSegment: 1
-        segmentRatioVerified: 0
         flow: {fileID: 11400000, guid: 95ee0b9157c527c4ea3a225ec10be8ad, type: 2}
         disabledStageIds: []
         segmentPercent:

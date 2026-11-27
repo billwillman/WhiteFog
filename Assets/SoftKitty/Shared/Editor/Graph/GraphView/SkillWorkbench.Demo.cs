@@ -189,16 +189,20 @@ namespace SoftKitty
                 .Select(a => a.calculation).OrderBy(c => c.logicIndex).ToArray();
             if (segments.Length > 0)
             {
-                previewDamageReport = (SkillDamageReport)EditorGUILayout.ObjectField("对照战报（可选）", previewDamageReport,
-                    typeof(SkillDamageReport), false);
-                bool matches = previewDamageReport && graph is OriginalSkillGraph original &&
-                    previewDamageReport.skillId == original.sourceId && (measuredCaster == null || measuredCaster == previewDamageReport.casterId);
-                if (previewDamageReport && !matches) EditorGUILayout.HelpBox("所选战报与当前技能或施放者不符，试放继续使用技能公式。", MessageType.Warning);
+                bool matches = false;
+                if (graph is OriginalSkillGraph original)
+                {
+                    previewDamageReport = (SkillDamageReport)EditorGUILayout.ObjectField("对照战报（可选）", previewDamageReport,
+                        typeof(SkillDamageReport), false);
+                    matches = previewDamageReport &&
+                        previewDamageReport.skillId == original.sourceId && (measuredCaster == null || measuredCaster == previewDamageReport.casterId);
+                    if (previewDamageReport && !matches) EditorGUILayout.HelpBox("所选战报与当前技能或施放者不符，试放继续使用技能公式。", MessageType.Warning);
+                }
                 foreach (var c in segments)
                 {
                     var seen = measuredHits?.Where(h => h.index == c.logicIndex);
                     var rows = matches ? previewDamageReport.entries?.Where(e => e.logicIndex == c.logicIndex) : null;
-                    string label = "逻辑段 " + c.logicIndex + (c.segmentRatioVerified ? " · 已核实" : " · 倍率待核");
+                    string label = "逻辑段 " + c.logicIndex;
                     string actual = seen == null ? "" : string.Join("，", seen.Select(h => h.target + " 扣血 " + h.loss.ToString("G6") + " / 耗盾 " + h.shield.ToString("G6")));
                     EditorGUILayout.LabelField(label, actual.Length > 0 ? actual : "尚无实算命中", EditorStyles.wordWrappedMiniLabel);
                     if (matches)

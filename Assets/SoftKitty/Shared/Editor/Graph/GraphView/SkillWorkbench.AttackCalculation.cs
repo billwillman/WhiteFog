@@ -165,9 +165,6 @@ namespace SoftKitty
             {
                 int index = Mathf.Max(1, EditorGUILayout.DelayedIntField("起始逻辑段号", config.logicIndex));
                 if (index != config.logicIndex) Change(() => config.logicIndex = index);
-                bool verified = EditorGUILayout.Toggle("分段倍率已核实", config.segmentRatioVerified);
-                if (verified != config.segmentRatioVerified) Change(() => config.segmentRatioVerified = verified);
-                EditorGUILayout.LabelField(config.segmentRatioVerified ? "已核实 · 使用下列倍率结算" : "待核 · 实战使用下列配置值", EditorStyles.miniLabel);
                 if (config.segmentPercent.Count != count && GUILayout.Button("匹配执行次数，保留已有倍率"))
                     Change(() => config.segmentPercent = Enumerable.Range(0, count)
                         .Select(i => i < config.segmentPercent.Count ? config.segmentPercent[i] : 0f).ToList());

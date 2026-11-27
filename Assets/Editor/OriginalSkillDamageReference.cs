@@ -38,18 +38,12 @@ namespace SoftKitty
             using (new EditorGUI.DisabledScope(EditorApplication.isPlaying))
             foreach (var segment in segments)
             {
-                using (new EditorGUILayout.HorizontalScope())
+                float percent = EditorGUILayout.DelayedFloatField("逻辑段 " + segment.logicIndex + "（%）", segment.segmentPercent[0]);
+                if (percent != segment.segmentPercent[0] && !float.IsNaN(percent) && !float.IsInfinity(percent) && percent >= 0)
                 {
-                    float percent = EditorGUILayout.DelayedFloatField("逻辑段 " + segment.logicIndex + "（%）", segment.segmentPercent[0]);
-                    bool verified = EditorGUILayout.ToggleLeft(segment.segmentRatioVerified ? "已核实" : "待核", segment.segmentRatioVerified, GUILayout.Width(78));
-                    if ((percent != segment.segmentPercent[0] || verified != segment.segmentRatioVerified) &&
-                        !float.IsNaN(percent) && !float.IsInfinity(percent) && percent >= 0)
-                    {
-                        Undo.RecordObject(skill, "编辑分段倍率");
-                        segment.segmentPercent[0] = percent;
-                        segment.segmentRatioVerified = verified;
-                        EditorUtility.SetDirty(skill);
-                    }
+                    Undo.RecordObject(skill, "编辑分段倍率");
+                    segment.segmentPercent[0] = percent;
+                    EditorUtility.SetDirty(skill);
                 }
             }
         }
@@ -67,8 +61,7 @@ namespace SoftKitty
             if (row == null) return;
             string ratio = row.hasLevelRow ? (row.rawRatio / 10f).ToString("0.###") + "% 攻击" : "倍率待战报核对";
             showOriginalDamageDetails = EditorGUILayout.Foldout(showOriginalDamageDetails,
-                "《宗师之上》" + skill.sourceVersion + " · " + row.skillId + " · " + ratio + " · " + row.targetCount + " 目标", true);
-            DrawOriginalSegmentRatios(skill);
+                "原作对照 · 《宗师之上》" + skill.sourceVersion + " · " + row.skillId + " · " + ratio + " · " + row.targetCount + " 目标", true);
             if (!showOriginalDamageDetails) return;
             using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
             {
@@ -78,6 +71,7 @@ namespace SoftKitty
                 EditorGUILayout.LabelField("技能主表", row.targetCount + " 目标 · 基础冷却 " + row.cooldownMs + " ms");
                 EditorGUILayout.LabelField(row.timing, EditorStyles.wordWrappedLabel);
                 EditorGUILayout.HelpBox(row.limit, MessageType.Info);
+                DrawOriginalSegmentRatios(skill);
                 const string folder = "Assets/WhiteFog/Skills/攻击公式/";
                 var table = string.IsNullOrEmpty(row.levelAssetPath) ? null
                     : AssetDatabase.LoadAssetAtPath<SkillLevelTable>(row.levelAssetPath);
