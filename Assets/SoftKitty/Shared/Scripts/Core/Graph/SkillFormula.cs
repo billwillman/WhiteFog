@@ -84,7 +84,8 @@ namespace SoftKitty
                     else
                     {
                         var entity = owner.GetEntity(state);
-                        if (entity == null) throw new InvalidOperationException("无法读取实体属性 " + key);
+                        if (entity == null && state.CasterSnapshot?.IsSource(null, owner) != true)
+                            throw new InvalidOperationException("无法读取实体属性 " + key);
                         value = state.ReadAttribute(entity, owner, variable.AttributeKey);
                     }
                 }

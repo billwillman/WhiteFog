@@ -284,6 +284,10 @@ flowchart TD
     W["在途换装"] --> N["下一次施法创建新 Snap"]
 ```
 
+每个 `Entity` 通过 `entity.RuntimeId` 取得当前运行期的唯一实例 ID。`GameManager` 从 1 开始自增分配 `ulong`（UInt64），保留 0 表示无效。分配器持续递增；到达 `ulong.MaxValue` 后跳过 0 和索引中仍被占用的编号。同模板生成的两个实体各有自己的 ID。`GameManager.GetEntityByRuntimeId(id)` 查到时返回对应的实体，未知或已被回收的 ID 返回 `null`。实体删除时由管理器注销 ID，旧 ID 立即失效。同一份实体数据由多个场景组件共用时，最后一个组件离场时注销。纯数据实体可调用 `GameManager.UnregisterRuntimeEntity(id)`。索引使用弱引用，实例 ID 仅在本次运行有效。模板配置继续使用 `Entity.uid`。
+
+Snap 保存施加时的数值和施加者的 `DealerId`。Buff 每跳按实例 ID 查施加者来传递伤害归属，按原 Snap 算施加者属性。结算退出时清理执行器中的临时绑定，仍在生效的 Buff 继续持有自己的 Snap。
+
 同次施法的所有段和所有投射物持有同一个快照对象。角色换装后的下一次施法可以与上一次同时在场，各自读取自己的数值。每次命中独立选择实际受击者。护盾和生命按结算顺序写入，因此上一段耗掉的盾不会再被下一段吸收。
 
 扩展时继承 `SkillAttributeSnapshot`，在构造时采集项目专属数据，覆写 `TryGetAttribute` 公开数值字段，并在游戏初始化时注册 `Factory`。新结算器从 `GraphRuntimeState.CasterSnapshot` 取得它。在外部调度子伤害时传给 `DealDamageFromSnapshot`，派生物理弹体用 `Launch(direction, snapshot)`。持续状态沿用 MCC 已有的来源归属，同一状态实例叠层或刷新期间保留最初施加它的快照，移除后重新施加才取得新快照。

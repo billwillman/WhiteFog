@@ -167,7 +167,7 @@ namespace SoftKitty
         #region MonoBehaviour
         public virtual void OnDestroy()
         {
-            GameManager.RemoveEntityInstance(mData.uid, this);
+            GameManager.RemoveEntityInstance(uid, this);
         }
         public virtual void Awake()
         {
@@ -201,6 +201,7 @@ namespace SoftKitty
         [SerializeReference, System.NonSerialized] protected Entity _data = null;
         [HideInInspector]
         public Entity _multipleInstanceData = null;
+        internal ulong RegisteredRuntimeId { get; set; }
         private int id = -1;
         private CharacterController mControler;
         private Rigidbody mRigidbody;
@@ -333,6 +334,7 @@ namespace SoftKitty
             id = -1;
             _data = null;
             _multipleInstanceData = null;
+            if (RegisteredRuntimeId != 0) GameManager.BindSceneEntity(this, mData);
         }
 
         /// <summary>

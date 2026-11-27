@@ -177,6 +177,24 @@ namespace SoftKitty
         /// The unique string ID for this entity.
         /// </summary>
         public string uid;
+        [System.NonSerialized] private ulong runtimeId;
+        /// <summary>Identifies this data instance for lookup through GameManager within this runtime.</summary>
+        public ulong RuntimeId
+        {
+            get
+            {
+                if (runtimeId == 0) runtimeId = GameManager.RegisterRuntimeEntity(this);
+                return runtimeId;
+            }
+        }
+
+        internal ulong RegisterForScene()
+        {
+            if (runtimeId == 0 || GameManager.GetEntityByRuntimeId(runtimeId) == null)
+                runtimeId = GameManager.RegisterRuntimeEntity(this);
+            return runtimeId;
+        }
+
         // Set on spawned copies when multiple actors share the same entity definition.
         [System.NonSerialized] public string CombatInstanceId;
         public string CombatRandomId => string.IsNullOrEmpty(CombatInstanceId) ? uid : CombatInstanceId;
@@ -911,7 +929,7 @@ namespace SoftKitty
                 }
                 else
                 {
-                    _newEffect = new OverTimeEffectData(_setting.uid, _setting.duration, _dealer.uid);
+                    _newEffect = new OverTimeEffectData(_setting.uid, _setting.duration, _dealer?.uid);
                     _newEffect.casterSnapshot = snapshot ?? SkillAttributeSnapshot.Capture(_dealer);
                     mOverTimeEffect.Add(_id, _newEffect);
                     if (_setting.interruptCastOnEnter) InterruptCast(_dealer);
@@ -1005,7 +1023,17 @@ namespace SoftKitty
                 {//Without this check, effect being Dispell by another script could cause error.
                     if (mOverTimeEffect[_key].timer > 0F)
                     {
-                        if (mOverTimeEffect.ContainsKey(_key) && OverTimeEffectTickCallback != null) OverTimeEffectTickCallback(mOverTimeEffect[_key].uid, mOverTimeEffect[_key].layer, GameManager.GetEntity(mOverTimeEffect[_key].dealer), this);
+                        var effect = mOverTimeEffect[_key];
+                        if (OverTimeEffectTickCallback != null)
+                        {
+                            // Effects restored from older saves only carry the definition UID.
+                            Entity dealer = null;
+                            if (effect.casterSnapshot != null)
+                                dealer = GameManager.GetEntityByRuntimeId(effect.casterSnapshot.DealerId);
+                            else if (!string.IsNullOrEmpty(effect.dealer))
+                                dealer = GameManager.GetEntity(effect.dealer);
+                            OverTimeEffectTickCallback(effect.uid, effect.layer, dealer, this);
+                        }
                         if (mOverTimeEffect.ContainsKey(_key))
                         {
                             mOverTimeEffect[_key].timer -= _timerChange;

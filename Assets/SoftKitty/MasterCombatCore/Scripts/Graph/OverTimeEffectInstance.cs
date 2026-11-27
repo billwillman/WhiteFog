@@ -15,6 +15,7 @@ namespace SoftKitty
         private OverTimeEffect mSetting;
         public static Dictionary<GraphObject, Root> runtimeInitializedGraph = new Dictionary<GraphObject, Root>();
         protected GraphRuntimeState mRuntime;
+        private bool executing;
         #endregion
 
         /// <summary>
@@ -29,19 +30,36 @@ namespace SoftKitty
 
         internal void Execute(string _uid, int _layer, Entity _dealer, Entity _target, ulong? eventId)
         {
- #if MASTER_COMBAT_CORE
-            foreach (var obj in mSetting.DynamicVariables) {
-                if(obj.uid!= "Layer") mRuntime.RootState.SetDynamicVariableFloat(obj.uid, obj.value);
+            // A damage callback can synchronously tick the same Buff on another target.
+            if (executing)
+            {
+                new OverTimeEffectInstance(mSetting).Execute(_uid, _layer, _dealer, _target, eventId);
+                return;
             }
+
+            executing = true;
+            try
+            {
+#if MASTER_COMBAT_CORE
+                foreach (var parameter in mSetting.DynamicVariables)
+                    if (parameter.uid != "Layer") mRuntime.RootState.SetDynamicVariableFloat(parameter.uid, parameter.value);
 #endif
-            mRuntime.RootState.SetDynamicVariableFloat("Layer", _layer);
-            SetDealer(_dealer);
-            SetTarget(_target);
-            var effect = _target?.GetOverTimeEffect(_uid);
-            mRuntime.CasterSnapshot = effect?.casterSnapshot;
-            mRuntime.EnsureCasterSnapshot(_dealer);
-            bool _success = IfTriggerThenPerformAction(eventId);
-            if (SGD_Settings.Instance.DebugLevel >= 2) Debug.Log("<OverTimeEffectInstance> -> Perform() > isTriggered:" + _success);
+                mRuntime.RootState.SetDynamicVariableFloat("Layer", _layer);
+                mRuntime.CasterSnapshot = _target?.GetOverTimeEffect(_uid)?.casterSnapshot;
+                var dealer = mRuntime.CasterSnapshot == null ? _dealer
+                    : GameManager.GetEntityByRuntimeId(mRuntime.CasterSnapshot.DealerId);
+                SetDealer(dealer);
+                SetTarget(_target);
+                mRuntime.EnsureCasterSnapshot(dealer);
+                bool triggered = IfTriggerThenPerformAction(eventId);
+                if (SGD_Settings.Instance.DebugLevel >= 2) Debug.Log("<OverTimeEffectInstance> -> Perform() > isTriggered:" + triggered);
+            }
+            finally
+            {
+                mRuntime.CasterSnapshot = null;
+                mRuntime.RootState.InvolvedEntityDic?.Clear();
+                executing = false;
+            }
         }
         /// <summary>
         /// Evaluates whether the over-time effect's triggers have been activated, and if so, performs the associated action.

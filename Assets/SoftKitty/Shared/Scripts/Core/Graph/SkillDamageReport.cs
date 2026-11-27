@@ -24,13 +24,13 @@ namespace SoftKitty
         public sealed class Cast
         {
             internal readonly OriginalSkillGraph skill;
-            internal readonly Entity caster;
+            internal readonly ulong casterRuntimeId;
             private readonly Dictionary<(int, string), List<Entry>> remaining = new Dictionary<(int, string), List<Entry>>();
 
             internal Cast(OriginalSkillGraph skill, Entity caster, List<Entry> entries)
             {
                 this.skill = skill;
-                this.caster = caster;
+                casterRuntimeId = caster.RuntimeId;
                 foreach (var entry in entries)
                 {
                     if (entry.logicIndex < 1 || string.IsNullOrWhiteSpace(entry.targetId) ||

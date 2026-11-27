@@ -614,13 +614,11 @@ namespace SoftKitty
             var runtime = CreateRuntimeEntity(template);
             if (independent) runtime.MultipleInstances = true;
             EntityDataDic[GetId(template.uid)] = runtime;
-            if (actor.uid != template.uid)
-            {
-                GameManager.RemoveEntityInstance(actor.uid, actor);
-                actor.uid = template.uid;
-                GameManager.SetEntityInstance(actor.uid, actor);
-            }
+            bool changedUid = actor.uid != template.uid;
+            if (changedUid) GameManager.RemoveEntityInstance(actor.uid, actor);
+            actor.uid = template.uid;
             actor.RefreshData();
+            if (changedUid) GameManager.SetEntityInstance(actor.uid, actor);
             actor.ApplyData();
         }
 #endif

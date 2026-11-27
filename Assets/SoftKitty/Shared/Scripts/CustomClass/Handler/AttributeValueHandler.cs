@@ -40,12 +40,12 @@ namespace SoftKitty
         {
             var selector = _runtime.AttributeSelector(inputPort[0].connectedNodes[0]);
             var owner = selector?.GetEntity(_runtime);
-            if (owner == null)
+            bool snapshotInput = _runtime.CasterSnapshot?.IsSource(owner, selector) == true;
+            if (owner == null && !snapshotInput)
             {
                 if (SGD_Settings.Instance.DebugLevel >= 1)Debug.LogError("<AttributeValueHandler> [Node:" + Uid + "] failed to Update(), because the entity is null.");
                 return;
             }
-            bool snapshotInput = _runtime.CasterSnapshot?.IsSource(owner, selector) == true;
             if (!snapshotInput && _id == -1)
             {
                 AttributeObject.RequireDefinition(uid, Uid);

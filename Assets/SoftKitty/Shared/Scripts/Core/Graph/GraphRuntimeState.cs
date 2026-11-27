@@ -8,12 +8,13 @@ namespace SoftKitty
     {
         // Install a project-specific snapshot factory at startup if a subclass supplies extra inputs.
         public static System.Func<Entity, SkillAttributeSnapshot> Factory { private get; set; }
-        public Entity Dealer { get; }
+        public ulong DealerId { get; }
         private readonly Dictionary<string, float> values = new Dictionary<string, float>();
 
         protected SkillAttributeSnapshot(Entity dealer)
         {
-            Dealer = dealer ?? throw new System.ArgumentNullException(nameof(dealer));
+            if (dealer == null) throw new System.ArgumentNullException(nameof(dealer));
+            DealerId = dealer.RuntimeId;
             foreach (var attribute in GameManager.AttributeData.AttributeList)
                 if (!attribute.stringValue) values[attribute.uid] = dealer.GetAttributeFloat(attribute.uid);
         }
@@ -21,7 +22,7 @@ namespace SoftKitty
         public static SkillAttributeSnapshot Capture(Entity dealer)
         {
             var snapshot = Factory == null ? new SkillAttributeSnapshot(dealer) : Factory(dealer);
-            if (snapshot == null || snapshot.Dealer != dealer)
+            if (snapshot == null || dealer == null || snapshot.DealerId != dealer.RuntimeId)
                 throw new System.InvalidOperationException("属性快照必须属于本次施放者。");
             return snapshot;
         }
@@ -38,7 +39,7 @@ namespace SoftKitty
                 if (owner.Type == EntityType.Dealer) return true;
                 if (owner.Type == EntityType.Target) return false;
             }
-            return entity == Dealer;
+            return entity != null && entity.RuntimeId == DealerId;
         }
     }
 

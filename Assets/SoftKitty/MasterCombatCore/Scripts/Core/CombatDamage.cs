@@ -225,7 +225,7 @@ namespace SoftKitty
                 if (projectileAttributes != null)
                 {
                     mRuntime.CasterSnapshot = projectileAttributes;
-                    mRuntime.RootState.SetInvolvedEntity("Dealer", projectileAttributes.Dealer);
+                    mRuntime.RootState.SetInvolvedEntity("Dealer", GameManager.GetEntityByRuntimeId(projectileAttributes.DealerId));
                 }
                 inited = true;
             }
@@ -514,8 +514,8 @@ namespace SoftKitty
         public void Launch(Vector3 direction, SkillAttributeSnapshot snapshot)
         {
             if (projectileLaunched) return;
-            var dealer = snapshot?.Dealer ?? ProjectileDealer();
-            if (dealer != null && ProjectileMode != ProjectileModes.Disable)
+            var dealer = snapshot == null ? ProjectileDealer() : GameManager.GetEntityByRuntimeId(snapshot.DealerId);
+            if ((snapshot != null || dealer != null) && ProjectileMode != ProjectileModes.Disable)
             {
                 projectileAttributes = snapshot ?? SkillAttributeSnapshot.Capture(dealer);
                 mRuntime.CasterSnapshot = projectileAttributes;
@@ -671,9 +671,13 @@ namespace SoftKitty
         private bool DealDamageEvent(ulong? eventId, System.Action<int, Entity, float, float> onSettled = null, SkillDamageReport.Cast replay = null, SkillAttributeSnapshot snapshot = null, bool startSkill = false, IReadOnlyList<Entity> targets = null, SkillCastTrace trace = null)
         {
             if (!PhysicsDetection && TargetEntity != null && GetTargetEntity() == null) SetTargetEntity(TargetEntity.mData);
-            if(DealerEntity!=null && GetDealerEntity() == null) SetDealerEntity(DealerEntity.mData);
-            if (GetDealerEntity()==null && DealerEntity==null) {
-                if(GetComponentInParent<EntityComponent>()) SetDealerEntity(GetComponentInParent<EntityComponent>().mData);
+            var savedAttributes = snapshot ?? (impactHost ? mRuntime.CasterSnapshot : projectileAttributes);
+            if (savedAttributes != null)
+                SetDealerEntity(GameManager.GetEntityByRuntimeId(savedAttributes.DealerId));
+            else if (GetDealerEntity() == null)
+            {
+                var dealer = ProjectileDealer();
+                if (dealer != null) SetDealerEntity(dealer);
             }
             if (GetTargetEntity() == null)
             {
@@ -702,11 +706,6 @@ namespace SoftKitty
         /// <param name="_target"></param>
         public void DealDamage(Entity _target)
         {
-            if (DealerEntity != null && GetDealerEntity() == null) SetDealerEntity(DealerEntity.mData);
-            if (GetDealerEntity() == null && DealerEntity == null)
-            {
-                if (GetComponentInParent<EntityComponent>()) SetDealerEntity(GetComponentInParent<EntityComponent>().mData);
-            }
             SetTargetEntity(_target);
             UpdateInstanceEntity();
             DealDamage();
@@ -758,7 +757,7 @@ namespace SoftKitty
 
         public void DealDamage(Entity dealer, Entity target, SkillDamageReport.Cast records)
         {
-            if (records != null && (records.skill != mGraph || records.caster != dealer))
+            if (records != null && (records.skill != mGraph || dealer == null || records.casterRuntimeId != dealer.RuntimeId))
                 throw new System.ArgumentException("战报已绑定到另一招或另一施放者。", nameof(records));
             SetDealerEntity(dealer);
             SetTargetEntity(target);
@@ -770,7 +769,6 @@ namespace SoftKitty
         public void DealDamageFromSnapshot(SkillAttributeSnapshot snapshot, Entity target, ulong? eventId = null)
         {
             if (snapshot == null) throw new System.ArgumentNullException(nameof(snapshot));
-            SetDealerEntity(snapshot.Dealer);
             SetTargetEntity(target);
             UpdateInstanceEntity();
             DealDamageEvent(eventId, snapshot: snapshot);

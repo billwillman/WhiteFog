@@ -20,6 +20,65 @@ namespace SoftKitty
         private static AudioSource mAudioPlayer;
         public static RefreshEvent RefreshCallback;
 
+        // Data instances can exist independently of scene actors, even with the same definition UID.
+        private static ulong nextRuntimeId;
+        private sealed class RuntimeEntityEntry
+        {
+            internal readonly System.WeakReference<Entity> Data;
+            internal int SceneOwners;
+            internal RuntimeEntityEntry(Entity entity) => Data = new System.WeakReference<Entity>(entity);
+        }
+        private static readonly Dictionary<ulong, RuntimeEntityEntry> runtimeEntities = new Dictionary<ulong, RuntimeEntityEntry>();
+        private static int registrationsUntilSweep = 128;
+
+        internal static ulong RegisterRuntimeEntity(Entity entity)
+        {
+            if (--registrationsUntilSweep == 0)
+            {
+                var expired = new List<ulong>();
+                foreach (var entry in runtimeEntities)
+                    if (!entry.Value.Data.TryGetTarget(out _)) expired.Add(entry.Key);
+                foreach (ulong key in expired) runtimeEntities.Remove(key);
+                registrationsUntilSweep = System.Math.Max(128, runtimeEntities.Count / 2);
+            }
+            ulong id;
+            do
+            {
+                id = unchecked(++nextRuntimeId);
+            } while (id == 0 || runtimeEntities.ContainsKey(id));
+            runtimeEntities.Add(id, new RuntimeEntityEntry(entity));
+            return id;
+        }
+
+        /// <summary>Returns the live instance for this runtime ID, or null for an unknown or expired ID.</summary>
+        public static Entity GetEntityByRuntimeId(ulong id)
+        {
+            if (!runtimeEntities.TryGetValue(id, out var entry)) return null;
+            if (entry.Data.TryGetTarget(out var entity)) return entity;
+            runtimeEntities.Remove(id);
+            return null;
+        }
+
+        /// <summary>Retires this instance handle immediately. Repeated removal is harmless.</summary>
+        public static bool UnregisterRuntimeEntity(ulong id) => runtimeEntities.Remove(id);
+
+        internal static void BindSceneEntity(EntityComponent actor, Entity data)
+        {
+            ulong id = data?.RegisterForScene() ?? 0;
+            if (id == actor.RegisteredRuntimeId) return;
+            ReleaseSceneEntity(actor);
+            if (id == 0) return;
+            runtimeEntities[id].SceneOwners++;
+            actor.RegisteredRuntimeId = id;
+        }
+
+        private static void ReleaseSceneEntity(EntityComponent actor)
+        {
+            ulong id = actor.RegisteredRuntimeId;
+            actor.RegisteredRuntimeId = 0;
+            if (runtimeEntities.TryGetValue(id, out var entry) && --entry.SceneOwners == 0)
+                UnregisterRuntimeEntity(id);
+        }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void OnBeforeSceneLoad()
@@ -118,30 +177,15 @@ namespace SoftKitty
         /// </summary>
         public static void DeleteAllEntityInstance(bool _includePlayer=true)
         {
-            foreach (var key in entityInstanceDic.Keys)
+            var actors = GetEntityInstanceList();
+            if (_includePlayer && playerInstance && !actors.Contains(playerInstance)) actors.Add(playerInstance);
+            foreach (var actor in actors)
             {
-                try
-                {
-                    if (entityInstanceDic[key] != null)
-                    {
-                        foreach (var obj in entityInstanceDic[key]) {
-                            if(obj!=null)Destroy(obj.gameObject);
-                        }
-                        entityInstanceDic[key].Clear();
-                    }
-                }
-                catch
-                {
-
-                }
+                if (!actor || (!_includePlayer && (actor == playerInstance || actor.isPlayer))) continue;
+                RemoveEntityInstance(actor.uid, actor);
+                Destroy(actor.gameObject);
             }
-            entityInstanceDic.Clear();
-            if (_includePlayer)
-            {
-                if (playerInstance != null) Destroy(playerInstance.gameObject);
-                player = null;
-                playerInstance = null;
-            }
+            if (_includePlayer) player = null;
         }
 
         /// <summary>
@@ -163,6 +207,9 @@ namespace SoftKitty
         /// </summary>
         public static void ClearAllEntityInstance()
         {
+            foreach (var group in entityInstanceDic.Values)
+                foreach (var actor in group)
+                    if (actor) ReleaseSceneEntity(actor);
             entityInstanceDic.Clear();
             player = null;
             playerInstance = null;
@@ -174,17 +221,10 @@ namespace SoftKitty
         /// <param name="_entity"></param>
         public static void SetEntityInstance(string _uid, EntityComponent _entity)
         {
-            if (entityInstanceDic.ContainsKey(_uid))
-            {
-                if (entityInstanceDic[_uid] == null)entityInstanceDic[_uid] = new List<EntityComponent>();
-                entityInstanceDic[_uid].Add(_entity);
-            }
-            else
-            {
-                List<EntityComponent> _newList = new List<EntityComponent>();
-                _newList.Add(_entity);
-                entityInstanceDic.Add(_uid, _newList);
-            }
+            if (!entityInstanceDic.TryGetValue(_uid, out var group))
+                entityInstanceDic.Add(_uid, group = new List<EntityComponent>());
+            if (!group.Contains(_entity)) group.Add(_entity);
+            BindSceneEntity(_entity, _entity.mData);
             if (_uid.ToLower() == "player" || _entity.isPlayer)
             {
                 playerInstance = _entity;
@@ -197,12 +237,16 @@ namespace SoftKitty
         public static void RemoveEntityInstance(string _uid, EntityComponent _instance)
         {
             if (SGD_Settings.Instance.DebugLevel >= 3) Debug.Log("<GameManager> Remove Entity Instance:" + _uid);
-            if (entityInstanceDic.ContainsKey(_uid))
+            if (_uid != null && entityInstanceDic.TryGetValue(_uid, out var group))
             {
-                if (entityInstanceDic[_uid]!=null) {
-                    if (entityInstanceDic[_uid].Contains(_instance)) entityInstanceDic[_uid].Remove(_instance);
-                    if (entityInstanceDic[_uid].Count == 0) entityInstanceDic.Remove(_uid);
-                }
+                group.Remove(_instance);
+                if (group.Count == 0) entityInstanceDic.Remove(_uid);
+            }
+            ReleaseSceneEntity(_instance);
+            if (playerInstance == _instance)
+            {
+                playerInstance = null;
+                player = null;
             }
         }
         /// <summary>

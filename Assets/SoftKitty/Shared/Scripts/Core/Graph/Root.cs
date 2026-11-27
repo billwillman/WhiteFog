@@ -57,7 +57,7 @@ namespace SoftKitty
         /// <param name="_entity"></param>
         public void SetInvolvedEntity(string _tag, Entity _entity)
         {
-            if (SGD_Settings.Instance.DebugLevel >= 3) Debug.Log("<Root> -> SetInvolvedEntity(" + _tag + " ," + _entity.uid + ")");
+            if (SGD_Settings.Instance.DebugLevel >= 3) Debug.Log("<Root> -> SetInvolvedEntity(" + _tag + " ," + _entity?.uid + ")");
             if (InvolvedEntityDic.ContainsKey(_tag))
             {
                 InvolvedEntityDic[_tag] = _entity;
