@@ -19,7 +19,6 @@ public sealed class OriginalSkillWebBattle : MonoBehaviour
     private bool ferry;
     private EntityComponent previewCaster, previewTarget;
     private float nextReadout, trialStart;
-    private GraphObject previewSkill;
     private int previewCast;
 
     [System.Serializable]
@@ -36,7 +35,6 @@ public sealed class OriginalSkillWebBattle : MonoBehaviour
     {
         public string kind, text, casterStates, targetStates;
         public float casterHp, targetHp, loss, shield, elapsed;
-        public bool canMove, canChain;
         public int segment;
     }
 
@@ -50,8 +48,6 @@ public sealed class OriginalSkillWebBattle : MonoBehaviour
             kind = kind, text = text, segment = segment, loss = loss, shield = shield, elapsed = Time.time - trialStart,
             casterHp = previewCaster ? previewCaster.GetAttributeFloat("chp") : 0,
             targetHp = previewTarget ? previewTarget.GetAttributeFloat("chp") : 0,
-            canMove = previewCaster && previewCaster.mData.CanMoveByInput,
-            canChain = previewCaster && previewCaster.mData.CanStartSkill,
             casterStates = States(previewCaster), targetStates = States(previewTarget)
         }));
 #endif
@@ -93,27 +89,13 @@ public sealed class OriginalSkillWebBattle : MonoBehaviour
         bool opponent = original ? original.previewAsOpponent : request.opponent;
         previewCaster = opponent ? enemy : hero;
         previewTarget = opponent ? hero : enemy;
-        previewSkill = skill;
-        CastPreview(request);
-    }
-
-    [Preserve]
-    public void ChainEditorSkill(string json)
-    {
-        if (previewSkill && previewSkill.useInputTiming && previewCaster && previewTarget)
-            CastPreview(JsonUtility.FromJson<EditorRequest>(json));
-    }
-
-    private void CastPreview(EditorRequest request)
-    {
-        var skill = previewSkill;
         var go = new GameObject(skill.name);
         go.transform.position = previewCaster.transform.position;
         var damage = go.AddComponent<CombatDamage>();
         damage.PhysicsDetection = false;
         damage.mGraph = skill;
         damage.Init();
-        if (!damage.inited) { Destroy(go); Report("error", "技能图初始化失败"); return; }
+        if (!damage.inited) { Destroy(go); Report("error", "技能图初始化失败"); yield break; }
         damage.SetDynamicValue("skill.level", Mathf.Max(1, request.level));
         SkillDamageNumbers.Observe(previewCaster);
         SkillDamageNumbers.Observe(previewTarget);
@@ -127,7 +109,7 @@ public sealed class OriginalSkillWebBattle : MonoBehaviour
             if (previewCast == sequence) Report("hit", victim.CombatRandomId, index, loss, shield);
         });
         if (started) Report("cast", skill.name);
-        else Report("blocked", previewCaster.mData.CanStartSkill ? "本次试放未满足施法条件" : "施放者尚不能接下一招");
+        else Report("blocked", "本次试放未满足施法条件");
     }
 
     [Preserve]

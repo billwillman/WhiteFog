@@ -14,6 +14,7 @@ namespace SoftKitty
         public float Interval = 0F;
         [SerializeReference] public SkillCalculation calculation;
         [SerializeReference] public SkillMotion motion;
+        [SerializeReference] public SkillTargetSelection selectionRules;
         [SerializeReference] public SkillProjectile projectile;
         public SkillProjectileSnap projectileSnap;
         public bool requiresProjectileSnap;
@@ -70,6 +71,7 @@ namespace SoftKitty
             this.Interval = _source.Interval;
             calculation = _source.calculation;
             motion = _source.motion?.Copy();
+            selectionRules = _source.selectionRules;
             projectile = _source.projectile?.Copy();
             projectileSnap = _source.projectileSnap;
             projectileSpeedOverride = _source.projectileSpeedOverride;
@@ -113,7 +115,13 @@ namespace SoftKitty
             inputPort.Add(new PortSetting("Action", "ActionIn", new string[2] { "RootOut", "BranchOutAction" }, false));
             CustomInit("Action", ClassName);
             EnsureExecutionConditionPort();
-            if (SkillProjectile.IsLaunch(this) || SkillProjectile.IsImpactLaunch(this)) EnsureArrivalPort();
+            if (ClassName == "SelectTarget")
+            {
+                selectionRules ??= new SkillTargetSelection();
+                EnsureArrivalPort();
+                outputPort[0].Name = "找到目标时";
+            }
+            if (ClassName == "RedirectProjectile" || SkillProjectile.IsLaunch(this) || SkillProjectile.IsImpactLaunch(this)) EnsureArrivalPort();
         }
 
         // Append after the class-specific inputs so all existing entity/value port numbers stay valid.
@@ -130,7 +138,7 @@ namespace SoftKitty
         public void EnsureArrivalPort()
         {
             if (outputPort.Count == 0)
-                outputPort.Add(new PortSetting("命中目标", "BranchOutAction", new[] { "ActionIn", "BranchInAction" }, true));
+                outputPort.Add(new PortSetting("命中", "BranchOutAction", new[] { "ActionIn", "BranchInAction" }, true));
         }
 
         public bool EmitsSettledHit => IntValues.Count > 0 && IntValues[0] == (int)SkillPlayback.Style.Direct &&
@@ -166,6 +174,8 @@ namespace SoftKitty
         public Action Copy(bool _runtime=false)
         {
             Action _copy = new Action(this);
+            if (!_runtime && selectionRules != null)
+                _copy.selectionRules = JsonUtility.FromJson<SkillTargetSelection>(JsonUtility.ToJson(selectionRules));
             if (_runtime) _copy.InitRuntimeNodeName();
             _copy.mType = NodeType.Action;
             return _copy;

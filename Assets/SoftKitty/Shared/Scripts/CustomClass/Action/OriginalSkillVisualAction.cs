@@ -33,7 +33,7 @@ namespace SoftKitty
                 {
                     var release = state.ForRelease(Uid, ordinal++);
                     if (!ConditionsMet(ref release)) return;
-                    var onHit = cue.triggerHit ? ProjectileAction.ContactHandler(this, instance.mGraph, host.ProjectileHost(), release, caster, fallback) : null;
+                    var onHit = cue.triggerHit ? ProjectileAction.ContactHandler(this, instance.mGraph, host.ProjectileHost(), release, caster, fallback, effectContact: true) : null;
                     PlayCue(host, cue, caster, target, onHit);
                 });
         }
@@ -113,7 +113,7 @@ namespace SoftKitty
                         legacyMotion = SkillMotion.For(this, graph);
                     binding = legacyMotion;
                 }
-                if (!binding.Play(caster.SkillAnimator, state, out var error, caster) && error != null)
+                if (!binding.Play(caster.SkillAnimator, state, out var error) && error != null)
                     Debug.LogWarning(instance.mGraph.name + " · " + Uid + " · " + error, caster);
                 return;
             }
@@ -151,7 +151,7 @@ namespace SoftKitty
                     if (cue != null)
                     {
                         var host = SkillPlayback.On(instance);
-                        var onHit = cue.triggerHit ? ProjectileAction.ContactHandler(this, instance.mGraph, host.ProjectileHost(), state, caster.mData, host.OriginalProjectileImpact) : null;
+                        var onHit = cue.triggerHit ? ProjectileAction.ContactHandler(this, instance.mGraph, host.ProjectileHost(), state, caster.mData, host.OriginalProjectileImpact, effectContact: true) : null;
                         PlayCue(host, cue, caster.mData, target.mData, onHit);
                     }
                     break;
@@ -166,6 +166,12 @@ namespace SoftKitty
             effect.SetActive(true);
             if (timed)
             {
+                // 原作轨道未指定时长时，BaseEffect 按预制体的 mMaxTime 回收。
+                if (prefab.TryGetComponent<OriginalEffectLifetime>(out var lifetime))
+                {
+                    Object.Destroy(effect, lifetime.seconds);
+                    return effect;
+                }
                 float seconds = .1f;
                 foreach (var system in effect.GetComponentsInChildren<ParticleSystem>(true))
                 {

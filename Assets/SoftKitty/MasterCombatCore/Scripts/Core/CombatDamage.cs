@@ -668,7 +668,7 @@ namespace SoftKitty
         public void DealDamage()
             => DealDamageEvent(null);
 
-        private bool DealDamageEvent(ulong? eventId, System.Action<int, Entity, float, float> onSettled = null, SkillDamageReport.Cast replay = null, SkillAttributeSnapshot snapshot = null, bool startSkill = false, IReadOnlyList<Entity> targets = null)
+        private bool DealDamageEvent(ulong? eventId, System.Action<int, Entity, float, float> onSettled = null, SkillDamageReport.Cast replay = null, SkillAttributeSnapshot snapshot = null, bool startSkill = false, IReadOnlyList<Entity> targets = null, SkillCastTrace trace = null)
         {
             if (!PhysicsDetection && TargetEntity != null && GetTargetEntity() == null) SetTargetEntity(TargetEntity.mData);
             if(DealerEntity!=null && GetDealerEntity() == null) SetDealerEntity(DealerEntity.mData);
@@ -681,7 +681,7 @@ namespace SoftKitty
                 return false;
             }
             if (!GetTargetEntity().AvailableForInteraction) return false;
-            if (startSkill && (GetDealerEntity() == null || !GetDealerEntity().CanStartSkill)) return false;
+            if (startSkill && (GetDealerEntity() == null || !GetDealerEntity().AvailableForInteraction)) return false;
             foreach (var obj in DynamicFloatList) SetDynamicValue(obj.uid, obj.value);
             if (projectileLaunched && ProjectileMode != ProjectileModes.Disable)
             {
@@ -692,7 +692,7 @@ namespace SoftKitty
                 }
                 if(DestroyOnHitTarget) Destroy(gameObject,Mathf.Clamp(DamageCoolDown*0.8F,Time.fixedDeltaTime*2F,0.3F));
             }
-            bool _success = IfTriggerThenPerformAction(eventId, onSettled, replay, snapshot, startSkill, targets);
+            bool _success = IfTriggerThenPerformAction(eventId, onSettled, replay, snapshot, targets, trace);
             if (SGD_Settings.Instance.DebugLevel >= 2) Debug.Log("<CombatDamage> -> DealDamage() > isTriggered:" + _success);
             return _success;
         }
@@ -726,6 +726,9 @@ namespace SoftKitty
 
         // Explicit active casting is separate from physics contacts, snapshot continuations and replay records.
         public bool TryCastSkill(Entity dealer, Entity target, System.Action<int, Entity, float, float> onSettled = null, IReadOnlyList<Entity> additionalTargets = null)
+            => TryCastSkill(dealer, target, onSettled, additionalTargets, null);
+
+        public bool TryCastSkill(Entity dealer, Entity target, System.Action<int, Entity, float, float> onSettled, IReadOnlyList<Entity> additionalTargets, SkillCastTrace trace)
         {
             if (dealer == null || target == null) return false;
             SetDealerEntity(dealer);
@@ -741,7 +744,7 @@ namespace SoftKitty
                     if (candidate != null && !targets.Contains(candidate)) targets.Add(candidate);
                 }
             }
-            return DealDamageEvent(null, onSettled, startSkill: true, targets: targets);
+            return DealDamageEvent(null, onSettled, startSkill: true, targets: targets, trace: trace);
         }
 
         /// <summary>Replay/network entry point. Supply the same command ID for every target of a cast.</summary>
@@ -799,6 +802,12 @@ namespace SoftKitty
             damage.mRuntime.nativeGraphPath = parent.nativeGraphPath == null
                 ? new HashSet<GraphObject>() : new HashSet<GraphObject>(parent.nativeGraphPath);
             damage.mRuntime.nativeGraphPath.Add(graph);
+            damage.mRuntime.trace = parent.trace;
+            damage.mRuntime.traceOwner = parent.traceOwner;
+            damage.mRuntime.traceTrigger = parent.traceTrigger;
+            damage.mRuntime.traceEmitter = parent.traceEmitter;
+            damage.mRuntime.traceFlight = parent.traceFlight;
+            damage.mRuntime.traceSegment = parent.traceSegment;
             damage.mRuntime.CasterSnapshot = parent.CasterSnapshot;
             if (!detached) damage.mRuntime.InheritCastOwner(parent);
             foreach (var input in inputs.DynamicVariableDic) damage.SetDynamicValue(input.Key, input.Value);
@@ -823,7 +832,7 @@ namespace SoftKitty
             mRuntime.EnsureCasterSnapshot(GetDealerEntity());
         }
 
-        private void RunCastActions(int _hash, System.Action<int, Entity, float, float> onSettled = null, SkillDamageReport.Cast replay = null, bool timedInput = false, IReadOnlyList<Entity> targets = null)
+        private void RunCastActions(int _hash, System.Action<int, Entity, float, float> onSettled = null, SkillDamageReport.Cast replay = null, IReadOnlyList<Entity> targets = null, SkillCastTrace trace = null)
         {
             mRuntime.Hash = _hash;
             if (impactHost)
@@ -834,8 +843,11 @@ namespace SoftKitty
             // A graph running on an already launched physical projectile owns its on-hit actions.
             var owner = projectileLaunched && ProjectileMode != ProjectileModes.Disable ? null : GetDealerEntity();
             var cast = mRuntime.ForCast(owner, mRuntime.CasterSnapshot);
-            cast.timedInput = timedInput;
+            cast.trace = trace;
+            trace?.Begin();
             cast.orderedTargets = targets;
+            if (mGraph.RootSet.Actions.Exists(node => node.ClassName == "SelectTarget"))
+                cast.castProjectileHits = new HashSet<Entity>();
             cast.onDamageSettled = onSettled;
             cast.replay = replay;
             currentRootInstance.RunActions(this, cast);
@@ -873,7 +885,7 @@ namespace SoftKitty
         public bool IfTriggerThenPerformAction()
             => IfTriggerThenPerformAction(null);
 
-        private bool IfTriggerThenPerformAction(ulong? eventId, System.Action<int, Entity, float, float> onSettled = null, SkillDamageReport.Cast replay = null, SkillAttributeSnapshot snapshot = null, bool startSkill = false, IReadOnlyList<Entity> targets = null)
+        private bool IfTriggerThenPerformAction(ulong? eventId, System.Action<int, Entity, float, float> onSettled = null, SkillDamageReport.Cast replay = null, SkillAttributeSnapshot snapshot = null, IReadOnlyList<Entity> targets = null, SkillCastTrace trace = null)
         {
             if (!inited) return false;
             SetCastRandomKey(eventId);
@@ -881,11 +893,7 @@ namespace SoftKitty
             int _hash = currentRootInstance.GenerateInstanceHash();
             mRuntime.Hash = _hash;
             bool _triggered = TestTriggers(_hash);
-            if (_triggered)
-            {
-                if (startSkill) GetDealerEntity().ApplySkillInputTiming(mGraph);
-                RunCastActions(_hash, onSettled, replay, startSkill && mGraph.useInputTiming, targets);
-            }
+            if (_triggered) RunCastActions(_hash, onSettled, replay, targets, trace);
 #if UNITY_EDITOR
             if (SGD_Settings.Instance.GraphDebugMode)
             {

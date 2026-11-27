@@ -44,8 +44,6 @@ namespace SoftKitty
 
     public struct GraphRuntimeState
     {
-        internal bool timedInput;
-        internal bool TimesMovementOf(Entity actor) => timedInput && actor == castOwner && !CastInterrupted;
         private Entity castOwner;
         private uint castVersion;
         private CombatRoll? releaseKey;
@@ -56,8 +54,29 @@ namespace SoftKitty
         }
         internal IReadOnlyList<Entity> orderedTargets;
         internal ProjectileContact projectileHit;
+        internal Entity selectedTarget;
+        internal GraphInstance selectionInstance;
+        internal HashSet<Entity> castProjectileHits;
         internal bool projectileContact;
         internal System.Action<int, Entity, float, float> onDamageSettled;
+        internal SkillCastTrace trace;
+        internal string traceOwner, traceTrigger, traceEmitter;
+        internal int traceFlight, traceSegment;
+
+        internal void BeginTracedFlight(string node)
+        {
+            if (trace == null) return;
+            traceEmitter = traceOwner ?? node;
+            traceFlight = trace.NextFlight();
+        }
+
+        internal void TraceLoss(string node, Entity target, float before, int segment = 0)
+        {
+            if (trace == null) return;
+            float loss = before - target.GetAttributeFloat("chp");
+            if (loss > 0) trace.Add(SkillCastTrace.Event.HealthLoss, node, target, this, traceSegment > 0 ? traceSegment : segment, loss);
+        }
+
         internal SkillDamageReport.Cast replay;
         internal HashSet<GraphObject> nativeGraphPath;
 

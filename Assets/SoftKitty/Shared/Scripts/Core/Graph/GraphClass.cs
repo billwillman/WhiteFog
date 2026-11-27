@@ -98,7 +98,8 @@ namespace SoftKitty
         Target,
         Specified,
         Instance,
-        NextCastTarget
+        NextCastTarget,
+        SelectedTarget
     }
     #endregion
 

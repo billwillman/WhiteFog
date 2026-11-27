@@ -72,7 +72,7 @@ namespace SoftKitty
             return layerIndex >= 0 && animator.HasState(layerIndex, stateHash) ? null : "角色缺少 Animator State " + cachedPath;
         }
 
-        public bool Play(Animator animator, GraphRuntimeState cast, out string error, EntityComponent actor = null)
+        public bool Play(Animator animator, GraphRuntimeState cast, out string error)
         {
             error = Check(animator);
             if (error != null || cast.CastInterrupted) return false;
@@ -81,13 +81,11 @@ namespace SoftKitty
             {
                 if (!player) player = animator.gameObject.AddComponent<SkillClipPlayer>();
                 player.Play(animator, clip, cast);
-                if (actor) actor.BindInputMotion(animator, cast, 0, player);
             }
             else
             {
                 if (player) player.StopClip();
                 animator.CrossFadeInFixedTime(stateHash, Mathf.Max(0f, transitionSeconds), layerIndex, 0f);
-                if (actor && layerIndex == 0) actor.BindInputMotion(animator, cast, stateHash, null);
             }
             return true;
         }

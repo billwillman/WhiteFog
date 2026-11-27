@@ -66,6 +66,17 @@ public static class OriginalSkillEditorExport
             info.fields.Add(new Field(label, string.IsNullOrEmpty(text) ? "—" : text));
         }
         var original = graph as OriginalSkillGraph;
+        if (node.ClassName == "SelectTarget" && node.selectionRules is SkillTargetSelection rules)
+        {
+            Add("候选范围", rules.sceneEnemies ? "当前场景敌方实体" : "本次施法目标名单");
+            foreach (var filter in rules.filters)
+            {
+                string text = filter is TargetInRadius radius ? radius.radius + " 米" :
+                    filter is TargetLowHealth hp ? hp.percent + "%" : "必须满足";
+                Add("AND · " + filter?.Label, text);
+            }
+            for (int i = 0; i < rules.priorities.Count; i++) Add("排序 " + (i + 1), rules.priorities[i]?.Label);
+        }
         foreach (var f in node.CustomInterface.Elements)
         {
             if (!SkillWorkbench.Visible(node, f.VisibleBind) || GraphEditorText.IsLegacyProjectileField(node, f) ||
@@ -124,7 +135,19 @@ public static class OriginalSkillEditorExport
                     info.onContact = SkillProjectile.IsLaunch(node);
                     Add("飞行道具", shot.prefab); Add("拖尾", shot.trail); Add("命中特效", shot.impact);
                     Add("发射挂点", shot.launchBone); Add("目标挂点", shot.targetBone); Add("发射偏移", shot.launchOffset);
-                    Add("命中偏移", shot.impactOffset); Add("飞行路径", shot.path.ToString()); Add("初速（米/秒）", shot.speed);
+                    Add("命中偏移", shot.impactOffset); Add("瞄准方式", shot.path == SkillProjectile.FlightPath.FollowTarget ? "持续瞄准目标" : "出手时锁点");
+                    Add("瞄准名单序号", shot.castTargetIndex);
+                    Add("位移轨迹", new[] { "直线", "公式曲线（正弦）", "路径点" }[(int)shot.trajectory]);
+                    if (shot.trajectory == SkillProjectile.TrajectoryType.Waypoints)
+                        foreach (var point in shot.pathPoints) Add($"路径点 {point.progress:P1}", point.offset);
+                    if (shot.trajectory == SkillProjectile.TrajectoryType.Sine)
+                    {
+                        Add("公式振幅（米）", shot.sineAmplitude);
+                        Add("半波数", shot.sineHalfWaves);
+                    }
+                    Add("飞行进度", shot.progressMode == SkillProjectile.ProgressMode.Duration ? "指定飞行时长" : "按初速度和加速度");
+                    if (shot.progressMode == SkillProjectile.ProgressMode.Duration) Add("飞行时长（秒）", shot.flightSeconds);
+                    Add("初速（米/秒）", shot.speed);
                     Add("加速度", shot.acceleration); Add("拖尾时长（秒）", shot.trailSeconds); Add("命中特效缩放", shot.impactScale);
                     if (shot.path == SkillProjectile.FlightPath.FollowTarget) Add("追踪超时（秒）", shot.trackingTimeout);
                 }
@@ -140,7 +163,11 @@ public static class OriginalSkillEditorExport
             {
                 Add("特效 Prefab", cue.prefab); Add("挂接对象", cue.onTarget ? "目标" : "施法者"); Add("挂点", cue.bone);
                 Add("跟随位置", cue.followBone); Add("使用挂点旋转", cue.followRotation);
-                Add("显示时长", cue.duration > 0 ? cue.duration + " 秒" : "按粒子自身时长");
+                string duration = "按粒子自身时长";
+                if (cue.duration > 0) duration = cue.duration + " 秒";
+                else if (cue.prefab && cue.prefab.TryGetComponent<OriginalEffectLifetime>(out var lifetime))
+                    duration = $"原作预制体 {lifetime.seconds:0.###} 秒";
+                Add("显示时长", duration);
                 info.onContact = node.IntValues[0] == 6 && cue.triggerHit;
                 if (node.IntValues[0] == 6) Add("触发目标命中", cue.triggerHit);
                 if (info.onContact) { Add("命中延迟（秒）", cue.hitDelay); Add("命中盒尺寸（米）", cue.hitBoxSize); }

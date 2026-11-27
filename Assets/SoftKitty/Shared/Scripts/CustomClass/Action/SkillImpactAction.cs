@@ -23,6 +23,7 @@ namespace SoftKitty
             {
                 if ((SkillPlayback.Style)IntValues[0] != SkillPlayback.Style.Direct && !ConditionsMet(ref runtime)) return;
                 var playback = (SkillPlayback.Style)IntValues[0] == SkillPlayback.Style.Direct ? host : host.ProjectileHost();
+                if ((SkillPlayback.Style)IntValues[0] != SkillPlayback.Style.Direct) runtime.BeginTracedFlight(Uid);
                 if (SkillProjectile.IsImpactLaunch(this))
                 {
                     ProjectileAction.LaunchImpact(this, skill, playback, runtime, source, recipient, (hit, point) =>
@@ -58,6 +59,7 @@ namespace SoftKitty
                 EntityComponent struck = null;
                 yield return host.Flight(style, start, recipient, victim, distance / Mathf.Max(.1f, FloatValues[1]), FloatValues[2], projectile ?? new SkillProjectile(), source, hit => struck = hit);
                 if (!struck) yield break;
+                cast.trace?.Add(SkillCastTrace.Event.Contact, Uid, struck.mData, cast);
                 victim = struck;
                 recipient = struck.mData;
                 cast.RootState = cast.ForCast(null).RootState;
@@ -82,7 +84,9 @@ namespace SoftKitty
                 if (style == SkillPlayback.Style.Direct && !ConditionsMet(ref cast, (uint)i)) continue;
                 cast.Hash = NextExecutionHash();
                 float amount = GetVariableValue(inputPort[3].connectedNodes[0], cast);
+                float before = cast.trace == null ? 0 : recipient.GetAttributeFloat("chp");
                 SkillPlayback.ApplyIncomingDamage(source, recipient, Mathf.Max(0, amount));
+                cast.TraceLoss(Uid, recipient, before, i + 1);
                 confirmed?.Invoke(recipient, SkillPlayback.Position(recipient, victim));
                 host.Signal(victim, SkillPlayback.Position(recipient, victim), "命中", .18f, new Color(1f,.55f,.22f));
             }

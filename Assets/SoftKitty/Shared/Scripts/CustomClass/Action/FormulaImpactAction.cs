@@ -68,6 +68,7 @@ namespace SoftKitty
                 {
                     if (style != SkillPlayback.Style.Direct && !ConditionsMet(ref runtime)) return;
                     var host = style == SkillPlayback.Style.Direct ? playback : playback.ProjectileHost();
+                    if (style != SkillPlayback.Style.Direct) runtime.BeginTracedFlight(Uid);
                     if (style == SkillPlayback.Style.Projectile)
                     {
                         var flight = runtime;
@@ -107,6 +108,7 @@ namespace SoftKitty
                 EntityComponent struck = null;
                 yield return host.Flight(style, origin, target, victim, distance / Mathf.Max(.1f, FloatValues[1]), FloatValues[2], projectile ?? new SkillProjectile(), source, hit => struck = hit);
                 if (!struck) yield break;
+                cast.trace?.Add(SkillCastTrace.Event.Contact, Uid, struck.mData, cast);
                 victim = struck;
                 target = struck.mData;
                 context.SetInvolvedEntity("Target", target);
@@ -144,7 +146,13 @@ namespace SoftKitty
                     var point = contactPoint ?? SkillPlayback.Position(target, victim);
                     if (style == SkillPlayback.Style.Direct && cast.projectileContact && cast.RootState.RootInstance)
                         point = cast.RootState.RootInstance.transform.position;
-                    CombatDamage.RunImpactGraph(nativeGraph, cast, context, host, point, source, target,
+                    var nativeCast = cast;
+                    if (nativeCast.trace != null && nativeCast.traceOwner == null)
+                    {
+                        nativeCast.traceOwner = Uid;
+                        nativeCast.traceSegment = index;
+                    }
+                    CombatDamage.RunImpactGraph(nativeGraph, nativeCast, context, host, point, source, target,
                         targetKey.With((uint)i).With("mcc"), style != SkillPlayback.Style.Direct);
                     continue;
                 }
@@ -215,9 +223,10 @@ namespace SoftKitty
                     }
                     else if (stage.kind == Kind.ApplyHealth)
                     {
-                        float before = cast.onDamageSettled == null ? 0 : target.GetAttributeFloat("chp");
+                        float before = cast.trace == null && cast.onDamageSettled == null ? 0 : target.GetAttributeFloat("chp");
                         SkillDefence.SpendShield(health, absorbed);
                         SkillPlayback.ApplySettledDamage(source, target, health, value);
+                        cast.TraceLoss(Uid, target, before, index);
                         cast.onDamageSettled?.Invoke(index, target, before - target.GetAttributeFloat("chp"), absorbed);
                         confirmed?.Invoke(target, SkillPlayback.Position(target, victim));
                         host.Signal(victim, SkillPlayback.Position(target, victim), "命中", .18f, new Color(1f,.55f,.22f));

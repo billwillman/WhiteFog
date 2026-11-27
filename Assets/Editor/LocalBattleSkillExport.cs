@@ -22,8 +22,17 @@ public static class LocalBattleSkillExport
     {
         public string key, root, output;
         public List<Node> nodes = new List<Node>();
+        public List<TargetQuery> selections = new List<TargetQuery>();
     }
     [Serializable] private class Port { public string type; public string[] links; }
+    [Serializable] private class TargetQuery
+    {
+        public string node;
+        public bool sceneEnemies;
+        public Criterion[] filters;
+        public string[] priorities;
+    }
+    [Serializable] private class Criterion { public string kind; public float threshold; }
     [Serializable] private class Stage { public string kind, formula; }
     [Serializable] private class Node
     {
@@ -32,7 +41,10 @@ public static class LocalBattleSkillExport
         public int type, count, segment, mask, recipients;
         public float at, interval, duration, value, share, speed, acceleration, open, window, trailSeconds, impactScale;
         public bool follow, followRotation, onTarget, triggerHit;
-        public float hitDelay;
+        public float hitDelay, flightSeconds;
+        public int trajectory, progressMode, halfWaves, castTargetIndex;
+        public Vector3 amplitude;
+        public List<ProjectilePathPoint> pathPoints;
         public Vector3 from, to, size, offset;
         public int[] ints;
         public string[] strings, tags;
@@ -102,6 +114,14 @@ public static class LocalBattleSkillExport
         } finally { if (File.Exists(temp)) File.Delete(temp); }
     }
 
+    private static string ExportRule(TargetRule rule)
+    {
+        if (rule is TargetAlive || rule is TargetUnhit || rule is TargetUnhitDuringCast || rule is TargetInRadius ||
+            rule is TargetLowHealth || rule is TargetListOrder || rule is TargetNearest || rule is TargetLeastHealth ||
+            rule is TargetLeastHealthPercent) return rule.GetType().Name;
+        throw new InvalidDataException("H5 尚未实现选目标规则：" + (rule?.Label ?? "缺失规则"));
+    }
+
     private static string Compile(Package pkg, GraphObject asset)
     {
         string key = Key(asset);
@@ -148,7 +168,10 @@ public static class LocalBattleSkillExport
                         throw new InvalidDataException(x.Uid + " 缺少投射物配置。");
                     var shot = x.projectileSnap.settings.WithOverrides(x);
                     if (shot.path != SkillProjectile.FlightPath.LaunchPositionToTargetPosition)
-                        throw new InvalidDataException("当前本地战场只支持向发射时目标位置直射。");
+                        throw new InvalidDataException("当前 H5 本地战场只支持出手时锁点。");
+                    n.trajectory = (int)shot.trajectory; n.progressMode = (int)shot.progressMode;
+                    n.flightSeconds = shot.flightSeconds; n.castTargetIndex = shot.castTargetIndex;
+                    n.amplitude = shot.sineAmplitude; n.halfWaves = shot.sineHalfWaves; n.pathPoints = shot.pathPoints;
                     n.bone = shot.launchBone; n.targetBone = shot.targetBone;
                     n.fx = shot.prefab ? shot.prefab.name : ""; n.trail = shot.trail ? shot.trail.name : "";
                     n.impact = shot.impact ? shot.impact.name : ""; n.impactScale = shot.impactScale; n.trailSeconds = shot.trailSeconds;
@@ -182,6 +205,13 @@ public static class LocalBattleSkillExport
                         throw new InvalidDataException("未支持的状态配置 " + uid);
                     pkg.statuses.Add(new Status { id = id, key = uid, duration = effect.duration, interval = db.OverTimeEffectInterval,
                         graph = Compile(pkg, (GraphObject)effect.DesignGraph), variables = effect.DynamicVariables });
+                    break;
+                case "SelectTarget":
+                    var rules = x.selectionRules ?? throw new InvalidDataException(x.Uid + " 缺少选目标规则。");
+                    graph.selections.Add(new TargetQuery { node = x.Uid, sceneEnemies = rules.sceneEnemies,
+                        filters = rules.filters.Select(rule => new Criterion { kind = ExportRule(rule),
+                            threshold = rule is TargetInRadius radius ? radius.radius : rule is TargetLowHealth hp ? hp.percent : 0 }).ToArray(),
+                        priorities = rules.priorities.Select(ExportRule).ToArray() });
                     break;
                 case "RedirectProjectile": case "AttributeChange": case "Event": break;
                 default: throw new InvalidDataException(asset.name + " 包含未实现的节点 " + n.op + " " + x.Uid);

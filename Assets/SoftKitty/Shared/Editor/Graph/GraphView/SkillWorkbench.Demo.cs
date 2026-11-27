@@ -173,7 +173,10 @@ namespace SoftKitty
 
         private List<(int index, string target, float loss, float shield)> measuredHits;
         private string measuredCaster;
-
+        [SerializeField] private GraphObject timelineTrialSkill;
+        [SerializeField] private SkillCastTrace timelineTrial;
+        private string selectedTrialMark;
+        private int paintedTrialMarks;
         [SerializeField] private bool previewTargetPair = true;
         private EntityComponent quickSecondTarget;
         [SerializeField] private List<EntityComponent> sceneExtraTargets = new List<EntityComponent>();
@@ -192,8 +195,8 @@ namespace SoftKitty
                 bool matches = false;
                 if (graph is OriginalSkillGraph original)
                 {
-                    previewDamageReport = (SkillDamageReport)EditorGUILayout.ObjectField("对照战报（可选）", previewDamageReport,
-                        typeof(SkillDamageReport), false);
+                    previewDamageReport = (SkillDamageReport)SkillFieldHelp.ObjectField("对照战报（可选）", previewDamageReport,
+                        typeof(SkillDamageReport), false, "选择与当前技能及施放者匹配的战报，按逻辑段对照本次实算扣血、耗盾和战报记录。");
                     matches = previewDamageReport &&
                         previewDamageReport.skillId == original.sourceId && (measuredCaster == null || measuredCaster == previewDamageReport.casterId);
                     if (previewDamageReport && !matches) EditorGUILayout.HelpBox("所选战报与当前技能或施放者不符，试放继续使用技能公式。", MessageType.Warning);
@@ -218,8 +221,7 @@ namespace SoftKitty
 
         private void DrawPreviewDamageInput()
         {
-            previewHitDamage = Mathf.Max(0, EditorGUILayout.FloatField(new GUIContent("每段预览来伤",
-                "仅用于工作台试放。投射物命中口有连线时执行连线；设为 0 可关闭预览回调的扣血。"), previewHitDamage));
+            previewHitDamage = Mathf.Max(0, SkillFieldHelp.FloatField("每段预览来伤", previewHitDamage, "仅用于工作台试放。投射物命中口有连线时执行连线；设为 0 可关闭预览回调的扣血。"));
         }
         [SerializeField] private int previewDirection;
         [SerializeField] private int previewMode;
@@ -281,19 +283,18 @@ namespace SoftKitty
 
             }
             else EditorGUILayout.LabelField("来源", "《宗师之上》" + ((OriginalSkillGraph)graph).sourceVersion + " · " + ((OriginalSkillGraph)graph).sourceId);
-            if (!(graph is OriginalSkillGraph)) previewDirection = EditorGUILayout.Popup("本次施放方向", previewDirection,
-                new[] { graph.previewAsOpponent ? "按技能默认（怪物 → 主角）" : "按技能默认（主角 → 怪物）", "主角 → 怪物", "怪物 → 主角" });
+            if (!(graph is OriginalSkillGraph)) previewDirection = SkillFieldHelp.Popup("本次施放方向", previewDirection,
+                new[] { graph.previewAsOpponent ? "按技能默认（怪物 → 主角）" : "按技能默认（主角 → 怪物）", "主角 → 怪物", "怪物 → 主角" }, "在快速试放中指定谁出招、谁受击。也可以让试放沿用技能的默认施放方。");
             bool reverse = PreviewAsOpponent;
             DrawTrialRole(false);
             DrawTrialRole(true);
             EditorGUILayout.LabelField("施放者 → 目标", reverse ? "敌方 → 友方" : "友方 → 敌方");
             if (!reverse && graph.castTargetLimit > 1)
                 previewTargetPair = EditorGUILayout.Toggle("试放目标 A、B", previewTargetPair);
-            demoRange = EditorGUILayout.Slider("双方距离（米）", demoRange, 2, 20);
-            if (UsesSkillLevel(graph)) demoSkillLevel = Mathf.Max(1, EditorGUILayout.DelayedIntField("试放技能等级", demoSkillLevel));
+            demoRange = SkillFieldHelp.Slider("双方距离（米）", demoRange, 2, 20, "开始这次快速试放时，施法者与目标之间的间距。改变间距会影响飞行时间和接触结果。");
+            if (UsesSkillLevel(graph)) demoSkillLevel = Mathf.Max(1, SkillFieldHelp.DelayedIntField("试放技能等级", demoSkillLevel, "选择这次试放传给技能图的等级。绑定等级表的技能会读取该等级对应的数值。"));
             DrawPreviewHitDamage();
-            showGamePreview = EditorGUILayout.ToggleLeft(new GUIContent("同时在 Game 视图预览",
-                "快速试放只运行独立角色预览场景。勾选后同步显示竖屏战斗画面。"), showGamePreview);
+            showGamePreview = SkillFieldHelp.ToggleLeft("同时在 Game 视图预览", showGamePreview, "快速试放只运行独立角色预览场景。勾选后同步显示竖屏战斗画面。");
             bool inStage = InPreviewStage;
             if (Application.isPlaying && !inStage)
             {
@@ -314,10 +315,6 @@ namespace SoftKitty
                     EditorGUILayout.LabelField("表现回放", "原作动作、施放与命中特效");
                 if (lastCaster && lastReceiver)
                 {
-                    EditorGUILayout.LabelField("施法输入", (lastCaster.mData.CanMoveByInput ? "移动已放行" : "移动受限") +
-                        "　·　" + (lastCaster.mData.CanStartSkill ? "接招已放行" : "接招受限"));
-                    if (graph.useInputTiming && GUILayout.Button("用当前角色接放此技能"))
-                        CastPreviewActors(lastCaster, lastReceiver, out demoResult);
                     EditorGUILayout.LabelField("施放者生命", PreviewActorName(lastCaster) + "  " + lastCaster.GetAttributeFloat("chp").ToString("0.##"));
                     EditorGUILayout.LabelField("目标生命", PreviewActorName(lastReceiver) + "  " + healthBefore.ToString("0.##") + " → " + lastReceiver.GetAttributeFloat("chp").ToString("0.##"));
                     EditorGUILayout.LabelField("施放者状态", BuffReadout(lastCaster), EditorStyles.wordWrappedLabel);
@@ -362,6 +359,8 @@ namespace SoftKitty
             demoQueued = true;
             trialOpening = null;
             measuredHits = null;
+            timelineTrialSkill = null;
+            selectedTrialMark = null;
             lastCaster = lastReceiver = null;
             demoResult = "正在准备本次试放";
             if (!Application.isPlaying) EditorApplication.isPlaying = true;
@@ -462,6 +461,11 @@ namespace SoftKitty
                 }
                 Repaint();
             }
+            if (page == 0 && timelineTrialSkill == graph && timelineTrial != null && paintedTrialMarks != timelineTrial.Marks.Count)
+            {
+                paintedTrialMarks = timelineTrial.Marks.Count;
+                Repaint();
+            }
             if (page == PreviewPage && EditorApplication.timeSinceStartup >= nextReadout)
             { nextReadout = EditorApplication.timeSinceStartup + .05; Repaint(); }
         }
@@ -475,8 +479,15 @@ namespace SoftKitty
                 ? (quickSecondTarget ? new[] { quickSecondTarget } : System.Array.Empty<EntityComponent>())
                 : sceneExtraTargets.Take(Mathf.Max(0, graph.castTargetLimit - 1)).Where(actor => actor && actor.gameObject.scene == caster.gameObject.scene).ToArray();
             foreach (var actor in extraTargets) SkillDamageNumbers.Observe(actor);
-            CastActors(graph, caster, receiver, demoSkillLevel, out result, damage, previewHitDamage,
-                (index, target, loss, shield) => hits.Add((index, target.CombatRandomId, loss, shield)), extraTargets.Select(actor => actor.mData).ToArray());
+            var trace = new SkillCastTrace();
+            selectedTrialMark = null;
+            timelineTrialSkill = null;
+            if (CastActors(graph, caster, receiver, demoSkillLevel, out result, damage, previewHitDamage,
+                (index, target, loss, shield) => hits.Add((index, target.CombatRandomId, loss, shield)), extraTargets.Select(actor => actor.mData).ToArray(), trace))
+            {
+                timelineTrial = trace;
+                timelineTrialSkill = graph;
+            }
         }
 
         private static bool ValidatePreviewLevel(GraphObject skill, int level, out string info)
@@ -515,7 +526,7 @@ namespace SoftKitty
             return CastActors(skill, caster, receiver, skillLevel, out info);
         }
 
-        private static bool CastActors(GraphObject skill, EntityComponent caster, EntityComponent receiver, int skillLevel, out string info, CombatDamage damage = null, float previewHitDamage = 10f, System.Action<int, Entity, float, float> onSettled = null, IReadOnlyList<Entity> extraTargets = null)
+        private static bool CastActors(GraphObject skill, EntityComponent caster, EntityComponent receiver, int skillLevel, out string info, CombatDamage damage = null, float previewHitDamage = 10f, System.Action<int, Entity, float, float> onSettled = null, IReadOnlyList<Entity> extraTargets = null, SkillCastTrace trace = null)
         {
             if (!caster || !receiver || !caster.isActiveAndEnabled || !receiver.isActiveAndEnabled ||
                 !caster.AvailableForInteraction || !receiver.AvailableForInteraction)
@@ -555,13 +566,13 @@ namespace SoftKitty
                 var playback = SkillPlayback.On(damage);
                 var previousImpact = playback.OriginalProjectileImpact;
                 playback.OriginalProjectileImpact = (source, victim) => SkillPlayback.ApplyIncomingDamage(source, victim, previewHitDamage);
-                try { started = damage.TryCastSkill(caster.mData, receiver.mData, onSettled, extraTargets); }
+                try { started = damage.TryCastSkill(caster.mData, receiver.mData, onSettled, extraTargets, trace); }
                 finally { playback.OriginalProjectileImpact = previousImpact; }
             }
-            else started = damage.TryCastSkill(caster.mData, receiver.mData, onSettled, extraTargets);
+            else started = damage.TryCastSkill(caster.mData, receiver.mData, onSettled, extraTargets, trace);
             if (!started)
             {
-                info = caster.mData.CanStartSkill ? "本次试放未满足施法条件。" : "施放者尚不能接下一招。";
+                info = "本次试放未满足施法条件。";
                 return false;
             }
             var description = original ? "原作表现 " + original.sourceId

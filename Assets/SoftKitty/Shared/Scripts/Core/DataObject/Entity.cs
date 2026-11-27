@@ -354,29 +354,6 @@ namespace SoftKitty
         {
             if (AttributeChangeCallback != null) AttributeChangeCallback(_uid, _value, _dealer);
         }
-        public const string MoveInputLock = "skill_move_lock";
-        public const string CastInputLock = "skill_cast_lock";
-        private const string CastTimingSource = "MCC.SkillInputTiming";
-        public bool CanMoveByInput => AvailableForInteraction && GetAttributeFloat(MoveInputLock) <= 0f;
-        public bool CanStartSkill => AvailableForInteraction && GetAttributeFloat(CastInputLock) <= 0f;
-
-        internal void ApplySkillInputTiming(GraphObject skill)
-        {
-            if (!skill.useInputTiming) return;
-            if (skill.moveAfterSeconds > 0f)
-                AddTempAttributes(MoveInputLock, 1f, skill.moveAfterSeconds, BasicMathFunction.Add, CastTimingSource);
-            if (skill.nextSkillAfterSeconds > 0f)
-                AddTempAttributes(CastInputLock, 1f, skill.nextSkillAfterSeconds, BasicMathFunction.Add, CastTimingSource);
-        }
-
-        private void RemoveCastTiming(string attribute)
-        {
-            if (TempAttributes.Count == 0) return;
-            int id = GameManager.AttributeData.GetId(attribute);
-            if (TempAttributes.TryGetValue(id, out var modifiers) && modifiers.Remove(CastTimingSource) && modifiers.Count == 0)
-                TempAttributes.Remove(id);
-        }
-
         public const string InterruptCastEvent = "InterruptCast";
         // Each pending release remembers the caster's revision at the start of its cast.
         public uint CastInterruptionVersion { get; private set; }
@@ -388,12 +365,7 @@ namespace SoftKitty
 
         public void OnEntityEvent(string _eventName, float _floatArg, Entity _entityArg, bool _boolArg)
         {
-            if (_eventName == InterruptCastEvent)
-            {
-                unchecked { CastInterruptionVersion++; }
-                RemoveCastTiming(MoveInputLock);
-                RemoveCastTiming(CastInputLock);
-            }
+            if (_eventName == InterruptCastEvent) unchecked { CastInterruptionVersion++; }
             if (EntityEventCallback != null) EntityEventCallback(_eventName, _floatArg, _entityArg, _boolArg);
         }
         public void OnOverTimeChange(string _uid, OverTimeEffectData _data, OverTimeEffectEventType _eventType)

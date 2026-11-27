@@ -45,6 +45,8 @@ namespace SoftKitty{
                 AttributeData _attValue = entity(_runtime).GetAttributeData(_id);
                 if (_attValue != null)
                 {
+                    var tracedTarget = _runtime.trace != null && uid == "chp" ? entity(_runtime) : null;
+                    float before = tracedTarget == null ? 0 : tracedTarget.GetAttributeFloat("chp");
                     switch (operation)
                     {
                         case operations.Override:
@@ -72,6 +74,7 @@ namespace SoftKitty{
                                    _id.ToString() + ", " + (entity(_runtime).GetAttributeFloat(_id) - value(_runtime)).ToString() + " )");
                             break;
                     }
+                    if (tracedTarget != null) _runtime.TraceLoss(Uid, tracedTarget, before);
                 }
                 else if (SGD_Settings.Instance.DebugLevel >= 1)
                 {

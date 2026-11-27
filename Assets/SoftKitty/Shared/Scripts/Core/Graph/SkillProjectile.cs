@@ -10,6 +10,40 @@ namespace SoftKitty
     public sealed class SkillProjectile
     {
         public enum FlightPath { LaunchPositionToTargetPosition, FollowTarget }
+        public enum TrajectoryType { Straight, Sine, Waypoints }
+        public enum ProgressMode { Speed, Duration }
+        public TrajectoryType trajectory;
+        public ProgressMode progressMode;
+        public float flightSeconds = .5f;
+        public Vector3 sineAmplitude = Vector3.up;
+        public int sineHalfWaves = 1;
+        public List<ProjectilePathPoint> pathPoints = new List<ProjectilePathPoint>();
+        // Zero uses the entity connected to the action's target input.
+        public int castTargetIndex;
+
+        public IProjectileTrajectory CreateTrajectory()
+        {
+            switch (trajectory)
+            {
+                case TrajectoryType.Sine: return new SineProjectileTrajectory(sineAmplitude, sineHalfWaves);
+                case TrajectoryType.Waypoints: return new WaypointProjectileTrajectory(pathPoints);
+                default: return StraightProjectileTrajectory.Instance;
+            }
+        }
+
+        // End sweeps at authored waypoints even when a fast shot finishes within a single frame.
+        internal float NextSampleProgress(float current)
+        {
+            if (trajectory == TrajectoryType.Straight) return 1;
+            if (trajectory == TrajectoryType.Sine)
+                return Mathf.Min(1, current + .125f / Mathf.Clamp(sineHalfWaves, 1, 16));
+            float next = Mathf.Min(1, current + .0625f);
+            if (pathPoints != null)
+                foreach (var point in pathPoints)
+                    if (point.progress > current && point.progress < next) next = point.progress;
+            return next;
+        }
+
         public enum HitRecipients { DesignatedTarget, FirstMatchingEntity }
         public HitRecipients hitRecipients;
         public List<string> hitTags = new List<string>();
@@ -156,6 +190,13 @@ namespace SoftKitty
             HitLayers = 1 << 17,
             Impact = 1 << 18,
             ImpactScale = 1 << 19,
+            Trajectory = 1 << 20,
+            ProgressMode = 1 << 21,
+            FlightSeconds = 1 << 22,
+            SineAmplitude = 1 << 23,
+            SineHalfWaves = 1 << 24,
+            PathPoints = 1 << 25,
+            CastTargetIndex = 1 << 26,
         }
 
         public SkillProjectile WithOverrides(Action node)
@@ -169,6 +210,13 @@ namespace SoftKitty
 
         internal void CopyFieldsFrom(SkillProjectile source, Field fields)
         {
+            if ((fields & Field.Trajectory) != 0) trajectory = source.trajectory;
+            if ((fields & Field.ProgressMode) != 0) progressMode = source.progressMode;
+            if ((fields & Field.FlightSeconds) != 0) flightSeconds = source.flightSeconds;
+            if ((fields & Field.SineAmplitude) != 0) sineAmplitude = source.sineAmplitude;
+            if ((fields & Field.SineHalfWaves) != 0) sineHalfWaves = source.sineHalfWaves;
+            if ((fields & Field.CastTargetIndex) != 0) castTargetIndex = source.castTargetIndex;
+            if ((fields & Field.PathPoints) != 0) pathPoints = source.CopyPathPoints();
             if ((fields & Field.Prefab) != 0) prefab = source.prefab;
             if ((fields & Field.Trail) != 0) trail = source.trail;
             if ((fields & Field.TrailSeconds) != 0) trailSeconds = source.trailSeconds;
@@ -195,9 +243,13 @@ namespace SoftKitty
             (node.projectileOverrideFields & Field.Speed) != 0 && node.projectileOverrides != null
                 ? node.projectileOverrides.speed : node.projectileSpeedOverride > 0 ? node.projectileSpeedOverride : speed;
 
+        private List<ProjectilePathPoint> CopyPathPoints() => pathPoints == null
+            ? new List<ProjectilePathPoint>() : new List<ProjectilePathPoint>(pathPoints);
+
         public SkillProjectile Copy()
         {
             var copy = (SkillProjectile)MemberwiseClone();
+            copy.pathPoints = CopyPathPoints();
             copy.hitTags = hitTags == null ? new List<string>() : new List<string>(hitTags);
             return copy;
         }

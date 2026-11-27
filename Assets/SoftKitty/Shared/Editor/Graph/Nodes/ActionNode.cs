@@ -16,7 +16,7 @@ namespace SoftKitty
         public ActionNode(Action _action)
         {
             m_data = _action;
-            if (SkillProjectile.IsLaunch(_action) || SkillProjectile.IsImpactLaunch(_action)) _action.EnsureArrivalPort();
+            if (_action.ClassName == "RedirectProjectile" || SkillProjectile.IsLaunch(_action) || SkillProjectile.IsImpactLaunch(_action)) _action.EnsureArrivalPort();
         }
        
 
@@ -153,12 +153,12 @@ namespace SoftKitty
             if (input.Count > 0)
             {
                 bool onlyHits = parents.Length > 0 && sources.All(s => SkillWorkbench.IsHitSource(s, mainDataObject));
-                input[0].portName = onlyHits ? "命中输入" : GraphEditorText.Localize(m_data.inputPort[0].Name);
+                input[0].portName = onlyHits ? (parents.Any(p => p.ClassName == "SelectTarget") ? "事件输入" : "命中输入") : GraphEditorText.Localize(m_data.inputPort[0].Name);
                 input[0].portColor = parents.Length > 0 ? color : portColors[m_data.inputPort[0].Type];
             }
             if (output.Count > 0)
             {
-                output[0].portName = m_data.EmitsSettledHit ? "结算命中后执行" : emits ? "命中后执行" : "命中未启用";
+                output[0].portName = emits ? SkillWorkbench.HitEventName(m_data) : "命中未启用";
                 output[0].portColor = emits ? color : portColors[m_data.outputPort[0].Type];
             }
             if (parents.Length == 0 && (!emits || m_data.EmitsSettledHit && m_data.outputPort.FirstOrDefault()?.uid.Count == 0)) return;
@@ -174,7 +174,7 @@ namespace SoftKitty
                 panel.Add(button);
             }
             foreach (var parent in parents)
-                Link(parent.Uid, "来自 " + SkillWorkbench.HitSourceLabel(parent));
+                Link(parent.Uid, "触发事件  " + SkillWorkbench.HitEventSource(parent));
             if (m_data.ClassName == "FormulaImpact") panel.Add(new Label(SkillWorkbench.CalculationSource(m_data)));
             if (emits)
             {
@@ -190,7 +190,7 @@ namespace SoftKitty
                     string target = child is ActionNode a ? SkillWorkbench.HitActionLabel(a.data) : child.title + " " + uid;
                     if (child is ActionNode impact && impact.data.ClassName == "FormulaImpact")
                         target += "\n" + SkillWorkbench.CalculationSource(impact.data);
-                    Link(uid, "命中 → " + target);
+                    Link(uid, SkillWorkbench.HitEventName(m_data) + " → " + target);
                 }
             }
             extensionContainer.Insert(0, panel);
@@ -207,7 +207,7 @@ namespace SoftKitty
                 extensionContainer.Add(help);
                 return;
             }
-            if (m_data.ClassName == "Projectile" || m_data.ClassName == "OriginalSkillVisual" || m_data.ClassName == "Animation")
+            if (m_data.ClassName == "SelectTarget" || m_data.ClassName == "Projectile" || m_data.ClassName == "OriginalSkillVisual" || m_data.ClassName == "Animation")
             {
                 var edit = new Button(() => SkillWorkbench.OpenAction(mainDataObject, m_data.Uid))
                     { name = "formulaLinks", text = "编辑动作属性" };

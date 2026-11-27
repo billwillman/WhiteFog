@@ -6,7 +6,7 @@ namespace SoftKitty
     internal static class GraphEditorText
     {
         internal const string HitModeLabel = "命中方式";
-        internal const string HitModeHelp = "直接结算按当前输入执行。「产生投射物」使用所选的投射物配置，接触到有效受击体后进入结算。接在独立投射物命中口时，可直接结算。";
+        internal const string HitModeHelp = "选择本节点何时对目标结算伤害。接在投射物的接触事件下，选「直接结算」会对刚碰到的目标结算；选「产生投射物」会另发一枚，等新投射物接触目标再结算。要让原投射物继续飞，可在原投射物的接触事件中另加「改变当前投射物目标」。";
         internal static readonly string[] HitModeOptions = { "直接结算", "产生投射物" };
 
         internal static bool IsHitMode(CustomNode node, NodeInterfaceElement field) =>
@@ -28,6 +28,8 @@ namespace SoftKitty
             { "SkillSignal", "施法提示" },
             { "Projectile", "产生投射物" },
             { "RedirectProjectile", "改变当前投射物目标" },
+            { "SelectTarget", "选择目标" },
+            { "SelectedTarget", "上游选出的目标" },
             { "NextCastTarget", "投射物名单中的下一目标" },
             { "发射飞剑", "产生投射物" },
             { "原作表现事件", "表现动作" },
