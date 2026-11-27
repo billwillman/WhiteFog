@@ -33,7 +33,7 @@ namespace SoftKitty
         private string message = "";
         private static readonly string[] Modes = { "单次", "执行多次", "持续执行" };
         private const int PreviewPage = 3;
-        private static readonly string[] Pages = { "技能编辑", "Buff 状态", "公式与数值", "Preview" };
+        private static readonly string[] Pages = { "技能编辑", "Buff 状态", "公式与数值", "Preview", "属性定义" };
 
         [MenuItem("Window/Soft Kitty/技能工作台")]
         private static void FromMenu() => Open(Selection.activeObject as GraphObject);
@@ -128,7 +128,8 @@ namespace SoftKitty
             if (page != 0)
             {
                 pageScroll = EditorGUILayout.BeginScrollView(pageScroll);
-                if (page == 1) DrawBuffPage();
+                if (page == 4) DrawAttributePage();
+                else if (page == 1) DrawBuffPage();
                 else DrawFormulaPage();
                 EditorGUILayout.EndScrollView();
                 return;
@@ -805,6 +806,9 @@ namespace SoftKitty
                         break;
                     case NodeInterfaceElementType.String_Variable:
                         EditValue(action.StringValues, i, "", v => EditorGUILayout.DelayedTextField(label, v));
+                        if (i == 0 && SkillAttributeEdits.UsesAttributeField(action) && GameManager.AttributeData &&
+                            GameManager.AttributeData.IndexOfAttributes(action.StringValues.ElementAtOrDefault(i)) < 0)
+                            EditorGUILayout.HelpBox("缺少属性 " + action.StringValues.ElementAtOrDefault(i), MessageType.Error);
                         if (field.Uid == "path")
                         {
                             if (action.ClassName == "Instantiate") DrawResourcesAsset<GameObject>(action, i, "Prefab");

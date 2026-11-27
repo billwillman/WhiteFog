@@ -49,6 +49,22 @@ namespace SoftKitty
             }
             runtimeInited = true;
         }
+        // GetId allocates missing keys in edit mode. Definition checks must not change the map.
+        public static void RequireDefinition(string uid, string location)
+        {
+            var db = GameManager.AttributeData;
+            if (db && !string.IsNullOrEmpty(uid))
+            {
+                if (SGD_Settings.isRuntime)
+                {
+                    if (!runtimeInited) db.Init();
+                    if (db.AttributeDic.TryGetValue(db.IdManager.GetId(uid), out var entry) && entry.uid == uid) return;
+                }
+                else if (db.IndexOfAttributes(uid) >= 0) return;
+            }
+            throw new System.InvalidOperationException(location + " 缺少属性 " + uid);
+        }
+
         public int IndexOfAttributes(string _uid)
         {
             for (int i = 0; i < AttributeList.Count; i++)

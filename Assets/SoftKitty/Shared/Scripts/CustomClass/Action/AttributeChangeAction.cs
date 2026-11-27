@@ -35,7 +35,11 @@ namespace SoftKitty{
         }
         private int _id = -1;
         public override void Execute(GraphRuntimeState _runtime){ //Execute this action once
-            if (_id == -1) _id = id;
+            if (_id == -1)
+            {
+                AttributeObject.RequireDefinition(uid, Uid);
+                _id = id;
+            }
             if (entity(_runtime) != null)
             {
                 AttributeData _attValue = entity(_runtime).GetAttributeData(_id);

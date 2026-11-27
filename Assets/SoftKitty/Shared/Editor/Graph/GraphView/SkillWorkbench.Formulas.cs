@@ -356,6 +356,7 @@ namespace SoftKitty
                 NodeBase copy;
                 if (source is VariableClass variable)
                 {
+                    if (variable.Type == VariableType.Attribute) AttributeObject.RequireDefinition(variable.AttributeKey, variable.Uid);
                     float value = variable.Constant;
                     if (variable.Type != VariableType.Constant && !samples.TryGetValue(InputKey(root, variable), out value))
                         throw new InvalidOperationException("缺少试算输入 " + InputKey(root, variable));

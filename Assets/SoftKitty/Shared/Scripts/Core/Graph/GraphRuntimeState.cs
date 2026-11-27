@@ -115,8 +115,9 @@ namespace SoftKitty
 
         public float ReadAttribute(Entity entity, NodeBase selector, string key)
         {
-            return CasterSnapshot != null && CasterSnapshot.IsSource(entity, selector)
-                ? CasterSnapshot.GetAttribute(key) : entity.GetAttributeFloat(key);
+            if (CasterSnapshot != null && CasterSnapshot.IsSource(entity, selector)) return CasterSnapshot.GetAttribute(key);
+            AttributeObject.RequireDefinition(key, selector?.Uid ?? "属性读取");
+            return entity.GetAttributeFloat(key);
         }
 
         public int Hash;

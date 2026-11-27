@@ -112,6 +112,7 @@ public static class LocalBattleSkillExport
         Add(graph, root, "Root");
         foreach (var x in root.Entities) Add(graph, x, "Entity").type = (int)x.Type;
         foreach (var x in root.Variables) {
+            if (x.Type == VariableType.Attribute) AttributeObject.RequireDefinition(x.AttributeKey, asset.name + " · " + x.Uid);
             var n = Add(graph, x, "Variable"); n.type = (int)x.Type; n.value = x.Constant;
             n.key = x.Type == VariableType.Attribute ? x.AttributeKey : x.VariableUid;
             if (x.Type == VariableType.Random) throw new InvalidDataException("暂未导出随机变量 " + x.Uid);
@@ -124,6 +125,8 @@ public static class LocalBattleSkillExport
         }
         if (root.ConditionGroups.Count + root.Branchs.Count > 0) throw new InvalidDataException("本地运行时尚未支持该图的条件组或分支。");
         foreach (var x in root.Actions) {
+            if (SkillAttributeEdits.UsesAttributeField(x))
+                AttributeObject.RequireDefinition(x.StringValues.FirstOrDefault(), asset.name + " · " + x.Uid);
             var n = Add(graph, x, x.ClassName);
             n.at = x.WaitTime; n.type = (int)x.Type; n.count = x.Count; n.interval = x.Interval; n.duration = x.KeepTime;
             n.ints = x.IntValues.ToArray(); n.strings = x.StringValues.ToArray();

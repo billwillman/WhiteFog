@@ -46,7 +46,11 @@ namespace SoftKitty
                 return;
             }
             bool snapshotInput = _runtime.CasterSnapshot?.IsSource(owner, selector) == true;
-            if (!snapshotInput && _id == -1) _id = GameManager.AttributeData.GetId(uid);
+            if (!snapshotInput && _id == -1)
+            {
+                AttributeObject.RequireDefinition(uid, Uid);
+                _id = GameManager.AttributeData.GetId(uid);
+            }
             if (!snapshotInput && owner.GetAttributeData(_id) == null)
             {
                 if (SGD_Settings.Instance.DebugLevel >= 1) Debug.LogError("<AttributeValueHandler> [Node:" + Uid + "] failed to Update(), because Attribute<" + uid + "> can't be found.");

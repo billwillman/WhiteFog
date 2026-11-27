@@ -79,7 +79,9 @@ namespace SoftKitty
                 {
                     var owner = (EntityClass)variable.inputPort[0].connectedNodes[0];
                     string key = AttributeInputKey(owner, variable.AttributeKey);
-                    if (sampleInputs == null || !sampleInputs.TryGetValue(key, out value))
+                    if (sampleInputs != null && sampleInputs.TryGetValue(key, out value))
+                        AttributeObject.RequireDefinition(variable.AttributeKey, variable.Uid);
+                    else
                     {
                         var entity = owner.GetEntity(state);
                         if (entity == null) throw new InvalidOperationException("无法读取实体属性 " + key);
