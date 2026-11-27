@@ -127,6 +127,7 @@ namespace SoftKitty
             var handlers = (HandlerRuntimeState[])state.HandlerStates.Clone();
             return (struck, point, contact) =>
             {
+                MovementSpeedBuff.Observe(struck);
                 var arrival = flightState.ForCast(null);
                 arrival.HandlerStates = (HandlerRuntimeState[])handlers.Clone();
                 arrival.projectileContact = true;

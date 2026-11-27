@@ -117,6 +117,24 @@ MonoBehaviour:
       value: 0
     mCustomField: []
     fold: 0
+  - uid: zszs.slow
+    name: 减速
+    chineseDescription: 减速（每层移速倍率）
+    category: Debuff
+    permanent: 0
+    duration: 3
+    interruptCastOnEnter: 0
+    layered: 0
+    maxLayer: 3
+    canBeExtended: 0
+    canBeRefreshed: 1
+    canBeDispelled: 1
+    DesignGraph: {fileID: 11400000, guid: e8ab0589da1e44ea997818ab4d438a51, type: 2}
+    DynamicVariables:
+    - uid: 每层移速倍率
+      value: 0.8
+    mCustomField: []
+    fold: 0
   OverTimeEffectInterval: 1
   SearchText: 
   SearchType: 0
@@ -131,4 +149,6 @@ MonoBehaviour:
       key: frost
     - id: 3
       key: berserker
+    - id: 5
+      key: zszs.slow
     uiFold: 0

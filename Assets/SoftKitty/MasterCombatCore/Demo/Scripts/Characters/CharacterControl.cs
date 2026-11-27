@@ -178,6 +178,7 @@ namespace SoftKitty.MasterCombatCore.Demo
             HealthBarManager.CreateBar(EntityInstance);
             EntityInstance.RegisterEntityEventCallback(OnEntityEvent);
             EntityInstance.RegisterOverTimeChangeCallback(OnOverTimeChange);
+            MovementSpeedBuff.Observe(EntityInstance.mData);
         }
         
         public virtual void FixedUpdate()
