@@ -18,6 +18,9 @@ namespace SoftKitty
                 if (GUILayout.Button("配置选择目标")) Change(() => action.selectionRules = new SkillTargetSelection());
                 return;
             }
+            int limit = Mathf.Max(1, SkillFieldHelp.DelayedIntField("最多获取目标数", rules.Limit,
+                "候选目标须满足全部筛选条件。按排序顺序最多取这么多个不同实体，对每个实体执行一次下游动作。「上游选出的目标」读取当前这一人。"));
+            if (limit != rules.Limit) Change(() => rules.maxTargets = limit);
             var pool = SkillFieldHelp.Popup("候选范围", rules.sceneEnemies ? 1 : 0,
                 new[] { "本次施法目标名单", "当前场景敌方实体" },
                 "当前场景用施法者的 friendly / hostile 标签识别对方。投射物接触后距离从接触点计算，其他情况从施法者计算。");

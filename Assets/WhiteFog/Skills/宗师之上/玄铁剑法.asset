@@ -165,6 +165,12 @@ MonoBehaviour:
         rid: 6312275972608229389
       projectile:
         rid: -2
+      projectileSnap: {fileID: 0}
+      requiresProjectileSnap: 0
+      projectileSpeedOverride: 0
+      projectileOverrideFields: 0
+      projectileOverrides:
+        rid: -2
       visualEffect:
         rid: -2
     - mType: 0
@@ -232,7 +238,7 @@ MonoBehaviour:
           EnumOptions: []
         - Uid: target
           Label: "\u8868\u73B0\u76EE\u6807"
-          ToolTips: "\u98DE\u5251\u53D1\u5C04\u65F6\u8BFB\u53D6\u76EE\u6807\u4F4D\u7F6E"
+          ToolTips: "\u4EA7\u751F\u6295\u5C04\u7269\u65F6\u8BFB\u53D6\u7784\u51C6\u76EE\u6807\u4F4D\u7F6E"
           Type: 8
           Index: 1
           VisibleBind: 
@@ -247,7 +253,7 @@ MonoBehaviour:
           - "\u64AD\u653E\u539F\u4F5C\u89D2\u8272\u52A8\u4F5C"
           - "\u65BD\u6CD5\u7279\u6548"
           - "\u53F3\u624B\u6B66\u5668"
-          - "\u53D1\u5C04\u98DE\u5251"
+          - "\u4EA7\u751F\u6295\u5C04\u7269"
           - "\u6536\u62DB\u6807\u8BB0"
           - "\u4F4D\u79FB\u4E8B\u4EF6\u6807\u8BB0"
           - "\u539F\u4F5C\u8F68\u9053\u7279\u6548\u6216\u547D\u4E2D"
@@ -269,6 +275,12 @@ MonoBehaviour:
       motion:
         rid: -2
       projectile:
+        rid: -2
+      projectileSnap: {fileID: 0}
+      requiresProjectileSnap: 0
+      projectileSpeedOverride: 0
+      projectileOverrideFields: 0
+      projectileOverrides:
         rid: -2
       visualEffect:
         rid: 6312275972608229390
@@ -337,7 +349,7 @@ MonoBehaviour:
           EnumOptions: []
         - Uid: target
           Label: "\u8868\u73B0\u76EE\u6807"
-          ToolTips: "\u98DE\u5251\u53D1\u5C04\u65F6\u8BFB\u53D6\u76EE\u6807\u4F4D\u7F6E"
+          ToolTips: "\u4EA7\u751F\u6295\u5C04\u7269\u65F6\u8BFB\u53D6\u7784\u51C6\u76EE\u6807\u4F4D\u7F6E"
           Type: 8
           Index: 1
           VisibleBind: 
@@ -352,7 +364,7 @@ MonoBehaviour:
           - "\u64AD\u653E\u539F\u4F5C\u89D2\u8272\u52A8\u4F5C"
           - "\u65BD\u6CD5\u7279\u6548"
           - "\u53F3\u624B\u6B66\u5668"
-          - "\u53D1\u5C04\u98DE\u5251"
+          - "\u4EA7\u751F\u6295\u5C04\u7269"
           - "\u6536\u62DB\u6807\u8BB0"
           - "\u4F4D\u79FB\u4E8B\u4EF6\u6807\u8BB0"
           - "\u539F\u4F5C\u8F68\u9053\u7279\u6548\u6216\u547D\u4E2D"
@@ -374,6 +386,12 @@ MonoBehaviour:
       motion:
         rid: -2
       projectile:
+        rid: -2
+      projectileSnap: {fileID: 0}
+      requiresProjectileSnap: 0
+      projectileSpeedOverride: 0
+      projectileOverrideFields: 0
+      projectileOverrides:
         rid: -2
       visualEffect:
         rid: 6312275972608229391
@@ -468,6 +486,10 @@ MonoBehaviour:
         rid: -2
       projectileSnap: {fileID: 11400000, guid: 2a2d3d37f92e4b4fad56e514d31ed365, type: 2}
       requiresProjectileSnap: 1
+      projectileSpeedOverride: 0
+      projectileOverrideFields: 0
+      projectileOverrides:
+        rid: -2
       visualEffect:
         rid: -2
     - mType: 0
@@ -521,7 +543,16 @@ MonoBehaviour:
         connectedNodes: []
         allowMutipleConnection: 1
         createByDefault: 1
-      outputPort: []
+      outputPort:
+      - Name: "\u547D\u4E2D\u76EE\u6807"
+        Type: BranchOutAction
+        acceptedTypes:
+        - ActionIn
+        - BranchInAction
+        uid: []
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 1
       minimized: 0
       InstanceCache: 0
       mRoot:
@@ -561,16 +592,14 @@ MonoBehaviour:
           VisibleBind: 
           EnumOptions: []
         - Uid: style
-          Label: "\u6295\u5C04\u65B9\u5F0F"
-          ToolTips: "\u6295\u5C04\u65B9\u5F0F"
+          Label: "\u547D\u4E2D\u65B9\u5F0F"
+          ToolTips: "\u76F4\u63A5\u7ED3\u7B97\u6309\u5F53\u524D\u8F93\u5165\u6267\u884C\u3002\u300C\u4EA7\u751F\u6295\u5C04\u7269\u300D\u4F7F\u7528\u6240\u9009\u7684\u6295\u5C04\u7269\u914D\u7F6E\uFF0C\u63A5\u89E6\u6709\u6548\u53D7\u51FB\u4F53\u540E\u6267\u884C\u3002"
           Type: 7
           Index: 0
           VisibleBind: 
           EnumOptions:
-          - "\u76F4\u63A5\u547D\u4E2D"
-          - "\u98DE\u5251"
-          - "\u5149\u5F39"
-          - "\u6BD2\u96FE"
+          - "\u76F4\u63A5\u7ED3\u7B97"
+          - "\u4EA7\u751F\u6295\u5C04\u7269"
         - Uid: range
           Label: "\u5C04\u7A0B\uFF08\u7C73\uFF0C0 \u4E3A\u4E0D\u9650\uFF09"
           ToolTips: "\u5C04\u7A0B\uFF08\u7C73\uFF0C0 \u4E3A\u4E0D\u9650\uFF09"
@@ -637,6 +666,12 @@ MonoBehaviour:
       motion:
         rid: -2
       projectile:
+        rid: -2
+      projectileSnap: {fileID: 0}
+      requiresProjectileSnap: 0
+      projectileSpeedOverride: 0
+      projectileOverrideFields: 0
+      projectileOverrides:
         rid: -2
       visualEffect:
         rid: -2
@@ -705,7 +740,7 @@ MonoBehaviour:
           EnumOptions: []
         - Uid: target
           Label: "\u8868\u73B0\u76EE\u6807"
-          ToolTips: "\u98DE\u5251\u53D1\u5C04\u65F6\u8BFB\u53D6\u76EE\u6807\u4F4D\u7F6E"
+          ToolTips: "\u4EA7\u751F\u6295\u5C04\u7269\u65F6\u8BFB\u53D6\u7784\u51C6\u76EE\u6807\u4F4D\u7F6E"
           Type: 8
           Index: 1
           VisibleBind: 
@@ -720,7 +755,7 @@ MonoBehaviour:
           - "\u64AD\u653E\u539F\u4F5C\u89D2\u8272\u52A8\u4F5C"
           - "\u65BD\u6CD5\u7279\u6548"
           - "\u53F3\u624B\u6B66\u5668"
-          - "\u53D1\u5C04\u98DE\u5251"
+          - "\u4EA7\u751F\u6295\u5C04\u7269"
           - "\u6536\u62DB\u6807\u8BB0"
           - "\u4F4D\u79FB\u4E8B\u4EF6\u6807\u8BB0"
           - "\u539F\u4F5C\u8F68\u9053\u7279\u6548\u6216\u547D\u4E2D"
@@ -742,6 +777,12 @@ MonoBehaviour:
       motion:
         rid: -2
       projectile:
+        rid: -2
+      projectileSnap: {fileID: 0}
+      requiresProjectileSnap: 0
+      projectileSpeedOverride: 0
+      projectileOverrideFields: 0
+      projectileOverrides:
         rid: -2
       visualEffect:
         rid: -2
@@ -810,7 +851,7 @@ MonoBehaviour:
           EnumOptions: []
         - Uid: target
           Label: "\u8868\u73B0\u76EE\u6807"
-          ToolTips: "\u98DE\u5251\u53D1\u5C04\u65F6\u8BFB\u53D6\u76EE\u6807\u4F4D\u7F6E"
+          ToolTips: "\u4EA7\u751F\u6295\u5C04\u7269\u65F6\u8BFB\u53D6\u7784\u51C6\u76EE\u6807\u4F4D\u7F6E"
           Type: 8
           Index: 1
           VisibleBind: 
@@ -825,7 +866,7 @@ MonoBehaviour:
           - "\u64AD\u653E\u539F\u4F5C\u89D2\u8272\u52A8\u4F5C"
           - "\u65BD\u6CD5\u7279\u6548"
           - "\u53F3\u624B\u6B66\u5668"
-          - "\u53D1\u5C04\u98DE\u5251"
+          - "\u4EA7\u751F\u6295\u5C04\u7269"
           - "\u6536\u62DB\u6807\u8BB0"
           - "\u4F4D\u79FB\u4E8B\u4EF6\u6807\u8BB0"
           - "\u539F\u4F5C\u8F68\u9053\u7279\u6548\u6216\u547D\u4E2D"
@@ -847,6 +888,12 @@ MonoBehaviour:
       motion:
         rid: -2
       projectile:
+        rid: -2
+      projectileSnap: {fileID: 0}
+      requiresProjectileSnap: 0
+      projectileSpeedOverride: 0
+      projectileOverrideFields: 0
+      projectileOverrides:
         rid: -2
       visualEffect:
         rid: -2
@@ -1198,11 +1245,50 @@ MonoBehaviour:
   combatRandomId: 
   libraryCharacter: {fileID: 11400000, guid: 4e83cfd18f404d93b8f1b785fc3583de, type: 2}
   previewAsOpponent: 0
+  castTargetLimit: 1
   autoSave: 0
-  NodeIconSprites: []
-  ActionClassNames: []
-  HandlerClassNames: []
-  RootClassNames: []
+  NodeIconSprites:
+  - {fileID: 580834057, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  - {fileID: 1828930907, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  - {fileID: -450080446, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  - {fileID: 936707919, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  - {fileID: -910347496, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  - {fileID: 2009228480, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  - {fileID: -787081704, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  ActionClassNames:
+  - Animation
+  - AttributeChange
+  - CustomData
+  - Destroy
+  - Event
+  - FormulaImpact
+  - Instantiate
+  - OriginalSkillVisual
+  - OverTimeEffect
+  - PlaySound
+  - Projectile
+  - RedirectProjectile
+  - SendMessage
+  - SkillImpact
+  - SkillSignal
+  - SkillVital
+  - Teleport
+  - TempAttributeChange
+  - Transform
+  HandlerClassNames:
+  - AngleDifference
+  - AttributeValue
+  - CustomData
+  - Distance
+  - EntityExist
+  - HeightDifference
+  - OverTimeEffect
+  - Raycast
+  - TagCompare
+  - Tag
+  - VariableCompare
+  RootClassNames:
+  - Combat
   pendingSave: 0
   summaryNoteId: 
   effects:
@@ -1402,6 +1488,12 @@ MonoBehaviour:
             rid: 6312275972608229389
           projectile:
             rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
+            rid: -2
           visualEffect:
             rid: -2
         - mType: 0
@@ -1506,6 +1598,12 @@ MonoBehaviour:
           motion:
             rid: -2
           projectile:
+            rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
             rid: -2
           visualEffect:
             rid: 6312275972608229390
@@ -1612,6 +1710,12 @@ MonoBehaviour:
             rid: -2
           projectile:
             rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
+            rid: -2
           visualEffect:
             rid: 6312275972608229391
         - mType: 0
@@ -1705,6 +1809,10 @@ MonoBehaviour:
             rid: -2
           projectileSnap: {fileID: 11400000, guid: 2a2d3d37f92e4b4fad56e514d31ed365, type: 2}
           requiresProjectileSnap: 1
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
+            rid: -2
           visualEffect:
             rid: -2
         - mType: 0
@@ -1875,6 +1983,12 @@ MonoBehaviour:
             rid: -2
           projectile:
             rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
+            rid: -2
           visualEffect:
             rid: -2
         - mType: 0
@@ -1980,6 +2094,12 @@ MonoBehaviour:
             rid: -2
           projectile:
             rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
+            rid: -2
           visualEffect:
             rid: -2
         - mType: 0
@@ -2084,6 +2204,12 @@ MonoBehaviour:
           motion:
             rid: -2
           projectile:
+            rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
             rid: -2
           visualEffect:
             rid: -2

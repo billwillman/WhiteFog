@@ -1,8 +1,6 @@
-import recoveredRole from '../LoginDemo/entry-role.json';
 import {
-  AmbientLight, AnimationMixer, Box3, BufferGeometry, Color, DoubleSide, DirectionalLight,
-  Group, LoadingManager, Mesh, MeshBasicMaterial, OrthographicCamera, Scene,
-  Vector3, WebGLRenderer, Float32BufferAttribute, Uint16BufferAttribute, TextureLoader, SRGBColorSpace
+  AmbientLight, AnimationMixer, Box3, Color, DirectionalLight, Group, IcosahedronGeometry,
+  LoadingManager, Mesh, MeshLambertMaterial, OrthographicCamera, Scene, Vector3, WebGLRenderer
 } from 'three';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 
@@ -10,7 +8,7 @@ const $=id=>document.getElementById(id);
 const view=$('view').getContext('2d'),atlas=$('atlas'), sheet=atlas.getContext('2d');
 const scene=new Scene(),camera=new OrthographicCamera(-1,1,1,-1,.01,100);
 const center=new Vector3();
-let renderer,model,clips=[],mixer,originalPose=[],radius=1,name='NP0023',manifest=null;
+let renderer,model,clips=[],mixer,originalPose=[],radius=1,name='',manifest=null;
 let showAtlas=false,revision=0,busy=false,urls=[];
 function status(s){$('status').textContent=s;}
 function controls(){
@@ -22,7 +20,7 @@ function controls(){
 function invalidate(){
   for(const url of urls)URL.revokeObjectURL(url);
   urls=[];manifest=null;showAtlas=false;$('result').hidden=true;
-  $('preview-heading').textContent='模型预览';$('toggle').textContent='查看烘焙面片';controls();
+  $('preview-heading').textContent='场景组件预览';$('toggle').textContent='查看烘焙面片';controls();
 }
 function dispose(root){
   if(!root)return;
@@ -37,23 +35,19 @@ function dispose(root){
   });
   for(const r of resources)r.dispose();
 }
-async function sampleDisciple(){
-  const group=new Group(), loader=new TextureLoader();
-  for(const part of recoveredRole){
-    const unpack=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0)).buffer;
-    const floats=new Int16Array(unpack(part.vertices)),positions=[],uv=[],color=[];
-    for(let i=0;i<floats.length;i+=9){
-      positions.push(floats[i]/4096,floats[i+2]/4096,-floats[i+1]/4096);
-      uv.push(floats[i+6]/4096,floats[i+7]/4096);
-      const shade=floats[i+8]/4096;color.push(shade,shade,shade);
-    }
-    const geo=new BufferGeometry();
-    geo.setAttribute('position',new Float32BufferAttribute(positions,3));
-    geo.setAttribute('uv',new Float32BufferAttribute(uv,2));
-    geo.setAttribute('color',new Float32BufferAttribute(color,3));
-    geo.setIndex(new Uint16BufferAttribute(new Uint16Array(unpack(part.indices)),1));
-    const map=await loader.loadAsync(part.texture);map.colorSpace=SRGBColorSpace;
-    group.add(new Mesh(geo,new MeshBasicMaterial({map,alphaTest:.45,side:DoubleSide,vertexColors:true})));
+function sampleRockCluster(){
+  const group=new Group();
+  const geometry=new IcosahedronGeometry(1,0);
+  const material=new MeshLambertMaterial({color:0x718078,flatShading:true});
+  // Asymmetric placement makes the different baked directions easy to compare.
+  for(const [x,y,z,width,height,depth,turn] of [
+    [-.55,.85,0,.82,1.35,.76,.3],
+    [.52,.42,-.28,.76,.73,.66,1.1],
+    [.24,.05,.62,.52,.36,.49,-.4]
+  ]){
+    const rock=new Mesh(geometry,material);
+    rock.position.set(x,y,z);rock.scale.set(width,height,depth);rock.rotation.y=turn;
+    group.add(rock);
   }
   return group;
 }
@@ -103,14 +97,14 @@ function install(root,animations,title){
   scene.add(root);name=title;clips=animations;originalPose=[];
   root.traverse(o=>originalPose.push([o,o.position.clone(),o.quaternion.clone(),o.scale.clone(),o.morphTargetInfluences?.slice()]));
   mixer=clips.length?new AnimationMixer(root):null;
-  $('clip').replaceChildren(new Option('初始姿势','-1'));
-  clips.forEach((c,i)=>$('clip').add(new Option(c.name||'动作 '+(i+1),String(i))));
+  $('clip').replaceChildren(new Option('默认状态','-1'));
+  clips.forEach((c,i)=>$('clip').add(new Option(c.name||'动画片段 '+(i+1),String(i))));
   $('pose-controls').hidden=!clips.length;$('pose-time').value=0;
   invalidate();preview();status(title+' 已载入');
 }
 $('file').onchange=async()=>{
   const file=$('file').files[0];if(!file)return;
-  const id=++revision;busy=true;controls();status('正在读取模型…');
+  const id=++revision;busy=true;controls();status('正在读取场景组件…');
   try{
     const data=await file.arrayBuffer();
     if(new DataView(data).getUint32(0,true)!==0x46546c67)throw Error('请选择 glTF 2.0 的 GLB 文件');
@@ -142,11 +136,11 @@ $('bake').onclick=async()=>{
     manifest={version:1,image:name+'.png',width:atlas.width,height:atlas.height,elevation:Number($('elevation').value),frames};
     download('png',png,manifest.image);
     download('json',new Blob([JSON.stringify(manifest,null,2)],{type:'application/json'}),name+'.json');
-    $('result').hidden=false;showAtlas=true;$('preview-heading').textContent='面片预览';$('toggle').textContent='查看原模型';
+    $('result').hidden=false;showAtlas=true;$('preview-heading').textContent='面片预览';$('toggle').textContent='查看原组件';
     status(count+' 个角度 · '+atlas.width+' × '+atlas.height+' 像素');preview();
   }catch(e){invalidate();status('烘焙失败 · '+e.message);}finally{busy=false;controls();}
 };
-$('toggle').onclick=()=>{showAtlas=!showAtlas;$('preview-heading').textContent=showAtlas?'面片预览':'模型预览';$('toggle').textContent=showAtlas?'查看原模型':'查看烘焙面片';preview();};
+$('toggle').onclick=()=>{showAtlas=!showAtlas;$('preview-heading').textContent=showAtlas?'面片预览':'场景组件预览';$('toggle').textContent=showAtlas?'查看原组件':'查看烘焙面片';preview();};
 $('yaw').oninput=preview;
 for(const id of ['elevation','size','angles'])$(id).oninput=()=>{invalidate();preview();};
 for(const id of ['clip','pose-time'])$(id).oninput=takePose;
@@ -155,5 +149,5 @@ try{
   renderer.setClearColor(new Color(0),0);
   scene.add(new AmbientLight(0xffffff,1.65));
   const sun=new DirectionalLight(0xfff1d8,2.0);sun.position.set(-3,6,4);scene.add(sun);
-  busy=true;controls();sampleDisciple().then(root=>{install(root,[],'NP0023');status('已载入战场角色 NP0023');}).catch(e=>status(e.message)).finally(()=>{busy=false;controls();});
+  install(sampleRockCluster(),[],'山石组合');
 }catch(e){busy=true;controls();status('需要支持 WebGL 2 的浏览器 · '+e.message);}

@@ -288,12 +288,52 @@ MonoBehaviour:
     Branchs: []
     ActiveTriggers: []
   combatRandomId: 
+  libraryCharacter: {fileID: 0}
   previewAsOpponent: 0
+  castTargetLimit: 1
   autoSave: 0
-  NodeIconSprites: []
-  ActionClassNames: []
-  HandlerClassNames: []
-  RootClassNames: []
+  NodeIconSprites:
+  - {fileID: 580834057, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  - {fileID: 1828930907, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  - {fileID: -450080446, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  - {fileID: 936707919, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  - {fileID: -910347496, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  - {fileID: 2009228480, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  - {fileID: -787081704, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
+  ActionClassNames:
+  - Animation
+  - AttributeChange
+  - CustomData
+  - Destroy
+  - Event
+  - FormulaImpact
+  - Instantiate
+  - OriginalSkillVisual
+  - OverTimeEffect
+  - PlaySound
+  - Projectile
+  - RedirectProjectile
+  - SendMessage
+  - SkillImpact
+  - SkillSignal
+  - SkillVital
+  - Teleport
+  - TempAttributeChange
+  - Transform
+  HandlerClassNames:
+  - AngleDifference
+  - AttributeValue
+  - CustomData
+  - Distance
+  - EntityExist
+  - HeightDifference
+  - OverTimeEffect
+  - Raycast
+  - TagCompare
+  - Tag
+  - VariableCompare
+  RootClassNames:
+  - Combat
   pendingSave: 0
   summaryNoteId: 
   outputUid: Node5

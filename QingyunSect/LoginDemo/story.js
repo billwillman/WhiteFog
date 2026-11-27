@@ -19,7 +19,8 @@ const firstChapter=(()=>{
     {speaker:'船上阵修',actor:'adept',expression:'relieved',text:'瞧见了，左边那点火。多谢！船身我来护，你在前头带路。',action:'护送药舟'}
   ];
   const tasks=window.qingyunChapterTasks;
-  const ferryTask=tasks.find(task=>task.stageId==='1-3');
+  const battleStages=tasks.filter(task=>task.stageId&&task.encounter);
+  const ferryTask=battleStages.find(task=>task.stageId==='1-3');
   let firstClears={},sceneLine=0;
   let progress=ferryPreview?3:0,line=0,ferryLine=preview==='passage'?ferryLines.length-1:0;
   try{
@@ -55,12 +56,12 @@ const firstChapter=(()=>{
     map();
   });
   function startPathTrial(path){
-    openBattle('pathTrial',()=>battle.show('pathTrial',null,won=>{
+    openBattle('pathTrial',()=>battle.show('pathTrial',null,{onResult(won){
       if(!won)return;
       (firstClears['4-1']??={})[path]=true;
       save();
       return trainingRules.paths[path].name+'试修通过 · 药碗送达';
-    }),false,false,path);
+    }}),false,false,path);
   }
   async function prepareBattle(encounter,key,baseline,request,trialPath){
     const state=encounter==='skills'?null:await trainingAccess();
@@ -76,10 +77,9 @@ const firstChapter=(()=>{
       snapshot.lessonPath=path;
     }
     return battle.prepare(encounter,key,snapshot);
-
   }
   function showChapterBattle(task){
-    battle.show(task.encounter,null,won=>{
+    battle.show(task.encounter,null,{onResult(won){
       if(!won)return;
       const first=!Object.hasOwn(firstClears,task.stageId);
       if(first)firstClears[task.stageId]=task.firstClear??{};
@@ -90,7 +90,13 @@ const firstChapter=(()=>{
       const rewards=[[cultivation,'修为'],[pages,'通用残页'],[tickets,'招募帖'],[sand,'灵砂'],[marrow,'云髓']]
         .filter(([amount])=>amount>0).map(([amount,name])=>name+' +'+amount);
       if(rewards.length)return '首通所得 · '+rewards.join('　');
-    });
+    }});
+  }
+  function showFarmBattle(stage){
+    const next=battleStages[battleStages.indexOf(stage)+1];
+    const challengeNext=next&&Object.hasOwn(firstClears,next.stageId)?
+      ()=>openBattle(next.encounter,()=>showFarmBattle(next)):null;
+    battle.show(stage.encounter,null,{farm:{challengeNext}});
   }
   window.addEventListener('storage',event=>{
     if(event.key===storeKey&&event.newValue===null)location.reload();
@@ -155,18 +161,18 @@ const firstChapter=(()=>{
       const claim=tasks[progress].afterStage===ferryTask.stageId&&progress+1<tasks.length;
       const replay=offerReplay&&!claim;
       caption('旧渡 · 首通所得','阵修把药舟稳稳护进了避风水面。这一趟所得的修为和通用残页，已记在历练簿上。',
-        replay?'重战旧渡':'回到舆图',replay?beginPassage:()=>{if(claim)advanceTask();map();});return;
+        replay?'重战旧渡':'回到舆图',replay?()=>beginPassage(true):()=>{if(claim)advanceTask();map();});return;
     }
     dialogue.show(ferryLines[ferryLine],()=>{
       if(ferryLine+1===ferryLines.length){beginPassage();return;}
       ferryLine++;save();atFerry();
     });
   }
-  function beginPassage(){
+  function beginPassage(replay=false){
     openBattle(ferryTask.encounter,()=>{
       const stageIndex=tasks.indexOf(ferryTask);
       if(progress===stageIndex-1){progress=stageIndex;save();}
-      showChapterBattle(ferryTask);
+      if(replay)showFarmBattle(ferryTask);else showChapterBattle(ferryTask);
     },false,true);
   }
   function playStoryTask(task){
@@ -196,7 +202,6 @@ const firstChapter=(()=>{
       return;
     }
     if(task.lines&&task.place===place){playStoryTask(task);return;}
-
     if(task.encounter&&task.place===place){openBattle(task.encounter,()=>showChapterBattle(task));return;}
     if(place==='home'){
       backdrop('home');

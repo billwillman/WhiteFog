@@ -32,8 +32,23 @@ namespace SoftKitty
 
         public override void Execute(GraphRuntimeState state)
         {
+            if (selectionRules != null && selectionRules.Limit > 1)
+            {
+                var targets = selectionRules.PickMany(state);
+                foreach (var candidate in targets)
+                {
+                    if (!candidate.Actor || !candidate.Actor.isActiveAndEnabled) continue;
+                    RunSelected(state.ForSelectedTarget(candidate.Actor.mData, Uid, candidate.encounterOrder));
+                }
+                return;
+            }
             state.selectedTarget = selectionRules?.Pick(state);
             if (state.selectedTarget == null) return;
+            RunSelected(state);
+        }
+
+        private void RunSelected(GraphRuntimeState state)
+        {
             var instance = state.selectionInstance ? state.selectionInstance : state.RootState.RootInstance.GetComponent<GraphInstance>();
             foreach (var next in outputPort[0].connectedNodes) next.Run(instance, state);
         }

@@ -25,6 +25,7 @@ namespace SoftKitty
         public EntityComponent Actor;
         public float DistanceSquared;
         public int ListIndex;
+        internal int encounterOrder;
         public bool AlreadyHit;
         public bool HitDuringCast;
         public float Health => Actor.mData.GetAttributeFloat("chp");
@@ -90,10 +91,23 @@ namespace SoftKitty
     public sealed class SkillTargetSelection
     {
         public bool sceneEnemies;
+        [Min(1)] public int maxTargets = 1;
+        public int Limit => Mathf.Max(1, maxTargets);
         [SerializeReference] public List<TargetFilter> filters = new List<TargetFilter> { new TargetAlive(), new TargetUnhit() };
         [SerializeReference] public List<TargetPriority> priorities = new List<TargetPriority> { new TargetListOrder() };
 
-        internal Entity Pick(GraphRuntimeState state)
+        internal Entity Pick(GraphRuntimeState state) => Collect(state, null, null);
+
+        internal List<TargetCandidate> PickMany(GraphRuntimeState state)
+        {
+            var matches = new List<TargetCandidate>();
+            Collect(state, matches, new HashSet<Entity>());
+            matches.Sort(Compare);
+            if (matches.Count > Limit) matches.RemoveRange(Limit, matches.Count - Limit);
+            return matches;
+        }
+
+        private Entity Collect(GraphRuntimeState state, List<TargetCandidate> matches, HashSet<Entity> seen)
         {
             var caster = SkillPlayback.FindActor(state.RootState.GetInvolvedEntity("Dealer"));
             if (!caster) return null;
@@ -111,7 +125,15 @@ namespace SoftKitty
                 };
                 foreach (var filter in filters)
                     if (filter == null || !filter.Matches(candidate)) return;
-                if (!best.Actor || Compare(candidate, best) < 0) best = candidate;
+                if (matches == null)
+                {
+                    if (!best.Actor || Compare(candidate, best) < 0) best = candidate;
+                }
+                else if (seen.Add(actor.mData))
+                {
+                    candidate.encounterOrder = matches.Count;
+                    matches.Add(candidate);
+                }
             }
             if (sceneEnemies)
             {
@@ -144,7 +166,8 @@ namespace SoftKitty
                 int result = priority.Key(a).CompareTo(priority.Key(b));
                 if (result != 0) return result;
             }
-            return string.CompareOrdinal(a.Actor.mData.CombatRandomId, b.Actor.mData.CombatRandomId);
+            int byId = string.CompareOrdinal(a.Actor.mData.CombatRandomId, b.Actor.mData.CombatRandomId);
+            return byId != 0 ? byId : a.encounterOrder.CompareTo(b.encounterOrder);
         }
     }
 }

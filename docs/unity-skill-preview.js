@@ -36,10 +36,8 @@
       status.textContent = data.kind === 'interrupt' ? '已打断施法' : data.text;
       byId('interrupt').disabled = true;
     }
-    byId('chain').disabled = !data.canChain;
     byId('readout').textContent = '施放者 HP ' + number(data.casterHp) + ' · 状态 ' + (data.casterStates || '无') +
-      '\n目标 HP ' + number(data.targetHp) + ' · 状态 ' + (data.targetStates || '无') + (byId('chain').hidden ? '' :
-        '\n施法输入 · '+(data.canMove?'移动已放行':'移动受限')+' / '+(data.canChain?'接招已放行':'接招受限'));
+      '\n目标 HP ' + number(data.targetHp) + ' · 状态 ' + (data.targetStates || '无');
   }
   window.addEventListener('message', ({source,data}) => {
     if (!nativeFrame || source !== nativeFrame.contentWindow || data?.type !== 'qingyun-local-skill') return;
@@ -52,10 +50,8 @@
   }
   function reset() {
     if (nativeFrame) { nativeFrame.remove(); nativeFrame = null; }
-
     const token = ++generation;
     byId('interrupt').disabled = true;
-    byId('chain').disabled = true;
     for (const id of ['play-status','readout','hits']) byId(id).replaceChildren();
     if (current) current.canvas.hidden = true;
     pending = pending.catch(() => {}).then(async () => {
@@ -80,7 +76,6 @@
     const token = reset(), status = byId('play-status');
     const local = window.localBattleSkillIds?.includes(record.graph.sourceId);
     status.textContent = local ? '正在读取本地战斗包…' : '正在载入 Unity 战斗场景…';
-
     pending = pending.then(async () => {
       if (token !== generation) return;
       if (local) {
@@ -103,18 +98,10 @@
         const instance = await createUnityInstance(canvas, {...resources, matchWebGLToCanvasSize:false, devicePixelRatio:1,
           companyName:'青云宗', productName:'云端御剑', productVersion:'1.3.0', streamingAssetsUrl:'QingyunSect/LoginDemo/StreamingAssets'},
           progress => { if (token === generation) status.textContent = '载入战斗场景 ' + Math.round(progress * 100) + '%'; });
-        current = {instance,canvas,record};
+        current = {instance,canvas};
         if (token === generation) instance.SendMessage('QingyunBattle','PlayEditorSkill',JSON.stringify(request));
       } catch (error) { canvas.remove(); throw error; }
     }).catch(error => { if (token === generation) status.textContent = '试放失败 · ' + (error.message || error); });
   }
-  function chain() {
-    if (!current) return;
-    const request = requestFor(current.record);
-    if (request) {
-      byId('hits').replaceChildren();
-      current.instance.SendMessage('QingyunBattle','ChainEditorSkill',JSON.stringify(request));
-    }
-  }
-  window.unitySkillPreview = {play, stop:reset, chain, interrupt() { if (nativeFrame) nativeInput('interrupt'); else current?.instance.SendMessage('QingyunBattle','InterruptEditorSkill',''); }};
+  window.unitySkillPreview = {play, stop:reset, interrupt() { if (nativeFrame) nativeInput('interrupt'); else current?.instance.SendMessage('QingyunBattle','InterruptEditorSkill',''); }};
 })();

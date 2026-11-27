@@ -36,15 +36,15 @@ namespace SoftKitty
             Vector2 origin = heal.Position;
             var recipient = root.Entities.Last();
             var value = root.Variables.Last();
-            recipient.Position = origin + new Vector2(-1520, 140);
-            value.Position = origin + new Vector2(-1180, 500);
+            recipient.Position = origin + new Vector2(-2016, 180);
+            value.Position = origin + new Vector2(-1680, 1240);
             value.Constant = amount;
             value.outputPort[0].uid.Remove(heal.Uid + "#2");
             heal.inputPort[2].uid.Clear();
 
             var guard = AddActionCondition(root, heal, "EntityExist");
             guard.IntValues[0] = (int)EntityExistHandler.logics.Interactable;
-            guard.Position = origin + new Vector2(-320, -370);
+            guard.Position = origin + new Vector2(-336, -144);
             var guardEntity = root.Entities.Last();
             DisconnectNode(root, guardEntity);
             root.Entities.Remove(guardEntity);
@@ -53,7 +53,7 @@ namespace SoftKitty
             VariableClass Attribute(string key, int y)
             {
                 var node = new VariableClass(root) { Type = VariableType.Attribute, AttributeKey = key,
-                    Position = origin + new Vector2(-1180, y) };
+                    Position = origin + new Vector2(-1680, y) };
                 root.Variables.Add(node);
                 Wire(recipient, node, 0);
                 return node;
@@ -73,13 +73,13 @@ namespace SoftKitty
                 recipient.Type = EntityType.Dealer;
                 value.Type = VariableType.DynamicVariable;
                 value.VariableUid = "healRatio";
-                gain = Combine(MathType.Multiply, Attribute("atk", 270), value, -950, 350);
+                gain = Combine(MathType.Multiply, Attribute("atk", 1000), value, -1344, 1120);
             }
-            var zero = new VariableClass(root) { Position = origin + new Vector2(-1180, 740) };
+            var zero = new VariableClass(root) { Position = origin + new Vector2(-1344, 1440) };
             root.Variables.Add(zero);
-            var positive = Combine(MathType.Max, gain, zero, -720, 220);
-            var total = Combine(MathType.Add, Attribute("chp", 0), positive, -470, 110);
-            Wire(Combine(MathType.Min, Attribute("hp", -240), total, -240, 0), heal, 2);
+            var positive = Combine(MathType.Max, gain, zero, -1008, 1000);
+            var total = Combine(MathType.Add, Attribute("chp", 720), positive, -672, 720);
+            Wire(Combine(MathType.Min, Attribute("hp", 480), total, -336, 480), heal, 2);
             return heal;
         }
 
@@ -102,7 +102,7 @@ namespace SoftKitty
                 if (effect != null && effect.DesignGraph is GraphObject asset && GUILayout.Button("使用选中 Buff 的效果图"))
                     OpenFormulas(asset, true);
             }
-            var source = (GraphObject)EditorGUILayout.ObjectField("公式所在图", formulaGraph, typeof(GraphObject), false);
+            var source = (GraphObject)SkillFieldHelp.ObjectField("公式所在图", formulaGraph, typeof(GraphObject), false, "选择要查看和试算的图。可在这张图里选择一个数值节点作为试算输出。");
             if (source != formulaGraph) OpenFormulas(source, false);
             if (!source || source.RootSet == null)
             {
@@ -131,7 +131,7 @@ namespace SoftKitty
             else
             {
                 int index = Mathf.Max(0, nodes.FindIndex(n => n.Uid == formulaUid));
-                index = EditorGUILayout.Popup("试算输出", index, nodes.Select(n => NumericLabel(root, n)).ToArray());
+                index = SkillFieldHelp.Popup("试算输出", index, nodes.Select(n => NumericLabel(root, n)).ToArray(), "选择要计算的数值节点。工作台使用下方输入重新计算并显示结果。");
                 var result = nodes[index];
                 formulaUid = result.Uid;
                 if (source is SkillFormula formula)
@@ -165,7 +165,7 @@ namespace SoftKitty
             {
                 if (GUILayout.Button("重置试算输入")) sampleNumbers.Clear();
                 using (new EditorGUI.DisabledScope(EditorApplication.isPlaying))
-                    if (GUILayout.Button("用原生节点树编辑连线")) MasterGraphWindow.OpenWindow(source);
+                    if (GUILayout.Button("用原生节点树编辑连线")) MasterGraphWindow.OpenWindow(source, formulaUid);
                 if (GUILayout.Button("保存图资产")) SaveSkillAndLevels(source);
             }
         }
@@ -322,7 +322,7 @@ namespace SoftKitty
             {
                 using (new EditorGUI.DisabledScope(EditorApplication.isPlaying))
                 {
-                    float saved = EditorGUILayout.DelayedFloatField("图内默认值", variable.Constant);
+                    float saved = SkillFieldHelp.DelayedFloatField("图内默认值", variable.Constant, "保存到图资产中的数值。常量直接使用该值；动态变量没有收到外部输入时使用该值。");
                     if (saved != variable.Constant)
                     {
                         Undo.RegisterCompleteObjectUndo(formulaGraph, "修改公式数值");
@@ -340,7 +340,7 @@ namespace SoftKitty
             if (variable.Type == VariableType.DynamicVariable && parameter != null) fallback = parameter.value;
             if (variable.Type == VariableType.DynamicVariable && variable.VariableUid == "Layer") fallback = 1;
             float sample = sampleNumbers.TryGetValue(key, out var existing) ? existing : fallback;
-            float next = EditorGUILayout.DelayedFloatField("试算输入 · " + key, sample);
+            float next = SkillFieldHelp.DelayedFloatField("试算输入 · " + key, sample, "给这个输入临时指定一个样本值，并重新计算选中节点的结果。只用于当前试算。");
             if (next != sample) sampleNumbers[key] = next;
             inputs[key] = next;
         }

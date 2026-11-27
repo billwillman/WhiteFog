@@ -61,7 +61,7 @@ namespace SoftKitty
         private void DrawMotion(Action action, GraphObject skill)
         {
             var binding = SkillMotion.For(action, skill as OriginalSkillGraph);
-            int mode = EditorGUILayout.Popup("动作来源", (int)binding.source, MotionSources);
+            int mode = SkillFieldHelp.Popup("动作来源", (int)binding.source, MotionSources, "选择通过角色 Animator Controller 中的状态播放动作，或直接播放指定的动画片段。");
             if (mode != (int)binding.source)
                 Change(() => { binding.source = (SkillMotion.Source)mode; action.motion = binding; });
 
@@ -69,7 +69,7 @@ namespace SoftKitty
             {
                 using (new EditorGUILayout.HorizontalScope())
                 {
-                    var clip = (AnimationClip)EditorGUILayout.ObjectField("Animation Clip", binding.clip, typeof(AnimationClip), false);
+                    var clip = (AnimationClip)SkillFieldHelp.ObjectField("Animation Clip", binding.clip, typeof(AnimationClip), false, "直接播放的动画片段。请选择可供 Animator 使用的非 Legacy 片段。");
                     if (clip != binding.clip) Change(() => { binding.clip = clip; action.motion = binding; });
                     using (new EditorGUI.DisabledScope(!clip))
                         if (GUILayout.Button("定位动画", GUILayout.Width(80))) LocateMotion(clip);
@@ -80,8 +80,8 @@ namespace SoftKitty
             }
 
             var runtime = MotionController(skill, action);
-            var picked = (RuntimeAnimatorController)EditorGUILayout.ObjectField(
-                new GUIContent("参考 Controller", "用于列出状态。播放时使用所连角色自己的 Animator。"), runtime, typeof(RuntimeAnimatorController), false);
+            var picked = (RuntimeAnimatorController)SkillFieldHelp.ObjectField(
+                "参考 Controller", runtime, typeof(RuntimeAnimatorController), false, "用于列出状态。播放时使用所连角色自己的 Animator。");
             if (picked != runtime) motionBrowserController = picked;
             runtime = MotionController(skill, action);
             var controller = runtime as AnimatorController;
@@ -97,7 +97,7 @@ namespace SoftKitty
             var layers = controller.layers;
             var layerNames = layers.Select(l => l.name).ToArray();
             int layer = System.Array.IndexOf(layerNames, binding.layer);
-            int nextLayer = EditorGUILayout.Popup("Layer", layer, layerNames);
+            int nextLayer = SkillFieldHelp.Popup("Layer", layer, layerNames, "在参考 Animator Controller 中选择动画层。状态列表会显示这一层的状态。");
             if (nextLayer != layer && nextLayer >= 0)
             {
                 Change(() => { binding.layer = layerNames[nextLayer]; binding.state = ""; action.motion = binding; });
@@ -128,6 +128,7 @@ namespace SoftKitty
                     if (states.Length == 0) menu.AddDisabledItem(new GUIContent("此层没有状态"));
                     menu.ShowAsContext();
                 }
+                SkillFieldHelp.Button("Animator State", "选择角色要进入的动画状态。运行时会在角色自己的 Animator 的对应层里查找这个状态。");
                 using (new EditorGUI.DisabledScope(index < 0))
                     if (GUILayout.Button("定位状态", GUILayout.Width(80)))
                     {

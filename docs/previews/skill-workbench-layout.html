@@ -1,0 +1,278 @@
+<div id="mcc-workbench-draft" lang="zh-CN">
+<style>
+#mcc-workbench-draft{color-scheme:light dark;--bg:light-dark(#f4f5f7,#202329);--surface:light-dark(#ffffff,#292d34);--sub:light-dark(#eceff3,#22262d);--txt:light-dark(#202a33,#e4e9ee);--mut:light-dark(#526070,#b2bdc8);--line:light-dark(#ced5dc,#424b57);--selected:light-dark(#dfeded,#294346);--accent:light-dark(#17635e,#8cd0c7);--cond:light-dark(#764919,#e6bb80);--entity:light-dark(#315f8a,#a6c9ed);font:14px/1.48 "Segoe UI","Microsoft YaHei",sans-serif;color:var(--txt);background:var(--bg);border:1px solid var(--line);border-radius:8px;overflow:hidden;container-type:inline-size}
+#mcc-workbench-draft *{box-sizing:border-box}
+#mcc-workbench-draft header,#mcc-workbench-draft nav,#mcc-workbench-draft section,#mcc-workbench-draft aside,#mcc-workbench-draft main,#mcc-workbench-draft footer{margin:0;min-width:0}
+#mcc-workbench-draft h2,#mcc-workbench-draft h3,#mcc-workbench-draft p{margin:0;color:var(--txt)}
+#mcc-workbench-draft h2{font-size:18px;font-weight:650}#mcc-workbench-draft h3{font-size:14px;font-weight:650}
+#mcc-workbench-draft button,#mcc-workbench-draft select,#mcc-workbench-draft input{font:inherit;color:var(--txt);background:var(--surface);border:1px solid var(--line);border-radius:4px;max-width:100%}
+#mcc-workbench-draft button{cursor:pointer;white-space:normal;text-align:left;padding:4px 8px}
+#mcc-workbench-draft button:hover{background:var(--sub);border-color:var(--accent)}#mcc-workbench-draft button:focus-visible,#mcc-workbench-draft select:focus-visible,#mcc-workbench-draft input:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+#mcc-workbench-draft button[aria-pressed=true]{background:var(--selected);border-color:var(--accent);color:var(--txt)}
+#mcc-workbench-draft select,#mcc-workbench-draft input{padding:4px 6px;min-width:0;width:100%}
+#mcc-workbench-draft small,#mcc-workbench-draft .mut{font-size:12px;color:var(--mut)}#mcc-workbench-draft code{font:11px/1.4 Consolas,monospace;color:var(--mut);background:none;padding:0;overflow-wrap:anywhere}
+#mcc-workbench-draft .titlebar{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--surface);border-bottom:1px solid var(--line)}#mcc-workbench-draft .mark{width:8px;height:18px;border-radius:2px;background:var(--accent)}
+#mcc-workbench-draft .modules{display:flex;gap:18px;align-items:stretch;flex-wrap:wrap;padding:0 16px;border-bottom:1px solid var(--line);background:var(--surface);color:var(--mut);font-size:13px}#mcc-workbench-draft .modules span{padding:8px 0}#mcc-workbench-draft .modules .on{color:var(--txt);box-shadow:inset 0 -3px var(--accent);font-weight:650}
+#mcc-workbench-draft .topline{display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:9px 14px;border-bottom:1px solid var(--line)}#mcc-workbench-draft .skillselect{display:flex;align-items:center;gap:8px}#mcc-workbench-draft .skillselect select{width:auto;font-weight:650}#mcc-workbench-draft .main{display:grid;grid-template-columns:minmax(132px,.62fr) minmax(300px,1.97fr) minmax(206px,1fr);align-items:stretch}
+#mcc-workbench-draft .rail,#mcc-workbench-draft .inspect{padding:11px;background:var(--surface)}#mcc-workbench-draft .rail{border-right:1px solid var(--line)}#mcc-workbench-draft .inspect{border-left:1px solid var(--line)}#mcc-workbench-draft .center{padding:12px;min-width:0}
+#mcc-workbench-draft .subhead{font-size:12px;color:var(--mut);margin:10px 0 5px;font-weight:650}#mcc-workbench-draft .rowbtn{display:block;width:100%;margin:3px 0;background:transparent;text-align:left;line-height:1.3;padding:6px;border-color:transparent}#mcc-workbench-draft .rowbtn small{display:block;font-variant-numeric:tabular-nums}
+#mcc-workbench-draft .sectionline,#mcc-workbench-draft .tabs,#mcc-workbench-draft .chips{display:flex;align-items:center;gap:5px;flex-wrap:wrap}#mcc-workbench-draft .sectionline{justify-content:space-between;margin-bottom:9px}#mcc-workbench-draft .tabs button,#mcc-workbench-draft .chips button{font-size:12px}
+#mcc-workbench-draft .event{background:var(--selected);padding:8px 10px;border-left:3px solid var(--accent);margin:9px 0 7px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}#mcc-workbench-draft .event strong{font-weight:650}#mcc-workbench-draft .event .evlink{background:transparent;border:0;color:var(--txt);padding:0;font-weight:650}
+#mcc-workbench-draft .branch{border-left:1px solid var(--line);margin:0 0 0 8px;padding:0 0 8px 14px;position:relative}#mcc-workbench-draft .branch:before{content:"";position:absolute;top:18px;left:0;width:13px;border-top:1px solid var(--line)}
+#mcc-workbench-draft .action{width:100%;display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-weight:650;min-height:35px}#mcc-workbench-draft .action code{margin-left:auto}#mcc-workbench-draft .node-info{margin:5px 0 2px;padding-left:4px}#mcc-workbench-draft .smallbtn{font-size:12px;padding:2px 5px}
+#mcc-workbench-draft .cue{color:var(--accent)}#mcc-workbench-draft .datatype{color:var(--entity)}#mcc-workbench-draft .testtype{color:var(--cond)}
+#mcc-workbench-draft .detailgroup{border-top:1px solid var(--line);margin-top:10px;padding-top:7px}#mcc-workbench-draft .detailgroup h3{margin-bottom:6px}#mcc-workbench-draft .portrow{margin-bottom:5px;line-height:1.4}#mcc-workbench-draft .portrow .ptype{display:block;font-size:12px;color:var(--mut)}#mcc-workbench-draft .portrow button{font-size:12px;margin:1px 2px 1px 0}
+#mcc-workbench-draft .field{display:grid;grid-template-columns:minmax(64px,.8fr) minmax(78px,1.2fr);align-items:center;gap:6px;margin-top:5px;font-size:12px}#mcc-workbench-draft .field span{overflow-wrap:anywhere}
+#mcc-workbench-draft .linkset{margin:7px 0;border-bottom:1px solid var(--line);padding-bottom:6px}#mcc-workbench-draft .linkset p{font-size:12px;margin:3px 0}
+#mcc-workbench-draft .ruleline{display:flex;align-items:center;gap:5px;margin:6px 0}#mcc-workbench-draft .ruleline label,#mcc-workbench-draft .ruleline select{flex:1;min-width:0}#mcc-workbench-draft .ruleline button{flex:none}
+#mcc-workbench-draft .trace{border-top:1px solid var(--line);background:var(--surface);padding:10px 14px}#mcc-workbench-draft .trace-log{margin:5px 0 0;padding-left:2em;color:var(--mut);font-size:12px}#mcc-workbench-draft .trace-log li{padding:2px 0}#mcc-workbench-draft .hint{font-size:12px;color:var(--mut);margin-top:4px}
+#mcc-workbench-draft [hidden]{display:none!important}
+@container(max-width:740px){#mcc-workbench-draft .main{grid-template-columns:minmax(250px,1.5fr) minmax(205px,1fr)}#mcc-workbench-draft .rail{grid-column:1/-1;border:0;border-bottom:1px solid var(--line)}#mcc-workbench-draft .rail .timelist{display:flex;gap:4px;flex-wrap:wrap}#mcc-workbench-draft .rail .rowbtn{width:auto;margin:0}#mcc-workbench-draft .rail .rowbtn small{display:inline;margin-left:4px}}
+@container(max-width:500px){#mcc-workbench-draft .main{display:block}#mcc-workbench-draft .inspect{border-left:0;border-top:1px solid var(--line)}#mcc-workbench-draft .modules{gap:12px}#mcc-workbench-draft .titlebar{flex-wrap:wrap}#mcc-workbench-draft .center{padding:10px}}
+@media(pointer:coarse){#mcc-workbench-draft button,#mcc-workbench-draft input,#mcc-workbench-draft select{min-height:44px}}
+</style>
+<header class="titlebar"><i class="mark" aria-hidden="true"></i><h2>技能工作台</h2><small>交互草图</small></header>
+<nav class="modules" aria-label="工作台模块位置示意"><span class="on">技能编辑</span><span>Buff 状态</span><span>公式与数值</span><span>试放</span><span>属性定义</span><span>角色属性</span></nav>
+<section class="topline"><label class="skillselect">技能库 <small>主角 ›</small><select aria-label="切换示例技能" data-ui="skill"><option value="0">狂风快剑</option><option value="1">流星剑雨</option></select></label><small data-ui="meta"></small></section>
+<div class="main"><aside class="rail"><h3>施法时间轴</h3><div data-ui="timeline"></div></aside>
+<main class="center"><div class="sectionline"><h3>技能编排</h3><div class="tabs"><button type="button" data-view="events">事件流程</button><button type="button" data-view="ports">MCC 连线</button></div></div><div data-ui="canvas"></div></main>
+<aside class="inspect"><div class="sectionline"><h3>节点检查器</h3><small>当前选择</small></div><div data-ui="inspector" aria-live="polite"></div></aside></div>
+<footer class="trace"><h3>试放记录示例 <small>／ 原配置</small></h3><ol class="trace-log" data-ui="trace" aria-live="polite"></ol></footer></div>
+<script>
+
+(()=>{
+const root=document.getElementById("mcc-workbench-draft");
+const $=key=>root.querySelector('[data-ui="'+key+'"]');
+const source=[{"name":"狂风快剑","limit":3,"nodes":[{"id":0,"k":"Combat","i":[["RootIn",[]]],"o":[["RootOut",["1#0","3#0","6#0","9#0","20#0","23#0"]]]},{"id":1,"k":"Animation","i":[["ActionIn",["0#0"]],["EntityIn",["2#0"]],["ConditionIn",[]]],"o":[],"t":0,"transitionSeconds":"0.04","layer":"Base Layer"},{"id":3,"k":"OriginalSkillVisual","i":[["ActionIn",["0#0"]],["EntityIn",["4#0"]],["EntityIn",["5#0"]],["ConditionIn",[]]],"o":[],"t":0,"stage":6,"bone":"weapon_r","duration":"1.2","triggerHit":"0","hitDelay":"0"},{"id":6,"k":"OriginalSkillVisual","i":[["ActionIn",["0#0"]],["EntityIn",["7#0"]],["EntityIn",["8#0"]],["ConditionIn",[]]],"o":[],"t":0.002,"stage":6,"bone":"root","duration":"0","triggerHit":"0","hitDelay":"0"},{"id":9,"k":"Projectile","i":[["ActionIn",["0#0"]],["EntityIn",["10#0"]],["EntityIn",["11#0"]],["ConditionIn",[]]],"o":[["BranchOutAction",["12#0","16#0"]]],"t":0.994},{"id":12,"k":"FormulaImpact","i":[["ActionIn",["9#0"]],["EntityIn",["13#0"]],["EntityIn",["14#0"]],["CustomVariable",["15#0"]],["ConditionIn",[]]],"o":[["BranchOutAction",[]]],"t":0,"logicIndex":"1"},{"id":16,"k":"RedirectProjectile","i":[["ActionIn",["9#0"]],["EntityIn",["17#0"]],["ConditionIn",["18#0"]]],"o":[],"t":0},{"id":20,"k":"OriginalSkillVisual","i":[["ActionIn",["0#0"]],["EntityIn",["21#0"]],["EntityIn",["22#0"]],["ConditionIn",[]]],"o":[],"t":1.5,"stage":5},{"id":23,"k":"OriginalSkillVisual","i":[["ActionIn",["0#0"]],["EntityIn",["24#0"]],["EntityIn",["25#0"]],["ConditionIn",[]]],"o":[],"t":1.501,"stage":4},{"id":18,"k":"EntityExist","i":[["EntityIn",["19#0"]]],"o":[["ConditionOut",["16#2"]]]},{"id":15,"k":"Variable","i":[["EntityIn",[]]],"o":[["Variable",["12#3"]]],"v":2},{"id":2,"k":"Entity","i":[],"o":[["EntityOut",["1#1"]]],"v":1},{"id":4,"k":"Entity","i":[],"o":[["EntityOut",["3#1"]]],"v":1},{"id":5,"k":"Entity","i":[],"o":[["EntityOut",["3#2"]]],"v":2},{"id":7,"k":"Entity","i":[],"o":[["EntityOut",["6#1"]]],"v":1},{"id":8,"k":"Entity","i":[],"o":[["EntityOut",["6#2"]]],"v":2},{"id":10,"k":"Entity","i":[],"o":[["EntityOut",["9#1"]]],"v":1},{"id":11,"k":"Entity","i":[],"o":[["EntityOut",["9#2"]]],"v":2},{"id":13,"k":"Entity","i":[],"o":[["EntityOut",["12#1"]]],"v":1},{"id":14,"k":"Entity","i":[],"o":[["EntityOut",["12#2"]]],"v":2},{"id":17,"k":"Entity","i":[],"o":[["EntityOut",["16#1"]]],"v":5},{"id":19,"k":"Entity","i":[],"o":[["EntityOut",["18#0"]]],"v":5},{"id":21,"k":"Entity","i":[],"o":[["EntityOut",["20#1"]]],"v":1},{"id":22,"k":"Entity","i":[],"o":[["EntityOut",["20#2"]]],"v":2},{"id":24,"k":"Entity","i":[],"o":[["EntityOut",["23#1"]]],"v":1},{"id":25,"k":"Entity","i":[],"o":[["EntityOut",["23#2"]]],"v":2}]},{"name":"流星剑雨","limit":1,"nodes":[{"id":0,"k":"Combat","i":[["RootIn",[]]],"o":[["RootOut",["4#0","7#0","10#0","13#0","16#0","19#0","22#0","25#0","1#0"]]]},{"id":1,"k":"Animation","i":[["ActionIn",["0#0"]],["EntityIn",["2#0"]],["ConditionIn",[]]],"o":[],"t":0,"transitionSeconds":"0.033333335","layer":"Base Layer"},{"id":4,"k":"OriginalSkillVisual","i":[["ActionIn",["0#0"]],["EntityIn",["5#0"]],["EntityIn",["6#0"]],["ConditionIn",[]]],"o":[],"t":0,"stage":6},{"id":7,"k":"OriginalSkillVisual","i":[["ActionIn",["0#0"]],["EntityIn",["8#0"]],["EntityIn",["9#0"]],["ConditionIn",[]]],"o":[["BranchOutAction",["3#0"]]],"t":0.903,"stage":6},{"id":10,"k":"OriginalSkillVisual","i":[["ActionIn",["0#0"]],["EntityIn",["11#0"]],["EntityIn",["12#0"]],["ConditionIn",[]]],"o":[["BranchOutAction",["31#0"]]],"t":1.003,"stage":6},{"id":13,"k":"OriginalSkillVisual","i":[["ActionIn",["0#0"]],["EntityIn",["14#0"]],["EntityIn",["15#0"]],["ConditionIn",[]]],"o":[["BranchOutAction",["35#0"]]],"t":1.15,"stage":6},{"id":16,"k":"OriginalSkillVisual","i":[["ActionIn",["0#0"]],["EntityIn",["17#0"]],["EntityIn",["18#0"]],["ConditionIn",[]]],"o":[["BranchOutAction",["39#0"]]],"t":1.313,"stage":6},{"id":19,"k":"OriginalSkillVisual","i":[["ActionIn",["0#0"]],["EntityIn",["20#0"]],["EntityIn",["21#0"]],["ConditionIn",[]]],"o":[],"t":1.5,"stage":5},{"id":22,"k":"OriginalSkillVisual","i":[["ActionIn",["0#0"]],["EntityIn",["23#0"]],["EntityIn",["24#0"]],["ConditionIn",[]]],"o":[["BranchOutAction",["43#0"]]],"t":1.501,"stage":6},{"id":25,"k":"OriginalSkillVisual","i":[["ActionIn",["0#0"]],["EntityIn",["26#0"]],["EntityIn",["27#0"]],["ConditionIn",[]]],"o":[],"t":1.501,"stage":4},{"id":3,"k":"FormulaImpact","i":[["ActionIn",["7#0"]],["EntityIn",["28#0"]],["EntityIn",["29#0"]],["CustomVariable",["30#0"]],["ConditionIn",[]]],"o":[["BranchOutAction",[]]],"t":0,"logicIndex":"1"},{"id":31,"k":"FormulaImpact","i":[["ActionIn",["10#0"]],["EntityIn",["32#0"]],["EntityIn",["33#0"]],["CustomVariable",["34#0"]],["ConditionIn",[]]],"o":[["BranchOutAction",[]]],"t":0,"logicIndex":"2"},{"id":35,"k":"FormulaImpact","i":[["ActionIn",["13#0"]],["EntityIn",["36#0"]],["EntityIn",["37#0"]],["CustomVariable",["38#0"]],["ConditionIn",[]]],"o":[["BranchOutAction",[]]],"t":0,"logicIndex":"3"},{"id":39,"k":"FormulaImpact","i":[["ActionIn",["16#0"]],["EntityIn",["40#0"]],["EntityIn",["41#0"]],["CustomVariable",["42#0"]],["ConditionIn",[]]],"o":[["BranchOutAction",[]]],"t":0,"logicIndex":"4"},{"id":43,"k":"FormulaImpact","i":[["ActionIn",["22#0"]],["EntityIn",["44#0"]],["EntityIn",["45#0"]],["CustomVariable",["46#0"]],["ConditionIn",[]]],"o":[["BranchOutAction",[]]],"t":0,"logicIndex":"5"},{"id":30,"k":"Variable","i":[["EntityIn",[]]],"o":[["Variable",["3#3"]]],"v":2},{"id":34,"k":"Variable","i":[["EntityIn",[]]],"o":[["Variable",["31#3"]]],"v":2},{"id":38,"k":"Variable","i":[["EntityIn",[]]],"o":[["Variable",["35#3"]]],"v":2},{"id":42,"k":"Variable","i":[["EntityIn",[]]],"o":[["Variable",["39#3"]]],"v":2},{"id":46,"k":"Variable","i":[["EntityIn",[]]],"o":[["Variable",["43#3"]]],"v":2},{"id":2,"k":"Entity","i":[],"o":[["EntityOut",["1#1"]]],"v":1},{"id":5,"k":"Entity","i":[],"o":[["EntityOut",["4#1"]]],"v":1},{"id":6,"k":"Entity","i":[],"o":[["EntityOut",["4#2"]]],"v":2},{"id":8,"k":"Entity","i":[],"o":[["EntityOut",["7#1"]]],"v":1},{"id":9,"k":"Entity","i":[],"o":[["EntityOut",["7#2"]]],"v":2},{"id":11,"k":"Entity","i":[],"o":[["EntityOut",["10#1"]]],"v":1},{"id":12,"k":"Entity","i":[],"o":[["EntityOut",["10#2"]]],"v":2},{"id":14,"k":"Entity","i":[],"o":[["EntityOut",["13#1"]]],"v":1},{"id":15,"k":"Entity","i":[],"o":[["EntityOut",["13#2"]]],"v":2},{"id":17,"k":"Entity","i":[],"o":[["EntityOut",["16#1"]]],"v":1},{"id":18,"k":"Entity","i":[],"o":[["EntityOut",["16#2"]]],"v":2},{"id":20,"k":"Entity","i":[],"o":[["EntityOut",["19#1"]]],"v":1},{"id":21,"k":"Entity","i":[],"o":[["EntityOut",["19#2"]]],"v":2},{"id":23,"k":"Entity","i":[],"o":[["EntityOut",["22#1"]]],"v":1},{"id":24,"k":"Entity","i":[],"o":[["EntityOut",["22#2"]]],"v":2},{"id":26,"k":"Entity","i":[],"o":[["EntityOut",["25#1"]]],"v":1},{"id":27,"k":"Entity","i":[],"o":[["EntityOut",["25#2"]]],"v":2},{"id":28,"k":"Entity","i":[],"o":[["EntityOut",["3#1"]]],"v":1},{"id":29,"k":"Entity","i":[],"o":[["EntityOut",["3#2"]]],"v":2},{"id":32,"k":"Entity","i":[],"o":[["EntityOut",["31#1"]]],"v":1},{"id":33,"k":"Entity","i":[],"o":[["EntityOut",["31#2"]]],"v":2},{"id":36,"k":"Entity","i":[],"o":[["EntityOut",["35#1"]]],"v":1},{"id":37,"k":"Entity","i":[],"o":[["EntityOut",["35#2"]]],"v":2},{"id":40,"k":"Entity","i":[],"o":[["EntityOut",["39#1"]]],"v":1},{"id":41,"k":"Entity","i":[],"o":[["EntityOut",["39#2"]]],"v":2},{"id":44,"k":"Entity","i":[],"o":[["EntityOut",["43#1"]]],"v":1},{"id":45,"k":"Entity","i":[],"o":[["EntityOut",["43#2"]]],"v":2}]}];
+const graphs=JSON.parse(JSON.stringify(source));
+const state={skill:0,pick:16,focus:9,view:"events",ruleOwner:16,edits:{}};
+const selectorDrafts={};
+const filterTypes=["目标存活","本枚投射物尚未命中","距接触点不超过","当前生命比例不超过"];
+const sortTypes=["名单顺序","距接触点从近到远","当前生命值从低到高","生命比例从低到高"];
+const poolTypes=["本次施法目标名单","场内敌方实体"];
+function ruleFor(owner){
+ const key=state.skill+"/"+owner;
+ return selectorDrafts[key]??={pool:0,filters:[{type:0},{type:1}],order:[0]};
+}
+function criterion(f){
+ return filterTypes[f.type]+(f.type===2?" "+f.value+" 米":f.type===3?" "+f.value+"%":"");
+}
+function describeRule(rule){
+ return (rule.filters.length?rule.filters.map(criterion).join(" AND "):"全部候选")+" → "+rule.order.map(i=>sortTypes[i]).join("，再按");
+}
+const graph=()=>graphs[state.skill], nodes=()=>graph().nodes, node=id=>nodes().find(n=>n.id===Number(id));
+const pin=x=>Number(String(x).split("#")[0]);
+const modes=["单次","执行多次","持续执行"], roles={1:"施法者",2:"本次目标",5:"名单中的下一目标"};
+const isAction=n=>typeof n.t==="number";
+const output=n=>(n.o[0]?.[1]||[]).map(key=>node(pin(key))).filter(Boolean);
+const event=n=>({Projectile:"投射物接触受击体时",FormulaImpact:"每段伤害判定命中时",Combat:"开始施法时",OriginalSkillVisual:"轨道特效判定接触时"})[n.k]||"事件";
+const name=n=>{
+ if(n.k==="OriginalSkillVisual") return ({4:"收招标记",5:"位移标记",6:"播放轨道特效"})[n.stage]||"播放表现";
+ return ({Combat:"施法入口",Entity:roles[n.v],Variable:"技能等级",EntityExist:"实体存在判断",Animation:"播放角色动画",Projectile:"发射投射物",FormulaImpact:"第 "+(n.logicIndex||1)+" 段伤害结算",RedirectProjectile:"改变当前投射物目标",OverTimeEffect:"施加中毒（草案）"})[n.k]||n.k;
+};
+const idtext=n=>n.draft?"草案节点":"Node"+n.id;
+const btn=(id,label,cl="smallbtn")=>'<button type="button" class="'+cl+'" data-node="'+id+'" aria-pressed="'+(state.pick===id)+'">'+label+'</button>';
+const jump=(n)=>btn(n.id,idtext(n)+" · "+name(n));
+const inputName=(n,k,t)=> {
+ if(t==="ActionIn")return "执行入口";
+ if(t==="ConditionIn")return "前置条件";
+ if(n.k==="EntityExist")return "待检查实体";
+ if(n.k==="RedirectProjectile")return "转向目标";
+ if(n.k==="FormulaImpact")return ["","施加者","实际受击者","技能等级"][k]||t;
+ if(n.k==="OverTimeEffect")return k===1?"受术者":"状态 ID";
+ if(n.k==="Projectile")return k===1?"发射者":"瞄准目标";
+ if(t==="EntityIn")return k===1?"施放者":"表现目标";
+ return t;
+};
+const isSource=n=>n.k==="Projectile"||(n.k==="OriginalSkillVisual"&&n.o.some(p=>p[0]==="BranchOutAction"&&p[1].length));
+const sources=()=>nodes().filter(isSource);
+function receiverOf(n){return nodes().filter(other=>other.i.some(p=>p[1].some(x=>pin(x)===n.id)));}
+function childRow(n,seen=new Set()){
+ if(seen.has(n.id))return jump(n);
+ const visited=new Set(seen);visited.add(n.id);
+ let inner=btn(n.id,name(n)+'<code>'+idtext(n)+'</code>',"action");
+ if(n.k==="RedirectProjectile"){
+   const rule=ruleFor(n.id);
+   const select='<button type="button" class="action" data-selector="'+n.id+'" aria-pressed="'+(state.ruleOwner===n.id)+'">选择目标<small>拟议行为</small></button>';
+   return '<div class="branch">'+select+'<div class="hint">'+describeRule(rule)+'</div><div class="branch"><small>找到目标 →</small> '+btn(n.id,'当前投射物续飞 <code>'+idtext(n)+'</code>','action')+'<div class="hint">再次接触 → 回到上方接触事件</div></div><div class="hint">无目标 → 本次续飞结束</div></div>';
+ }
+ if(n.k==="FormulaImpact")inner+='<div class="node-info"><small>受术者 · 本次实际受击者</small></div>';
+ if(n.o.some(p=>p[0]==="BranchOutAction")){
+ const children=output(n);inner+='<div class="node-info chips"><small class="cue">↳ '+event(n)+'</small>'+'</div>'+children.map(c=>'<div class="branch">'+childRow(c,visited)+'</div>').join("");
+ if(!children.length)inner+='<small class="node-info">尚未接后续动作</small>';
+ }
+ return '<div class="branch">'+inner+'</div>';
+}
+function addButton(n){
+ const exists=output(n).some(c=>c.draft);
+ return '<button type="button" class="smallbtn" data-add="'+n.id+'">'+(exists?"移除示例 Buff":"＋ 接 Buff 示范")+'</button>';
+}
+function allTimes(){
+ const list=output(node(0)).slice().sort((a,b)=>a.t-b.t||a.id-b.id);
+ const group=(heading,items)=>'<div class="subhead">'+heading+'</div><div class="timelist">'+items.map(n=>btn(n.id,name(n)+'<small>'+n.t.toFixed(3)+' s · '+idtext(n)+'</small>',"rowbtn")).join("")+'</div>';
+ return btn(0,"施法入口 · Node0","rowbtn")+group("施法后",list.filter(n=>![4,5].includes(n.stage)))+group("原作时间参考",list.filter(n=>[4,5].includes(n.stage)));
+}
+function flow(){
+ const top=node(state.focus);
+ if(!top)return "";
+ let html='<small>时间轴选中来源</small>'+btn(top.id,(top.t===undefined?"":top.t.toFixed(3)+" s　")+name(top)+'<code>'+idtext(top)+'</code>',"action");
+ if(top.k==="Combat")return html+'<div class="event">开始施法时</div>'+output(top).map(n=>btn(n.id,name(n)+' · '+n.t+' s',"rowbtn")).join("");
+ if(!isSource(top))return html+'<div class="event">施法入口 → '+name(top)+'</div><small>右侧可查看此动作的实体输入、前置条件和参数。</small>';
+ const children=output(top);
+ return html+'<div class="event"><strong>↳ '+event(top)+'</strong></div>'+children.map(n=>childRow(n)).join("");
+}
+function ledger(){
+ const groups=[["动作与触发",n=>n.k==="Combat"||isAction(n)],["条件与变量",n=>["EntityExist","Variable","BuffId"].includes(n.k)],["实体输入",n=>n.k==="Entity"]];
+ return groups.map(([title,test])=>'<div class="subhead">'+title+'</div>'+nodes().filter(test).map(n=>{
+ const lines=n.o.flatMap(([type,links],p)=>links.map(link=>{const [to,port]=link.split("#").map(Number),dest=node(to);return '<p>'+idtext(n)+'#'+p+' → '+btn(to,idtext(dest)+'#'+port+' · '+inputName(dest,port,dest.i[port][0]))+'</p>';}));
+ return '<div class="linkset">'+jump(n)+' <code>'+n.k+'</code>'+lines.join("")+(!lines.length?"<p>无出线</p>":"")+'</div>';
+ }).join("")).join("");
+}
+function opts(options,value){return options.map((o,i)=>'<option value="'+i+'"'+(i===value?" selected":"")+'>'+o+'</option>').join("");}
+const field=(title,body)=>'<label class="field"><span>'+title+'</span>'+body+'</label>';
+const fixed=(title,value)=>'<div class="field"><small>'+title+'</small><span>'+value+'</span></div>';
+const setting=(key,label,list,v)=>field(label,'<select data-setting="'+key+'">'+opts(list,v)+'</select>');
+const num=(key,label,v,step)=>field(label,'<input data-setting="'+key+'" type="number" min="0" step="'+step+'" value="'+v+'">');
+function selectorInspector(owner){
+ const rule=ruleFor(owner);
+ const selectOptions=(names,index)=>opts(names,index);
+ let h='<strong>选择目标</strong><div class="hint">拟议行为 · 每次上游事件触发时重新求值</div>';
+ h+='<div class="detailgroup"><h3>候选范围</h3><select aria-label="候选范围" data-rule="pool">'+selectOptions(poolTypes,rule.pool)+'</select></div>';
+ h+='<div class="detailgroup"><h3>筛选条件 <small>全部满足 · AND</small></h3>';
+ rule.filters.forEach((f,i)=>{
+  h+='<div class="ruleline"><select aria-label="条件 '+(i+1)+'" data-filter="'+i+'">'+selectOptions(filterTypes,f.type)+'</select><button type="button" class="smallbtn" data-remove-filter="'+i+'" aria-label="移除条件 '+(i+1)+'">移除</button></div>';
+  if(f.type===2||f.type===3)h+=field(f.type===2?"范围（米）":"生命比例（%）",'<input aria-label="条件阈值" type="number" min="0" '+(f.type===3?'max="100"':'')+' step="any" data-threshold="'+i+'" value="'+f.value+'">');
+ });
+ if(rule.filters.length<filterTypes.length)h+='<button type="button" class="smallbtn" data-rule-button="filter">＋ 条件</button>';
+ h+='</div><div class="detailgroup"><h3>排序 <small>排在最前的目标当选</small></h3>';
+ rule.order.forEach((o,i)=>{
+  h+='<div class="ruleline"><label><small>'+(i?"并列时再按":"优先按")+'</small><select aria-label="排序优先级 '+(i+1)+'" data-order="'+i+'">'+selectOptions(sortTypes,o)+'</select></label>'+(i?'<button type="button" class="smallbtn" data-remove-order="'+i+'">移除</button>':'')+'</div>';
+ });
+ if(rule.order.length<sortTypes.length)h+='<button type="button" class="smallbtn" data-rule-button="order">＋ 并列排序</button>';
+ h+='</div><div class="detailgroup"><h3>输出</h3>'+fixed("找到","选中的实体 → 续飞的目标输入")+fixed("无目标","结束本次续飞")+'</div>';
+ return h;
+}
+function inspector(){
+ if(state.ruleOwner!==null)return selectorInspector(state.ruleOwner);
+ const n=node(state.pick);const cfg=state.edits[state.skill+"-"+n.id]||{};
+ let h='<strong>'+name(n)+'</strong><br><code>'+idtext(n)+' · '+n.k+'</code>';
+ h+='<div class="detailgroup"><h3>输入连线与条件</h3>'+n.i.map(([type,links],port)=>{
+ const info='<span class="ptype">'+inputName(n,port,type)+' · '+type+' #'+port+'</span>';
+ const items=links.map(l=>jump(node(pin(l)))).join("");
+ const rebind=type==="EntityIn"&&links.length?'<details><summary class="mut">改接实体输入</summary><select aria-label="选择输入节点" data-rewire="'+port+'">'+nodes().filter(a=>a.k==="Entity").map(a=>'<option value="'+a.id+'"'+(a.id===pin(links[0])?" selected":"")+'>'+idtext(a)+' · '+name(a)+'</option>').join("")+'</select></details>':"";
+ return '<div class="portrow">'+info+(items||'<small>未连接</small>')+rebind+'</div>';
+ }).join("")+(!n.i.length?'<small>无输入端口</small>':'')+'</div>';
+ h+='<div class="detailgroup"><h3>节点参数</h3>';
+ if(n.k==="RedirectProjectile"||isAction(n)){
+ h+=num("t",n.k==="Projectile"||node(0).o[0][1].includes(n.id+"#0")?"施法后（秒）":"事件后延迟（秒）",n.t,.001)+setting("mode","执行方式",modes,cfg.mode||0);
+ if(cfg.mode===1)h+=num("count","执行次数",cfg.count??2,1);if(cfg.mode===2)h+=num("duration","持续秒数",cfg.duration??1,.1);
+ if(cfg.mode>0)h+=num("interval","执行间隔（秒）",cfg.interval??.1,.01);
+ }
+ if(n.k==="EntityExist")h+=setting("logic","判断逻辑",["存在","不存在","可交互"],cfg.logic??2);
+ if(n.k==="Entity")h+=setting("entity","实体来源",Object.values(roles),[1,2,5].indexOf(n.v));
+ if(n.k==="Combat")h+=fixed("施法目标上限",graph().limit);
+ if(n.k==="Projectile")h+=fixed("投射物配置",graph().name+"-投射物")+fixed("继承初速","15 米/秒")+fixed("继承加速度","20 米/秒²");
+ if(n.k==="Variable")h+=fixed("动态变量","skill.level")+fixed("默认值","1");
+ if(n.k==="FormulaImpact")h+=fixed("命中方式","直接结算")+fixed("流程资产","宗师之上实战属性伤害")+fixed("逻辑段号",n.logicIndex||1);
+ if(n.k==="OverTimeEffect")h+=fixed("操作","施加状态")+fixed("状态","中毒 · poison");
+ if(n.k==="BuffId")h+=fixed("值","poison 的状态 ID");
+ if(n.k==="OriginalSkillVisual")h+=fixed("表现类型",name(n))+(n.bone?fixed("挂点",n.bone):"");
+ if(n.k==="Animation")h+=fixed("动作来源","技能动作绑定");
+ h+='</div><div class="detailgroup"><h3>输出与后续动作</h3>';
+ for(const [type,links] of n.o){h+='<div class="portrow"><span class="ptype">'+type+'</span>'+links.map(l=>jump(node(pin(l)))).join("")+(links.length?"":"<small>未连接</small>")+'</div>';}
+ if(!n.o.length)h+='<small>无输出端口</small>';
+ if(n.k==="FormulaImpact"||isSource(n))h+=addButton(n);
+ return h+'</div>';
+}
+const exampleLogs=[
+ ["接触甲，结算甲的伤害，飞剑转向乙。","接触乙，结算乙的伤害，同一把剑转向丙。","接触丙，结算丙的伤害，名单结束，飞行结束。"],
+ source[1].nodes.filter(n=>n.k==="OriginalSkillVisual"&&n.o.some(p=>p[1].length)).map(n=>{
+   const damage=source[1].nodes.find(d=>d.id===pin(n.o[0][1][0]));
+   return n.t.toFixed(3)+" 秒的特效（"+idtext(n)+"）接触目标，触发"+name(damage)+"（"+idtext(damage)+"）。";
+ })
+];
+function render(){
+ $("skill").value=state.skill;$("meta").textContent="原图 "+source[state.skill].nodes.length+" 个 MCC 节点　·　施法目标上限 "+graph().limit;
+ $("timeline").innerHTML=allTimes();
+ root.querySelectorAll("[data-view]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.view===state.view));
+ $("canvas").innerHTML=state.view==="ports"?ledger():flow();
+ $("inspector").innerHTML=inspector();
+ const trace = $("trace");
+ trace.replaceChildren();
+ for(const entry of exampleLogs[state.skill]){
+   const row=document.createElement("li");
+   row.textContent=entry;
+   trace.appendChild(row);
+ }
+}
+function save(){if(window.openai?.setWidgetState)window.openai.setWidgetState({modelContent:{skill:graph().name,view:state.view,selected:state.ruleOwner===null?"Node"+state.pick:"选择目标（拟议）"},privateContent:{skill:state.skill,view:state.view,pick:state.pick,focus:state.focus,ruleOwner:state.ruleOwner,rules:selectorDrafts}}).catch(()=>{});}
+function contextOf(n){
+ if(n.k==="Combat"||node(0).o[0][1].includes(n.id+"#0"))return n;
+ const q=[n];const seen=new Set();
+ while(q.length){const cur=q.shift();if(seen.has(cur.id))continue;seen.add(cur.id);
+ if(isSource(cur))return cur;
+ for(const p of cur.i.filter(p=>p[0]==="ActionIn"))for(const l of p[1])q.push(node(pin(l)));
+ for(const d of receiverOf(cur))if(!seen.has(d.id))q.push(d);
+ }return null;
+}
+function choose(id){const n=node(id);if(!n)return;state.ruleOwner=null;state.pick=n.id;const scope=contextOf(n);if(scope)state.focus=scope.id;}
+function flipBuff(parent){
+ const child=output(parent).find(c=>c.draft);
+ if(child){parent.o[0][1]=parent.o[0][1].filter(x=>pin(x)!==child.id);const removed=new Set([child.id,...child.i.slice(1).flatMap(p=>p[1].map(pin))]);graph().nodes=nodes().filter(n=>!removed.has(n.id));choose(parent.id);return;}
+ const id=Math.max(...nodes().map(n=>n.id))+1;
+ const b={id,k:"OverTimeEffect",draft:true,t:0,i:[["ActionIn",[parent.id+"#0"]],["EntityIn",[(id+1)+"#0"]],["CustomVariable",[(id+2)+"#0"]],["ConditionIn",[]]],o:[]};
+ nodes().push(b,{id:id+1,k:"Entity",draft:true,v:2,i:[],o:[["EntityOut",[id+"#1"]]]},{id:id+2,k:"BuffId",draft:true,i:[],o:[["Variable",[id+"#2"]]]});
+ parent.o[0][1].push(id+"#0");choose(id);
+}
+root.addEventListener("click",e=>{
+ const b=e.target.closest("button");if(!b)return;
+ if(b.dataset.node!==undefined)choose(+b.dataset.node);
+ else if(b.dataset.view){state.view=b.dataset.view;if(state.view==="ports")state.ruleOwner=null;}
+ else if(b.dataset.selector!==undefined){choose(+b.dataset.selector);state.ruleOwner=state.pick;}
+ else if(state.ruleOwner!==null&&(b.dataset.ruleButton||b.dataset.removeFilter!==undefined||b.dataset.removeOrder!==undefined)){
+  const rule=ruleFor(state.ruleOwner);
+  if(b.dataset.ruleButton==="filter"){
+   const type=filterTypes.findIndex((_,i)=>!rule.filters.some(f=>f.type===i));
+   if(type!==-1)rule.filters.push({type:type,value:type===3?50:8});
+  }else if(b.dataset.ruleButton==="order"){
+   const index=sortTypes.findIndex((_,i)=>!rule.order.includes(i));if(index!==-1)rule.order.push(index);
+  }else if(b.dataset.removeFilter!==undefined)rule.filters.splice(+b.dataset.removeFilter,1);
+  else if(+b.dataset.removeOrder>0)rule.order.splice(+b.dataset.removeOrder,1);
+ }
+ else if(b.dataset.add!==undefined)flipBuff(node(+b.dataset.add));
+ render();save();
+});
+root.addEventListener("change",e=>{
+ const el=e.target,n=node(state.pick);
+ if(el===$("skill")){state.skill=+el.value;state.view="events";choose(state.skill?sources()[0].id:nodes().find(a=>a.k==="RedirectProjectile").id);}
+ else if(state.ruleOwner!==null&&(el.dataset.rule||el.dataset.filter!==undefined||el.dataset.order!==undefined||el.dataset.threshold!==undefined)){
+  const rule=ruleFor(state.ruleOwner),v=Number(el.value);
+  if(el.dataset.rule==="pool")rule.pool=v;
+  else if(el.dataset.filter!==undefined){
+   const f=rule.filters[+el.dataset.filter],duplicate=rule.filters.find(other=>other!==f&&other.type===v);
+   if(duplicate){duplicate.type=f.type;duplicate.value=f.value;}
+   f.type=v;f.value=v===3?50:8;
+  }else if(el.dataset.threshold!==undefined){
+   const f=rule.filters[+el.dataset.threshold];f.value=Math.max(0,f.type===3?Math.min(100,v):v);
+  }else{const i=+el.dataset.order,used=rule.order.indexOf(v);if(used>=0)rule.order[used]=rule.order[i];rule.order[i]=v;}
+ }
+ else if(el.dataset.rewire!==undefined){const port=+el.dataset.rewire,ref=n.id+"#"+port,prev=node(pin(n.i[port][1][0])),replacement=node(+el.value);prev.o[0][1]=prev.o[0][1].filter(x=>x!==ref);replacement.o[0][1].push(ref);n.i[port][1]=[replacement.id+"#0"];}
+ else if(el.dataset.setting){const k=el.dataset.setting;let v=Math.max(0,Number(el.value)||0);if(k==="count")v=Math.max(1,Math.round(v));if(k==="t")n.t=v;else if(k==="entity")n.v=[1,2,5][v];else (state.edits[state.skill+"-"+n.id]??={})[k]=v;}
+ render();save();
+});
+function restore(s){
+ if(!s||![0,1].includes(s.skill))return;
+ state.skill=s.skill;state.view=s.view==="ports"?"ports":"events";
+ state.focus=node(s.focus)?.id??sources()[0].id;state.pick=node(s.pick)?.id??state.focus;
+ state.ruleOwner=state.view==="events"&&node(s.ruleOwner)?.k==="RedirectProjectile"?s.ruleOwner:null;
+ for(const [key,value] of Object.entries(s.rules||{})){
+   if(!/^\d+\/\d+$/.test(key)||!value||!poolTypes[value.pool]||!Array.isArray(value.filters)||!Array.isArray(value.order))continue;
+   if(value.filters.some(f=>!f||!filterTypes[f.type]||(f.type>=2&&!Number.isFinite(f.value))))continue;
+   if(!value.order.length||value.order.some(i=>!sortTypes[i]))continue;
+   selectorDrafts[key]=JSON.parse(JSON.stringify(value));
+ }
+}
+restore(window.openai?.widgetState?.privateContent);window.addEventListener("openai:set_globals",e=>{const s=e.detail?.globals?.widgetState?.privateContent;if(s){restore(s);render();}});render();
+})();
+
+</script>

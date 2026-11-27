@@ -34,6 +34,7 @@ namespace SoftKitty
         /// The display name of the effect (e.g., "Poison", "Burn", "Freeze"). Used for UI and user-facing elements.
         /// </summary>
         public string name;
+        public string chineseDescription;
         public string iconPath;
         /// <summary>
         /// The category of the effect (e.g., "Debuff", "Buff", "DoT"). This is used to categorize and organize effects.
@@ -115,6 +116,7 @@ namespace SoftKitty
             OverTimeEffect _copy = new OverTimeEffect();
             _copy.uid = uid;
             _copy.name = name;
+            _copy.chineseDescription = chineseDescription;
             _copy.iconPath = iconPath;
             _copy.category = category;
             _copy.directRefIcon = directRefIcon;

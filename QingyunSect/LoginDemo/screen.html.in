@@ -96,10 +96,10 @@ button:focus-visible{outline:2px solid #fff0be;outline-offset:4px}
     <section id="battle-books" aria-label="待用武学" hidden><div></div><output aria-live="polite"></output></section>
     <a id="skill-records" href="skill-records.html" hidden>功法图谱</a>
     <div id="battle-controls" hidden>
-      <button type="button" id="battle-attack" aria-label="施放基础剑法" hidden></button>
       <button type="button" id="battle-reset" hidden>重开试放</button>
       <button type="button" id="battle-auto" aria-label="自动施放" aria-pressed="true">自动</button>
     </div>
+    <button type="button" id="battle-next" hidden><img alt="">挑战下一关</button>
     <section id="battle-result" role="status" hidden>
       <h2></h2>
       <div class="duel-report" hidden>

@@ -62,7 +62,15 @@ namespace SoftKitty
                 var header = RowRect();
                 EditorGUI.LabelField(Cell(header, -1), "等级", EditorStyles.miniBoldLabel);
                 for (int i = 0; i < columns.Count; i++)
-                    EditorGUI.LabelField(Cell(header, i), columns[i].title, EditorStyles.miniBoldLabel);
+                {
+                    var column = columns[i];
+                    var rect = Cell(header, i);
+                    var button = new Rect(rect.xMax - 22, rect.y, 22, rect.height);
+                    rect.xMax = button.xMin;
+                    EditorGUI.LabelField(rect, column.title, EditorStyles.miniBoldLabel);
+                    SkillFieldHelp.Button(button, column.title.text, string.IsNullOrEmpty(column.title.tooltip)
+                        ? "该等级自定义参数的值，公式可按字段名读取这一列。" : column.title.tooltip);
+                }
 
                 foreach (var level in table.rows.OrderBy(row => row.level))
                 {
@@ -126,10 +134,10 @@ namespace SoftKitty
             }
             EditorGUILayout.LabelField("攻击公式与技能等级", EditorStyles.boldLabel);
             bool wasNative = config.EffectiveMode == SkillCalculation.Mode.NativeGraph;
-            bool native = EditorGUILayout.Popup("计算方式", wasNative ? 1 : 0, new[] { "技能伤害流程", "MCC 原生伤害图" }) == 1;
+            bool native = SkillFieldHelp.Popup("计算方式", wasNative ? 1 : 0, new[] { "技能伤害流程", "MCC 原生伤害图" }, "决定命中后使用配置的技能伤害流程，还是运行一张 MCC 原生伤害图。") == 1;
             if (native != wasNative)
                 Change(() => config.SetMode(native ? SkillCalculation.Mode.NativeGraph : SkillCalculation.Mode.SharedFlow));
-            var table = (SkillLevelTable)EditorGUILayout.ObjectField("技能等级表", config.levels, typeof(SkillLevelTable), false);
+            var table = (SkillLevelTable)SkillFieldHelp.ObjectField("技能等级表", config.levels, typeof(SkillLevelTable), false, "提供不同等级的攻击倍率、固定加值等参数。本动作按施放等级读取相应行。");
             if (table != config.levels) Change(() => config.levels = table);
             if (!config.levels && GUILayout.Button("新建本技能等级表"))
             {
@@ -147,8 +155,8 @@ namespace SoftKitty
             {
                 var levels = table.rows.Select(row => row.level).Distinct().OrderBy(level => level).ToArray();
                 if (!levels.Contains(formulaSampleLevel)) formulaSampleLevel = levels[0];
-                formulaSampleLevel = EditorGUILayout.IntPopup("公式试算等级", formulaSampleLevel,
-                    levels.Select(level => level + " 级").ToArray(), levels);
+                formulaSampleLevel = SkillFieldHelp.IntPopup("公式试算等级", formulaSampleLevel,
+                    levels.Select(level => level + " 级").ToArray(), levels, "选择在工作台试算公式时要读取哪一级的数值。");
             }
             if (native) DrawNativeDamageGraph(config);
             else DrawDamageFlow(config);
@@ -158,12 +166,12 @@ namespace SoftKitty
                 EditorGUILayout.LabelField("每段执行一次原生图。本段序号与占比分别通过 hit.index、hit.share 传给图内节点。", EditorStyles.wordWrappedMiniLabel);
             if (!native)
             {
-                bool independent = EditorGUILayout.Toggle("独立命中段倍率", config.independentSegment);
+                bool independent = SkillFieldHelp.Toggle("独立命中段倍率", config.independentSegment, "启用后，每个逻辑段使用自己填写的倍率；关闭时，多段按整招伤害的占比分配。");
                 if (independent != config.independentSegment) Change(() => config.independentSegment = independent);
             }
             if (config.independentSegment)
             {
-                int index = Mathf.Max(1, EditorGUILayout.DelayedIntField("起始逻辑段号", config.logicIndex));
+                int index = Mathf.Max(1, SkillFieldHelp.DelayedIntField("起始逻辑段号", config.logicIndex, "给本动作的第一段命中指定编号。动作执行多段时后续段号依次递增，用于对照命中记录。"));
                 if (index != config.logicIndex) Change(() => config.logicIndex = index);
                 if (config.segmentPercent.Count != count && GUILayout.Button("匹配执行次数，保留已有倍率"))
                     Change(() => config.segmentPercent = Enumerable.Range(0, count)
@@ -176,7 +184,7 @@ namespace SoftKitty
                 int segment = i;
                 float old = config.segmentPercent[i];
                 string label = config.independentSegment ? "逻辑段 " + (config.logicIndex + i) + " 倍率（%）" : "第 " + (i + 1) + " 段占比（%）";
-                float next = EditorGUILayout.DelayedFloatField(label, old);
+                float next = SkillFieldHelp.DelayedFloatField(label, old, config.independentSegment ? "这个逻辑段单独使用的倍率。100 表示按完整基础值计算，50 表示一半。" : "这段分到整招伤害的百分比。各段占比应合计 100%。");
                 if (next != old) Change(() => config.segmentPercent[segment] = next);
             }
             try { config.ValidateShares(count); }

@@ -217,11 +217,11 @@
   #unity-preview .preview-controls { display:flex; flex-wrap:wrap; align-items:end; gap:10px; margin:0 0 12px; }
   #unity-preview label { display:grid; gap:3px; color:var(--soft); }
   #unity-preview input { width:7em; }
+  #unity-screen iframe { display:block; height:min(55vh,640px); width:min(100%,30.9375vh,360px); border:0; margin:auto; }
   #unity-screen canvas { display:block; width:auto; max-width:100%; height:min(55vh,640px); aspect-ratio:9/16; margin:auto; background:#0d181d; }
   #unity-readout { white-space:pre-line; }
   #unity-details details { margin:12px 0; }
   #unity-details summary { cursor:pointer; color:var(--accent); }
-  #unity-screen iframe { display:block; height:min(55vh,640px); width:min(100%,30.9375vh,360px); border:0; margin:auto; }
 </style>
 </head>
 <body>
@@ -262,7 +262,6 @@
           <label id="unity-damage-label" hidden>每段预览来伤<input id="unity-damage" type="number" min="0" step="any" value="10"></label>
           <label id="unity-direction-label" hidden>施放方<select id="unity-direction"><option value="hero">主角</option><option value="enemy">怪物</option></select></label>
           <button id="unity-play" class="primary" type="button">试放技能</button><button id="unity-interrupt" type="button" disabled>打断施法</button>
-          <button id="unity-chain" type="button" hidden disabled>用当前角色接放</button>
         </div>
         <p id="unity-play-status" role="status"></p><div id="unity-screen"></div>
         <p id="unity-readout"></p><ol id="unity-hits"></ol>

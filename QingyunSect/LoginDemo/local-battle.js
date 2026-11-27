@@ -18,8 +18,10 @@ try {
   await Promise.all(ids.map(id=>loadScript('battle-art/skills/'+id+'.js')));
   const packages=ids.map(id=>window.localBattlePackages[id]);
   const encounter=params.get('encounter'),formal=encounter!==null&&encounter!=='skills';
-  // The chapter HUD occupies the lower third of the portrait reference.
-  const camera=makeBattleCamera(formal?21:38,formal ? .28 : 0);
+  // Match the elevation used by the Unity workbench and the baked particle colour/depth.
+  // In chapters the skill bar begins at 60% of the screen. Fit the same view above it.
+  const sceneFraction=formal ? .60 : 1;
+  const camera=makeBattleCamera(38,1-sceneFraction);
   let party=null;
   const graphLevels=new Map(),nextReady=new Map();
   if(formal){
@@ -84,7 +86,7 @@ try {
       void main(){vec4 c=texture2D(tex,uv);if(c.a<cutoff)discard;gl_FragColor=vec4(c.rgb,1.);}`,['pos','coords']);
   const uniform=Object.fromEntries(['origin','facing','size','cutoff','clipFromWorld'].map(k=>[k,gl.getUniformLocation(program,k)]));
   const clouds=await makeBattleClouds(gl,art),bird=await makeFlyingEnemy(gl,art.enemy);
-  const presentation=makeBattlePresentation(gl),drawParticle=makeParticleRenderer(gl);
+  const presentation=makeBattlePresentation(gl),drawParticle=makeParticleRenderer(gl,presentation);
   const drawWard=training.ally||training.bead||party?.escort?makeWardRenderer(gl):null;
   const drawStone=party?.practice||party?.waves.some(w=>w.slam)?makeStoneGuardian(gl,party.practice):null;
   const effects=new Map(), requests=new Map();
@@ -313,6 +315,7 @@ try {
     for(const item of transparent)item.depth=camera.depth(item.at);
     transparent.sort((a,b)=>b.depth-a.depth);
     for(const item of transparent){
+      presentation.transparentTarget(item.ward);
       if(item.ward)drawWard(camera,item.at,item.ward);
       else stamp(item.key,item.age,item.at,item.scale,item.loop);
     }
@@ -491,7 +494,9 @@ try {
   function select(pkg){
     current=pkg;
     if(!formal){enemy.rig=rigs.get(pkg.enemyModel);enemy.name=pkg.enemyModel||'小雕';}
-    span=formal?Math.max(7,distance*.55):Math.max(enemy.rig||enemy.slam||party?.practice||flock?5.9:3.75,distance*.32+2.3);$('skill-name').textContent=document.title=pkg.name;
+    const unitySpan=Math.max(enemy.rig||enemy.slam||party?.practice||flock?5.9:3.75,distance*.32+2.3);
+    span=unitySpan/sceneFraction;
+    $('skill-name').textContent=document.title=pkg.name;
   }
   function enterWave(index){
     for(const actor of enemies)actor.active=false;

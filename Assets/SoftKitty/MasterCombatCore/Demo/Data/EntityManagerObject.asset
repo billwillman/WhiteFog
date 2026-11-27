@@ -1,5 +1,5 @@
 %YAML 1.1
-%TAG !u! tag:unity3d.com,2011:
+%TAG !u! tag:yousandi.cn,2023:
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff6002efa7c07d34184f04325fbac21d, type: 3}
   m_Name: EntityManagerObject
   m_EditorClassIdentifier: Assembly-CSharp::SoftKitty.EntityManagerObject
-  Hash: 06aabfc0d8cf9037a86e48bba12000e8
+  Hash: 79d2cf8ce23ec2c372deb615235b1cbd
   EntityData:
     EntityList:
     - uid: player
@@ -21,162 +21,270 @@ MonoBehaviour:
         stringValue: player
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: lvl
         stringValue: 1
         floatValue: 1
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: atk
         stringValue: 10
         floatValue: 10
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: def
         stringValue: 5
         floatValue: 5
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: resist
         stringValue: 5
         floatValue: 5
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: hp
         stringValue: 100
         floatValue: 100
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: sp
         stringValue: 100
         floatValue: 100
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: agi
         stringValue: 10
         floatValue: 10
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: crit
         stringValue: 5
         floatValue: 5
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: luck
         stringValue: 5
         floatValue: 5
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: steal
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: stunrate
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: mxp
         stringValue: 100
         floatValue: 100
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 100
+        maxValue: 100
         mAttributeSetting:
           rid: -2
       - uid: xp
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: chp
         stringValue: 100
         floatValue: 100
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: shield
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: reflect
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: dmgrange
         stringValue: 100
         floatValue: 100
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: kockback
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: death
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: speed
         stringValue: 100
         floatValue: 100
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: invincible
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: stun
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: chaos
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: forzen
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: hyperarmor
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: block
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       AttributesUpgradeLevel: 0
@@ -187,6 +295,7 @@ MonoBehaviour:
       - friendly
       - character
       AvailableForInteraction: 1
+      MultipleInstances: 0
       CustomFloat:
       - 0
       CustomInt: ffffffffffffffffffffffffffffffff
@@ -195,168 +304,277 @@ MonoBehaviour:
       CustomIntList: []
       CustomIdIntList: []
       CustomIdFloatList: []
+      Modules: []
     - uid: EnemyBot01
       Attributes:
       - uid: name
         stringValue: Enemy Bot
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: lvl
         stringValue: 1
         floatValue: 1
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: atk
         stringValue: 10
         floatValue: 20
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: def
         stringValue: 5
         floatValue: 1
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: resist
         stringValue: 5
         floatValue: 1
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: hp
         stringValue: 100
         floatValue: 100
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: sp
         stringValue: 100
         floatValue: 100
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: agi
         stringValue: 10
         floatValue: 2
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: crit
         stringValue: 5
         floatValue: 5
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: luck
         stringValue: 5
         floatValue: 5
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: steal
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: stunrate
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: mxp
         stringValue: 100
         floatValue: 80
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: xp
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: chp
         stringValue: 100
         floatValue: 80
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: shield
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: reflect
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: dmgrange
         stringValue: 100
         floatValue: 100
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: kockback
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: death
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: speed
         stringValue: 100
         floatValue: 100
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: invincible
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: stun
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: chaos
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: forzen
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: hyperarmor
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: block
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       AttributesUpgradeLevel: 0
@@ -367,6 +585,7 @@ MonoBehaviour:
       - hostile
       - character
       AvailableForInteraction: 1
+      MultipleInstances: 0
       CustomFloat:
       - 0
       CustomInt: ffffffffffffffffffffffffffffffff
@@ -375,168 +594,277 @@ MonoBehaviour:
       CustomIntList: []
       CustomIdIntList: []
       CustomIdFloatList: []
+      Modules: []
     - uid: EnemyBot02
       Attributes:
       - uid: name
         stringValue: Enemy Bot
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: lvl
         stringValue: 1
         floatValue: 1
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: atk
         stringValue: 10
         floatValue: 7
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: def
         stringValue: 5
         floatValue: 20
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: resist
         stringValue: 5
         floatValue: 20
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: hp
         stringValue: 100
         floatValue: 100
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: sp
         stringValue: 100
         floatValue: 100
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: agi
         stringValue: 10
         floatValue: 5
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: crit
         stringValue: 5
         floatValue: 5
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: luck
         stringValue: 5
         floatValue: 5
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: steal
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: stunrate
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: mxp
         stringValue: 100
         floatValue: 150
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: xp
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: chp
         stringValue: 100
         floatValue: 150
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: shield
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: reflect
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: dmgrange
         stringValue: 100
         floatValue: 100
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: kockback
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: death
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: speed
         stringValue: 100
         floatValue: 100
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: invincible
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: stun
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: chaos
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: forzen
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: hyperarmor
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: block
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       AttributesUpgradeLevel: 0
@@ -547,6 +875,7 @@ MonoBehaviour:
       - hostile
       - character
       AvailableForInteraction: 1
+      MultipleInstances: 0
       CustomFloat:
       - 0
       CustomInt: ffffffffffffffffffffffffffffffff
@@ -555,168 +884,277 @@ MonoBehaviour:
       CustomIntList: []
       CustomIdIntList: []
       CustomIdFloatList: []
+      Modules: []
     - uid: EnemyBot03
       Attributes:
       - uid: name
         stringValue: Enemy Bot
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: lvl
         stringValue: 1
         floatValue: 1
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: atk
         stringValue: 10
         floatValue: 10
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: def
         stringValue: 5
         floatValue: 5
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: resist
         stringValue: 5
         floatValue: 5
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: hp
         stringValue: 100
         floatValue: 100
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: sp
         stringValue: 100
         floatValue: 100
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: agi
         stringValue: 10
         floatValue: 10
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: crit
         stringValue: 5
         floatValue: 5
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: luck
         stringValue: 5
         floatValue: 5
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: steal
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: stunrate
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: mxp
         stringValue: 100
         floatValue: 100
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: xp
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: chp
         stringValue: 100
         floatValue: 100
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: shield
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: reflect
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: dmgrange
         stringValue: 100
         floatValue: 100
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: kockback
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: death
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: speed
         stringValue: 100
         floatValue: 100
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: invincible
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: stun
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: chaos
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: forzen
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: hyperarmor
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: block
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       AttributesUpgradeLevel: 0
@@ -727,6 +1165,7 @@ MonoBehaviour:
       - hostile
       - character
       AvailableForInteraction: 1
+      MultipleInstances: 0
       CustomFloat:
       - 0
       CustomInt: ffffffffffffffffffffffffffffffff
@@ -735,168 +1174,277 @@ MonoBehaviour:
       CustomIntList: []
       CustomIdIntList: []
       CustomIdFloatList: []
+      Modules: []
     - uid: EnemyBot04
       Attributes:
       - uid: name
         stringValue: Enemy Bot
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: lvl
         stringValue: 1
         floatValue: 1
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: atk
         stringValue: 10
         floatValue: 12
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: def
         stringValue: 5
         floatValue: 5
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: resist
         stringValue: 5
         floatValue: 5
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: hp
         stringValue: 100
         floatValue: 100
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: sp
         stringValue: 100
         floatValue: 100
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: agi
         stringValue: 10
         floatValue: 35
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: crit
         stringValue: 5
         floatValue: 35
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: luck
         stringValue: 5
         floatValue: 5
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: steal
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: stunrate
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: mxp
         stringValue: 100
         floatValue: 80
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: xp
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: chp
         stringValue: 100
         floatValue: 80
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: shield
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: reflect
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: dmgrange
         stringValue: 100
         floatValue: 100
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: kockback
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: death
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: speed
         stringValue: 100
         floatValue: 130
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: invincible
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: stun
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: chaos
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: forzen
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: hyperarmor
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: block
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       AttributesUpgradeLevel: 0
@@ -907,6 +1455,7 @@ MonoBehaviour:
       - hostile
       - character
       AvailableForInteraction: 1
+      MultipleInstances: 0
       CustomFloat:
       - 0
       CustomInt: ffffffffffffffffffffffffffffffff
@@ -915,168 +1464,277 @@ MonoBehaviour:
       CustomIntList: []
       CustomIdIntList: []
       CustomIdFloatList: []
+      Modules: []
     - uid: EnemyBot05
       Attributes:
       - uid: name
         stringValue: Enemy Bot
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: lvl
         stringValue: 1
         floatValue: 1
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: atk
         stringValue: 10
         floatValue: 12
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: def
         stringValue: 5
         floatValue: 10
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: resist
         stringValue: 5
         floatValue: 5
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: hp
         stringValue: 100
         floatValue: 100
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: sp
         stringValue: 100
         floatValue: 100
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: agi
         stringValue: 10
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: crit
         stringValue: 5
         floatValue: 20
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: luck
         stringValue: 5
         floatValue: 5
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: steal
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: stunrate
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: mxp
         stringValue: 100
         floatValue: 110
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: xp
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: chp
         stringValue: 100
         floatValue: 110
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: shield
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: reflect
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: dmgrange
         stringValue: 100
         floatValue: 100
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: kockback
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: death
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: speed
         stringValue: 100
         floatValue: 80
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: invincible
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: stun
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: chaos
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: forzen
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: hyperarmor
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: block
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       AttributesUpgradeLevel: 0
@@ -1087,6 +1745,7 @@ MonoBehaviour:
       - hostile
       - character
       AvailableForInteraction: 1
+      MultipleInstances: 0
       CustomFloat:
       - 0
       CustomInt: ffffffffffffffffffffffffffffffff
@@ -1095,168 +1754,277 @@ MonoBehaviour:
       CustomIntList: []
       CustomIdIntList: []
       CustomIdFloatList: []
+      Modules: []
     - uid: EnemyBot06
       Attributes:
       - uid: name
         stringValue: Enemy Bot
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: lvl
         stringValue: 1
         floatValue: 1
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: atk
         stringValue: 10
         floatValue: 20
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: def
         stringValue: 5
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: resist
         stringValue: 5
         floatValue: 5
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: hp
         stringValue: 100
         floatValue: 80
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: sp
         stringValue: 100
         floatValue: 70
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: agi
         stringValue: 10
         floatValue: 15
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: crit
         stringValue: 5
         floatValue: 5
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: luck
         stringValue: 5
         floatValue: 5
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: steal
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: stunrate
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: mxp
         stringValue: 100
         floatValue: 100
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: xp
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: chp
         stringValue: 100
         floatValue: 80
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: shield
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: reflect
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: dmgrange
         stringValue: 100
         floatValue: 100
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: kockback
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: death
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: speed
         stringValue: 100
         floatValue: 120
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: invincible
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: stun
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: chaos
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: forzen
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: hyperarmor
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: block
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       AttributesUpgradeLevel: 0
@@ -1267,6 +2035,7 @@ MonoBehaviour:
       - hostile
       - character
       AvailableForInteraction: 1
+      MultipleInstances: 0
       CustomFloat:
       - 0
       CustomInt: 00000000ffffffffffffffffffffffff
@@ -1275,168 +2044,277 @@ MonoBehaviour:
       CustomIntList: []
       CustomIdIntList: []
       CustomIdFloatList: []
+      Modules: []
     - uid: EnemyBot07
       Attributes:
       - uid: name
         stringValue: Enemy Bot
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: lvl
         stringValue: 1
         floatValue: 1
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: atk
         stringValue: 10
         floatValue: 10
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: def
         stringValue: 5
         floatValue: 5
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: resist
         stringValue: 5
         floatValue: 5
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: hp
         stringValue: 100
         floatValue: 80
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: sp
         stringValue: 100
         floatValue: 100
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: agi
         stringValue: 10
         floatValue: 10
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: crit
         stringValue: 5
         floatValue: 5
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: luck
         stringValue: 5
         floatValue: 5
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: steal
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: stunrate
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: mxp
         stringValue: 100
         floatValue: 100
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: xp
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: chp
         stringValue: 100
         floatValue: 80
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: shield
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: reflect
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: dmgrange
         stringValue: 100
         floatValue: 100
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: kockback
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: death
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: speed
         stringValue: 100
         floatValue: 100
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: invincible
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: stun
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: chaos
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: forzen
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: hyperarmor
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: block
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       AttributesUpgradeLevel: 0
@@ -1447,6 +2325,7 @@ MonoBehaviour:
       - hostile
       - character
       AvailableForInteraction: 1
+      MultipleInstances: 0
       CustomFloat:
       - 0
       CustomInt: 01000000ffffffffffffffffffffffff
@@ -1455,168 +2334,277 @@ MonoBehaviour:
       CustomIntList: []
       CustomIdIntList: []
       CustomIdFloatList: []
+      Modules: []
     - uid: EnemyBot08
       Attributes:
       - uid: name
         stringValue: Enemy Bot
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: lvl
         stringValue: 1
         floatValue: 1
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: atk
         stringValue: 10
         floatValue: 8
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: def
         stringValue: 5
         floatValue: 5
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: resist
         stringValue: 5
         floatValue: 5
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: hp
         stringValue: 100
         floatValue: 80
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: sp
         stringValue: 100
         floatValue: 100
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: agi
         stringValue: 10
         floatValue: 10
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: crit
         stringValue: 5
         floatValue: 5
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: luck
         stringValue: 5
         floatValue: 5
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: steal
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: stunrate
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: mxp
         stringValue: 100
         floatValue: 100
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: xp
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: chp
         stringValue: 100
         floatValue: 80
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: shield
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: reflect
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: dmgrange
         stringValue: 100
         floatValue: 100
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: kockback
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: death
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: speed
         stringValue: 100
         floatValue: 100
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: invincible
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: stun
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: chaos
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: forzen
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: hyperarmor
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: block
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       AttributesUpgradeLevel: 0
@@ -1627,6 +2615,7 @@ MonoBehaviour:
       - hostile
       - character
       AvailableForInteraction: 1
+      MultipleInstances: 0
       CustomFloat:
       - 0
       CustomInt: 02000000ffffffffffffffffffffffff
@@ -1635,168 +2624,277 @@ MonoBehaviour:
       CustomIntList: []
       CustomIdIntList: []
       CustomIdFloatList: []
+      Modules: []
     - uid: DubiMuxia
       Attributes:
       - uid: name
-        stringValue: "独臂木侠"
+        stringValue: "\u72EC\u81C2\u6728\u4FA0"
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: lvl
         stringValue: 1
         floatValue: 1
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: atk
         stringValue: 10
         floatValue: 20
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: def
         stringValue: 5
         floatValue: 1
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: resist
         stringValue: 5
         floatValue: 1
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: hp
         stringValue: 100
         floatValue: 100
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: sp
         stringValue: 100
         floatValue: 100
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: agi
         stringValue: 10
         floatValue: 2
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: crit
         stringValue: 5
         floatValue: 5
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: luck
         stringValue: 5
         floatValue: 5
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: steal
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: stunrate
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: mxp
         stringValue: 100
         floatValue: 80
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: xp
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: chp
         stringValue: 100
         floatValue: 80
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: shield
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: reflect
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: dmgrange
         stringValue: 100
         floatValue: 100
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: kockback
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: death
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: speed
         stringValue: 100
         floatValue: 100
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: invincible
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: stun
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: chaos
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: forzen
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: hyperarmor
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       - uid: block
         stringValue: 0
         floatValue: 0
         locked: 0
+        randomChange: 100
+        isFixed: 1
+        minValue: 0
+        maxValue: 0
         mAttributeSetting:
           rid: -2
       AttributesUpgradeLevel: 0
@@ -1807,14 +2905,16 @@ MonoBehaviour:
       - hostile
       - character
       AvailableForInteraction: 1
+      MultipleInstances: 0
       CustomFloat:
       - 0
       CustomInt: ffffffffffffffffffffffffffffffff
-      CustomBool:
+      CustomBool: 
       CustomString: []
       CustomIntList: []
       CustomIdIntList: []
       CustomIdFloatList: []
+      Modules: []
     ExtraInfo: 
   IdManager:
     idToKey:

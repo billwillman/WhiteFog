@@ -105,10 +105,6 @@ button:focus-visible{outline:2px solid #fff0be;outline-offset:4px}
   position:absolute;left:auto;top:auto;aspect-ratio:1;background-position:center;
   background-repeat:no-repeat;background-size:contain;border-radius:50%;line-height:1;
 }
-#story #battle-attack{
-  right:40.05cqw;bottom:calc(40.23cqw + env(safe-area-inset-bottom));width:19.63cqw;
-}
-#story #battle-attack:disabled{filter:grayscale(.75) brightness(.7);cursor:default}
 #story #battle-auto{
   right:2.45cqw;bottom:calc(30.79cqw + env(safe-area-inset-bottom));width:9.26cqw;
   color:#fff6df;text-shadow:0 1px 2px #54361a;font-size:clamp(10px,2.7cqw,25px);
@@ -120,7 +116,6 @@ button:focus-visible{outline:2px solid #fff0be;outline-offset:4px}
 #story #battle-return{padding:.4em 1.1em;border:1px solid #9b7752;color:#fff5df;background:#79573b;font-size:clamp(14px,3.5cqw,35px)}
 
 #skill-records{position:absolute;right:4%;top:12%;padding:.25em .55em;background:#efe5d1e8;color:#493e34;border:1px solid #a69778;text-decoration:none;font-size:clamp(12px,2.8cqw,22px)}
-#story #battle-entry[data-encounter="duel"] #battle-auto{bottom:calc(22cqw + env(safe-area-inset-bottom))}
 </style>
 <link rel="stylesheet" href="duel-hud.css"><link rel="stylesheet" href="training.css"><link rel="stylesheet" href="battle-transition.css">
 </head>
@@ -196,10 +191,10 @@ button:focus-visible{outline:2px solid #fff0be;outline-offset:4px}
     <section id="battle-books" aria-label="待用武学" hidden><div></div><output aria-live="polite"></output></section>
     <a id="skill-records" href="skill-records.html" hidden>功法图谱</a>
     <div id="battle-controls" hidden>
-      <button type="button" id="battle-attack" aria-label="施放基础剑法" hidden></button>
       <button type="button" id="battle-reset" hidden>重开试放</button>
       <button type="button" id="battle-auto" aria-label="自动施放" aria-pressed="true">自动</button>
     </div>
+    <button type="button" id="battle-next" hidden><img alt="">挑战下一关</button>
     <section id="battle-result" role="status" hidden>
       <h2></h2>
       <div class="duel-report" hidden>
@@ -533,10 +528,11 @@ function makeBattleEntry(art,onPracticeTrial) {
   const byId = id => document.getElementById(id);
   const scene=byId('battle-entry'),canvas=byId('battle-role'),bar=byId('battle-bar');
   const label=byId('battle-skill'),result=byId('battle-result');
-  const controls=byId('battle-controls'),auto=byId('battle-auto'),attack=byId('battle-attack');
+  const controls=byId('battle-controls'),auto=byId('battle-auto');
   let raf=0,mode,plan,age=0,last=null,castIndex=0,active=null,victory=false;
-  let automatic=true, readyAt=0, party=null, nextAutoPoll=0;
+  let previewAutomatic=true, readyAt=0, party=null, nextAutoPoll=0;
   const cooldowns=new Map(),feedback=byId('battle-feedback'),escortStatus=byId('escort-status');
+  const challenge=byId('battle-next');
   let feedbackUntil=0,onResult,requestVersion=0;
   const damageBySkill=new Map(),report=scene.querySelector('.duel-report');
   function keyForMove(id){
@@ -552,6 +548,10 @@ function makeBattleEntry(art,onPracticeTrial) {
     victory=true;feedback.hidden=true;board.close();controls.hidden=true;result.hidden=false;
     result.querySelector('h2').textContent=won?'胜利':'失败';
     result.dataset.outcome=won?'win':'lose';
+    if(!challenge.hidden){
+      if(won)result.insertBefore(challenge,byId('battle-return'));
+      else challenge.hidden=true;
+    }
     scene.classList.add('settled');
     const details=byId('duel-damage'),rows=details.querySelector('ol');
     const hits=[...damageBySkill].sort((a,b)=>b[1]-a[1]);
@@ -577,14 +577,14 @@ function makeBattleEntry(art,onPracticeTrial) {
   byId('duel-damage').querySelector('summary').addEventListener('click',event=>{
     if(!damageBySkill.size)event.preventDefault();
   });
+  challenge.querySelector('img').src=art.ui.worldcombat_btn_combat;
   auto.style.backgroundImage='url('+art.ui.worldcombat_btn_switch+')';
-  attack.style.backgroundImage='url('+art.ui.worldcombat_btn_combat+')';
   bar.style.setProperty('--bar-image','url('+art.ui.worldcombat_bg_skill_group+')');
   bar.style.setProperty('--slot-image','url('+art.ui.worldcombat_skill_state_bg01+')');
   const slots=Array.from({length:6},()=>{
     const li=document.createElement('li'),icon=new Image(),frame=new Image(),timer=document.createElement('span');
     const button=document.createElement('button'),name=document.createElement('small');
-    button.type='button';button.onclick=()=>{if(!editable())manual(button.dataset.key);};
+    button.type='button';button.onclick=()=>castPreviewSlot(button.dataset.key);
     icon.alt=frame.alt='';li.append(icon,frame,timer,name,button);bar.append(li);return {li,icon,frame,timer,name,button};
   });
   const editable=()=>!!party&&!party.fixedSkills&&!!mode&&mode!=='skills'&&!victory;
@@ -686,31 +686,27 @@ function makeBattleEntry(art,onPracticeTrial) {
     }
     // Reset the workbench fixture between automatic trials and when swapping the enemy model.
     const newOpponent=active&&(active.key==='boss')!==(key==='boss');
-    const restart=mode==='skills'&&(automatic||newOpponent);
+    const restart=mode==='skills'&&(previewAutomatic||newOpponent);
     if(restart)defeated=false;
     input(restart?'replay':'cast',key);active={time,key};
     readyAt=time+sourceMoves[key].seconds;
   }
   function updateControls(){
-    auto.hidden=editable();
-    auto.setAttribute('aria-pressed',String(automatic));auto.textContent=automatic?'自动':'手动';
-    byId('battle-reset').hidden=mode!=='skills'||automatic;
-    attack.hidden=automatic||!party;attack.disabled=age<readyAt||victory;
-    bar.setAttribute('aria-label',automatic?'出战功法，自动施放':'出战功法，手动施放');
+    controls.hidden=mode!=='skills';
+    auto.setAttribute('aria-pressed',String(previewAutomatic));auto.textContent=previewAutomatic?'自动':'手动';
+    byId('battle-reset').hidden=mode!=='skills'||previewAutomatic;
+    bar.setAttribute('aria-label',party||previewAutomatic?'出战功法，自动施放':'出战功法，手动施放');
   }
-  function manual(key){
-    if(!key||!mode||victory||(mode!=='skills'&&!party?.player.some(m=>m.id===sourceMoves[key]?.id))||
-      (party?age<(cooldowns.get(key)||0):age<readyAt)||(defeated&&(active?.key==='boss')===(key==='boss')))return;
-    automatic=false;cast(key,age);updateControls();
+  function castPreviewSlot(key){
+    if(mode!=='skills'||!key||age<readyAt||(defeated&&(active?.key==='boss')===(key==='boss')))return;
+    previewAutomatic=false;cast(key,age);updateControls();
   }
   auto.addEventListener('click',()=>{
-    if(!mode||victory)return;
-    automatic=!automatic;
-    if(automatic&&mode==='skills'){age=0;castIndex=0;active=null;readyAt=0;}
+    if(mode!=='skills')return;
+    previewAutomatic=!previewAutomatic;
+    if(previewAutomatic){age=0;castIndex=0;active=null;readyAt=0;}
     updateControls();
   });
-  const primarySlot=()=>plan?.slots.find(Boolean);
-  attack.addEventListener('click',()=>manual(primarySlot()));
   byId('battle-reset').addEventListener('click',()=>{
     if(mode!=='skills')return;
     defeated=false;readyAt=0;active=null;input('begin');updateControls();
@@ -718,13 +714,13 @@ function makeBattleEntry(art,onPracticeTrial) {
   function tick(now){
     if(last!==null&&!document.hidden)age+=Math.min(.1,(now-last)/1000);
     last=document.hidden?null:now;
-    if(party&&!victory&&automatic&&age>=nextAutoPoll&&(!active||age>=active.time+sourceMoves[active.key].seconds)){
+    if(party&&!victory&&age>=nextAutoPoll&&(!active||age>=active.time+sourceMoves[active.key].seconds)){
       const key=plan.slots.find(k=>k&&age>=(cooldowns.get(k)||0));
       if(key)cast(key,age);
       nextAutoPoll=age+.15;
     }
-    if(automatic&&plan.period&&age>=plan.period){age%=plan.period;castIndex=0;active=null;readyAt=0;}
-    while(automatic&&castIndex<plan.casts.length&&plan.casts[castIndex][0]<=age){
+    if(previewAutomatic&&plan.period&&age>=plan.period){age%=plan.period;castIndex=0;active=null;readyAt=0;}
+    while(previewAutomatic&&castIndex<plan.casts.length&&plan.casts[castIndex][0]<=age){
       const [time,key]=plan.casts[castIndex];
       castIndex++;
       cast(key,time);
@@ -739,10 +735,10 @@ function makeBattleEntry(art,onPracticeTrial) {
       button.disabled=!editable()&&(wait>0||victory||(defeated&&(active?.key==='boss')===(key==='boss')));
       li.classList.toggle('casting',casting===key);li.classList.toggle('cooling',!!wait&&casting!==key);timer.textContent=wait?String(wait):'';
     });
-    if(party&&!attack.hidden){const first=primarySlot();attack.disabled=!first||victory||age<(cooldowns.get(first)||0);}
     raf=requestAnimationFrame(tick);
   }
   function stop(){
+    challenge.hidden=true;challenge.onclick=null;
     board.close();
     cancelAnimationFrame(raf);scene.hidden=true;controls.hidden=true;last=null;
     requestVersion++;entryCancel?.();frame=null;onResult=null;party=null;
@@ -759,26 +755,28 @@ function makeBattleEntry(art,onPracticeTrial) {
       const enemy=mode==='skills'&&plan.slots[i]==='boss';
       name.textContent=skill?(enemy?'敌方 · ':'')+skill.name:'';
       button.textContent=artId?trainingRules.arts[artId]:skill&&icon.hidden?skill.name.slice(0,2):'';
-      button.hidden=!editable()&&!skill;button.disabled=!editable()&&!skill;button.dataset.key=plan.slots[i]||'';
+      button.hidden=!editable()&&(mode!=='skills'||!skill);button.disabled=button.hidden;button.dataset.key=plan.slots[i]||'';
       button.setAttribute('aria-label',editable()?'上排第 '+(i+1)+' 格 · '+(skill?.name||trainingRules.arts[artId]||'空'):skill?(enemy?'敌方试放':'施放')+skill.name:'空功法位');
       li.setAttribute('aria-label',skill?.name||trainingRules.arts[artId]||'空功法位');li.className='';timer.textContent='';
     });
   }
-  function show(which,skillKey,settle){
+  function show(which,skillKey,{onResult:settle,farm}={}){
     onResult=settle;
+    scene.insertBefore(challenge,result);
+    challenge.hidden=!farm?.challengeNext;
+    challenge.onclick=farm?.challengeNext??null;
     cancelAnimationFrame(raf);last=null;mode=which;
     const single=mode==='skills' && sourceMoves[skillKey];
     if(party){
       const slots=[];party.player.forEach((m,i)=>{slots[m.slot??i]=keyForMove(m.id);});
       plan={slots,casts:[]};
     }else plan=single?{slots:[skillKey],casts:[[.6,skillKey]],period:single.seconds+2}:sourceEncounters.skills;
-    age=0;castIndex=0;active=null;victory=false;cooldowns.clear();nextAutoPoll=.25;feedbackUntil=0;feedback.hidden=true;defeated=false;automatic=true;readyAt=0;
+    age=0;castIndex=0;active=null;victory=false;cooldowns.clear();nextAutoPoll=.25;feedbackUntil=0;feedback.hidden=true;defeated=false;previewAutomatic=true;readyAt=0;
     trainingEvents.clear();trainingReport.hidden=true;escortStatus.hidden=true;
     damageBySkill.clear();report.hidden=true;scene.classList.remove('settled');delete result.dataset.outcome;
-    byId('battle-return').textContent=mode==='pathTrial'?'返回试修':party?.practice?'返回修行':party?'点击继续':'回到舆图';
+    byId('battle-return').textContent=mode==='pathTrial'?'返回试修':party?.practice?'返回修行':party&&!farm?'点击继续':'回到舆图';
     byId('battle-map').textContent=party?.practice?'‹ 修行':'‹ 舆图';
-    attack.setAttribute('aria-label','施放'+(sourceMoves[primarySlot()]?.name||'功法'));
-    scene.dataset.encounter=mode;scene.classList.toggle('formal-battle',!!party);controls.hidden=false;byId('skill-records').hidden=mode!=='skills';updateControls();
+    scene.dataset.encounter=mode;scene.classList.toggle('formal-battle',!!party);byId('skill-records').hidden=mode!=='skills';updateControls();
     result.hidden=label.hidden=true;scene.hidden=false;
     scene.querySelector('.court-chapter small').textContent=party?.heading??'功法试放';
     scene.querySelector('.court-chapter strong').textContent=party?.title??(single?single.name:'剑修与独臂木侠');
@@ -823,7 +821,8 @@ const firstChapter=(()=>{
     {speaker:'船上阵修',actor:'adept',expression:'relieved',text:'瞧见了，左边那点火。多谢！船身我来护，你在前头带路。',action:'护送药舟'}
   ];
   const tasks=window.qingyunChapterTasks;
-  const ferryTask=tasks.find(task=>task.stageId==='1-3');
+  const battleStages=tasks.filter(task=>task.stageId&&task.encounter);
+  const ferryTask=battleStages.find(task=>task.stageId==='1-3');
   let firstClears={},sceneLine=0;
   let progress=ferryPreview?3:0,line=0,ferryLine=preview==='passage'?ferryLines.length-1:0;
   try{
@@ -859,12 +858,12 @@ const firstChapter=(()=>{
     map();
   });
   function startPathTrial(path){
-    openBattle('pathTrial',()=>battle.show('pathTrial',null,won=>{
+    openBattle('pathTrial',()=>battle.show('pathTrial',null,{onResult(won){
       if(!won)return;
       (firstClears['4-1']??={})[path]=true;
       save();
       return trainingRules.paths[path].name+'试修通过 · 药碗送达';
-    }),false,false,path);
+    }}),false,false,path);
   }
   async function prepareBattle(encounter,key,baseline,request,trialPath){
     const state=encounter==='skills'?null:await trainingAccess();
@@ -880,10 +879,9 @@ const firstChapter=(()=>{
       snapshot.lessonPath=path;
     }
     return battle.prepare(encounter,key,snapshot);
-
   }
   function showChapterBattle(task){
-    battle.show(task.encounter,null,won=>{
+    battle.show(task.encounter,null,{onResult(won){
       if(!won)return;
       const first=!Object.hasOwn(firstClears,task.stageId);
       if(first)firstClears[task.stageId]=task.firstClear??{};
@@ -894,7 +892,13 @@ const firstChapter=(()=>{
       const rewards=[[cultivation,'修为'],[pages,'通用残页'],[tickets,'招募帖'],[sand,'灵砂'],[marrow,'云髓']]
         .filter(([amount])=>amount>0).map(([amount,name])=>name+' +'+amount);
       if(rewards.length)return '首通所得 · '+rewards.join('　');
-    });
+    }});
+  }
+  function showFarmBattle(stage){
+    const next=battleStages[battleStages.indexOf(stage)+1];
+    const challengeNext=next&&Object.hasOwn(firstClears,next.stageId)?
+      ()=>openBattle(next.encounter,()=>showFarmBattle(next)):null;
+    battle.show(stage.encounter,null,{farm:{challengeNext}});
   }
   window.addEventListener('storage',event=>{
     if(event.key===storeKey&&event.newValue===null)location.reload();
@@ -959,18 +963,18 @@ const firstChapter=(()=>{
       const claim=tasks[progress].afterStage===ferryTask.stageId&&progress+1<tasks.length;
       const replay=offerReplay&&!claim;
       caption('旧渡 · 首通所得','阵修把药舟稳稳护进了避风水面。这一趟所得的修为和通用残页，已记在历练簿上。',
-        replay?'重战旧渡':'回到舆图',replay?beginPassage:()=>{if(claim)advanceTask();map();});return;
+        replay?'重战旧渡':'回到舆图',replay?()=>beginPassage(true):()=>{if(claim)advanceTask();map();});return;
     }
     dialogue.show(ferryLines[ferryLine],()=>{
       if(ferryLine+1===ferryLines.length){beginPassage();return;}
       ferryLine++;save();atFerry();
     });
   }
-  function beginPassage(){
+  function beginPassage(replay=false){
     openBattle(ferryTask.encounter,()=>{
       const stageIndex=tasks.indexOf(ferryTask);
       if(progress===stageIndex-1){progress=stageIndex;save();}
-      showChapterBattle(ferryTask);
+      if(replay)showFarmBattle(ferryTask);else showChapterBattle(ferryTask);
     },false,true);
   }
   function playStoryTask(task){
@@ -1000,7 +1004,6 @@ const firstChapter=(()=>{
       return;
     }
     if(task.lines&&task.place===place){playStoryTask(task);return;}
-
     if(task.encounter&&task.place===place){openBattle(task.encounter,()=>showChapterBattle(task));return;}
     if(place==='home'){
       backdrop('home');

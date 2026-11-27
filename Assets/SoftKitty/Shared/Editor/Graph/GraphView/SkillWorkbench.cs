@@ -463,7 +463,7 @@ namespace SoftKitty
 
         internal static string HitEventName(Action source)
         {
-            if (source.ClassName == "SelectTarget") return "找到目标时";
+            if (source.ClassName == "SelectTarget") return source.selectionRules?.Limit > 1 ? "每个选中目标" : "找到目标时";
             if (source.EmitsSettledHit) return "每段伤害判定命中时";
             if (source.ClassName == "RedirectProjectile" || SkillProjectile.IsLaunch(source) || SkillProjectile.IsImpactLaunch(source)) return "命中";
             return "轨道特效判定接触时";
@@ -609,7 +609,7 @@ namespace SoftKitty
             if (action.ClassName == "SelectTarget" && action.selectionRules != null)
             {
                 var rules = action.selectionRules;
-                return "　·　AND 条件 " + rules.filters.Count + " 项　" + string.Join(" → ", rules.priorities.Select(p => p?.Label));
+                return "　·　最多 " + rules.Limit + " 个目标　·　AND 条件 " + rules.filters.Count + " 项　" + string.Join(" → ", rules.priorities.Select(p => p?.Label));
             }
             if (action.ClassName == "RedirectProjectile")
             {

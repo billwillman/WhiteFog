@@ -198,6 +198,8 @@ MonoBehaviour:
         rid: -2
       projectile:
         rid: -2
+      projectileSnap: {fileID: 0}
+      requiresProjectileSnap: 0
       visualEffect:
         rid: -2
     - mType: 0
@@ -331,6 +333,8 @@ MonoBehaviour:
         rid: -2
       projectile:
         rid: -2
+      projectileSnap: {fileID: 0}
+      requiresProjectileSnap: 0
       visualEffect:
         rid: -2
     Triggers: []
@@ -502,7 +506,9 @@ MonoBehaviour:
     Branchs: []
     ActiveTriggers: []
   combatRandomId: 
+  libraryCharacter: {fileID: 0}
   previewAsOpponent: 0
+  castTargetLimit: 1
   autoSave: 0
   NodeIconSprites:
   - {fileID: 580834057, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
@@ -524,6 +530,7 @@ MonoBehaviour:
   - OverTimeEffect
   - PlaySound
   - Projectile
+  - RedirectProjectile
   - SendMessage
   - SkillImpact
   - SkillSignal
@@ -731,6 +738,8 @@ MonoBehaviour:
             rid: -2
           projectile:
             rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
           visualEffect:
             rid: -2
         Triggers: []
@@ -993,6 +1002,8 @@ MonoBehaviour:
             rid: -2
           projectile:
             rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
           visualEffect:
             rid: -2
         - mType: 0
@@ -1117,6 +1128,8 @@ MonoBehaviour:
             rid: -2
           projectile:
             rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
           visualEffect:
             rid: -2
         Triggers: []
@@ -1381,6 +1394,8 @@ MonoBehaviour:
             rid: -2
           projectile:
             rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
           visualEffect:
             rid: -2
         - mType: 0
@@ -1506,6 +1521,8 @@ MonoBehaviour:
             rid: -2
           projectile:
             rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
           visualEffect:
             rid: -2
         Triggers: []

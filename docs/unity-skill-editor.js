@@ -4,7 +4,17 @@
     const root = graph.RootSet, nodes = new Map([[root.Uid,root]]);
     for (const group of ['Actions','Triggers','Handlers','ConditionGroups','Maths','Variables','Entities','Branchs'])
       for (const node of root[group]) nodes.set(node.Uid,node);
-    return {asset,graph,root,nodes,actions:new Map(asset.actions.map(a=>[a.uid,a]))};
+    const executionSources = new Map();
+    for (const owner of [root,...root.Branchs,...root.Actions]) {
+      for (const port of owner.outputPort) {
+        if (port.Type !== 'RootOut' && port.Type !== 'BranchOutAction') continue;
+        for (const input of port.uid) {
+          if (!executionSources.has(input)) executionSources.set(input,[]);
+          executionSources.get(input).push(owner.Uid);
+        }
+      }
+    }
+    return {asset,graph,root,nodes,executionSources,actions:new Map(asset.actions.map(a=>[a.uid,a]))};
   }).sort((a,b)=> Number(b.asset.original)-Number(a.asset.original) || (a.graph.sourceId||0)-(b.graph.sourceId||0) ||
     a.asset.name.localeCompare(b.asset.name,'zh') || a.asset.path.localeCompare(b.asset.path));
   const number = value => Number(Number(value).toPrecision(7));
@@ -44,13 +54,17 @@
     for (const p of node.inputPort || []) for (const other of links(p)) condition(d,other,[...ancestors,id]);
   }
   function describeTiming(node) {
-    const [parent] = links(node.inputPort[0]);
-    return !parent ? '未连接' : parent === selected.root.Uid ? '直接' :
-      selected.actions.get(parent)?.onContact ? '命中后 · '+parent : '分支 · '+parent;
+    const parents = selected.executionSources.get(node.Uid+'#0') || [];
+    return parents.map(parent=>parent === selected.root.Uid ? '直接' :
+      selected.actions.get(parent)?.onContact ? parent+' 命中后' : '分支 · '+parent).join('、') || '未连接';
   }
   function drawAction(details, node) {
     const a = selected.actions.get(node.Uid);
     details.append(el('h3','',a.title));
+    for (const parent of selected.executionSources.get(node.Uid+'#0') || []) {
+      if (selected.actions.get(parent)?.onContact)
+        details.append(button('命中来源 · '+label(parent)+' '+parent,()=>chooseNode(parent)));
+    }
     if (a.sourceTime) {
       details.append(el('p','',a.sourceTime)); return;
     }
@@ -82,7 +96,6 @@
       ['目标数',ref.targetCount],['冷却',seconds(ref.cooldownMs/1000)]]:[]),['时序',ref.timing],['核对范围',ref.limit]]);
     const source = section(details,'技能来源');
     pairs(source,[...(asset.original?[['原作 ID',graph.sourceId],['版本',graph.sourceVersion]]:[]),
-      ...(graph.useInputTiming?[['移动放行',seconds(graph.moveAfterSeconds)],['接招放行',seconds(graph.nextSkillAfterSeconds)]]:[]),
       ['默认施放方',graph.previewAsOpponent?'怪物':'主角'],...(asset.enemy?[['预览敌人',asset.enemy]]:[]),['技能图',asset.path]]);
   }
   function chooseNode(id) {
@@ -143,7 +156,6 @@
     $('unity-play').disabled=levels.length===0;
     if(!levels.length) $('unity-play-status').textContent='所绑定的等级表没有共同等级。';
     $('unity-damage-label').hidden=!asset.unwiredHit;
-    $('unity-chain').hidden=!graph.useInputTiming;
     $('unity-direction-label').hidden=asset.original; $('unity-direction').value=graph.previewAsOpponent?'enemy':'hero';
     for(const row of $('unity-skills').querySelectorAll('[data-guid]')) row.setAttribute('aria-current',String(row.dataset.guid===asset.guid));
     showTimeline();
@@ -199,7 +211,7 @@
     } else {
       if (draftReady) playing=false;
       $('storage-status').textContent='Unity 资产 · 只读';
-      message('Unity 保存后刷新可查看配置。战斗预演运行最近构建的 Unity WebGL 包。');
+      message('Unity 保存后刷新可查看配置。已导出的本地战斗包可直接在 H5 试放。');
     }
   }
   $('unity-tab').onclick=()=>{ selectTab(false); window.unitySkillPreview.stop(); selected=null; setView(false); $('unity-views').hidden=true;
@@ -209,7 +221,6 @@
   $('unity-timeline-tab').onclick=()=>setView(false); $('unity-preview-tab').onclick=()=>setView(true);
   $('unity-play').onclick=()=>{if(selected)window.unitySkillPreview.play(selected);};
   $('unity-interrupt').onclick=()=>window.unitySkillPreview.interrupt();
-  $('unity-chain').onclick=()=>window.unitySkillPreview.chain();
   filters(); $('unity-tab').click();
   if(!records.length) $('unity-events').textContent='尚未载入 Unity 技能清单。';
 })();

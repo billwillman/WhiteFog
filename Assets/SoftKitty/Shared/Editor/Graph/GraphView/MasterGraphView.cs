@@ -18,12 +18,22 @@ namespace SoftKitty
         public float saving = 0F;
         public MasterGraphView() { }
 
+        private IVisualElementScheduledItem pendingFocus;
+
         internal void FocusNode(string uid)
         {
             if (uid == null || !NodeDic.TryGetValue(uid, out var node)) return;
+            pendingFocus?.Pause();
             ClearSelection();
             AddToSelection(node);
-            FrameSelection();
+            // At window creation both the viewport and the node may still have zero or NaN bounds.
+            pendingFocus = schedule.Execute(() =>
+            {
+                if (!(contentRect.width > 0 && contentRect.height > 0 && node.layout.width > 0 && node.layout.height > 0)) return;
+                pendingFocus.Pause();
+                pendingFocus = null;
+                if (selection.Contains(node)) FrameSelection();
+            }).Every(16);
         }
 
         internal void RefreshHitLinks()

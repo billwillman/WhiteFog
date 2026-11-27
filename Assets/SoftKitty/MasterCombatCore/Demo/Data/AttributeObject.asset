@@ -478,38 +478,6 @@ MonoBehaviour:
     maxValue: 0
     defaultValue: 0
     fold: 0
-  - uid: skill_move_lock
-    name: Skill Movement Lock
-    stringValue: 0
-    upgradeIncrement: 0
-    coreStats: 1
-    visible: 0
-    visibleInStatsPanel: 0
-    displayFormat: 1
-    suffixes:
-    compareInfo: 0
-    randomChange: 100
-    isFixed: 1
-    minValue: 0
-    maxValue: 0
-    defaultValue: 0
-    fold: 0
-  - uid: skill_cast_lock
-    name: Skill Cast Lock
-    stringValue: 0
-    upgradeIncrement: 0
-    coreStats: 1
-    visible: 0
-    visibleInStatsPanel: 0
-    displayFormat: 1
-    suffixes:
-    compareInfo: 0
-    randomChange: 100
-    isFixed: 1
-    minValue: 0
-    maxValue: 0
-    defaultValue: 0
-    fold: 0
   IdManager:
     idToKey:
     - id: 0
@@ -572,8 +540,4 @@ MonoBehaviour:
       key: block
     - id: 29
       key: 
-    - id: 30
-      key: skill_move_lock
-    - id: 31
-      key: skill_cast_lock
     uiFold: 0

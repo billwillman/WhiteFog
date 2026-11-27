@@ -1,0 +1,102 @@
+%YAML 1.1
+%TAG !u! tag:yousandi.cn,2023:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: vfx_m_kfkj_01
+  m_Shader: {fileID: 4800000, guid: 2140a2e8b7ee4de4f85e721b8cd36782, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - _USE_ALPHACLIP
+  - _USE_COLORCONTROL
+  - _USE_DISTORT_ON
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 3000
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _ColorControlTex:
+        m_Texture: {fileID: 2800000, guid: f21ab5ba828c01c4ab9df7ebaf88e365, type: 3}
+        m_Scale: {x: 1, y: 5}
+        m_Offset: {x: 0, y: 0}
+    - _DissolveTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DissolveTexDetail:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DistortTexture:
+        m_Texture: {fileID: 2800000, guid: 4504c12e953b6d74ba953fabb608fb09, type: 3}
+        m_Scale: {x: 1, y: 2}
+        m_Offset: {x: 0, y: 0}
+    - _Mask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture:
+        m_Texture: {fileID: 2800000, guid: 44822b18eabdd744eb60ef81041d13de, type: 3}
+        m_Scale: {x: 1, y: 3}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AlphaAdjust: 1
+    - _AlphaClip: 0.025
+    - _Brightness: 1
+    - _ColorControlTexIndependentTiling: 0
+    - _Cull: 0
+    - _DifferentFaceColor: 0
+    - _DissipateSoftCutout: 1
+    - _Dissolve: 0
+    - _DissolveEdageWidth: 0.015
+    - _DissolveTexDetailUscroll: 0
+    - _DissolveTexDetailVscroll: 0
+    - _DissolveTexLerp: 0
+    - _DissolveTexUscroll: 0
+    - _DissolveTexVscroll: 0
+    - _DistForceU: 0.1
+    - _DistForceV: 0
+    - _DistTime: 0
+    - _DistTime1: 0
+    - _DistortParticleSystemControl: 0
+    - _FxDstBlend: 10
+    - _FxSrcBlend: 5
+    - _Gradian: 0.01
+    - _GradianPow: 1
+    - _MainTexAngle: 0.5
+    - _MainTexAngleSpeed: 0
+    - _MainTexStrength: 1
+    - _MaskParticleSystemControl: 0
+    - _MaskTexAngle: 0
+    - _MaskU: 0
+    - _MaskV: 0
+    - _ParticleControl: 0
+    - _UVParticleControl: 0
+    - _U_Mirror: 0
+    - _Uscroll: -1
+    - _V_Mirror: 0
+    - _Vscroll: 2.5
+    - _ZTest: 4
+    - _ZWrite: 1
+    m_Colors:
+    - _BackColor: {r: 1, g: 0.90239143, b: 0.40161723, a: 1}
+    - _BackColor1: {r: 8, g: 6.299934, b: 1.0997305, a: 1}
+    - _Color: {r: 1, g: 1, b: 0.6374663, a: 0.69803923}
+    - _Color1: {r: 23.968628, g: 16.564707, b: 0.8784314, a: 1}
+    - _DistRGBA: {r: 1, g: 0, b: 0, a: 0}
+    - _EdageColor: {r: 1, g: 1, b: 1, a: 1}
+    - _MaskRGBA: {r: 0, g: 0, b: 0, a: 1}
+    - _MaskSpeed: {r: 0, g: 0, b: 0, a: 0}
+  m_BuildTextureStacks: []

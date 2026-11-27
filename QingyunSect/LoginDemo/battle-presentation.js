@@ -34,7 +34,8 @@ function makeBattlePresentation(gl){
   const quad=buffer(gl,gl.ARRAY_BUFFER,new Float32Array([0,0,1,0,0,1,1,1]));
   const half=gl.getExtension('OES_texture_half_float'),filter=gl.getExtension('OES_texture_half_float_linear');
   gl.getExtension('EXT_color_buffer_half_float');
-  let hdr=!!(half&&filter),scene,working,down=[],up=[],targets=[],depth;
+  const canReadDepth=!gl.getExtension('EXT_frag_depth')&&gl.getExtension('WEBGL_depth_texture');
+  let hdr=!!(half&&filter),scene,working,down=[],up=[],targets=[],depth,depthTexture,particleFramebuffer;
   function target(w,h,linearColor,withDepth){
     const tex=gl.createTexture(),fb=gl.createFramebuffer();
     gl.bindTexture(gl.TEXTURE_2D,tex);
@@ -42,16 +43,43 @@ function makeBattlePresentation(gl){
     for(const name of [gl.TEXTURE_MIN_FILTER,gl.TEXTURE_MAG_FILTER])gl.texParameteri(gl.TEXTURE_2D,name,gl.LINEAR);
     for(const name of [gl.TEXTURE_WRAP_S,gl.TEXTURE_WRAP_T])gl.texParameteri(gl.TEXTURE_2D,name,gl.CLAMP_TO_EDGE);
     gl.bindFramebuffer(gl.FRAMEBUFFER,fb);gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT0,gl.TEXTURE_2D,tex,0);
-    if(withDepth)gl.framebufferRenderbuffer(gl.FRAMEBUFFER,gl.DEPTH_ATTACHMENT,gl.RENDERBUFFER,depth);
+    if(withDepth){
+      if(depthTexture)gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.DEPTH_ATTACHMENT,gl.TEXTURE_2D,depthTexture,0);
+      else gl.framebufferRenderbuffer(gl.FRAMEBUFFER,gl.DEPTH_ATTACHMENT,gl.RENDERBUFFER,depth);
+    }
     const t={tex,fb,w,h};targets.push(t);
     if(gl.checkFramebufferStatus(gl.FRAMEBUFFER)!==gl.FRAMEBUFFER_COMPLETE)throw Error('战斗画面缓冲区不可用');
     return t;
   }
-  function dispose(){for(const t of targets){gl.deleteTexture(t.tex);gl.deleteFramebuffer(t.fb);}targets=[];if(depth)gl.deleteRenderbuffer(depth);}
+  function dispose(){
+    for(const t of targets){gl.deleteTexture(t.tex);gl.deleteFramebuffer(t.fb);}
+    targets=[];
+    gl.deleteRenderbuffer(depth||null);gl.deleteTexture(depthTexture||null);gl.deleteFramebuffer(particleFramebuffer||null);
+    depth=depthTexture=particleFramebuffer=null;
+  }
   function resize(w,h){
-    dispose();depth=gl.createRenderbuffer();gl.bindRenderbuffer(gl.RENDERBUFFER,depth);gl.renderbufferStorage(gl.RENDERBUFFER,gl.DEPTH_COMPONENT16,w,h);
+    dispose();
+    if(canReadDepth){
+      depthTexture=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,depthTexture);
+      gl.texImage2D(gl.TEXTURE_2D,0,gl.DEPTH_COMPONENT,w,h,0,gl.DEPTH_COMPONENT,gl.UNSIGNED_SHORT,null);
+      for(const param of [gl.TEXTURE_MIN_FILTER,gl.TEXTURE_MAG_FILTER])gl.texParameteri(gl.TEXTURE_2D,param,gl.NEAREST);
+      for(const param of [gl.TEXTURE_WRAP_S,gl.TEXTURE_WRAP_T])gl.texParameteri(gl.TEXTURE_2D,param,gl.CLAMP_TO_EDGE);
+      // Keep a colour-only framebuffer so sampling opaque depth never reads an active attachment.
+      working=target(w,h,false,false);
+      particleFramebuffer=gl.createFramebuffer();
+      gl.bindFramebuffer(gl.FRAMEBUFFER,particleFramebuffer);
+      gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT0,gl.TEXTURE_2D,working.tex,0);
+      gl.bindFramebuffer(gl.FRAMEBUFFER,working.fb);
+      gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.DEPTH_ATTACHMENT,gl.TEXTURE_2D,depthTexture,0);
+      if(gl.checkFramebufferStatus(gl.FRAMEBUFFER)!==gl.FRAMEBUFFER_COMPLETE)dispose();
+    }
+    if(!depthTexture){
+      depth=gl.createRenderbuffer();gl.bindRenderbuffer(gl.RENDERBUFFER,depth);
+      gl.renderbufferStorage(gl.RENDERBUFFER,gl.DEPTH_COMPONENT16,w,h);
+      working=target(w,h,false,true);
+    }
     // The Unity workbench clamps scene colour in its 8-bit target before bloom.
-    scene=target(w,h,false,true);working=target(w,h,false,true);
+    scene=target(w,h,false,true);
     down=[];up=[];
     for(let i=0;i<5;i++){w=Math.max(1,w>>1);h=Math.max(1,h>>1);down.push(target(w,h,true,false));if(i<4)up.push(target(w,h,true,false));}
   }
@@ -77,26 +105,34 @@ function makeBattlePresentation(gl){
     let glow=down[4];for(let i=3;i>=0;i--){blit(expand,down[i],up[i],glow);glow=up[i];}
     blit(finish,working,null,glow);gl.depthMask(true);gl.activeTexture(gl.TEXTURE0);
   }
-  return {begin,particles,present};
+  function transparentTarget(ward){
+    if(depthTexture)gl.bindFramebuffer(gl.FRAMEBUFFER,ward?working.fb:particleFramebuffer);
+  }
+  return {begin,particles,present,transparentTarget,get depthTexture(){return depthTexture;}};
 }
 
-function makeParticleRenderer(gl){
+function makeParticleRenderer(gl,presentation){
   const fragmentDepth=gl.getExtension('EXT_frag_depth');
+  const canReadDepth=!fragmentDepth&&presentation&&gl.getExtension('WEBGL_depth_texture');
   const program=makeProgram(gl,`attribute vec2 point;uniform vec4 rect;uniform vec3 depth;varying vec2 uv;
     void main(){gl_Position=vec4(rect.xy+(point-.5)*rect.zw,2.*depth.x-1.,1.);uv=vec2(point.x,1.-point.y);}`,
     `uniform sampler2D coverage,radiance;uniform vec3 depth;uniform vec4 tile;uniform float inner,coveragePass;varying vec2 uv;
+    ${canReadDepth?'uniform sampler2D opaqueDepth;uniform vec2 pixelSize;':''}
     void main(){
       vec2 coord=uv*2.-1.,a=abs(coord);
       vec2 packedUV=min(a/inner,1.)*.75+max(a-inner,0.)*(.25/(1.-inner));
       vec2 sampleUV=tile.xy+(.5+.5*sign(coord)*packedUV)*tile.zw;
       vec3 c=texture2D(radiance,sampleUV).rgb;c*=c;
       vec4 mask=texture2D(coverage,sampleUV);
-      ${fragmentDepth?'gl_FragDepthEXT=mask.b>.5?clamp(depth.x+(mask.g/mask.b-.5)*depth.y,0.,1.):0.;':''}
-      ${fragmentDepth?'':'if((coveragePass>0.5&&mask.b<=.5)||(coveragePass<-.5&&mask.b>.5))discard;'}
+      ${fragmentDepth||canReadDepth?'float z=mask.b>.5?clamp(depth.x+(mask.g/mask.b-.5)*depth.y,0.,1.):0.;':''}
+      ${fragmentDepth?'gl_FragDepthEXT=z;':''}
+      ${canReadDepth?'if(coveragePass==2. && z>texture2D(opaqueDepth,gl_FragCoord.xy*pixelSize).r)discard;':''}
+      ${fragmentDepth?'':'if((coveragePass==1. && mask.b<=.5)||(coveragePass==-1. && mask.b>.5))discard;'}
       gl_FragColor=vec4(c/max(vec3(.0001),1.-c),mix(mask.a,mask.r,depth.z));}`,['point'],
     fragmentDepth?'#extension GL_EXT_frag_depth : require\n':'');
-  const loc=Object.fromEntries(['rect','tile','depth','inner','coveragePass'].map(n=>[n,gl.getUniformLocation(program,n)]));
+  const loc=Object.fromEntries(['rect','tile','depth','inner','coveragePass','opaqueDepth','pixelSize'].map(n=>[n,gl.getUniformLocation(program,n)]));
   gl.useProgram(program);gl.uniform1i(gl.getUniformLocation(program,'radiance'),1);
+  if(canReadDepth)gl.uniform1i(loc.opaqueDepth,2);
   const quad=buffer(gl,gl.ARRAY_BUFFER,new Float32Array([0,0,1,0,0,1,1,1]));
   return (fx,i,x,y,w,h,clipDepth,clipRange)=>{
     gl.useProgram(program);gl.bindBuffer(gl.ARRAY_BUFFER,quad);attribute(gl,0,2);
@@ -108,13 +144,18 @@ function makeParticleRenderer(gl){
     // Same orthographic depth transform as the actor vertices. The scene and particle FBOs share the actor depth buffer.
     gl.uniform3f(loc.depth,.5+.5*clipDepth,.5*clipRange,fx.depthCoverage?1:0);
     gl.enable(gl.BLEND);gl.blendFuncSeparate(gl.ONE,gl.ONE_MINUS_SRC_ALPHA,gl.ZERO,gl.ONE);
-    if(fx.depthCoverage){gl.enable(gl.DEPTH_TEST);gl.depthFunc(gl.LEQUAL);}
+    const readDepth=canReadDepth&&presentation.depthTexture;
+    if(canReadDepth){
+      bindTexture(gl,2,readDepth||fx.coverage);
+      gl.uniform2f(loc.pixelSize,1/gl.drawingBufferWidth,1/gl.drawingBufferHeight);
+    }
+    if(fx.depthCoverage&&!readDepth){gl.enable(gl.DEPTH_TEST);gl.depthFunc(gl.LEQUAL);}
     else gl.disable(gl.DEPTH_TEST);
     // Without per-pixel depth, depth-tested materials use the effect's anchor plane.
     // A mixed atlas also contains authored Always pixels, which keep their own pass.
-    if(!fragmentDepth)gl.uniform1f(loc.coveragePass,fx.depthCoverage?1:0);
+    if(!fragmentDepth)gl.uniform1f(loc.coveragePass,fx.depthCoverage?(readDepth?2:1):0);
     gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
-    if(!fragmentDepth&&fx.depthCoverage){
+    if(!fragmentDepth&&!readDepth&&fx.depthCoverage){
       gl.disable(gl.DEPTH_TEST);gl.uniform1f(loc.coveragePass,-1);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
     }
   };

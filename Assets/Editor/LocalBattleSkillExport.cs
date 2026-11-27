@@ -29,6 +29,7 @@ public static class LocalBattleSkillExport
     {
         public string node;
         public bool sceneEnemies;
+        public int maxTargets;
         public Criterion[] filters;
         public string[] priorities;
     }
@@ -208,7 +209,7 @@ public static class LocalBattleSkillExport
                     break;
                 case "SelectTarget":
                     var rules = x.selectionRules ?? throw new InvalidDataException(x.Uid + " 缺少选目标规则。");
-                    graph.selections.Add(new TargetQuery { node = x.Uid, sceneEnemies = rules.sceneEnemies,
+                    graph.selections.Add(new TargetQuery { node = x.Uid, sceneEnemies = rules.sceneEnemies, maxTargets = rules.Limit,
                         filters = rules.filters.Select(rule => new Criterion { kind = ExportRule(rule),
                             threshold = rule is TargetInRadius radius ? radius.radius : rule is TargetLowHealth hp ? hp.percent : 0 }).ToArray(),
                         priorities = rules.priorities.Select(ExportRule).ToArray() });

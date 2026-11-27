@@ -73,7 +73,7 @@ namespace SoftKitty
         {
             using (new EditorGUILayout.HorizontalScope())
             {
-                var next = (GraphObject)EditorGUILayout.ObjectField("原生伤害图", config.nativeGraph, typeof(GraphObject), false);
+                var next = (GraphObject)SkillFieldHelp.ObjectField("原生伤害图", config.nativeGraph, typeof(GraphObject), false, "选择每段命中时执行的 MCC Combat 图。图会收到本段的施法者、受击者和结算参数。");
                 if (next != config.nativeGraph)
                 {
                     if (!next || next != graph && !(next is SkillFormula) && !(next is OriginalSkillGraph) && next.RootSet?.ClassName == "Combat")
@@ -115,6 +115,7 @@ namespace SoftKitty
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     bool enabled = EditorGUILayout.ToggleLeft(key, field != null, GUILayout.MinWidth(80));
+                    SkillFieldHelp.Button(key, "勾选后用本技能填写的数值覆盖原生伤害图的同名动态参数。取消勾选后沿用施放上下文或图的默认值。");
                     if (enabled != (field != null))
                         Change(() =>
                         {
@@ -150,7 +151,7 @@ namespace SoftKitty
         {
             using (new EditorGUILayout.HorizontalScope())
             {
-                var selected = (SkillDamageFlow)EditorGUILayout.ObjectField("流程资产", config.ActiveFlow, typeof(SkillDamageFlow), false);
+                var selected = (SkillDamageFlow)SkillFieldHelp.ObjectField("流程资产", config.ActiveFlow, typeof(SkillDamageFlow), false, "选择此动作使用的伤害流程。流程决定命中、基础伤害、分段及扣血等环节的执行次序。");
                 if (selected != config.ActiveFlow)
                     Change(() => { config.SetActiveFlow(selected); config.ActiveDisabledStageIds.Clear(); });
                 using (new EditorGUI.DisabledScope(!config.ActiveFlow))
@@ -211,7 +212,7 @@ namespace SoftKitty
 
             if (config.ReadsDamageReport)
             {
-                int index = Mathf.Max(1, EditorGUILayout.DelayedIntField("回放逻辑段号", config.logicIndex));
+                int index = Mathf.Max(1, SkillFieldHelp.DelayedIntField("回放逻辑段号", config.logicIndex, "在战报回放中按这个段号查找对应命中记录。应与原战报里的逻辑段号一致。"));
                 if (index != config.logicIndex) Change(() => config.logicIndex = index);
                 EditorGUILayout.HelpBox("此资产用于重放旧战报。可在上方选择属性伤害流程用于实战。", MessageType.Info);
                 return;
@@ -228,7 +229,7 @@ namespace SoftKitty
                 {
                     string label = required ? stage.label + "（必需）" : stage.label;
                     if (!flow && stage.formula) label += " · " + stage.formula.name;
-                    bool next = EditorGUILayout.ToggleLeft(label, enabled);
+                    bool next = SkillFieldHelp.ToggleLeft(label, enabled, "勾选后，本动作在结算中执行这一环节。标记为必需的环节始终参与执行。");
                     if (next != enabled)
                         Change(() => config.SetStageEnabled(stage.id, next));
                 }
@@ -252,7 +253,7 @@ namespace SoftKitty
                 {
                     using (new EditorGUILayout.HorizontalScope())
                     {
-                        string label = EditorGUILayout.DelayedTextField((index + 1) + ". " + StageLabel(stage.kind), stage.label);
+                        string label = SkillFieldHelp.DelayedTextField((index + 1) + ". " + StageLabel(stage.kind), stage.label, "修改流程中这个环节的显示名，便于区分各个步骤。环节的计算类型由创建时的选择决定。");
                         if (!string.IsNullOrWhiteSpace(label) && label != stage.label)
                             EditDamageFlow(flow, () => stage.label = label);
                         using (new EditorGUI.DisabledScope(!CanMoveStage(flow.stages, index, -1)))

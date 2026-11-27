@@ -22,9 +22,7 @@ namespace SoftKitty
             wnd.openingSnapshot = Instantiate(_graphObject);
             wnd.openingSnapshot.name = _graphObject.name;
             wnd.openingSnapshot.hideFlags = HideFlags.HideAndDontSave;
-            wnd.CreateElement();
-            var view = wnd.graphView;
-            if (selectedUid != null) view.schedule.Execute(() => view.FocusNode(selectedUid));
+            wnd.CreateElement(selectedUid);
         }
 
         private static MasterGraphWindow wnd;
@@ -66,11 +64,13 @@ namespace SoftKitty
             graphObject.hideFlags = assetFlags;
             graphObject.pendingSave = false;
             EditorUtility.SetDirty(graphObject);
+            string selectedUid = graphView.GetSelectedNodes().Find(node => node is NodeBaseEditor) is NodeBaseEditor selected
+                ? selected.baseData.Uid : null;
             graphView.UnregisterCallback<KeyDownEvent>(KeyDown);
             graphView.Clear();
             rootVisualElement.Clear();
             graphView = null;
-            CreateElement();
+            CreateElement(selectedUid);
             AssetDatabase.SaveAssets();
             
         }
@@ -213,7 +213,7 @@ namespace SoftKitty
 
         }
 
-        private void CreateElement()
+        private void CreateElement(string selectedUid)
         {
             rootVisualElement.Clear();
             InitGraph();
@@ -224,7 +224,7 @@ namespace SoftKitty
                 graphObject.RootSet = new Root(true);
             }
 
-            if(graphView==null) graphView = new MasterGraphView() { name = "Combat Graph", viewDataKey = "CombatGraphView", graph = graphObject};
+            if(graphView==null) graphView = new MasterGraphView() { name = "Combat Graph", graph = graphObject};
             graphView.saving = 0F;
             graphView.SetupZoom(0.1f, ContentZoomer.DefaultMaxScale, ContentZoomer.DefaultScaleStep, 1F);
 
@@ -403,6 +403,10 @@ namespace SoftKitty
             graphView.RefreshHitLinks();
 
             FormatDebugMode();
+            if (string.IsNullOrEmpty(selectedUid) || !graphView.NodeDic.ContainsKey(selectedUid))
+                selectedUid = graphObject is SkillFormula formula && !string.IsNullOrEmpty(formula.outputUid) && graphView.NodeDic.ContainsKey(formula.outputUid)
+                    ? formula.outputUid : graphObject.RootSet.Uid;
+            graphView.FocusNode(selectedUid);
             rootVisualElement.MarkDirtyRepaint();
 
         }

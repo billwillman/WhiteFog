@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85580513fbe664641962ea038e27d0dd, type: 3}
   m_Name: OverTimeEffectObject
   m_EditorClassIdentifier: Assembly-CSharp::SoftKitty.OverTimeEffectObj
-  Hash: 238e7415ba88713e98ba465aa9b26f7a
+  Hash: 6c43d4bcd269b93c6dbe16eaed96a5c9
   overTimeEffects:
   - uid: burn
     name: Burn
+    chineseDescription: 灼烧（持续扣血）
     iconPath: 
     category: DoT
     directRefIcon: {fileID: 2800000, guid: b9cbaa1ca01616346a5bb05252441bfe, type: 3}
@@ -44,6 +45,7 @@ MonoBehaviour:
     fold: 0
   - uid: poison
     name: Poison
+    chineseDescription: 中毒（按层持续扣血）
     iconPath: 
     category: DoT
     directRefIcon: {fileID: 2800000, guid: 31c6e3a0a78eb0443a533934b83ec309, type: 3}
@@ -72,6 +74,7 @@ MonoBehaviour:
     fold: 0
   - uid: frost
     name: Frost
+    chineseDescription: 冰霜（减速，可叠层冻结）
     iconPath: 
     category: DoT
     directRefIcon: {fileID: 2800000, guid: 1062297078715dc4fb8e7690aaa9a11f, type: 3}
@@ -98,6 +101,7 @@ MonoBehaviour:
     fold: 0
   - uid: berserker
     name: Berserker
+    chineseDescription: 狂暴（按层提升身法）
     iconPath: 
     category: Buff
     directRefIcon: {fileID: 2800000, guid: 5034657c6f5b0cd4db0a25033fed7014, type: 3}
@@ -115,6 +119,30 @@ MonoBehaviour:
     DynamicVariables:
     - uid: Layer
       value: 0
+    mCustomField: []
+    fold: 0
+  - uid: zszs.bleed
+    name: Bleed
+    chineseDescription: "\u6D41\u8840\uFF08\u6BCF\u79D2\u5931\u53BB\u65BD\u6CD5\u653B\u51FB\u7684
+      25%\uFF0C\u6301\u7EED 2 \u79D2\uFF09"
+    iconPath: 
+    category: DoT
+    directRefIcon: {fileID: 0}
+    iconLoadMethod: 0
+    permanent: 0
+    duration: 2
+    interruptCastOnEnter: 0
+    layered: 0
+    maxLayer: 1
+    canBeExtended: 0
+    canBeRefreshed: 1
+    canBeDispelled: 1
+    backGroundColor: {r: 0, g: 0, b: 0, a: 0}
+    frameColor: {r: 0, g: 0, b: 0, a: 0}
+    DesignGraph: {fileID: 11400000, guid: ea7bb9bc8b530864fa97f38b99181a65, type: 2}
+    DynamicVariables:
+    - uid: bleedRatio
+      value: 0.25
     mCustomField: []
     fold: 0
   - uid: zszs.slow
@@ -149,6 +177,8 @@ MonoBehaviour:
       key: frost
     - id: 3
       key: berserker
+    - id: 4
+      key: zszs.bleed
     - id: 5
       key: zszs.slow
     uiFold: 0

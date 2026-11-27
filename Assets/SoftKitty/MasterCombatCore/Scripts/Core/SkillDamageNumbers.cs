@@ -38,6 +38,13 @@ namespace SoftKitty
             observed?.UnRegisterAttributeChangeCallback(OnAttributeChange);
             observed = data;
             observed?.RegisterAttributeChangeCallback(OnAttributeChange);
+            next = 0;
+            if (canvas) canvas.enabled = false;
+            foreach (var label in labels)
+            {
+                label.visible = false;
+                label.text.enabled = false;
+            }
         }
 
         private void OnEnable()
@@ -52,12 +59,6 @@ namespace SoftKitty
             Bind(null);
             RenderPipelineManager.beginCameraRendering -= BeforeRender;
             Camera.onPreCull -= FaceCamera;
-            if (canvas) canvas.enabled = false;
-            foreach (var label in labels)
-            {
-                label.visible = false;
-                label.text.enabled = false;
-            }
         }
 
         private void OnAttributeChange(string attribute, float delta, Entity dealer)

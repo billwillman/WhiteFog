@@ -18,12 +18,14 @@ namespace SoftKitty
            
             GUILayout.BeginHorizontal();
             myTarget.Enable = GUILayout.Toggle(myTarget.Enable, new GUIContent("Enable Damage", "Enable or disable damage detection."));
+            SkillFieldHelp.Button("启用伤害检测", "控制这个场景组件是否接受伤害检测。关闭后它会跳过相应检测。");
             GUILayout.EndHorizontal();
             EditorGUILayout.Separator();
 
             GUILayout.BeginHorizontal();
             GUILayout.Label(new GUIContent("Ignore Same Target Within:", "After damaging a target, the same target will be ignored for this duration (in seconds)."), GUILayout.Width(150));
             myTarget.DamageCoolDown = EditorGUILayout.Slider(myTarget.DamageCoolDown,0F,1F);
+            SkillFieldHelp.Button("同一目标的检测间隔", "命中后在指定秒数内忽略对同一实体的重复检测。其他目标有各自的间隔。");
             GUILayout.Label("Sec", GUILayout.Width(60));
             GUILayout.EndHorizontal();
             EditorGUILayout.Separator();
@@ -31,6 +33,7 @@ namespace SoftKitty
             EditorUtils.Pre(EditorUtils.TextHint("Graph:", "Visual graph object that defines the damage calculation logic."), 0,50);
             GUI.backgroundColor = EditorUtils._titleColor;
             myTarget.mGraph = (GraphObject)EditorGUILayout.ObjectField(myTarget.mGraph, typeof(GraphObject), false, GUILayout.Width(200));
+            SkillFieldHelp.Button("组件战斗图", "选择此伤害组件命中后执行的 MCC 战斗图，图中的条件和动作决定最终结果。");
             if (myTarget.mGraph!=null) {
                
                 if (GUILayout.Button("Design", GUILayout.Width(100)))
@@ -81,6 +84,7 @@ namespace SoftKitty
                         _varCount++;
                         EditorUtils.Pre(EditorUtils.TextHint("(uid:" + myTarget.mGraph.RootSet.Variables[i].VariableUid + ")  (default:" + myTarget.mGraph.RootSet.Variables[i].Constant + ")"), 20, 200);
                         myTarget.DynamicFloatList[_index].value = EditorGUILayout.FloatField(myTarget.DynamicFloatList[_index].value, GUILayout.Width(50));
+                        SkillFieldHelp.Button("动态变量", "给当前组件传入图中声明的动态变量值；复位按钮可恢复图内默认值。");
                         GUI.backgroundColor = Color.gray;
                         if (GUILayout.Button(new GUIContent(EditorUtils.GetTexture(EditorIcon.Reset), "Reset the value to default."), EditorUtils._toolButtonStyle, GUILayout.Width(15)))
                         {
@@ -127,6 +131,7 @@ namespace SoftKitty
                 {
                     EditorUtils.Pre(EditorUtils.TextHint("Target Entity:", "The entity that receives the damage."), 10);
                     myTarget.TargetEntity = (EntityComponent)EditorGUILayout.ObjectField(myTarget.TargetEntity, typeof(EntityComponent), true, GUILayout.Width(150));
+                    SkillFieldHelp.Button("目标实体", "指定该组件作用的目标，供手动触发伤害时使用。启用物理检测时由接触到的实体决定目标。");
                     GUI.backgroundColor = EditorUtils._black;
                     if (GUILayout.Button("Clear", GUILayout.Width(60)))
                     {
@@ -141,6 +146,7 @@ namespace SoftKitty
                 }
                 EditorUtils.Pre(EditorUtils.TextHint("Dealer Entity:", "The entity that deals the damage."), 10);
                 myTarget.DealerEntity = (EntityComponent)EditorGUILayout.ObjectField(myTarget.DealerEntity, typeof(EntityComponent), true, GUILayout.Width(150));
+                SkillFieldHelp.Button("施加者实体", "指定谁造成这次伤害。图中读取施加者的属性、标签或位置时使用这个实体。");
                 GUI.backgroundColor =EditorUtils._black;
                 if (GUILayout.Button("Clear", GUILayout.Width(60)))
                 {
@@ -167,14 +173,17 @@ namespace SoftKitty
                 GUILayout.Space(25);
                 GUILayout.BeginVertical(EditorUtils._groupStyle);
 
-                EditorUtils.Toggle(ref myTarget.is2D, EditorUtils.TextHint("2D Physics:", "Enable to use Physics2D for 2D games."), 10);
+                using (new SkillFieldHelp.Row("二维物理", "开启后使用二维物理查询与 Collider2D，关闭时使用三维物理与 Collider。"))
+                    EditorUtils.Toggle(ref myTarget.is2D, EditorUtils.TextHint("2D Physics:", "Enable to use Physics2D for 2D games."), 10);
 
-                EditorUtils.Toggle(ref myTarget.PhysicsDetection, EditorUtils.TextHint("Enable Physics Detection:", "Enable or disable physics-based damage detection. This is optional; damage can also be applied manually via DealDamage()."), 10);
+                using (new SkillFieldHelp.Row("物理检测", "开启后使用选定的碰撞或空间查询检测目标。关闭时可由代码或工作台试放直接调用技能。"))
+                    EditorUtils.Toggle(ref myTarget.PhysicsDetection, EditorUtils.TextHint("Enable Physics Detection:", "Enable or disable physics-based damage detection. This is optional; damage can also be applied manually via DealDamage()."), 10);
                 if (myTarget.PhysicsDetection) {
                     myTarget.TargetEntity = null;
                     EditorUtils.Pre(EditorUtils.TextHint("Detection Mode:", "Physics detection mode."), 10);
                     GUI.backgroundColor = EditorUtils._titleColor;
                     myTarget.PhysicsType = (CombatDamage.PhysicsTypes)EditorGUILayout.EnumPopup(myTarget.PhysicsType, GUILayout.Width(150));
+                    SkillFieldHelp.Button("物理检测方式", "选择碰撞、触发器、射线或区域查询。下方会显示该方式所需的碰撞器、方向和范围。");
                     EditorUtils.ResetColor();
                     EditorUtils.End(10);
 
@@ -257,17 +266,20 @@ namespace SoftKitty
                     {
                         EditorUtils.Pre(EditorUtils.TextHint("Physics Detection Interval: Every ", "Number of frames between each physics detection check."), 10, 190);
                         myTarget.PhysicsInterval = EditorGUILayout.IntField(Mathf.Clamp(myTarget.PhysicsInterval,1,30), GUILayout.Width(20));
+                        SkillFieldHelp.Button("检测间隔", "主动查询时每隔多少帧检测一次。数值越小，检查越频繁。");
                         GUILayout.Label(" Frame");
                         EditorUtils.End(10);
                     }
 
-                    EditorUtils.LayerMaskField(ref myTarget.PhysicsLayerMask, EditorUtils.TextHint("LayerMask:", "Layers included in the physics detection."), 10);
+                    using (new SkillFieldHelp.Row("检测层", "只检测所选 Unity 物理层上的碰撞器。需要命中的实体要在这些层内。"))
+                        EditorUtils.LayerMaskField(ref myTarget.PhysicsLayerMask, EditorUtils.TextHint("LayerMask:", "Layers included in the physics detection."), 10);
                     if (myTarget.PhysicsLayerMask.value == 0) {
                         EditorUtils.Warnning("Please select at least one layer in the LayerMask above.".ToString(), 30);
                     }
 
                     if (myTarget.PhysicsType != CombatDamage.PhysicsTypes.Rigidbody_Collider) {
-                        EditorUtils.Toggle(ref myTarget.IgnoreTriggerColliders, EditorUtils.TextHint("Ignore isTrigger Colliders:", "Whether colliders marked as ��Is Trigger�� are included in detection."),10);
+                        using (new SkillFieldHelp.Row("忽略触发器", "设置空间查询是否跳过标记为 Is Trigger 的碰撞器。"))
+                            EditorUtils.Toggle(ref myTarget.IgnoreTriggerColliders, EditorUtils.TextHint("Ignore isTrigger Colliders:", "Whether colliders marked as “Is Trigger” are included in detection."),10);
                     }
 
                     EditorUtils.Pre(EditorUtils.TextHint("Tag Filter: (" + myTarget.TagFilter.Count + ")", "Tag filter for target entities. A target must have at least one of the specified tags."), 10);
@@ -285,6 +297,7 @@ namespace SoftKitty
                         GUILayout.BeginHorizontal();
                         GUILayout.Space(30);
                         myTarget.TagFilter[i] = GUILayout.TextField(myTarget.TagFilter[i], GUILayout.Width(100));
+                        SkillFieldHelp.Button("目标实体标签", "填写 MCC 实体标签。目标至少匹配其中一项才进入后续检测。");
                         if (myTarget.TagFilter[i] != "Input Tag Here") _avaliableTag = true;
                         GUI.backgroundColor = EditorUtils._red;
                         if (GUILayout.Button("X", GUILayout.Width(20)))
@@ -329,6 +342,7 @@ namespace SoftKitty
                                 GUILayout.BeginHorizontal();
                                 GUILayout.Space(30);
                                 myTarget.mColliders2D[i] = (Collider2D)EditorGUILayout.ObjectField(myTarget.mColliders2D[i], typeof(Collider2D), true, GUILayout.Width(150));
+                                SkillFieldHelp.Button("二维碰撞器", "选择组件用来检测接触的二维碰撞器。碰撞与触发器两种模式对 Is Trigger 的要求不同。");
                                 GUI.backgroundColor = EditorUtils._red;
                                 if (GUILayout.Button("X", GUILayout.Width(20)))
                                 {
@@ -344,7 +358,7 @@ namespace SoftKitty
                                 }
                                 else if (myTarget.mColliders2D[i].isTrigger && myTarget.PhysicsType == CombatDamage.PhysicsTypes.Rigidbody_Collider)
                                 {
-                                    EditorUtils.Warnning("The 2D collider must have ��Is Trigger�� unchecked for [" + myTarget.PhysicsType + "].", 30);
+                                    EditorUtils.Warnning("The 2D collider must have “Is Trigger” unchecked for [" + myTarget.PhysicsType + "].", 30);
                                     GUI.backgroundColor = EditorUtils._red;
                                     GUILayout.BeginHorizontal();
                                     GUILayout.Space(30);
@@ -360,7 +374,7 @@ namespace SoftKitty
                                 }
                                 else if (!myTarget.mColliders2D[i].isTrigger && myTarget.PhysicsType == CombatDamage.PhysicsTypes.Trigger_Collider)
                                 {
-                                    EditorUtils.Warnning("The 2D collider must have ��Is Trigger�� checked for [" + myTarget.PhysicsType + "].", 30);
+                                    EditorUtils.Warnning("The 2D collider must have “Is Trigger” checked for [" + myTarget.PhysicsType + "].", 30);
                                     GUI.backgroundColor = EditorUtils._red;
                                     GUILayout.BeginHorizontal();
                                     GUILayout.Space(30);
@@ -432,6 +446,7 @@ namespace SoftKitty
                                 GUILayout.BeginHorizontal();
                                 GUILayout.Space(30);
                                 myTarget.mColliders[i] = (Collider)EditorGUILayout.ObjectField(myTarget.mColliders[i], typeof(Collider), true, GUILayout.Width(150));
+                                SkillFieldHelp.Button("三维碰撞器", "选择组件用来检测接触的三维碰撞器。碰撞与触发器两种模式对 Is Trigger 的要求不同。");
                                 GUI.backgroundColor = EditorUtils._red;
                                 if (GUILayout.Button("X", GUILayout.Width(20)))
                                 {
@@ -447,7 +462,7 @@ namespace SoftKitty
                                 }
                                 else if (myTarget.mColliders[i].isTrigger && myTarget.PhysicsType == CombatDamage.PhysicsTypes.Rigidbody_Collider)
                                 {
-                                    EditorUtils.Warnning("The collider must have ��Is Trigger�� unchecked for [" + myTarget.PhysicsType + "].", 30);
+                                    EditorUtils.Warnning("The collider must have “Is Trigger” unchecked for [" + myTarget.PhysicsType + "].", 30);
                                     GUI.backgroundColor = EditorUtils._red;
                                     GUILayout.BeginHorizontal();
                                     GUILayout.Space(30);
@@ -463,7 +478,7 @@ namespace SoftKitty
                                 }
                                 else if (!myTarget.mColliders[i].isTrigger && myTarget.PhysicsType == CombatDamage.PhysicsTypes.Trigger_Collider)
                                 {
-                                    EditorUtils.Warnning("The collider must have ��Is Trigger�� checked for [" + myTarget.PhysicsType + "].", 30);
+                                    EditorUtils.Warnning("The collider must have “Is Trigger” checked for [" + myTarget.PhysicsType + "].", 30);
                                     GUI.backgroundColor = EditorUtils._red;
                                     GUILayout.BeginHorizontal();
                                     GUILayout.Space(30);
@@ -517,6 +532,7 @@ namespace SoftKitty
 
                             EditorUtils.Pre(EditorUtils.TextHint("Rigidbody2D:", "A Rigidbody2D component is required for [" + myTarget.PhysicsType + "], and must be attached to the same GameObject as this script."), 10);
                             myTarget.mRigid2D = (Rigidbody2D)EditorGUILayout.ObjectField(myTarget.mRigid2D, typeof(Rigidbody2D), true, GUILayout.Width(150));
+                            SkillFieldHelp.Button("二维刚体", "引用挂在伤害组件所在物体上的 Rigidbody2D，供二维碰撞或投射物驱动使用。");
                             EditorUtils.End(10);
                             if (myTarget.mRigid2D == null)
                             {
@@ -589,6 +605,7 @@ namespace SoftKitty
 
                             EditorUtils.Pre(EditorUtils.TextHint("Rigidbody:", "A Rigidbody component is required for [" + myTarget.PhysicsType + "], and must be attached to the same GameObject as this script."), 10);
                             myTarget.mRigid = (Rigidbody)EditorGUILayout.ObjectField(myTarget.mRigid, typeof(Rigidbody), true, GUILayout.Width(150));
+                            SkillFieldHelp.Button("三维刚体", "引用挂在伤害组件所在物体上的 Rigidbody，供三维碰撞或投射物驱动使用。");
                             EditorUtils.End(10);
                             if (myTarget.mRigid == null)
                             {
@@ -656,23 +673,28 @@ namespace SoftKitty
                     }
 
                     if (myTarget.is2D) {
-                        EditorUtils.FloatField(ref myTarget.min2dDepth,EditorUtils.TextHint("Min Depth", "Only include objects with a Z coordinate (depth) greater than or equal to this value."),10,true,-1F,150, "m");
-                        EditorUtils.FloatField(ref myTarget.max2dDepth, EditorUtils.TextHint("Max Depth", "Only include objects with a Z coordinate (depth) less than or equal to this value."), 10, true, 1F, 150, "m");
+                        using (new SkillFieldHelp.Row("最小检测深度", "二维查询只接收 Z 坐标大于或等于此值的物体。"))
+                            EditorUtils.FloatField(ref myTarget.min2dDepth,EditorUtils.TextHint("Min Depth", "Only include objects with a Z coordinate (depth) greater than or equal to this value."),10,true,-1F,150, "m");
+                        using (new SkillFieldHelp.Row("最大检测深度", "二维查询只接收 Z 坐标小于或等于此值的物体。"))
+                            EditorUtils.FloatField(ref myTarget.max2dDepth, EditorUtils.TextHint("Max Depth", "Only include objects with a Z coordinate (depth) less than or equal to this value."), 10, true, 1F, 150, "m");
                         EditorGUILayout.Separator();
                     }
 
                     if (myTarget.PhysicsType == CombatDamage.PhysicsTypes.SphereCast || myTarget.PhysicsType == CombatDamage.PhysicsTypes.Overlap_Capsule || myTarget.PhysicsType == CombatDamage.PhysicsTypes.Overlap_Sphere)
                     {
-                        EditorUtils.FloatSlider(ref myTarget.Radius, 0.05F, 10F, EditorUtils.TextHint(myTarget.PhysicsType.ToString().Replace("_"," ") + " Radius"), "m", 10);
+                        using (new SkillFieldHelp.Row("检测半径", "设置球形或胶囊形检测区域的半径，单位为米。"))
+                            EditorUtils.FloatSlider(ref myTarget.Radius, 0.05F, 10F, EditorUtils.TextHint(myTarget.PhysicsType.ToString().Replace("_"," ") + " Radius"), "m", 10);
                     }
                     if (myTarget.PhysicsType == CombatDamage.PhysicsTypes.Raycast || myTarget.PhysicsType == CombatDamage.PhysicsTypes.SphereCast || myTarget.PhysicsType == CombatDamage.PhysicsTypes.Overlap_Capsule)
                     {
-                        EditorUtils.FloatSlider(ref myTarget.Distance, 0.1F, 100F, EditorUtils.TextHint(myTarget.PhysicsType.ToString().Replace("_", " ") + " Length"), "m", 10);
+                        using (new SkillFieldHelp.Row("检测长度", "射线或球形扫掠沿指定方向检测的距离，也用于确定胶囊的长轴范围。"))
+                            EditorUtils.FloatSlider(ref myTarget.Distance, 0.1F, 100F, EditorUtils.TextHint(myTarget.PhysicsType.ToString().Replace("_", " ") + " Length"), "m", 10);
                     }
 
                     if (myTarget.PhysicsType == CombatDamage.PhysicsTypes.Raycast || myTarget.PhysicsType == CombatDamage.PhysicsTypes.Overlap_Capsule || myTarget.PhysicsType == CombatDamage.PhysicsTypes.SphereCast)
                     {
                         EditorUtils.Pre(EditorUtils.TextHint("Direction:", "Local-space direction of this transform."),10,70);
+                        SkillFieldHelp.Button("检测方向", "在组件的局部坐标中设置检测方向。快捷方向按钮可以一次设置三个分量。");
                         GUI.backgroundColor =EditorUtils._black;
                         if (!myTarget.is2D) {
                             if (GUILayout.Button("Fwd", GUILayout.Width(40))) { myTarget.DirOffset = Vector3.forward; UnityEditor.EditorUtility.SetDirty(myTarget); }
@@ -684,11 +706,14 @@ namespace SoftKitty
                         if (GUILayout.Button("Down", GUILayout.Width(40))) { myTarget.DirOffset = Vector3.down; UnityEditor.EditorUtility.SetDirty(myTarget); }
                         GUI.backgroundColor = EditorUtils._titleColor;
                         EditorUtils.End(10);
-                        EditorUtils.FloatSlider(ref myTarget.DirOffset.x, -1F, 1F, EditorUtils.TextHint("X:"), "", 30, 30);
-                        EditorUtils.FloatSlider(ref myTarget.DirOffset.y, -1F,1F, EditorUtils.TextHint("Y:"), "", 30, 30);
+                        using (new SkillFieldHelp.Row("检测方向 X", "在组件的局部坐标中设置检测方向。快捷方向按钮可以一次设置三个分量。"))
+                            EditorUtils.FloatSlider(ref myTarget.DirOffset.x, -1F, 1F, EditorUtils.TextHint("X:"), "", 30, 30);
+                        using (new SkillFieldHelp.Row("检测方向 Y", "在组件的局部坐标中设置检测方向。快捷方向按钮可以一次设置三个分量。"))
+                            EditorUtils.FloatSlider(ref myTarget.DirOffset.y, -1F,1F, EditorUtils.TextHint("Y:"), "", 30, 30);
                         if (!myTarget.is2D)
                         {
-                            EditorUtils.FloatSlider(ref myTarget.DirOffset.z, -1F, 1F, EditorUtils.TextHint("Z:"), "", 30, 30);
+                            using (new SkillFieldHelp.Row("检测方向 Z", "在组件的局部坐标中设置检测方向。快捷方向按钮可以一次设置三个分量。"))
+                                EditorUtils.FloatSlider(ref myTarget.DirOffset.z, -1F, 1F, EditorUtils.TextHint("Z:"), "", 30, 30);
                             if (myTarget.DirOffset.x == 0F && myTarget.DirOffset.y == 0F && myTarget.DirOffset.z == 0F) myTarget.DirOffset.z = 1F;
                         }
                         else
@@ -702,15 +727,19 @@ namespace SoftKitty
                     if (myTarget.PhysicsType == CombatDamage.PhysicsTypes.Raycast || myTarget.PhysicsType == CombatDamage.PhysicsTypes.Overlap_Capsule || myTarget.PhysicsType == CombatDamage.PhysicsTypes.SphereCast || myTarget.PhysicsType == CombatDamage.PhysicsTypes.Overlap_Sphere)
                     {
                         EditorUtils.Pre(EditorUtils.TextHint("Position Offset:", "Local-space offset of the cast point."), 10,100);
+                        SkillFieldHelp.Button("检测起点偏移", "在组件的局部坐标中移动物理检测的起点，单位为米。");
                         GUI.backgroundColor =EditorUtils._black;
                         if (GUILayout.Button("Reset", GUILayout.Width(40))) { myTarget.PosOffset = Vector3.zero; UnityEditor.EditorUtility.SetDirty(myTarget); }
                         EditorUtils.End(10);
                         GUI.backgroundColor = EditorUtils._titleColor;
-                        EditorUtils.FloatSlider(ref myTarget.PosOffset.x, -3F, 3F, EditorUtils.TextHint("X:"), "m", 30,30);
-                        EditorUtils.FloatSlider(ref myTarget.PosOffset.y, -3F, 3F, EditorUtils.TextHint("Y:"), "m", 30,30);
+                        using (new SkillFieldHelp.Row("检测起点偏移 X", "在组件的局部坐标中移动物理检测的起点，单位为米。"))
+                            EditorUtils.FloatSlider(ref myTarget.PosOffset.x, -3F, 3F, EditorUtils.TextHint("X:"), "m", 30,30);
+                        using (new SkillFieldHelp.Row("检测起点偏移 Y", "在组件的局部坐标中移动物理检测的起点，单位为米。"))
+                            EditorUtils.FloatSlider(ref myTarget.PosOffset.y, -3F, 3F, EditorUtils.TextHint("Y:"), "m", 30,30);
                         if (!myTarget.is2D)
                         {
-                            EditorUtils.FloatSlider(ref myTarget.PosOffset.z, -50F, 50F, EditorUtils.TextHint("Z:"), "m", 30, 30);
+                            using (new SkillFieldHelp.Row("检测起点偏移 Z", "在组件的局部坐标中移动物理检测的起点，单位为米。"))
+                                EditorUtils.FloatSlider(ref myTarget.PosOffset.z, -50F, 50F, EditorUtils.TextHint("Z:"), "m", 30, 30);
                         }
                         else
                         {
@@ -719,7 +748,8 @@ namespace SoftKitty
                         GUI.backgroundColor = Color.white;
                       
 
-                        EditorUtils.Toggle(ref myTarget.PhysicsPreview, EditorUtils.TextHint("Preview", "Preview physics detection gizmos in the Scene view."), 10);
+                        using (new SkillFieldHelp.Row("预览检测范围", "在场景视图里显示这个组件的物理检测示意，方便检查位置、方向和范围。"))
+                            EditorUtils.Toggle(ref myTarget.PhysicsPreview, EditorUtils.TextHint("Preview", "Preview physics detection gizmos in the Scene view."), 10);
                     }
                 }
                 EditorGUILayout.Separator();
@@ -738,6 +768,7 @@ namespace SoftKitty
                 EditorUtils.Pre(EditorUtils.TextHint("Projectile Mode:", "Projectile behavior mode."), 10);
                 GUI.backgroundColor = myTarget.ProjectileMode == CombatDamage.ProjectileModes.Disable? EditorUtils._gray: EditorUtils._titleColor;
                 myTarget.ProjectileMode = (CombatDamage.ProjectileModes)EditorGUILayout.EnumPopup(myTarget.ProjectileMode, GUILayout.Width(150));
+                SkillFieldHelp.Button("投射物驱动方式", "选择关闭投射物行为、用刚体驱动，或按脚本更新飞行位置。");
                 EditorUtils.ResetColor();
                 EditorUtils.End(10);
                 if (myTarget.ProjectileMode != CombatDamage.ProjectileModes.Disable && !myTarget.PhysicsDetection)
@@ -879,7 +910,8 @@ namespace SoftKitty
                             }
                         }
 
-                        EditorUtils.Toggle(ref myTarget.ProjectileUseGravity, EditorUtils.TextHint("Enable Gravity:", "Enable or disable gravity for the Rigidbody."), 30, 170);
+                        using (new SkillFieldHelp.Row("刚体重力", "开启后，物理驱动的投射物会受到重力影响。"))
+                            EditorUtils.Toggle(ref myTarget.ProjectileUseGravity, EditorUtils.TextHint("Enable Gravity:", "Enable or disable gravity for the Rigidbody."), 30, 170);
                     } 
                     else if (myTarget.ProjectileMode == CombatDamage.ProjectileModes.ScriptDrive) {
                         if (myTarget.PhysicsType == CombatDamage.PhysicsTypes.Rigidbody_Collider)
@@ -926,47 +958,60 @@ namespace SoftKitty
                             }
                         }
 
-                        EditorUtils.FloatSlider(ref myTarget.ProjectileGravity, 0F, 2F, EditorUtils.TextHint("Gravity Multiplier:", "Multiplier applied to gravity."), "x", 30,170);
+                        using (new SkillFieldHelp.Row("重力倍率", "缩放投射物使用的重力，数值越大，下落影响越强。"))
+                            EditorUtils.FloatSlider(ref myTarget.ProjectileGravity, 0F, 2F, EditorUtils.TextHint("Gravity Multiplier:", "Multiplier applied to gravity."), "x", 30,170);
                     }
 
-                    EditorUtils.Toggle(ref myTarget.LaunchOnStart, EditorUtils.TextHint("Launch On Start/On Enable:", "Launch the projectile on start/on enable, if you toggle it off you will have to manually call <CombatDamage>().Launch() to launch the projectile."),30,170);
+                    using (new SkillFieldHelp.Row("自动发射", "组件启动或重新启用时自动发射。关闭后需要显式调用 Launch 发射。"))
+                        EditorUtils.Toggle(ref myTarget.LaunchOnStart, EditorUtils.TextHint("Launch On Start/On Enable:", "Launch the projectile on start/on enable, if you toggle it off you will have to manually call <CombatDamage>().Launch() to launch the projectile."),30,170);
 
-                    EditorUtils.FloatSlider(ref myTarget.ProjectileSpeed, 1F, 100F, EditorUtils.TextHint("Speed:", "Projectile speed in meters per second."), "m/s", 30, 170);
+                    using (new SkillFieldHelp.Row("飞行速度", "投射物每秒移动的基础距离，单位为米。"))
+                        EditorUtils.FloatSlider(ref myTarget.ProjectileSpeed, 1F, 100F, EditorUtils.TextHint("Speed:", "Projectile speed in meters per second."), "m/s", 30, 170);
 
                     if (myTarget.ProjectileMode == CombatDamage.ProjectileModes.ScriptDrive)
                     {
                         EditorUtils.Pre(EditorUtils.TextHint("Speed Curve Over Lifetime:", "Controls projectile speed over its lifetime."), 30, 170);
                         myTarget.ProjectileSpeedCurve = EditorGUILayout.CurveField(myTarget.ProjectileSpeedCurve);
+                        SkillFieldHelp.Button("速度曲线", "在脚本驱动模式下，按投射物已飞行的生命进度调整速度。");
                         EditorUtils.End(20);
                     }
 
-                    EditorUtils.FloatSlider(ref myTarget.ProjectileLife, 0.5F, 30F, EditorUtils.TextHint("Lifetime:", "Lifetime in seconds. The projectile is destroyed when time expires."), "sec", 30, 170);
+                    using (new SkillFieldHelp.Row("存活时长", "从发射开始算起的最长存活秒数，时间到达后投射物被回收。"))
+                        EditorUtils.FloatSlider(ref myTarget.ProjectileLife, 0.5F, 30F, EditorUtils.TextHint("Lifetime:", "Lifetime in seconds. The projectile is destroyed when time expires."), "sec", 30, 170);
                     EditorUtils.Pre(EditorUtils.TextHint("Exhausted Prefab (Optional):", "Prefab instantiated when the projectile lifetime expires."), 50,170);
                     GUI.backgroundColor = EditorUtils._black;
                     myTarget.ExhaustedPrefab = (GameObject)EditorGUILayout.ObjectField(myTarget.ExhaustedPrefab, typeof(GameObject),true );
+                    SkillFieldHelp.Button("耗尽特效", "选择存活时间结束时，在投射物当前位置生成的特效。");
                     EditorUtils.ResetColor();
                     EditorUtils.End(20);
-                    EditorUtils.Toggle(ref myTarget.DestroyOnHitGround, EditorUtils.TextHint("Destroy when hit ground:", "Destroy the projectile when it hits the ground."), 30, 170);
+                    using (new SkillFieldHelp.Row("碰到地面时销毁", "启用后，判定为地面碰撞时结束并销毁投射物。"))
+                        EditorUtils.Toggle(ref myTarget.DestroyOnHitGround, EditorUtils.TextHint("Destroy when hit ground:", "Destroy the projectile when it hits the ground."), 30, 170);
                     if (myTarget.DestroyOnHitGround) {
                         EditorUtils.Pre(EditorUtils.TextHint("Hit Ground Prefab (Optional):", "Prefab instantiated when the projectile hits the ground."), 50, 170);
                         GUI.backgroundColor = EditorUtils._black;
                         myTarget.HitGroundEffectPrefab = (GameObject)EditorGUILayout.ObjectField(myTarget.HitGroundEffectPrefab, typeof(GameObject), true);
+                        SkillFieldHelp.Button("地面命中特效", "选择碰到地面时在碰撞点生成的特效预制体。");
                         EditorUtils.ResetColor();
                         EditorUtils.End(20);
                     }
-                    EditorUtils.Toggle(ref myTarget.DestroyOnHitTarget, EditorUtils.TextHint("Destroy when hit enemy:", "Destroy the projectile when it hits the enemy."), 30, 170);
+                    using (new SkillFieldHelp.Row("命中实体时销毁", "启用后，投射物击中有效目标时结束飞行并销毁。"))
+                        EditorUtils.Toggle(ref myTarget.DestroyOnHitTarget, EditorUtils.TextHint("Destroy when hit enemy:", "Destroy the projectile when it hits the enemy."), 30, 170);
                     if (myTarget.DestroyOnHitTarget)
                     {
                         EditorUtils.Pre(EditorUtils.TextHint("Hit Enemy Prefab (Optional):", "Prefab instantiated when the projectile hits the enemy."), 50, 170);
                         GUI.backgroundColor = EditorUtils._black;
                         myTarget.HitTargetEffectPrefab = (GameObject)EditorGUILayout.ObjectField(myTarget.HitTargetEffectPrefab, typeof(GameObject), true);
+                        SkillFieldHelp.Button("实体命中特效", "选择投射物命中有效实体时生成的特效预制体。");
                         EditorUtils.ResetColor();
                         EditorUtils.End(20);
                     }
-                    EditorUtils.Toggle(ref myTarget.AutoSeekingTarget, EditorUtils.TextHint("Auto-seeking Targets:", "Whether the projectile automatically seeks targets while in flight."), 30, 170);
+                    using (new SkillFieldHelp.Row("自动寻敌", "飞行时搜索附近目标，并根据追踪设置调整飞行方向。"))
+                        EditorUtils.Toggle(ref myTarget.AutoSeekingTarget, EditorUtils.TextHint("Auto-seeking Targets:", "Whether the projectile automatically seeks targets while in flight."), 30, 170);
                     if (myTarget.AutoSeekingTarget) {
-                        EditorUtils.FloatSlider(ref myTarget.SeekingRadius, 1F, 100F, EditorUtils.TextHint("Seeking Targets Radius:", "Radius (in meters) within which the projectile can seek targets."), "m", 50, 170);
-                        EditorUtils.FloatSlider(ref myTarget.SeekingAngularVelocity, 1F, 300F, EditorUtils.TextHint("Tracking Angular Velocity:", "Maximum degrees per second the projectile can rotate when tracking a target."), "deg", 50, 170);
+                        using (new SkillFieldHelp.Row("寻敌半径", "投射物会在这个半径内搜索可追踪目标，单位为米。"))
+                            EditorUtils.FloatSlider(ref myTarget.SeekingRadius, 1F, 100F, EditorUtils.TextHint("Seeking Targets Radius:", "Radius (in meters) within which the projectile can seek targets."), "m", 50, 170);
+                        using (new SkillFieldHelp.Row("追踪转速", "限制追踪目标时每秒最多能转动的角度。数值越大，转向越快。"))
+                            EditorUtils.FloatSlider(ref myTarget.SeekingAngularVelocity, 1F, 300F, EditorUtils.TextHint("Tracking Angular Velocity:", "Maximum degrees per second the projectile can rotate when tracking a target."), "deg", 50, 170);
                     }
                 }
 

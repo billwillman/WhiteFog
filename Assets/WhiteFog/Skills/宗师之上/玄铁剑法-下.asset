@@ -79,7 +79,7 @@ MonoBehaviour:
     - mType: 0
       Name: Action
       Uid: Node1
-      Position: {x: 450, y: 0}
+      Position: {x: 304, y: 304}
       NodeIndex: 0
       inputPort:
       - Name: Action
@@ -170,7 +170,7 @@ MonoBehaviour:
     - mType: 0
       Name: Action
       Uid: Node4
-      Position: {x: 450, y: 420}
+      Position: {x: 304, y: 736}
       NodeIndex: 0
       inputPort:
       - Name: Action
@@ -267,7 +267,7 @@ MonoBehaviour:
     - mType: 0
       Name: Action
       Uid: Node7
-      Position: {x: 450, y: 840}
+      Position: {x: 304, y: 1248}
       NodeIndex: 0
       inputPort:
       - Name: Action
@@ -364,7 +364,7 @@ MonoBehaviour:
     - mType: 0
       Name: Action
       Uid: Node10
-      Position: {x: 450, y: 1260}
+      Position: {x: 304, y: 1760}
       NodeIndex: 0
       inputPort:
       - Name: Action
@@ -471,7 +471,7 @@ MonoBehaviour:
     - mType: 0
       Name: Action
       Uid: Node13
-      Position: {x: 450, y: 1680}
+      Position: {x: 304, y: 2608}
       NodeIndex: 0
       inputPort:
       - Name: Action
@@ -568,7 +568,7 @@ MonoBehaviour:
     - mType: 0
       Name: Action
       Uid: Node16
-      Position: {x: 450, y: 2100}
+      Position: {x: 304, y: 3120}
       NodeIndex: 0
       inputPort:
       - Name: Action
@@ -665,7 +665,7 @@ MonoBehaviour:
     - mType: 0
       Name: Action
       Uid: Node3
-      Position: {x: 450, y: 2520}
+      Position: {x: 1008, y: 1760}
       NodeIndex: 0
       inputPort:
       - Name: Action
@@ -840,7 +840,7 @@ MonoBehaviour:
     - mType: 0
       Name: Variable
       Uid: Node21
-      Position: {x: 205, y: 2780}
+      Position: {x: 656, y: 2192}
       NodeIndex: 0
       inputPort:
       - Name: Entity
@@ -877,7 +877,7 @@ MonoBehaviour:
     - mType: 0
       Name: Entity (Player)
       Uid: Node2
-      Position: {x: 205, y: 0}
+      Position: {x: -48, y: 536}
       NodeIndex: 0
       inputPort: []
       outputPort:
@@ -900,7 +900,7 @@ MonoBehaviour:
     - mType: 0
       Name: Entity (Player)
       Uid: Node5
-      Position: {x: 205, y: 420}
+      Position: {x: -48, y: 904}
       NodeIndex: 0
       inputPort: []
       outputPort:
@@ -923,7 +923,7 @@ MonoBehaviour:
     - mType: 0
       Name: Entity (Player)
       Uid: Node6
-      Position: {x: 205, y: 550}
+      Position: {x: -48, y: 1056}
       NodeIndex: 0
       inputPort: []
       outputPort:
@@ -946,7 +946,7 @@ MonoBehaviour:
     - mType: 0
       Name: Entity (Player)
       Uid: Node8
-      Position: {x: 205, y: 840}
+      Position: {x: -48, y: 1416}
       NodeIndex: 0
       inputPort: []
       outputPort:
@@ -969,7 +969,7 @@ MonoBehaviour:
     - mType: 0
       Name: Entity (Player)
       Uid: Node9
-      Position: {x: 205, y: 970}
+      Position: {x: -48, y: 1568}
       NodeIndex: 0
       inputPort: []
       outputPort:
@@ -992,7 +992,7 @@ MonoBehaviour:
     - mType: 0
       Name: Entity (Player)
       Uid: Node11
-      Position: {x: 205, y: 1260}
+      Position: {x: -48, y: 1984}
       NodeIndex: 0
       inputPort: []
       outputPort:
@@ -1015,7 +1015,7 @@ MonoBehaviour:
     - mType: 0
       Name: Entity (Player)
       Uid: Node12
-      Position: {x: 205, y: 1390}
+      Position: {x: -48, y: 2136}
       NodeIndex: 0
       inputPort: []
       outputPort:
@@ -1038,7 +1038,7 @@ MonoBehaviour:
     - mType: 0
       Name: Entity (Player)
       Uid: Node14
-      Position: {x: 205, y: 1680}
+      Position: {x: -48, y: 2776}
       NodeIndex: 0
       inputPort: []
       outputPort:
@@ -1061,7 +1061,7 @@ MonoBehaviour:
     - mType: 0
       Name: Entity (Player)
       Uid: Node15
-      Position: {x: 205, y: 1810}
+      Position: {x: -48, y: 2928}
       NodeIndex: 0
       inputPort: []
       outputPort:
@@ -1084,7 +1084,7 @@ MonoBehaviour:
     - mType: 0
       Name: Entity (Player)
       Uid: Node17
-      Position: {x: 205, y: 2100}
+      Position: {x: -48, y: 3288}
       NodeIndex: 0
       inputPort: []
       outputPort:
@@ -1107,7 +1107,7 @@ MonoBehaviour:
     - mType: 0
       Name: Entity (Player)
       Uid: Node18
-      Position: {x: 205, y: 2230}
+      Position: {x: -48, y: 3440}
       NodeIndex: 0
       inputPort: []
       outputPort:
@@ -1130,7 +1130,7 @@ MonoBehaviour:
     - mType: 0
       Name: Entity (Player)
       Uid: Node19
-      Position: {x: 205, y: 2520}
+      Position: {x: 656, y: 1888}
       NodeIndex: 0
       inputPort: []
       outputPort:
@@ -1153,7 +1153,7 @@ MonoBehaviour:
     - mType: 0
       Name: Entity (Player)
       Uid: Node20
-      Position: {x: 205, y: 2650}
+      Position: {x: 656, y: 2040}
       NodeIndex: 0
       inputPort: []
       outputPort:

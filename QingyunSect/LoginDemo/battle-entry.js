@@ -14,10 +14,11 @@ function makeBattleEntry(art,onPracticeTrial) {
   const byId = id => document.getElementById(id);
   const scene=byId('battle-entry'),canvas=byId('battle-role'),bar=byId('battle-bar');
   const label=byId('battle-skill'),result=byId('battle-result');
-  const controls=byId('battle-controls'),auto=byId('battle-auto'),attack=byId('battle-attack');
+  const controls=byId('battle-controls'),auto=byId('battle-auto');
   let raf=0,mode,plan,age=0,last=null,castIndex=0,active=null,victory=false;
-  let automatic=true, readyAt=0, party=null, nextAutoPoll=0;
+  let previewAutomatic=true, readyAt=0, party=null, nextAutoPoll=0;
   const cooldowns=new Map(),feedback=byId('battle-feedback'),escortStatus=byId('escort-status');
+  const challenge=byId('battle-next');
   let feedbackUntil=0,onResult,requestVersion=0;
   const damageBySkill=new Map(),report=scene.querySelector('.duel-report');
   function keyForMove(id){
@@ -33,6 +34,10 @@ function makeBattleEntry(art,onPracticeTrial) {
     victory=true;feedback.hidden=true;board.close();controls.hidden=true;result.hidden=false;
     result.querySelector('h2').textContent=won?'胜利':'失败';
     result.dataset.outcome=won?'win':'lose';
+    if(!challenge.hidden){
+      if(won)result.insertBefore(challenge,byId('battle-return'));
+      else challenge.hidden=true;
+    }
     scene.classList.add('settled');
     const details=byId('duel-damage'),rows=details.querySelector('ol');
     const hits=[...damageBySkill].sort((a,b)=>b[1]-a[1]);
@@ -58,14 +63,14 @@ function makeBattleEntry(art,onPracticeTrial) {
   byId('duel-damage').querySelector('summary').addEventListener('click',event=>{
     if(!damageBySkill.size)event.preventDefault();
   });
+  challenge.querySelector('img').src=art.ui.worldcombat_btn_combat;
   auto.style.backgroundImage='url('+art.ui.worldcombat_btn_switch+')';
-  attack.style.backgroundImage='url('+art.ui.worldcombat_btn_combat+')';
   bar.style.setProperty('--bar-image','url('+art.ui.worldcombat_bg_skill_group+')');
   bar.style.setProperty('--slot-image','url('+art.ui.worldcombat_skill_state_bg01+')');
   const slots=Array.from({length:6},()=>{
     const li=document.createElement('li'),icon=new Image(),frame=new Image(),timer=document.createElement('span');
     const button=document.createElement('button'),name=document.createElement('small');
-    button.type='button';button.onclick=()=>{if(!editable())manual(button.dataset.key);};
+    button.type='button';button.onclick=()=>castPreviewSlot(button.dataset.key);
     icon.alt=frame.alt='';li.append(icon,frame,timer,name,button);bar.append(li);return {li,icon,frame,timer,name,button};
   });
   const editable=()=>!!party&&!party.fixedSkills&&!!mode&&mode!=='skills'&&!victory;
@@ -167,31 +172,27 @@ function makeBattleEntry(art,onPracticeTrial) {
     }
     // Reset the workbench fixture between automatic trials and when swapping the enemy model.
     const newOpponent=active&&(active.key==='boss')!==(key==='boss');
-    const restart=mode==='skills'&&(automatic||newOpponent);
+    const restart=mode==='skills'&&(previewAutomatic||newOpponent);
     if(restart)defeated=false;
     input(restart?'replay':'cast',key);active={time,key};
     readyAt=time+sourceMoves[key].seconds;
   }
   function updateControls(){
-    auto.hidden=editable();
-    auto.setAttribute('aria-pressed',String(automatic));auto.textContent=automatic?'自动':'手动';
-    byId('battle-reset').hidden=mode!=='skills'||automatic;
-    attack.hidden=automatic||!party;attack.disabled=age<readyAt||victory;
-    bar.setAttribute('aria-label',automatic?'出战功法，自动施放':'出战功法，手动施放');
+    controls.hidden=mode!=='skills';
+    auto.setAttribute('aria-pressed',String(previewAutomatic));auto.textContent=previewAutomatic?'自动':'手动';
+    byId('battle-reset').hidden=mode!=='skills'||previewAutomatic;
+    bar.setAttribute('aria-label',party||previewAutomatic?'出战功法，自动施放':'出战功法，手动施放');
   }
-  function manual(key){
-    if(!key||!mode||victory||(mode!=='skills'&&!party?.player.some(m=>m.id===sourceMoves[key]?.id))||
-      (party?age<(cooldowns.get(key)||0):age<readyAt)||(defeated&&(active?.key==='boss')===(key==='boss')))return;
-    automatic=false;cast(key,age);updateControls();
+  function castPreviewSlot(key){
+    if(mode!=='skills'||!key||age<readyAt||(defeated&&(active?.key==='boss')===(key==='boss')))return;
+    previewAutomatic=false;cast(key,age);updateControls();
   }
   auto.addEventListener('click',()=>{
-    if(!mode||victory)return;
-    automatic=!automatic;
-    if(automatic&&mode==='skills'){age=0;castIndex=0;active=null;readyAt=0;}
+    if(mode!=='skills')return;
+    previewAutomatic=!previewAutomatic;
+    if(previewAutomatic){age=0;castIndex=0;active=null;readyAt=0;}
     updateControls();
   });
-  const primarySlot=()=>plan?.slots.find(Boolean);
-  attack.addEventListener('click',()=>manual(primarySlot()));
   byId('battle-reset').addEventListener('click',()=>{
     if(mode!=='skills')return;
     defeated=false;readyAt=0;active=null;input('begin');updateControls();
@@ -199,13 +200,13 @@ function makeBattleEntry(art,onPracticeTrial) {
   function tick(now){
     if(last!==null&&!document.hidden)age+=Math.min(.1,(now-last)/1000);
     last=document.hidden?null:now;
-    if(party&&!victory&&automatic&&age>=nextAutoPoll&&(!active||age>=active.time+sourceMoves[active.key].seconds)){
+    if(party&&!victory&&age>=nextAutoPoll&&(!active||age>=active.time+sourceMoves[active.key].seconds)){
       const key=plan.slots.find(k=>k&&age>=(cooldowns.get(k)||0));
       if(key)cast(key,age);
       nextAutoPoll=age+.15;
     }
-    if(automatic&&plan.period&&age>=plan.period){age%=plan.period;castIndex=0;active=null;readyAt=0;}
-    while(automatic&&castIndex<plan.casts.length&&plan.casts[castIndex][0]<=age){
+    if(previewAutomatic&&plan.period&&age>=plan.period){age%=plan.period;castIndex=0;active=null;readyAt=0;}
+    while(previewAutomatic&&castIndex<plan.casts.length&&plan.casts[castIndex][0]<=age){
       const [time,key]=plan.casts[castIndex];
       castIndex++;
       cast(key,time);
@@ -220,10 +221,10 @@ function makeBattleEntry(art,onPracticeTrial) {
       button.disabled=!editable()&&(wait>0||victory||(defeated&&(active?.key==='boss')===(key==='boss')));
       li.classList.toggle('casting',casting===key);li.classList.toggle('cooling',!!wait&&casting!==key);timer.textContent=wait?String(wait):'';
     });
-    if(party&&!attack.hidden){const first=primarySlot();attack.disabled=!first||victory||age<(cooldowns.get(first)||0);}
     raf=requestAnimationFrame(tick);
   }
   function stop(){
+    challenge.hidden=true;challenge.onclick=null;
     board.close();
     cancelAnimationFrame(raf);scene.hidden=true;controls.hidden=true;last=null;
     requestVersion++;entryCancel?.();frame=null;onResult=null;party=null;
@@ -240,26 +241,28 @@ function makeBattleEntry(art,onPracticeTrial) {
       const enemy=mode==='skills'&&plan.slots[i]==='boss';
       name.textContent=skill?(enemy?'敌方 · ':'')+skill.name:'';
       button.textContent=artId?trainingRules.arts[artId]:skill&&icon.hidden?skill.name.slice(0,2):'';
-      button.hidden=!editable()&&!skill;button.disabled=!editable()&&!skill;button.dataset.key=plan.slots[i]||'';
+      button.hidden=!editable()&&(mode!=='skills'||!skill);button.disabled=button.hidden;button.dataset.key=plan.slots[i]||'';
       button.setAttribute('aria-label',editable()?'上排第 '+(i+1)+' 格 · '+(skill?.name||trainingRules.arts[artId]||'空'):skill?(enemy?'敌方试放':'施放')+skill.name:'空功法位');
       li.setAttribute('aria-label',skill?.name||trainingRules.arts[artId]||'空功法位');li.className='';timer.textContent='';
     });
   }
-  function show(which,skillKey,settle){
+  function show(which,skillKey,{onResult:settle,farm}={}){
     onResult=settle;
+    scene.insertBefore(challenge,result);
+    challenge.hidden=!farm?.challengeNext;
+    challenge.onclick=farm?.challengeNext??null;
     cancelAnimationFrame(raf);last=null;mode=which;
     const single=mode==='skills' && sourceMoves[skillKey];
     if(party){
       const slots=[];party.player.forEach((m,i)=>{slots[m.slot??i]=keyForMove(m.id);});
       plan={slots,casts:[]};
     }else plan=single?{slots:[skillKey],casts:[[.6,skillKey]],period:single.seconds+2}:sourceEncounters.skills;
-    age=0;castIndex=0;active=null;victory=false;cooldowns.clear();nextAutoPoll=.25;feedbackUntil=0;feedback.hidden=true;defeated=false;automatic=true;readyAt=0;
+    age=0;castIndex=0;active=null;victory=false;cooldowns.clear();nextAutoPoll=.25;feedbackUntil=0;feedback.hidden=true;defeated=false;previewAutomatic=true;readyAt=0;
     trainingEvents.clear();trainingReport.hidden=true;escortStatus.hidden=true;
     damageBySkill.clear();report.hidden=true;scene.classList.remove('settled');delete result.dataset.outcome;
-    byId('battle-return').textContent=mode==='pathTrial'?'返回试修':party?.practice?'返回修行':party?'点击继续':'回到舆图';
+    byId('battle-return').textContent=mode==='pathTrial'?'返回试修':party?.practice?'返回修行':party&&!farm?'点击继续':'回到舆图';
     byId('battle-map').textContent=party?.practice?'‹ 修行':'‹ 舆图';
-    attack.setAttribute('aria-label','施放'+(sourceMoves[primarySlot()]?.name||'功法'));
-    scene.dataset.encounter=mode;scene.classList.toggle('formal-battle',!!party);controls.hidden=false;byId('skill-records').hidden=mode!=='skills';updateControls();
+    scene.dataset.encounter=mode;scene.classList.toggle('formal-battle',!!party);byId('skill-records').hidden=mode!=='skills';updateControls();
     result.hidden=label.hidden=true;scene.hidden=false;
     scene.querySelector('.court-chapter small').textContent=party?.heading??'功法试放';
     scene.querySelector('.court-chapter strong').textContent=party?.title??(single?single.name:'剑修与独臂木侠');

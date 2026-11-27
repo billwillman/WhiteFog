@@ -13,7 +13,7 @@ function makeBattleBoard(bar,art,onChange){
     if(book && shelf.contains(book))return {id:JSON.parse(book.dataset.shelfBook)};
     return target&&shelf.contains(target)?{}:null;
   }
-  const hint='下排武学拖到上排出招，拖到另一本同品质武学上合成。';
+  const hint='下排武学拖到上排后自动出招，拖到另一本同品质武学上合成。';
   function select(cell){
     selected=cell;
     for(const el of [...bar.children,...list.children]){

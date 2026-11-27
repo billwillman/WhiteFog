@@ -68,6 +68,7 @@ public static class OriginalSkillEditorExport
         var original = graph as OriginalSkillGraph;
         if (node.ClassName == "SelectTarget" && node.selectionRules is SkillTargetSelection rules)
         {
+            Add("最多获取目标数", rules.Limit.ToString());
             Add("候选范围", rules.sceneEnemies ? "当前场景敌方实体" : "本次施法目标名单");
             foreach (var filter in rules.filters)
             {

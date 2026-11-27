@@ -23,8 +23,7 @@ MonoBehaviour:
       Type: RootIn
       acceptedTypes:
       - TriggerOut
-      uid:
-      - Node25#0
+      uid: []
       connectedNodes: []
       allowMutipleConnection: 1
       createByDefault: 1
@@ -83,7 +82,7 @@ MonoBehaviour:
     - mType: 0
       Name: Action
       Uid: Node1
-      Position: {x: 818, y: -14.666668}
+      Position: {x: 304, y: 304}
       NodeIndex: 0
       inputPort:
       - Name: Action
@@ -167,14 +166,22 @@ MonoBehaviour:
         rid: -2
       motion:
         rid: 6312275966157651972
+      selectionRules:
+        rid: -2
       projectile:
+        rid: -2
+      projectileSnap: {fileID: 0}
+      requiresProjectileSnap: 0
+      projectileSpeedOverride: 0
+      projectileOverrideFields: 0
+      projectileOverrides:
         rid: -2
       visualEffect:
         rid: -2
     - mType: 0
       Name: Action
       Uid: Node4
-      Position: {x: 450.66666, y: 420}
+      Position: {x: 304, y: 736}
       NodeIndex: 0
       inputPort:
       - Name: Action
@@ -236,7 +243,7 @@ MonoBehaviour:
           EnumOptions: []
         - Uid: target
           Label: "\u8868\u73B0\u76EE\u6807"
-          ToolTips: "\u98DE\u5251\u53D1\u5C04\u65F6\u8BFB\u53D6\u76EE\u6807\u4F4D\u7F6E"
+          ToolTips: "\u4EA7\u751F\u6295\u5C04\u7269\u65F6\u8BFB\u53D6\u7784\u51C6\u76EE\u6807\u4F4D\u7F6E"
           Type: 8
           Index: 1
           VisibleBind: 
@@ -251,7 +258,7 @@ MonoBehaviour:
           - "\u64AD\u653E\u539F\u4F5C\u89D2\u8272\u52A8\u4F5C"
           - "\u65BD\u6CD5\u7279\u6548"
           - "\u53F3\u624B\u6B66\u5668"
-          - "\u53D1\u5C04\u98DE\u5251"
+          - "\u4EA7\u751F\u6295\u5C04\u7269"
           - "\u6536\u62DB\u6807\u8BB0"
           - "\u4F4D\u79FB\u4E8B\u4EF6\u6807\u8BB0"
           - "\u539F\u4F5C\u8F68\u9053\u7279\u6548\u6216\u547D\u4E2D"
@@ -272,14 +279,22 @@ MonoBehaviour:
         rid: -2
       motion:
         rid: -2
+      selectionRules:
+        rid: -2
       projectile:
+        rid: -2
+      projectileSnap: {fileID: 0}
+      requiresProjectileSnap: 0
+      projectileSpeedOverride: 0
+      projectileOverrideFields: 0
+      projectileOverrides:
         rid: -2
       visualEffect:
         rid: -2
     - mType: 0
       Name: Action
       Uid: Node7
-      Position: {x: 450, y: 840}
+      Position: {x: 304, y: 1248}
       NodeIndex: 0
       inputPort:
       - Name: Action
@@ -341,7 +356,7 @@ MonoBehaviour:
           EnumOptions: []
         - Uid: target
           Label: "\u8868\u73B0\u76EE\u6807"
-          ToolTips: "\u98DE\u5251\u53D1\u5C04\u65F6\u8BFB\u53D6\u76EE\u6807\u4F4D\u7F6E"
+          ToolTips: "\u4EA7\u751F\u6295\u5C04\u7269\u65F6\u8BFB\u53D6\u7784\u51C6\u76EE\u6807\u4F4D\u7F6E"
           Type: 8
           Index: 1
           VisibleBind: 
@@ -356,7 +371,7 @@ MonoBehaviour:
           - "\u64AD\u653E\u539F\u4F5C\u89D2\u8272\u52A8\u4F5C"
           - "\u65BD\u6CD5\u7279\u6548"
           - "\u53F3\u624B\u6B66\u5668"
-          - "\u53D1\u5C04\u98DE\u5251"
+          - "\u4EA7\u751F\u6295\u5C04\u7269"
           - "\u6536\u62DB\u6807\u8BB0"
           - "\u4F4D\u79FB\u4E8B\u4EF6\u6807\u8BB0"
           - "\u539F\u4F5C\u8F68\u9053\u7279\u6548\u6216\u547D\u4E2D"
@@ -377,14 +392,22 @@ MonoBehaviour:
         rid: -2
       motion:
         rid: -2
+      selectionRules:
+        rid: -2
       projectile:
+        rid: -2
+      projectileSnap: {fileID: 0}
+      requiresProjectileSnap: 0
+      projectileSpeedOverride: 0
+      projectileOverrideFields: 0
+      projectileOverrides:
         rid: -2
       visualEffect:
         rid: -2
     - mType: 0
       Name: Action
       Uid: Node10
-      Position: {x: 450, y: 1260}
+      Position: {x: 304, y: 2288}
       NodeIndex: 0
       inputPort:
       - Name: Action
@@ -461,23 +484,29 @@ MonoBehaviour:
           EnumOptions: []
       Type: 0
       Count: 1
-      WaitTime: 1.12
+      WaitTime: 0.8
       KeepTime: 0
       Interval: 0
       calculation:
         rid: -2
       motion:
         rid: -2
+      selectionRules:
+        rid: -2
       projectile:
         rid: -2
       projectileSnap: {fileID: 11400000, guid: 281c3b8111a8405598b45be52c1bdd1f, type: 2}
       requiresProjectileSnap: 1
+      projectileSpeedOverride: 0
+      projectileOverrideFields: 0
+      projectileOverrides:
+        rid: -2
       visualEffect:
         rid: -2
     - mType: 0
       Name: Action
       Uid: Node13
-      Position: {x: 450, y: 1680}
+      Position: {x: 304, y: 3136}
       NodeIndex: 0
       inputPort:
       - Name: Action
@@ -561,16 +590,22 @@ MonoBehaviour:
         rid: -2
       motion:
         rid: -2
+      selectionRules:
+        rid: -2
       projectile:
         rid: -2
       projectileSnap: {fileID: 11400000, guid: 281c3b8111a8405598b45be52c1bdd1f, type: 2}
       requiresProjectileSnap: 1
+      projectileSpeedOverride: 0
+      projectileOverrideFields: 0
+      projectileOverrides:
+        rid: -2
       visualEffect:
         rid: -2
     - mType: 0
       Name: Action
       Uid: Node16
-      Position: {x: 450, y: 2100}
+      Position: {x: 304, y: 3984}
       NodeIndex: 0
       inputPort:
       - Name: Action
@@ -654,16 +689,22 @@ MonoBehaviour:
         rid: -2
       motion:
         rid: -2
+      selectionRules:
+        rid: -2
       projectile:
         rid: -2
       projectileSnap: {fileID: 11400000, guid: 281c3b8111a8405598b45be52c1bdd1f, type: 2}
       requiresProjectileSnap: 1
+      projectileSpeedOverride: 0
+      projectileOverrideFields: 0
+      projectileOverrides:
+        rid: -2
       visualEffect:
         rid: -2
     - mType: 0
       Name: Action
       Uid: Node19
-      Position: {x: 450, y: 2520}
+      Position: {x: 304, y: 5344}
       NodeIndex: 0
       inputPort:
       - Name: Action
@@ -725,7 +766,7 @@ MonoBehaviour:
           EnumOptions: []
         - Uid: target
           Label: "\u8868\u73B0\u76EE\u6807"
-          ToolTips: "\u98DE\u5251\u53D1\u5C04\u65F6\u8BFB\u53D6\u76EE\u6807\u4F4D\u7F6E"
+          ToolTips: "\u4EA7\u751F\u6295\u5C04\u7269\u65F6\u8BFB\u53D6\u7784\u51C6\u76EE\u6807\u4F4D\u7F6E"
           Type: 8
           Index: 1
           VisibleBind: 
@@ -740,7 +781,7 @@ MonoBehaviour:
           - "\u64AD\u653E\u539F\u4F5C\u89D2\u8272\u52A8\u4F5C"
           - "\u65BD\u6CD5\u7279\u6548"
           - "\u53F3\u624B\u6B66\u5668"
-          - "\u53D1\u5C04\u98DE\u5251"
+          - "\u4EA7\u751F\u6295\u5C04\u7269"
           - "\u6536\u62DB\u6807\u8BB0"
           - "\u4F4D\u79FB\u4E8B\u4EF6\u6807\u8BB0"
           - "\u539F\u4F5C\u8F68\u9053\u7279\u6548\u6216\u547D\u4E2D"
@@ -761,14 +802,22 @@ MonoBehaviour:
         rid: -2
       motion:
         rid: -2
+      selectionRules:
+        rid: -2
       projectile:
+        rid: -2
+      projectileSnap: {fileID: 0}
+      requiresProjectileSnap: 0
+      projectileSpeedOverride: 0
+      projectileOverrideFields: 0
+      projectileOverrides:
         rid: -2
       visualEffect:
         rid: -2
     - mType: 0
       Name: Action
       Uid: Node22
-      Position: {x: 450, y: 2940}
+      Position: {x: 304, y: 4832}
       NodeIndex: 0
       inputPort:
       - Name: Action
@@ -830,7 +879,7 @@ MonoBehaviour:
           EnumOptions: []
         - Uid: target
           Label: "\u8868\u73B0\u76EE\u6807"
-          ToolTips: "\u98DE\u5251\u53D1\u5C04\u65F6\u8BFB\u53D6\u76EE\u6807\u4F4D\u7F6E"
+          ToolTips: "\u4EA7\u751F\u6295\u5C04\u7269\u65F6\u8BFB\u53D6\u7784\u51C6\u76EE\u6807\u4F4D\u7F6E"
           Type: 8
           Index: 1
           VisibleBind: 
@@ -845,7 +894,7 @@ MonoBehaviour:
           - "\u64AD\u653E\u539F\u4F5C\u89D2\u8272\u52A8\u4F5C"
           - "\u65BD\u6CD5\u7279\u6548"
           - "\u53F3\u624B\u6B66\u5668"
-          - "\u53D1\u5C04\u98DE\u5251"
+          - "\u4EA7\u751F\u6295\u5C04\u7269"
           - "\u6536\u62DB\u6807\u8BB0"
           - "\u4F4D\u79FB\u4E8B\u4EF6\u6807\u8BB0"
           - "\u539F\u4F5C\u8F68\u9053\u7279\u6548\u6216\u547D\u4E2D"
@@ -866,14 +915,22 @@ MonoBehaviour:
         rid: -2
       motion:
         rid: -2
+      selectionRules:
+        rid: -2
       projectile:
+        rid: -2
+      projectileSnap: {fileID: 0}
+      requiresProjectileSnap: 0
+      projectileSpeedOverride: 0
+      projectileOverrideFields: 0
+      projectileOverrides:
         rid: -2
       visualEffect:
         rid: -2
     - mType: 0
       Name: Action
       Uid: Node3
-      Position: {x: 450, y: 3360}
+      Position: {x: 304, y: 1760}
       NodeIndex: 0
       inputPort:
       - Name: Action
@@ -957,14 +1014,22 @@ MonoBehaviour:
         rid: -2
       motion:
         rid: -2
+      selectionRules:
+        rid: -2
       projectile:
+        rid: -2
+      projectileSnap: {fileID: 0}
+      requiresProjectileSnap: 0
+      projectileSpeedOverride: 0
+      projectileOverrideFields: 0
+      projectileOverrides:
         rid: -2
       visualEffect:
         rid: -2
     - mType: 0
       Name: Action
       Uid: Node32
-      Position: {x: 450, y: 3780}
+      Position: {x: 1008, y: 2288}
       NodeIndex: 0
       inputPort:
       - Name: Action
@@ -1012,7 +1077,16 @@ MonoBehaviour:
         connectedNodes: []
         allowMutipleConnection: 1
         createByDefault: 1
-      outputPort: []
+      outputPort:
+      - Name: "\u547D\u4E2D\u76EE\u6807"
+        Type: BranchOutAction
+        acceptedTypes:
+        - ActionIn
+        - BranchInAction
+        uid: []
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 1
       minimized: 0
       InstanceCache: 0
       mRoot:
@@ -1052,16 +1126,14 @@ MonoBehaviour:
           VisibleBind: 
           EnumOptions: []
         - Uid: style
-          Label: "\u6295\u5C04\u65B9\u5F0F"
-          ToolTips: "\u6295\u5C04\u65B9\u5F0F"
+          Label: "\u547D\u4E2D\u65B9\u5F0F"
+          ToolTips: "\u76F4\u63A5\u7ED3\u7B97\u6309\u5F53\u524D\u8F93\u5165\u6267\u884C\u3002\u300C\u4EA7\u751F\u6295\u5C04\u7269\u300D\u4F7F\u7528\u6240\u9009\u7684\u6295\u5C04\u7269\u914D\u7F6E\uFF0C\u63A5\u89E6\u6709\u6548\u53D7\u51FB\u4F53\u540E\u6267\u884C\u3002"
           Type: 7
           Index: 0
           VisibleBind: 
           EnumOptions:
-          - "\u76F4\u63A5\u547D\u4E2D"
-          - "\u98DE\u5251"
-          - "\u5149\u5F39"
-          - "\u6BD2\u96FE"
+          - "\u76F4\u63A5\u7ED3\u7B97"
+          - "\u4EA7\u751F\u6295\u5C04\u7269"
         - Uid: range
           Label: "\u5C04\u7A0B\uFF08\u7C73\uFF0C0 \u4E3A\u4E0D\u9650\uFF09"
           ToolTips: "\u5C04\u7A0B\uFF08\u7C73\uFF0C0 \u4E3A\u4E0D\u9650\uFF09"
@@ -1127,14 +1199,22 @@ MonoBehaviour:
         rid: 6312275968427819009
       motion:
         rid: -2
+      selectionRules:
+        rid: -2
       projectile:
+        rid: -2
+      projectileSnap: {fileID: 0}
+      requiresProjectileSnap: 0
+      projectileSpeedOverride: 0
+      projectileOverrideFields: 0
+      projectileOverrides:
         rid: -2
       visualEffect:
         rid: -2
     - mType: 0
       Name: Action
       Uid: Node36
-      Position: {x: 450, y: 4200}
+      Position: {x: 1008, y: 3136}
       NodeIndex: 0
       inputPort:
       - Name: Action
@@ -1182,7 +1262,16 @@ MonoBehaviour:
         connectedNodes: []
         allowMutipleConnection: 1
         createByDefault: 1
-      outputPort: []
+      outputPort:
+      - Name: "\u547D\u4E2D\u76EE\u6807"
+        Type: BranchOutAction
+        acceptedTypes:
+        - ActionIn
+        - BranchInAction
+        uid: []
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 1
       minimized: 0
       InstanceCache: 0
       mRoot:
@@ -1222,16 +1311,14 @@ MonoBehaviour:
           VisibleBind: 
           EnumOptions: []
         - Uid: style
-          Label: "\u6295\u5C04\u65B9\u5F0F"
-          ToolTips: "\u6295\u5C04\u65B9\u5F0F"
+          Label: "\u547D\u4E2D\u65B9\u5F0F"
+          ToolTips: "\u76F4\u63A5\u7ED3\u7B97\u6309\u5F53\u524D\u8F93\u5165\u6267\u884C\u3002\u300C\u4EA7\u751F\u6295\u5C04\u7269\u300D\u4F7F\u7528\u6240\u9009\u7684\u6295\u5C04\u7269\u914D\u7F6E\uFF0C\u63A5\u89E6\u6709\u6548\u53D7\u51FB\u4F53\u540E\u6267\u884C\u3002"
           Type: 7
           Index: 0
           VisibleBind: 
           EnumOptions:
-          - "\u76F4\u63A5\u547D\u4E2D"
-          - "\u98DE\u5251"
-          - "\u5149\u5F39"
-          - "\u6BD2\u96FE"
+          - "\u76F4\u63A5\u7ED3\u7B97"
+          - "\u4EA7\u751F\u6295\u5C04\u7269"
         - Uid: range
           Label: "\u5C04\u7A0B\uFF08\u7C73\uFF0C0 \u4E3A\u4E0D\u9650\uFF09"
           ToolTips: "\u5C04\u7A0B\uFF08\u7C73\uFF0C0 \u4E3A\u4E0D\u9650\uFF09"
@@ -1297,14 +1384,22 @@ MonoBehaviour:
         rid: 6312275968427819010
       motion:
         rid: -2
+      selectionRules:
+        rid: -2
       projectile:
+        rid: -2
+      projectileSnap: {fileID: 0}
+      requiresProjectileSnap: 0
+      projectileSpeedOverride: 0
+      projectileOverrideFields: 0
+      projectileOverrides:
         rid: -2
       visualEffect:
         rid: -2
     - mType: 0
       Name: Action
       Uid: Node40
-      Position: {x: 450, y: 4620}
+      Position: {x: 1008, y: 3984}
       NodeIndex: 0
       inputPort:
       - Name: Action
@@ -1352,7 +1447,16 @@ MonoBehaviour:
         connectedNodes: []
         allowMutipleConnection: 1
         createByDefault: 1
-      outputPort: []
+      outputPort:
+      - Name: "\u547D\u4E2D\u76EE\u6807"
+        Type: BranchOutAction
+        acceptedTypes:
+        - ActionIn
+        - BranchInAction
+        uid: []
+        connectedNodes: []
+        allowMutipleConnection: 1
+        createByDefault: 1
       minimized: 0
       InstanceCache: 0
       mRoot:
@@ -1392,16 +1496,14 @@ MonoBehaviour:
           VisibleBind: 
           EnumOptions: []
         - Uid: style
-          Label: "\u6295\u5C04\u65B9\u5F0F"
-          ToolTips: "\u6295\u5C04\u65B9\u5F0F"
+          Label: "\u547D\u4E2D\u65B9\u5F0F"
+          ToolTips: "\u76F4\u63A5\u7ED3\u7B97\u6309\u5F53\u524D\u8F93\u5165\u6267\u884C\u3002\u300C\u4EA7\u751F\u6295\u5C04\u7269\u300D\u4F7F\u7528\u6240\u9009\u7684\u6295\u5C04\u7269\u914D\u7F6E\uFF0C\u63A5\u89E6\u6709\u6548\u53D7\u51FB\u4F53\u540E\u6267\u884C\u3002"
           Type: 7
           Index: 0
           VisibleBind: 
           EnumOptions:
-          - "\u76F4\u63A5\u547D\u4E2D"
-          - "\u98DE\u5251"
-          - "\u5149\u5F39"
-          - "\u6BD2\u96FE"
+          - "\u76F4\u63A5\u7ED3\u7B97"
+          - "\u4EA7\u751F\u6295\u5C04\u7269"
         - Uid: range
           Label: "\u5C04\u7A0B\uFF08\u7C73\uFF0C0 \u4E3A\u4E0D\u9650\uFF09"
           ToolTips: "\u5C04\u7A0B\uFF08\u7C73\uFF0C0 \u4E3A\u4E0D\u9650\uFF09"
@@ -1467,246 +1569,27 @@ MonoBehaviour:
         rid: 6312275968427819011
       motion:
         rid: -2
+      selectionRules:
+        rid: -2
       projectile:
+        rid: -2
+      projectileSnap: {fileID: 0}
+      requiresProjectileSnap: 0
+      projectileSpeedOverride: 0
+      projectileOverrideFields: 0
+      projectileOverrides:
         rid: -2
       visualEffect:
         rid: -2
-    Triggers:
-    - mType: 0
-      Name: Trigger
-      Uid: Node25
-      Position: {x: -400, y: 0}
-      NodeIndex: 0
-      inputPort:
-      - Name: Conditions To Trigger
-        Type: TriggerIn
-        acceptedTypes:
-        - ConditionOut
-        uid:
-        - Node26#0
-        connectedNodes: []
-        allowMutipleConnection: 1
-        createByDefault: 1
-      - Name: Conditions To Reset
-        Type: TriggerIn
-        acceptedTypes:
-        - ConditionOut
-        uid: []
-        connectedNodes: []
-        allowMutipleConnection: 1
-        createByDefault: 0
-      outputPort:
-      - Name: Trigger
-        Type: TriggerOut
-        acceptedTypes:
-        - RootIn
-        uid:
-        - Node0#0
-        connectedNodes: []
-        allowMutipleConnection: 0
-        createByDefault: 1
-      minimized: 0
-      InstanceCache: 0
-      mRoot:
-        rid: 1000
-      TriggerConditions: []
-      ResetConditions: []
-      AutoReset: 1
+    Triggers: []
     ConditionGroups: []
-    Handlers:
-    - mType: 0
-      Name: Condition
-      Uid: Node26
-      Position: {x: -697.3333, y: -2.666668}
-      NodeIndex: 0
-      inputPort:
-      - Name: 0
-        Type: EntityIn
-        acceptedTypes:
-        - EntityOut
-        uid:
-        - Node27#0
-        connectedNodes: []
-        allowMutipleConnection: 0
-        createByDefault: 1
-      - Name: 1
-        Type: EntityIn
-        acceptedTypes:
-        - EntityOut
-        uid:
-        - Node28#0
-        connectedNodes: []
-        allowMutipleConnection: 0
-        createByDefault: 1
-      - Name: 2
-        Type: CustomVariable
-        acceptedTypes:
-        - Variable
-        uid:
-        - Node29#0
-        connectedNodes: []
-        allowMutipleConnection: 0
-        createByDefault: 1
-      outputPort:
-      - Name: Condition
-        Type: ConditionOut
-        acceptedTypes:
-        - TriggerIn
-        - ConditionIn
-        - BranchIn
-        uid:
-        - Node25#0
-        connectedNodes: []
-        allowMutipleConnection: 1
-        createByDefault: 1
-      minimized: 0
-      InstanceCache: 0
-      mRoot:
-        rid: 1000
-      ClassName: AngleDifference
-      IntValues: 0000000000000000
-      FloatValues: []
-      StringValues: []
-      BoolValues: 01
-      CustomInterface:
-        Elements:
-        - Uid: entityA
-          Label: EntityA
-          ToolTips: EntityA for comparison.
-          Type: 8
-          Index: 0
-          VisibleBind: 
-          EnumOptions: []
-        - Uid: entityB
-          Label: EntityB
-          ToolTips: EntityB for comparison.
-          Type: 8
-          Index: 1
-          VisibleBind: 
-          EnumOptions: []
-        - Uid: angleType
-          Label: Angle Type
-          ToolTips: Type of the angle for comparison.
-          Type: 7
-          Index: 0
-          VisibleBind: 
-          EnumOptions:
-          - fwdA bwdB
-          - fwdA fwdB
-          - fwdA Delta
-          - bwdA Delta
-        - Uid: Element3
-          Label: Compare forward direction of EntityA
-          ToolTips: 
-          Type: 5
-          Index: 0
-          VisibleBind: angleType#3!
-          EnumOptions: []
-        - Uid: Element8
-          Label: Compare backward direction of EntityA
-          ToolTips: 
-          Type: 5
-          Index: 1
-          VisibleBind: angleType#3
-          EnumOptions: []
-        - Uid: Element4
-          Label: with backward direction of EntityB.
-          ToolTips: 
-          Type: 5
-          Index: 2
-          VisibleBind: angleType#0
-          EnumOptions: []
-        - Uid: Element5
-          Label: with forward direction of EntityB.
-          ToolTips: 
-          Type: 5
-          Index: 3
-          VisibleBind: angleType#1
-          EnumOptions: []
-        - Uid: Element6
-          Label: with position vector of (posB-posA).
-          ToolTips: 
-          Type: 5
-          Index: 4
-          VisibleBind: angleType#2
-          EnumOptions: []
-        - Uid: Element7
-          Label: with position vector of (posB-posA).
-          ToolTips: 
-          Type: 5
-          Index: 5
-          VisibleBind: angleType#3
-          EnumOptions: []
-        - Uid: logic
-          Label: Comparison Method
-          ToolTips: Comparison logic.
-          Type: 7
-          Index: 1
-          VisibleBind: 
-          EnumOptions:
-          - Greater
-          - Equal
-          - Less
-        - Uid: angle
-          Label: Angle
-          ToolTips: Angle for comparison.
-          Type: 4
-          Index: 2
-          VisibleBind: 
-          EnumOptions: []
-        - Uid: ignoreY
-          Label: Ignore Height
-          ToolTips: Ignore Y axis difference.
-          Type: 0
-          Index: 0
-          VisibleBind: 
-          EnumOptions: []
-      ClassType: 0
-      StateType: 0
-      xTimeCount: 1
-      HandlerIndex: 0
+    Handlers: []
     Maths: []
     Variables:
     - mType: 0
       Name: Variable
-      Uid: Node29
-      Position: {x: -995, y: 260}
-      NodeIndex: 0
-      inputPort:
-      - Name: Entity
-        Type: EntityIn
-        acceptedTypes:
-        - EntityOut
-        uid: []
-        connectedNodes: []
-        allowMutipleConnection: 0
-        createByDefault: 0
-      outputPort:
-      - Name: Variable
-        Type: Variable
-        acceptedTypes:
-        - Variable
-        - MathIn
-        - CustomVariable
-        - BranchInValue
-        uid:
-        - Node26#2
-        connectedNodes: []
-        allowMutipleConnection: 1
-        createByDefault: 1
-      minimized: 0
-      InstanceCache: 0
-      mRoot:
-        rid: 1000
-      Type: 0
-      Constant: 0
-      AttributeKey: Attack
-      VariableUid: 
-      Max: 1
-    - mType: 0
-      Name: Variable
       Uid: Node31
-      Position: {x: 205, y: 3490}
+      Position: {x: -48, y: 2064}
       NodeIndex: 0
       inputPort:
       - Name: Entity
@@ -1742,7 +1625,7 @@ MonoBehaviour:
     - mType: 0
       Name: Variable
       Uid: Node35
-      Position: {x: 205, y: 4040}
+      Position: {x: 656, y: 2720}
       NodeIndex: 0
       inputPort:
       - Name: Entity
@@ -1778,7 +1661,7 @@ MonoBehaviour:
     - mType: 0
       Name: Variable
       Uid: Node39
-      Position: {x: 205, y: 4460}
+      Position: {x: 656, y: 3568}
       NodeIndex: 0
       inputPort:
       - Name: Entity
@@ -1814,7 +1697,7 @@ MonoBehaviour:
     - mType: 0
       Name: Variable
       Uid: Node43
-      Position: {x: 205, y: 4880}
+      Position: {x: 656, y: 4416}
       NodeIndex: 0
       inputPort:
       - Name: Entity
@@ -1851,7 +1734,7 @@ MonoBehaviour:
     - mType: 0
       Name: Entity (Player)
       Uid: Node2
-      Position: {x: 300.66666, y: 0}
+      Position: {x: -48, y: 536}
       NodeIndex: 0
       inputPort: []
       outputPort:
@@ -1874,7 +1757,7 @@ MonoBehaviour:
     - mType: 0
       Name: Entity (Player)
       Uid: Node5
-      Position: {x: 205, y: 420}
+      Position: {x: -48, y: 904}
       NodeIndex: 0
       inputPort: []
       outputPort:
@@ -1897,7 +1780,7 @@ MonoBehaviour:
     - mType: 0
       Name: Entity (Player)
       Uid: Node6
-      Position: {x: 205, y: 550}
+      Position: {x: -48, y: 1056}
       NodeIndex: 0
       inputPort: []
       outputPort:
@@ -1920,7 +1803,7 @@ MonoBehaviour:
     - mType: 0
       Name: Entity (Player)
       Uid: Node8
-      Position: {x: 205, y: 840}
+      Position: {x: -48, y: 1416}
       NodeIndex: 0
       inputPort: []
       outputPort:
@@ -1943,7 +1826,7 @@ MonoBehaviour:
     - mType: 0
       Name: Entity (Player)
       Uid: Node9
-      Position: {x: 205, y: 970}
+      Position: {x: -48, y: 1568}
       NodeIndex: 0
       inputPort: []
       outputPort:
@@ -1966,7 +1849,7 @@ MonoBehaviour:
     - mType: 0
       Name: Entity (Player)
       Uid: Node11
-      Position: {x: 205, y: 1260}
+      Position: {x: -48, y: 2512}
       NodeIndex: 0
       inputPort: []
       outputPort:
@@ -1989,7 +1872,7 @@ MonoBehaviour:
     - mType: 0
       Name: Entity (Player)
       Uid: Node12
-      Position: {x: 205, y: 1390}
+      Position: {x: -48, y: 2664}
       NodeIndex: 0
       inputPort: []
       outputPort:
@@ -2012,7 +1895,7 @@ MonoBehaviour:
     - mType: 0
       Name: Entity (Player)
       Uid: Node14
-      Position: {x: 205, y: 1680}
+      Position: {x: -48, y: 3360}
       NodeIndex: 0
       inputPort: []
       outputPort:
@@ -2035,7 +1918,7 @@ MonoBehaviour:
     - mType: 0
       Name: Entity (Player)
       Uid: Node15
-      Position: {x: 205, y: 1810}
+      Position: {x: -48, y: 3512}
       NodeIndex: 0
       inputPort: []
       outputPort:
@@ -2058,7 +1941,7 @@ MonoBehaviour:
     - mType: 0
       Name: Entity (Player)
       Uid: Node17
-      Position: {x: 205, y: 2100}
+      Position: {x: -48, y: 4208}
       NodeIndex: 0
       inputPort: []
       outputPort:
@@ -2081,7 +1964,7 @@ MonoBehaviour:
     - mType: 0
       Name: Entity (Player)
       Uid: Node18
-      Position: {x: 205, y: 2230}
+      Position: {x: -48, y: 4360}
       NodeIndex: 0
       inputPort: []
       outputPort:
@@ -2104,7 +1987,7 @@ MonoBehaviour:
     - mType: 0
       Name: Entity (Player)
       Uid: Node20
-      Position: {x: 205, y: 2520}
+      Position: {x: -48, y: 5512}
       NodeIndex: 0
       inputPort: []
       outputPort:
@@ -2127,7 +2010,7 @@ MonoBehaviour:
     - mType: 0
       Name: Entity (Player)
       Uid: Node21
-      Position: {x: 205, y: 2650}
+      Position: {x: -48, y: 5664}
       NodeIndex: 0
       inputPort: []
       outputPort:
@@ -2150,7 +2033,7 @@ MonoBehaviour:
     - mType: 0
       Name: Entity (Player)
       Uid: Node23
-      Position: {x: 205, y: 2940}
+      Position: {x: -48, y: 5000}
       NodeIndex: 0
       inputPort: []
       outputPort:
@@ -2173,7 +2056,7 @@ MonoBehaviour:
     - mType: 0
       Name: Entity (Player)
       Uid: Node24
-      Position: {x: 205, y: 3070}
+      Position: {x: -48, y: 5152}
       NodeIndex: 0
       inputPort: []
       outputPort:
@@ -2195,54 +2078,8 @@ MonoBehaviour:
       EntityUid: 
     - mType: 0
       Name: Entity (Player)
-      Uid: Node27
-      Position: {x: -995, y: 0}
-      NodeIndex: 0
-      inputPort: []
-      outputPort:
-      - Name: Entity
-        Type: EntityOut
-        acceptedTypes:
-        - EntityIn
-        - BranchInEntity
-        uid:
-        - Node26#0
-        connectedNodes: []
-        allowMutipleConnection: 1
-        createByDefault: 1
-      minimized: 0
-      InstanceCache: 0
-      mRoot:
-        rid: 1000
-      Type: 0
-      EntityUid: 
-    - mType: 0
-      Name: Entity (Player)
-      Uid: Node28
-      Position: {x: -995, y: 130}
-      NodeIndex: 0
-      inputPort: []
-      outputPort:
-      - Name: Entity
-        Type: EntityOut
-        acceptedTypes:
-        - EntityIn
-        - BranchInEntity
-        uid:
-        - Node26#1
-        connectedNodes: []
-        allowMutipleConnection: 1
-        createByDefault: 1
-      minimized: 0
-      InstanceCache: 0
-      mRoot:
-        rid: 1000
-      Type: 4
-      EntityUid: 
-    - mType: 0
-      Name: Entity (Player)
       Uid: Node30
-      Position: {x: 205, y: 3360}
+      Position: {x: -48, y: 1912}
       NodeIndex: 0
       inputPort: []
       outputPort:
@@ -2265,7 +2102,7 @@ MonoBehaviour:
     - mType: 0
       Name: Entity (Player)
       Uid: Node33
-      Position: {x: 205, y: 3780}
+      Position: {x: 656, y: 2416}
       NodeIndex: 0
       inputPort: []
       outputPort:
@@ -2288,7 +2125,7 @@ MonoBehaviour:
     - mType: 0
       Name: Entity (Player)
       Uid: Node34
-      Position: {x: 205, y: 3910}
+      Position: {x: 656, y: 2568}
       NodeIndex: 0
       inputPort: []
       outputPort:
@@ -2311,7 +2148,7 @@ MonoBehaviour:
     - mType: 0
       Name: Entity (Player)
       Uid: Node37
-      Position: {x: 205, y: 4200}
+      Position: {x: 656, y: 3264}
       NodeIndex: 0
       inputPort: []
       outputPort:
@@ -2334,7 +2171,7 @@ MonoBehaviour:
     - mType: 0
       Name: Entity (Player)
       Uid: Node38
-      Position: {x: 205, y: 4330}
+      Position: {x: 656, y: 3416}
       NodeIndex: 0
       inputPort: []
       outputPort:
@@ -2357,7 +2194,7 @@ MonoBehaviour:
     - mType: 0
       Name: Entity (Player)
       Uid: Node41
-      Position: {x: 205, y: 4620}
+      Position: {x: 656, y: 4112}
       NodeIndex: 0
       inputPort: []
       outputPort:
@@ -2380,7 +2217,7 @@ MonoBehaviour:
     - mType: 0
       Name: Entity (Player)
       Uid: Node42
-      Position: {x: 205, y: 4750}
+      Position: {x: 656, y: 4264}
       NodeIndex: 0
       inputPort: []
       outputPort:
@@ -2407,6 +2244,7 @@ MonoBehaviour:
   combatRandomId: 
   libraryCharacter: {fileID: 11400000, guid: 4e83cfd18f404d93b8f1b785fc3583de, type: 2}
   previewAsOpponent: 0
+  castTargetLimit: 1
   autoSave: 0
   NodeIconSprites:
   - {fileID: 580834057, guid: b3e7e8e38ace138489249ef690d4c143, type: 3}
@@ -2428,6 +2266,8 @@ MonoBehaviour:
   - OverTimeEffect
   - PlaySound
   - Projectile
+  - RedirectProjectile
+  - SelectTarget
   - SendMessage
   - SkillImpact
   - SkillSignal
@@ -2637,7 +2477,15 @@ MonoBehaviour:
             rid: -2
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
+            rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
             rid: -2
           visualEffect:
             rid: -2
@@ -2734,7 +2582,15 @@ MonoBehaviour:
             rid: -2
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
+            rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
             rid: -2
           visualEffect:
             rid: -2
@@ -2831,7 +2687,15 @@ MonoBehaviour:
             rid: -2
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
+            rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
             rid: -2
           visualEffect:
             rid: -2
@@ -2921,14 +2785,22 @@ MonoBehaviour:
               EnumOptions: []
           Type: 0
           Count: 1
-          WaitTime: 1.12
+          WaitTime: 0.8
           KeepTime: 0
           Interval: 0
           calculation:
             rid: -2
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
+            rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
             rid: -2
           visualEffect:
             rid: -2
@@ -3025,7 +2897,15 @@ MonoBehaviour:
             rid: -2
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
+            rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
             rid: -2
           visualEffect:
             rid: -2
@@ -3122,7 +3002,15 @@ MonoBehaviour:
             rid: -2
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
+            rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
             rid: -2
           visualEffect:
             rid: -2
@@ -3219,7 +3107,15 @@ MonoBehaviour:
             rid: -2
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
+            rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
             rid: -2
           visualEffect:
             rid: -2
@@ -3316,7 +3212,15 @@ MonoBehaviour:
             rid: -2
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
+            rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
             rid: -2
           visualEffect:
             rid: -2
@@ -4128,7 +4032,15 @@ MonoBehaviour:
             rid: -2
           motion:
             rid: 6312275966157651972
+          selectionRules:
+            rid: -2
           projectile:
+            rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
             rid: -2
           visualEffect:
             rid: -2
@@ -4233,7 +4145,15 @@ MonoBehaviour:
             rid: -2
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
+            rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
             rid: -2
           visualEffect:
             rid: -2
@@ -4338,7 +4258,15 @@ MonoBehaviour:
             rid: -2
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
+            rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
             rid: -2
           visualEffect:
             rid: -2
@@ -4421,17 +4349,23 @@ MonoBehaviour:
               EnumOptions: []
           Type: 0
           Count: 1
-          WaitTime: 1.12
+          WaitTime: 0.8
           KeepTime: 0
           Interval: 0
           calculation:
             rid: -2
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
             rid: -2
           projectileSnap: {fileID: 11400000, guid: 281c3b8111a8405598b45be52c1bdd1f, type: 2}
           requiresProjectileSnap: 1
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
+            rid: -2
           visualEffect:
             rid: -2
         - mType: 0
@@ -4520,10 +4454,16 @@ MonoBehaviour:
             rid: -2
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
             rid: -2
           projectileSnap: {fileID: 11400000, guid: 281c3b8111a8405598b45be52c1bdd1f, type: 2}
           requiresProjectileSnap: 1
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
+            rid: -2
           visualEffect:
             rid: -2
         - mType: 0
@@ -4612,10 +4552,16 @@ MonoBehaviour:
             rid: -2
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
             rid: -2
           projectileSnap: {fileID: 11400000, guid: 281c3b8111a8405598b45be52c1bdd1f, type: 2}
           requiresProjectileSnap: 1
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
+            rid: -2
           visualEffect:
             rid: -2
         - mType: 0
@@ -4719,7 +4665,15 @@ MonoBehaviour:
             rid: -2
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
+            rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
             rid: -2
           visualEffect:
             rid: -2
@@ -4824,7 +4778,15 @@ MonoBehaviour:
             rid: -2
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
+            rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
             rid: -2
           visualEffect:
             rid: -2
@@ -4915,7 +4877,15 @@ MonoBehaviour:
             rid: -2
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
+            rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
             rid: -2
           visualEffect:
             rid: -2
@@ -5754,7 +5724,15 @@ MonoBehaviour:
             rid: -2
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
+            rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
             rid: -2
           visualEffect:
             rid: -2
@@ -5839,7 +5817,15 @@ MonoBehaviour:
             rid: -2
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
+            rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
             rid: -2
           visualEffect:
             rid: -2
@@ -5924,7 +5910,15 @@ MonoBehaviour:
             rid: -2
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
+            rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
             rid: -2
           visualEffect:
             rid: -2
@@ -6002,14 +5996,22 @@ MonoBehaviour:
               - "\u6536\u62DB\u6807\u8BB0"
           Type: 0
           Count: 1
-          WaitTime: 1.12
+          WaitTime: 0.8
           KeepTime: 0
           Interval: 0
           calculation:
             rid: -2
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
+            rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
             rid: -2
           visualEffect:
             rid: -2
@@ -6094,7 +6096,15 @@ MonoBehaviour:
             rid: -2
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
+            rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
             rid: -2
           visualEffect:
             rid: -2
@@ -6179,7 +6189,15 @@ MonoBehaviour:
             rid: -2
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
+            rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
             rid: -2
           visualEffect:
             rid: -2
@@ -6264,7 +6282,15 @@ MonoBehaviour:
             rid: -2
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
+            rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
             rid: -2
           visualEffect:
             rid: -2
@@ -6749,7 +6775,15 @@ MonoBehaviour:
             rid: -2
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
+            rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
             rid: -2
           visualEffect:
             rid: -2
@@ -6834,7 +6868,15 @@ MonoBehaviour:
             rid: -2
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
+            rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
             rid: -2
           visualEffect:
             rid: -2
@@ -6919,7 +6961,15 @@ MonoBehaviour:
             rid: -2
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
+            rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
             rid: -2
           visualEffect:
             rid: -2
@@ -6997,14 +7047,22 @@ MonoBehaviour:
               - "\u6536\u62DB\u6807\u8BB0"
           Type: 0
           Count: 1
-          WaitTime: 1.12
+          WaitTime: 0.8
           KeepTime: 0
           Interval: 0
           calculation:
             rid: -2
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
+            rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
             rid: -2
           visualEffect:
             rid: -2
@@ -7089,7 +7147,15 @@ MonoBehaviour:
             rid: -2
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
+            rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
             rid: -2
           visualEffect:
             rid: -2
@@ -7174,7 +7240,15 @@ MonoBehaviour:
             rid: -2
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
+            rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
             rid: -2
           visualEffect:
             rid: -2
@@ -7259,7 +7333,15 @@ MonoBehaviour:
             rid: -2
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
+            rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
             rid: -2
           visualEffect:
             rid: -2
@@ -7344,7 +7426,15 @@ MonoBehaviour:
             rid: -2
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
+            rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
             rid: -2
           visualEffect:
             rid: -2
@@ -7891,7 +7981,15 @@ MonoBehaviour:
             rid: -2
           motion:
             rid: 6312275966157651972
+          selectionRules:
+            rid: -2
           projectile:
+            rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
             rid: -2
           visualEffect:
             rid: -2
@@ -7996,7 +8094,15 @@ MonoBehaviour:
             rid: -2
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
+            rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
             rid: -2
           visualEffect:
             rid: -2
@@ -8101,7 +8207,15 @@ MonoBehaviour:
             rid: -2
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
+            rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
             rid: -2
           visualEffect:
             rid: -2
@@ -8185,17 +8299,23 @@ MonoBehaviour:
               EnumOptions: []
           Type: 0
           Count: 1
-          WaitTime: 1.12
+          WaitTime: 0.8
           KeepTime: 0
           Interval: 0
           calculation:
             rid: -2
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
             rid: -2
           projectileSnap: {fileID: 11400000, guid: 281c3b8111a8405598b45be52c1bdd1f, type: 2}
           requiresProjectileSnap: 1
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
+            rid: -2
           visualEffect:
             rid: -2
         - mType: 0
@@ -8285,10 +8405,16 @@ MonoBehaviour:
             rid: -2
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
             rid: -2
           projectileSnap: {fileID: 11400000, guid: 281c3b8111a8405598b45be52c1bdd1f, type: 2}
           requiresProjectileSnap: 1
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
+            rid: -2
           visualEffect:
             rid: -2
         - mType: 0
@@ -8378,10 +8504,16 @@ MonoBehaviour:
             rid: -2
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
             rid: -2
           projectileSnap: {fileID: 11400000, guid: 281c3b8111a8405598b45be52c1bdd1f, type: 2}
           requiresProjectileSnap: 1
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
+            rid: -2
           visualEffect:
             rid: -2
         - mType: 0
@@ -8485,7 +8617,15 @@ MonoBehaviour:
             rid: -2
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
+            rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
             rid: -2
           visualEffect:
             rid: -2
@@ -8590,7 +8730,15 @@ MonoBehaviour:
             rid: -2
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
+            rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
             rid: -2
           visualEffect:
             rid: -2
@@ -8681,7 +8829,15 @@ MonoBehaviour:
             rid: -2
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
+            rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
             rid: -2
           visualEffect:
             rid: -2
@@ -8851,7 +9007,15 @@ MonoBehaviour:
             rid: 6312275968427819009
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
+            rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
             rid: -2
           visualEffect:
             rid: -2
@@ -9021,7 +9185,15 @@ MonoBehaviour:
             rid: 6312275968427819010
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
+            rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
             rid: -2
           visualEffect:
             rid: -2
@@ -9191,7 +9363,15 @@ MonoBehaviour:
             rid: 6312275968427819011
           motion:
             rid: -2
+          selectionRules:
+            rid: -2
           projectile:
+            rid: -2
+          projectileSnap: {fileID: 0}
+          requiresProjectileSnap: 0
+          projectileSpeedOverride: 0
+          projectileOverrideFields: 0
+          projectileOverrides:
             rid: -2
           visualEffect:
             rid: -2

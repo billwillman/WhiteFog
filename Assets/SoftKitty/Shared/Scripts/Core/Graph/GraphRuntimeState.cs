@@ -97,6 +97,19 @@ namespace SoftKitty
             return release;
         }
 
+        internal GraphRuntimeState ForSelectedTarget(Entity target, string nodeUid, int encounterOrder)
+        {
+            var branch = this;
+            branch.selectedTarget = target;
+            branch.releaseKey = EventKey.With("select").With(nodeUid).With(target.CombatRandomId).With((uint)encounterOrder);
+            branch.RootState.InvolvedEntityDic = new Dictionary<string, Entity>(RootState.InvolvedEntityDic);
+            branch.RootState.DynamicVariableDic = new Dictionary<string, float>(RootState.DynamicVariableDic);
+            branch.HandlerStates = (HandlerRuntimeState[])HandlerStates.Clone();
+            branch.NodeStates = (NodeRuntimeState[])NodeStates.Clone();
+            for (int i = 0; i < branch.NodeStates.Length; i++) branch.NodeStates[i].lastHash = ~Hash;
+            return branch;
+        }
+
         internal void SetContactKey(string targetId)
         {
             RootState.RandomKey = EventKey.With("contact").With(targetId);

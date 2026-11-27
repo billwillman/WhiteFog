@@ -60,17 +60,18 @@ function create(pkg, actors, notify=()=>{}) {
     return live(candidate)&&!contact.flight.visited.has(candidate)?candidate:null;
   }
   const entity=(g,id,c)=>[actors[0],c.caster,c.target,null,c.instance,nextTarget(c.contact),c.selectedTarget][find(g,id).type];
-  function selectTarget(rule,c) {
+  function selectTargets(rule,c) {
     const side=actor=>actor.tags?.some(t=>t==='friendly'||t==='Player')?1:
       actor.tags?.some(t=>t==='hostile'||t==='Enemy')?-1:0;
     const list=rule.sceneEnemies?actors.filter(actor=>side(c.caster)*side(actor)===-1):c.targets;
-    let best=null, bestKeys=null;
+    const matches=[], seen=new Set();
     for(const actor of list){
-      if(!actor||actor.active===false)continue;
+      if(!actor||actor.active===false||seen.has(actor))continue;
+      seen.add(actor);
       const delta=sub(actor.position,c.eventPoint||c.caster.position), distance=dot(delta,delta);
       const health=actor.stats.chp, maxHealth=actor.stats.hp??actor.maxHp;
       const percent=maxHealth>0?100*health/maxHealth:Infinity;
-      const matches=rule.filters.every(filter=>{
+      const eligible=rule.filters.every(filter=>{
         switch(filter.kind){
           case 'TargetAlive':return live(actor);
           case 'TargetUnhit':return !c.contact?.flight.visited.has(actor);
@@ -80,7 +81,7 @@ function create(pkg, actors, notify=()=>{}) {
           default:throw Error('未知选目标筛选条件 '+filter.kind);
         }
       });
-      if(!matches)continue;
+      if(!eligible)continue;
       const keys=rule.priorities.map(kind=>{
         switch(kind){
           case 'TargetListOrder':{const i=c.targets.indexOf(actor);return i<0?Infinity:i;}
@@ -90,10 +91,15 @@ function create(pkg, actors, notify=()=>{}) {
           default:throw Error('未知目标排序 '+kind);
         }
       });
-      const i=bestKeys?keys.findIndex((key,i)=>key!==bestKeys[i]):-1;
-      if(!best||(i>=0?keys[i]<bestKeys[i]:String(actor.id)<String(best.id))){best=actor;bestKeys=keys;}
+      matches.push({actor,keys});
     }
-    return best;
+    matches.sort((a,b)=>{
+      const i=a.keys.findIndex((key,index)=>key!==b.keys[index]);
+      if(i>=0)return a.keys[i]<b.keys[i]?-1:1;
+      const left=String(a.actor.id), right=String(b.actor.id);
+      return left<right?-1:left>right?1:0;
+    });
+    return matches.slice(0,Math.max(1,rule.maxTargets||1)).map(match=>match.actor);
   }
   function canSteer(g,n,seen=new Set()){
     if(n.op==='RedirectProjectile')return true;
@@ -339,8 +345,12 @@ function create(pkg, actors, notify=()=>{}) {
       case 'Animation':emit('animation',c,n,{motion:n.motion,actor:entity(g,links(n,1)[0],c)});return;
       case 'Effect':playEffect(g,n,c);return;
       case 'SelectTarget':{
-        const selectedTarget=selectTarget(n.selection,c);
-        if(selectedTarget)schedule(g,n.outputs.flatMap(p=>p.links),{...c,selectedTarget},!!c.sourceNode);
+        const links=n.outputs.flatMap(port=>port.links);
+        for(const selectedTarget of selectTargets(n.selection,c)){
+          const branch={...c,selectedTarget};
+          if(n.selection.maxTargets>1)branch.vars={...c.vars};
+          schedule(g,links,branch,!!c.sourceNode);
+        }
         return;
       }
       case 'RedirectProjectile':redirect(g,n,c);return;
