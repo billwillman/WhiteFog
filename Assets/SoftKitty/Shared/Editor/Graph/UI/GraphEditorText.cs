@@ -13,6 +13,8 @@ namespace SoftKitty
             { "每段伤害", "伤害输入（点）" }, // Existing graphs may retain the original port caption.
             { "SkillSignal", "施法提示" },
             { "Projectile", "产生投射物" },
+            { "RedirectProjectile", "改变当前投射物目标" },
+            { "NextCastTarget", "投射物名单中的下一目标" },
             { "发射飞剑", "产生投射物" },
             { "原作表现事件", "表现动作" },
             { "OriginalSkillVisual", "表现动作" },

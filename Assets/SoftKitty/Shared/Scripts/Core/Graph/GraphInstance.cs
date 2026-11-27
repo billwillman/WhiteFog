@@ -46,27 +46,31 @@ namespace SoftKitty
             inited = false;
             Init();
         }
-        private IEnumerator ActionCo(float _delay, int _count, float _keepTime, float _interval, NodeBase _node, GraphRuntimeState _runtime)
+        private IEnumerator ActionCo(float _delay, int _count, float _keepTime, float _interval, NodeBase _node, GraphRuntimeState _runtime, System.Action onComplete)
         {
-            yield return new WaitForSeconds(_delay);
-            if (_interval < 0.01F) _interval = 0.01F;
-            uint ordinal = 0;
-            for (int i = 0; i < _count; i++)
+            try
             {
-                float _timer = 0F;
-                while (_timer <= _keepTime)
+                yield return new WaitForSeconds(_delay);
+                if (_interval < 0.01F) _interval = 0.01F;
+                uint ordinal = 0;
+                for (int i = 0; i < _count; i++)
                 {
-                    if (_runtime.CastInterrupted) yield break;
-                    currentRootInstance.ExecuteAction(_node, _runtime.ForRelease(_node.Uid, ordinal++));
-                    yield return new WaitForSeconds(_interval);
-                    _timer += _interval;
+                    float _timer = 0F;
+                    while (_timer <= _keepTime)
+                    {
+                        if (_runtime.CastInterrupted) yield break;
+                        currentRootInstance.ExecuteAction(_node, _runtime.ForRelease(_node.Uid, ordinal++));
+                        yield return new WaitForSeconds(_interval);
+                        _timer += _interval;
+                    }
                 }
             }
+            finally { onComplete?.Invoke(); }
         }
 
-        public void StartActionCoroutine(float _delay, int _count, float _keepTime, float _interval, NodeBase _node, GraphRuntimeState _runtime)
+        public void StartActionCoroutine(float _delay, int _count, float _keepTime, float _interval, NodeBase _node, GraphRuntimeState _runtime, System.Action onComplete = null)
         {
-            var routine = ActionCo(_delay, _count, _keepTime, _interval, _node, _runtime);
+            var routine = ActionCo(_delay, _count, _keepTime, _interval, _node, _runtime, onComplete);
             if (impactHost) impactHost.Schedule(routine);
             else StartCoroutine(routine);
         }

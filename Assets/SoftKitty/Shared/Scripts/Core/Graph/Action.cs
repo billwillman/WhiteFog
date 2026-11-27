@@ -130,10 +130,12 @@ namespace SoftKitty
         }
 
 
-        public override void Run(GraphInstance _instance, GraphRuntimeState _runtime)
+        public override void Run(GraphInstance instance, GraphRuntimeState state) => RunTimed(instance, state);
+
+        protected void RunTimed(GraphInstance _instance, GraphRuntimeState _runtime, System.Action onComplete = null)
         {
             _runtime.NodeStates[NodeIndex].lastBool = true;
-            _instance.StartActionCoroutine(WaitTime, Type == ActionType.Multiple_Time ? Count : 1, Type == ActionType.For_X_Seconds ? KeepTime : 0F, Type == ActionType.Only_Once ?0.01F:Interval, this, _runtime);
+            _instance.StartActionCoroutine(WaitTime, Type == ActionType.Multiple_Time ? Count : 1, Type == ActionType.For_X_Seconds ? KeepTime : 0F, Type == ActionType.Only_Once ?0.01F:Interval, this, _runtime, onComplete);
         }
 
         public override void Execute(GraphRuntimeState _runtime)

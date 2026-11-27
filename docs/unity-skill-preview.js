@@ -1,7 +1,7 @@
 // The embedded player runs the exported Unity graphs and reports their actual settlements.
 (() => {
   const byId = id => document.getElementById('unity-' + id);
-  let files, current, generation = 0, pending = Promise.resolve();
+  let files, current, nativeFrame, generation = 0, pending = Promise.resolve();
   function loadFiles() {
     if (files) return files;
     files = (async () => {
@@ -41,7 +41,18 @@
       '\n目标 HP ' + number(data.targetHp) + ' · 状态 ' + (data.targetStates || '无') + (byId('chain').hidden ? '' :
         '\n施法输入 · '+(data.canMove?'移动已放行':'移动受限')+' / '+(data.canChain?'接招已放行':'接招受限'));
   }
+  window.addEventListener('message', ({source,data}) => {
+    if (!nativeFrame || source !== nativeFrame.contentWindow || data?.type !== 'qingyun-local-skill') return;
+    const event = data.data;
+    if (event.kind === 'error') byId('play-status').textContent = '试放失败 · ' + event.text;
+    else if (Number.isFinite(event.targetHp)) report(event);
+  });
+  function nativeInput(action) {
+    nativeFrame.contentWindow.postMessage({type:'qingyun-local-input',action}, '*');
+  }
   function reset() {
+    if (nativeFrame) { nativeFrame.remove(); nativeFrame = null; }
+
     const token = ++generation;
     byId('interrupt').disabled = true;
     byId('chain').disabled = true;
@@ -67,9 +78,20 @@
     const request = requestFor(record);
     if (!request) return;
     const token = reset(), status = byId('play-status');
-    status.textContent = '正在载入 Unity 战斗场景…';
+    const local = window.localBattleSkillIds?.includes(record.graph.sourceId);
+    status.textContent = local ? '正在读取本地战斗包…' : '正在载入 Unity 战斗场景…';
+
     pending = pending.then(async () => {
       if (token !== generation) return;
+      if (local) {
+        nativeFrame = document.createElement('iframe');
+        nativeFrame.title = record.asset.name + ' · 本地战斗';
+        nativeFrame.src = 'QingyunSect/LoginDemo/local-battle.html?' + new URLSearchParams({
+          skill:record.graph.sourceId, distance:request.distance, level:request.level
+        });
+        byId('screen').replaceChildren(nativeFrame);
+        return;
+      }
       const resources = await loadFiles();
       if (token !== generation) return;
       const canvas = document.createElement('canvas');
@@ -94,5 +116,5 @@
       current.instance.SendMessage('QingyunBattle','ChainEditorSkill',JSON.stringify(request));
     }
   }
-  window.unitySkillPreview = {play, stop:reset, chain, interrupt() { current?.instance.SendMessage('QingyunBattle','InterruptEditorSkill',''); }};
+  window.unitySkillPreview = {play, stop:reset, chain, interrupt() { if (nativeFrame) nativeInput('interrupt'); else current?.instance.SendMessage('QingyunBattle','InterruptEditorSkill',''); }};
 })();

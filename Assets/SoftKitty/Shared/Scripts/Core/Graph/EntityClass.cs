@@ -56,6 +56,7 @@ namespace SoftKitty
 
         public override Entity GetEntity(GraphRuntimeState _runtime)
         {
+            if (Type == EntityType.NextCastTarget) return _runtime.projectileHit?.NextTarget;
             if (Type == EntityType.Player)
             {
                 return GameManager.GetPlayer();

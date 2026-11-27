@@ -1,15 +1,17 @@
 Shader "WhiteFog/Original Skill Particle" {
 Properties {
     _Texture ("主纹理", 2D) = "white" {}
-    _Color ("正面颜色", Color) = (1,1,1,1)
-    _Color1 ("副色", Color) = (1,1,1,1)
-    _BackColor ("背面颜色", Color) = (1,1,1,1)
-    _BackColor1 ("背面副色", Color) = (1,1,1,1)
+    [HDR] _Color ("正面颜色", Color) = (1,1,1,1)
+    [HDR] _Color1 ("副色", Color) = (1,1,1,1)
+    [HDR] _BackColor ("背面颜色", Color) = (1,1,1,1)
+    [HDR] _BackColor1 ("背面副色", Color) = (1,1,1,1)
     _DifferentFaceColor ("独立背面色", Float) = 0
     _ColorControlTex ("颜色控制", 2D) = "black" {}
     _ColorControlTexIndependentTiling ("独立色图 UV", Float) = 0
     _Mask ("遮罩", 2D) = "white" {}
     _MaskRGBA ("遮罩通道", Vector) = (0,0,0,1)
+    _MaskU ("U 遮罩起点", Float) = 0
+    _MaskV ("V 遮罩起点", Float) = 0
     _MaskSpeed ("遮罩速度", Vector) = (0,0,0,0)
     _MaskTexAngle ("遮罩角度", Float) = 0
     _MaskParticleSystemControl ("粒子遮罩偏移", Float) = 0
@@ -26,7 +28,7 @@ Properties {
     _Dissolve ("溶解阈值", Float) = 0
     _DissolveEdageWidth ("溶解边缘宽度", Float) = .01
     _DissipateSoftCutout ("边缘软化", Float) = 0
-    _EdageColor ("溶解边缘色", Color) = (1,1,1,1)
+    [HDR] _EdageColor ("溶解边缘色", Color) = (1,1,1,1)
     _Gradian ("溶解过渡", Float) = .02
     _GradianPow ("过渡指数", Float) = 1
     _ParticleControl ("逐粒子溶解", Float) = 0
@@ -48,16 +50,18 @@ Properties {
     _FxSrcBlend ("源混合", Float) = 5
     _FxDstBlend ("目标混合", Float) = 10
     _ZTest ("深度比较", Float) = 4
+    _ZWrite ("写入深度", Float) = 0
     _Cull ("剔除", Float) = 0
 }
 SubShader {
     Tags {"Queue"="Transparent" "RenderType"="Transparent"}
     Pass {
         Blend [_FxSrcBlend] [_FxDstBlend], One OneMinusSrcAlpha
-        ZWrite Off ZTest [_ZTest] Cull [_Cull]
+        ZWrite [_ZWrite] ZTest [_ZTest] Cull [_Cull]
         CGPROGRAM
         #pragma vertex vert
         #pragma fragment frag
+        #pragma shader_feature_local _ H5_PARTICLE_DEPTH_CAPTURE
         #pragma shader_feature_local _ _USE_MASK_ON
         #pragma shader_feature_local _ _USE_COLORCONTROL
         #pragma shader_feature_local _ _USE_CUTOUT
@@ -73,8 +77,16 @@ SubShader {
         float _DissolveTexDetailUscroll,_DissolveTexDetailVscroll,_DissipateSoftCutout,_Gradian,_GradianPow,_ParticleControl;
         float _DistTime,_DistTime1,_DistForceU,_DistForceV,_DistortParticleSystemControl,_MaskTexAngle,_MaskParticleSystemControl;
         float _ColorControlTexIndependentTiling,_DifferentFaceColor,_MainTexStrength,_Brightness,_AlphaAdjust,_AlphaClip;
+        float _MaskU,_MaskV;
+        #ifdef H5_PARTICLE_DEPTH_CAPTURE
+        float4 _H5DepthCapture; // Camera-space origin, inverse capture width, additive flag, ignore-depth flag.
+        #endif
         struct Input { float4 pos:POSITION; float4 uv:TEXCOORD0; float4 custom:TEXCOORD1; float4 color:COLOR; };
-        struct Vary { float4 pos:SV_POSITION; float4 raw:TEXCOORD0; float2 mainUV:TEXCOORD1; float2 maskUV:TEXCOORD2; float4 color:COLOR; };
+        struct Vary { float4 pos:SV_POSITION; float4 raw:TEXCOORD0; float2 mainUV:TEXCOORD1; float2 maskUV:TEXCOORD2; float4 color:COLOR;
+            #ifdef H5_PARTICLE_DEPTH_CAPTURE
+            float eyeDepth:TEXCOORD3;
+            #endif
+        };
 
         float2 RotateUV(float2 uv, float radians) {
             float s,c; sincos(radians,s,c); uv-=.5;
@@ -82,6 +94,9 @@ SubShader {
         }
         Vary vert(Input v) {
             Vary o; o.pos=UnityObjectToClipPos(v.pos); o.raw=v.uv; o.color=v.color;
+            #ifdef H5_PARTICLE_DEPTH_CAPTURE
+            o.eyeDepth = -UnityObjectToViewPos(v.pos).z;
+            #endif
             float2 uv=lerp(v.uv.xy,1-v.uv.xy,float2(_U_Mirror,_V_Mirror));
             float angle=(_MainTexAngle-_Time.y*_MainTexAngleSpeed*.1)*6.28308;
             o.mainUV=RotateUV(TRANSFORM_TEX(uv,_Texture),angle)
@@ -109,7 +124,7 @@ SubShader {
             float3 color=sampled.rgb*i.color.rgb*lerp(front,back,facing<0?_DifferentFaceColor:0);
             float alpha=sampled.a*_MainTexStrength*i.color.a*_Color.a;
             #if defined(_USE_MASK_ON)
-                alpha*=saturate(dot(tex2D(_Mask,i.maskUV),_MaskRGBA));
+                alpha*=dot(tex2D(_Mask,i.maskUV),_MaskRGBA) * (i.raw.x > _MaskU && i.raw.y > _MaskV);
             #endif
             alpha=saturate(alpha);
             #if defined(_USE_CUTOUT)
@@ -131,7 +146,14 @@ SubShader {
             #if defined(_USE_ALPHACLIP)
                 clip(alpha-_AlphaClip);
             #endif
-            return float4(color*_Brightness,alpha*_AlphaAdjust);
+            float4 result = float4(color*_Brightness,alpha*_AlphaAdjust);
+            #ifdef H5_PARTICLE_DEPTH_CAPTURE
+                float peak = max(result.r, max(result.g, result.b));
+                clip(result.a * lerp(1, peak, _H5DepthCapture.z) - 1.0/255.0);
+                float testDepth = 1-_H5DepthCapture.w;
+                return float4(testDepth*saturate(0.5 + (i.eyeDepth-_H5DepthCapture.x)*_H5DepthCapture.y), testDepth, 0, 1);
+            #endif
+            return result;
         }
         ENDCG
     }

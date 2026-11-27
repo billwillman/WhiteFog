@@ -1,0 +1,1 @@
+{"Elements":[{"Uid":"redirectTarget","Label":"转向目标","ToolTips":"从本次施法的目标名单中指定尚未命中的存活实体。","Type":8,"Index":0,"VisibleBind":"","EnumOptions":[]}]}

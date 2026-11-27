@@ -12,6 +12,7 @@ namespace SoftKitty
         public string CombatRandomId => string.IsNullOrEmpty(combatRandomId) ? name : combatRandomId;
         public SkillLibraryCharacter libraryCharacter;
         [HideInInspector] public bool previewAsOpponent;
+        [Min(1)] public int castTargetLimit = 1;
         [HideInInspector] public bool useInputTiming;
         [Min(0)] public float moveAfterSeconds;
         [Min(0)] public float nextSkillAfterSeconds;

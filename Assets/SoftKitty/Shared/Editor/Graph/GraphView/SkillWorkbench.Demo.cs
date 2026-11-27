@@ -175,6 +175,10 @@ namespace SoftKitty
         private List<(int index, string target, float loss, float shield)> measuredHits;
         private string measuredCaster;
 
+        [SerializeField] private bool previewTargetPair = true;
+        private EntityComponent quickSecondTarget;
+        [SerializeField] private List<EntityComponent> sceneExtraTargets = new List<EntityComponent>();
+
         private static bool HasUnwiredHit(GraphObject skill) => skill.RootSet.Actions.Any(a =>
             (SkillProjectile.IsLaunch(a) || a.ClassName == "OriginalSkillVisual" && a.IntValues.FirstOrDefault() == 6 &&
              OriginalSkillVisualAction.EffectFor(a, skill as OriginalSkillGraph)?.triggerHit == true) &&
@@ -278,6 +282,8 @@ namespace SoftKitty
                 new[] { graph.previewAsOpponent ? "按技能默认（怪物 → 主角）" : "按技能默认（主角 → 怪物）", "主角 → 怪物", "怪物 → 主角" });
             bool reverse = PreviewAsOpponent;
             EditorGUILayout.LabelField("施放者 → 目标", reverse ? ((graph as OriginalSkillGraph)?.previewEnemy?.name ?? "小雕") + " → 男角色 001" : "男角色 001 → 小雕");
+            if (!reverse && graph.castTargetLimit > 1)
+                previewTargetPair = EditorGUILayout.Toggle("试放目标 A、B", previewTargetPair);
             demoRange = EditorGUILayout.Slider("双方距离（米）", demoRange, 2, 20);
             if (UsesSkillLevel(graph)) demoSkillLevel = Mathf.Max(1, EditorGUILayout.DelayedIntField("试放技能等级", demoSkillLevel));
             DrawPreviewHitDamage();
@@ -309,6 +315,7 @@ namespace SoftKitty
                     EditorGUILayout.LabelField("施放者生命", PreviewActorName(lastCaster) + "  " + lastCaster.GetAttributeFloat("chp").ToString("0.##"));
                     EditorGUILayout.LabelField("目标生命", PreviewActorName(lastReceiver) + "  " + healthBefore.ToString("0.##") + " → " + lastReceiver.GetAttributeFloat("chp").ToString("0.##"));
                     EditorGUILayout.LabelField("施放者状态", BuffReadout(lastCaster), EditorStyles.wordWrappedLabel);
+                    if (quickSecondTarget) EditorGUILayout.LabelField("目标 B 生命", quickSecondTarget.GetAttributeFloat("chp").ToString("0.##"));
                     EditorGUILayout.LabelField("目标状态", BuffReadout(lastReceiver), EditorStyles.wordWrappedLabel);
                 }
                 DrawInterruptButton(lastCaster, ref demoResult);
@@ -387,6 +394,7 @@ namespace SoftKitty
                 else
                 {
                     // The MCC entity database outlives scene loads. Recreate the same initial combatants on every quick trial.
+                    quickSecondTarget = null;
                     SkillPreviewTrial.Begin(hero);
                     hero.SetPosition(StageCenter + Vector3.back * demoRange * .5f, false);
                     monster.SetPosition(StageCenter + Vector3.forward * demoRange * .5f, false);
@@ -418,6 +426,18 @@ namespace SoftKitty
                     if (!showGamePreview) Focus();
                     lastCaster = PreviewAsOpponent ? monster : hero;
                     lastReceiver = PreviewAsOpponent ? hero : monster;
+                    if (previewTargetPair && !PreviewAsOpponent && graph.castTargetLimit > 1)
+                    {
+                        GameManager.GetEntity(monster.uid).MultipleInstances = true;
+                        monster.RefreshData();
+                        monster.ApplyData();
+                        quickSecondTarget = Instantiate(monster);
+                        quickSecondTarget.name = "试放目标 B";
+                        var center = monster.transform.position;
+                        monster.SetPosition(center + Vector3.left * 1.5f, false);
+                        quickSecondTarget.SetPosition(center + Vector3.right * 1.5f, false);
+                        Physics.SyncTransforms();
+                    }
                     healthBefore = lastReceiver.GetAttributeFloat("chp");
                     CastPreviewActors(lastCaster, lastReceiver, out demoResult);
                 }
@@ -432,8 +452,12 @@ namespace SoftKitty
             var hits = new List<(int, string, float, float)>();
             measuredHits = hits;
             measuredCaster = caster ? caster.mData?.CombatRandomId : null;
+            var extraTargets = previewMode == 0
+                ? (quickSecondTarget ? new[] { quickSecondTarget } : System.Array.Empty<EntityComponent>())
+                : sceneExtraTargets.Take(Mathf.Max(0, graph.castTargetLimit - 1)).Where(actor => actor && actor.gameObject.scene == caster.gameObject.scene).ToArray();
+            foreach (var actor in extraTargets) SkillDamageNumbers.Observe(actor);
             CastActors(graph, caster, receiver, demoSkillLevel, out result, damage, previewHitDamage,
-                (index, target, loss, shield) => hits.Add((index, target.CombatRandomId, loss, shield)));
+                (index, target, loss, shield) => hits.Add((index, target.CombatRandomId, loss, shield)), extraTargets.Select(actor => actor.mData).ToArray());
         }
 
         private static bool ValidatePreviewLevel(GraphObject skill, int level, out string info)
@@ -472,7 +496,7 @@ namespace SoftKitty
             return CastActors(skill, caster, receiver, skillLevel, out info);
         }
 
-        private static bool CastActors(GraphObject skill, EntityComponent caster, EntityComponent receiver, int skillLevel, out string info, CombatDamage damage = null, float previewHitDamage = 10f, System.Action<int, Entity, float, float> onSettled = null)
+        private static bool CastActors(GraphObject skill, EntityComponent caster, EntityComponent receiver, int skillLevel, out string info, CombatDamage damage = null, float previewHitDamage = 10f, System.Action<int, Entity, float, float> onSettled = null, IReadOnlyList<Entity> extraTargets = null)
         {
             if (!caster || !receiver || !caster.isActiveAndEnabled || !receiver.isActiveAndEnabled ||
                 !caster.AvailableForInteraction || !receiver.AvailableForInteraction)
@@ -512,10 +536,10 @@ namespace SoftKitty
                 var playback = SkillPlayback.On(damage);
                 var previousImpact = playback.OriginalProjectileImpact;
                 playback.OriginalProjectileImpact = (source, victim) => SkillPlayback.ApplyIncomingDamage(source, victim, previewHitDamage);
-                try { started = damage.TryCastSkill(caster.mData, receiver.mData, onSettled); }
+                try { started = damage.TryCastSkill(caster.mData, receiver.mData, onSettled, extraTargets); }
                 finally { playback.OriginalProjectileImpact = previousImpact; }
             }
-            else started = damage.TryCastSkill(caster.mData, receiver.mData, onSettled);
+            else started = damage.TryCastSkill(caster.mData, receiver.mData, onSettled, extraTargets);
             if (!started)
             {
                 info = caster.mData.CanStartSkill ? "本次试放未满足施法条件。" : "施放者尚不能接下一招。";

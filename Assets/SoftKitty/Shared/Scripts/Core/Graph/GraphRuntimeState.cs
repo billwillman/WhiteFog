@@ -54,6 +54,8 @@ namespace SoftKitty
             get => RootState.CasterSnapshot;
             internal set => RootState.CasterSnapshot = value;
         }
+        internal IReadOnlyList<Entity> orderedTargets;
+        internal ProjectileContact projectileHit;
         internal bool projectileContact;
         internal System.Action<int, Entity, float, float> onDamageSettled;
         internal SkillDamageReport.Cast replay;

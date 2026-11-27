@@ -11,12 +11,13 @@ namespace SoftKitty
         private static readonly string[] VisualLabels = { "播放角色动画", "播放施法特效", "挂接武器特效", "产生投射物", "收招标记", "位移标记", "播放轨道特效" };
         private static string VisualLabel(int stage) => stage >= 0 && stage < VisualLabels.Length ? VisualLabels[stage] : "未知表现";
 
-        private static void AddActionChoices(GenericMenu menu, System.Action<string, int> choose)
+        private static void AddActionChoices(GenericMenu menu, System.Action<string, int> choose, bool projectileContact = false)
         {
             string folder = Application.dataPath + "/SoftKitty/Shared/Scripts/CustomClass/Action";
             foreach (var file in Directory.GetFiles(folder, "*Action_interface.txt").OrderBy(f => f))
             {
                 string key = Path.GetFileName(file).Replace("Action_interface.txt", "");
+                if (key == "RedirectProjectile" && !projectileContact) continue;
                 if (key == "OriginalSkillVisual")
                 {
                     menu.AddItem(new GUIContent("挂点特效（可配置命中盒）"), false, () => choose(key, 6));
@@ -122,7 +123,7 @@ namespace SoftKitty
             if (GUILayout.Button("添加命中后执行的动作"))
             {
                 var menu = new GenericMenu();
-                AddActionChoices(menu, (key, stage) => Change(() => selection = AddConfiguredAction(graph.RootSet, key, stage, 0, node).Uid));
+                AddActionChoices(menu, (key, stage) => Change(() => selection = AddConfiguredAction(graph.RootSet, key, stage, 0, node).Uid), SkillProjectile.IsLaunch(node));
                 menu.ShowAsContext();
             }
         }

@@ -33,11 +33,13 @@ namespace SoftKitty
             private readonly Entity caster, aimed;
             private readonly EntityComponent aimActor;
             private readonly List<string> allowedTags;
+            private readonly HashSet<Entity> visited;
             internal readonly bool designated;
 
-            internal HitQuery(SkillProjectile shot, Entity source, EntityComponent aimActor, PhysicsScene physics)
+            internal HitQuery(SkillProjectile shot, Entity source, EntityComponent aimActor, PhysicsScene physics, HashSet<Entity> visited = null)
             {
                 this.physics = physics;
+                this.visited = visited;
                 caster = source;
                 this.aimActor = aimActor;
                 aimed = aimActor ? aimActor.mData : null;
@@ -54,7 +56,7 @@ namespace SoftKitty
                 var actor = receiver.Entity;
                 if (!actor || (designated && (actor != aimActor || actor.mData != aimed))) return null;
                 var entity = actor.mData;
-                if (entity == null) return null;
+                if (entity == null || (visited != null && visited.Contains(entity))) return null;
                 if (!designated && (entity == caster || allowedTags == null || !entity.hasMatchingTag(allowedTags))) return null;
                 return IsLive(actor) ? actor : null;
             }

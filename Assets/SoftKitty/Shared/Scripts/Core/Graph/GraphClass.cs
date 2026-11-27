@@ -97,7 +97,8 @@ namespace SoftKitty
         Dealer,
         Target,
         Specified,
-        Instance
+        Instance,
+        NextCastTarget
     }
     #endregion
 

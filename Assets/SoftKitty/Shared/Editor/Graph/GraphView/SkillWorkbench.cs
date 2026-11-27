@@ -22,8 +22,8 @@ namespace SoftKitty
         private bool showSourceTimes = true;
         private GraphObject[] projectSkills;
         private bool showConditions;
-        private static readonly string[] EntityRoleLabels = { "施法者（自己）", "本次目标", "按 UID 指定实体", "高级：全局玩家", "高级：技能执行实例" };
-        private static readonly int[] EntityRoleValues = { (int)EntityType.Dealer, (int)EntityType.Target, (int)EntityType.Specified, (int)EntityType.Player, (int)EntityType.Instance };
+        private static readonly string[] EntityRoleLabels = { "施法者（自己）", "本次目标", "按 UID 指定实体", "高级：全局玩家", "高级：技能执行实例", "投射物名单中的下一目标" };
+        private static readonly int[] EntityRoleValues = { (int)EntityType.Dealer, (int)EntityType.Target, (int)EntityType.Specified, (int)EntityType.Player, (int)EntityType.Instance, (int)EntityType.NextCastTarget };
         [SerializeField] private CombatDamage executor;
         private Editor componentEditor;
         private bool showExecutor;
@@ -203,6 +203,8 @@ namespace SoftKitty
                         }
                         bool opponent = EditorGUILayout.Popup("默认施放方",
                             graph.previewAsOpponent ? 1 : 0, new[] { "主角", "怪物" }) == 1;
+                        var limit = Mathf.Max(1, EditorGUILayout.IntField("本次施法目标上限", Mathf.Max(1, graph.castTargetLimit)));
+                        if (limit != Mathf.Max(1, graph.castTargetLimit)) Change(() => graph.castTargetLimit = limit);
                         if (opponent != graph.previewAsOpponent) Change(() => graph.previewAsOpponent = opponent);
                         bool timed = EditorGUILayout.Toggle("施法输入时序", graph.useInputTiming);
                         if (timed != graph.useInputTiming) Change(() => graph.useInputTiming = timed);
@@ -664,6 +666,7 @@ namespace SoftKitty
                     case NodeInterfaceElementType.Bool_Variable: Fill(action.BoolValues, i, false); break;
                     case NodeInterfaceElementType.Input_Entity:
                         var entity = new EntityClass(root) { Type = (field.Uid == "entityA" || field.Uid == "caster") ? EntityType.Dealer : EntityType.Target, Position = action.Position + new Vector2(-245, i * 130) };
+                        if (field.Uid == "redirectTarget") entity.Type = EntityType.NextCastTarget;
                         root.Entities.Add(entity);
                         Wire(entity, action, i + offset);
                         break;
@@ -929,6 +932,11 @@ namespace SoftKitty
             dealer = (EntityComponent)EditorGUILayout.ObjectField("施加者", dealer, typeof(EntityComponent), true);
             target = (EntityComponent)EditorGUILayout.ObjectField("目标", target, typeof(EntityComponent), true);
             if (UsesSkillLevel(graph)) demoSkillLevel = Mathf.Max(1, EditorGUILayout.DelayedIntField("试放技能等级", demoSkillLevel));
+            for (int i = 0; i < Mathf.Max(1, graph.castTargetLimit) - 1; i++)
+            {
+                if (sceneExtraTargets.Count <= i) sceneExtraTargets.Add(null);
+                sceneExtraTargets[i] = (EntityComponent)EditorGUILayout.ObjectField("后续目标 " + (i + 2), sceneExtraTargets[i], typeof(EntityComponent), true);
+            }
             bool ready = Application.isPlaying && !EditorApplication.isPaused && dealer && target && (!executor || (executor.inited && executor.mGraph == graph));
             if (!ready) EditorGUILayout.HelpBox("进入 Play，把场景中具体的施放者和目标拖到对应槽。伤害执行组件可留空。", MessageType.None);
             using (new EditorGUI.DisabledScope(!ready))
