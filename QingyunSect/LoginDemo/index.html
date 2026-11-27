@@ -191,6 +191,7 @@ button:focus-visible{outline:2px solid #fff0be;outline-offset:4px}
     <canvas id="battle-role" aria-label="后上方斜视，外门弟子踏剑飞过滚动的云雾"></canvas>
     <span id="battle-skill" hidden></span>
     <output id="battle-feedback" role="status" hidden></output>
+    <output id="escort-status" hidden></output>
     <ol id="battle-bar" aria-label="出战功法，自动施放"></ol>
     <section id="battle-books" aria-label="待用武学" hidden><div></div><output aria-live="polite"></output></section>
     <a id="skill-records" href="skill-records.html" hidden>功法图谱</a>
@@ -535,7 +536,7 @@ function makeBattleEntry(art,onPracticeTrial) {
   const controls=byId('battle-controls'),auto=byId('battle-auto'),attack=byId('battle-attack');
   let raf=0,mode,plan,age=0,last=null,castIndex=0,active=null,victory=false;
   let automatic=true, readyAt=0, party=null, nextAutoPoll=0;
-  const cooldowns=new Map(),feedback=byId('battle-feedback');
+  const cooldowns=new Map(),feedback=byId('battle-feedback'),escortStatus=byId('escort-status');
   let feedbackUntil=0,onResult,requestVersion=0;
   const damageBySkill=new Map(),report=scene.querySelector('.duel-report');
   function keyForMove(id){
@@ -586,7 +587,7 @@ function makeBattleEntry(art,onPracticeTrial) {
     button.type='button';button.onclick=()=>{if(!editable())manual(button.dataset.key);};
     icon.alt=frame.alt='';li.append(icon,frame,timer,name,button);bar.append(li);return {li,icon,frame,timer,name,button};
   });
-  const editable=()=>!!party&&!party.practice&&!!mode&&mode!=='skills'&&!victory;
+  const editable=()=>!!party&&!party.fixedSkills&&!!mode&&mode!=='skills'&&!victory;
   let battleBag,learnedArts=[];
   const board=makeBattleBoard(bar,art,state=>{
     battleBag=state;
@@ -610,7 +611,7 @@ function makeBattleEntry(art,onPracticeTrial) {
     catch(error){return Promise.reject(error);}
     let ids=configuration?[...configuration.player,...configuration.enemy].map(move=>move.id):
       (key?[key]:[...new Set(sourceEncounters.skills.casts.map(c=>c[1]))]).map(k=>sourceMoves[k].id);
-    if(configuration&&!configuration.practice){
+    if(configuration&&!configuration.fixedSkills){
       const candidates=[...Object.keys(state.books).map(Number),...window.qingyunBookStart.ordinaryResults];
       ids=[...new Set([...ids,...candidates.map(book=>{
         const item=state.books[book];return skillRules.resolve(book,item?.advance??1,item?.level??0)?.skill;
@@ -622,7 +623,7 @@ function makeBattleEntry(art,onPracticeTrial) {
     if(preparedKey===signature&&ready)return ready;
     entryCancel?.();
     preparedKey=signature;party=configuration;battleBag=state;learnedArts=arts;
-    const fightTraining={...training,arts:activeArts()};
+    const fightTraining={...training,arts:configuration?.fixedSkills?[]:activeArts()};
     frame=document.createElement('iframe');frame.title='云端战斗';frame.className='battle-world';
     const trial=frame;
     ready=new Promise((resolve,reject)=>{
@@ -637,6 +638,12 @@ function makeBattleEntry(art,onPracticeTrial) {
         if(source!==trial.contentWindow||data?.type!=='qingyun-local-skill')return;
         if(data.data.kind==='ready'){clearTimeout(timeout);resolve();}
         if(data.data.kind==='staged')stageComplete?.();
+        if(mode&&data.data.kind==='escort'){
+          const {label,hp,maxHp,shield,path}=data.data;
+          const route=trainingRules.paths[path]?.name;
+          escortStatus.textContent=label+' '+hp+'/'+maxHp+(route?' · '+route:'')+(shield>0?' · 云盾 '+Number(shield.toFixed(1)):' · 云盾已破');
+          escortStatus.hidden=false;
+        }
         if(mode&&data.data.kind==='battleEnd')finishBattle(data.data.winner==='player');
         if(party&&mode&&data.data.kind==='training'){
           const event=data.data;
@@ -766,9 +773,9 @@ function makeBattleEntry(art,onPracticeTrial) {
       plan={slots,casts:[]};
     }else plan=single?{slots:[skillKey],casts:[[.6,skillKey]],period:single.seconds+2}:sourceEncounters.skills;
     age=0;castIndex=0;active=null;victory=false;cooldowns.clear();nextAutoPoll=.25;feedbackUntil=0;feedback.hidden=true;defeated=false;automatic=true;readyAt=0;
-    trainingEvents.clear();trainingReport.hidden=true;
+    trainingEvents.clear();trainingReport.hidden=true;escortStatus.hidden=true;
     damageBySkill.clear();report.hidden=true;scene.classList.remove('settled');delete result.dataset.outcome;
-    byId('battle-return').textContent=party?.practice?'返回修行':party?'点击继续':'回到舆图';
+    byId('battle-return').textContent=mode==='pathTrial'?'返回试修':party?.practice?'返回修行':party?'点击继续':'回到舆图';
     byId('battle-map').textContent=party?.practice?'‹ 修行':'‹ 舆图';
     attack.setAttribute('aria-label','施放'+(sourceMoves[primarySlot()]?.name||'功法'));
     scene.dataset.encounter=mode;scene.classList.toggle('formal-battle',!!party);controls.hidden=false;byId('skill-records').hidden=mode!=='skills';updateControls();
@@ -846,8 +853,20 @@ const firstChapter=(()=>{
     return previewTraining;
   }
   function updateIdentity(s){document.querySelector('.identity b').textContent=s.realm===2?'炼气二层':'炼气一层';}
-  const training=makeTrainingPanel(trainingAccess,baseline=>openBattle('yard',null,baseline),updateIdentity);
-  async function prepareBattle(encounter,key,baseline,request){
+  const training=makeTrainingPanel(trainingAccess,baseline=>openBattle('yard',null,baseline),updateIdentity,startPathTrial,key=>{
+    const step=tasks[progress].pathStep;
+    if((key==='borrowPath'&&step==='trial')||(key==='choosePath'&&step==='confirm'))advanceTask();
+    map();
+  });
+  function startPathTrial(path){
+    openBattle('pathTrial',()=>battle.show('pathTrial',null,won=>{
+      if(!won)return;
+      (firstClears['4-1']??={})[path]=true;
+      save();
+      return trainingRules.paths[path].name+'试修通过 · 药碗送达';
+    }),false,false,path);
+  }
+  async function prepareBattle(encounter,key,baseline,request,trialPath){
     const state=encounter==='skills'?null:await trainingAccess();
     if(request&&request!==pendingBattle)throw Error('已取消进场');
     const snapshot=state?trainingRules.snapshot(state):null;
@@ -855,7 +874,13 @@ const firstChapter=(()=>{
       snapshot.baseline=baseline||(!state.breath&&!state.swordRank);
       if(baseline){snapshot.breath=0;snapshot.attack-=2*state.swordRank;}
     }
+    if(encounter==='pathTrial'||encounter==='medicineRun'){
+      const path=trialPath??state.borrowedPath;
+      if(!Object.hasOwn(trainingRules.paths,path))throw Error('请先在剑坪通过试修并选择法门');
+      snapshot.lessonPath=path;
+    }
     return battle.prepare(encounter,key,snapshot);
+
   }
   function showChapterBattle(task){
     battle.show(task.encounter,null,won=>{
@@ -922,9 +947,9 @@ const firstChapter=(()=>{
     if(picture.getAttribute('src')!==src)picture.src=src;
     picture.alt=ferry?'旧渡岸边有人往火盆里添湿柴，雾中药舟正等着引路':'青云宗外院的石阶与廊庑';
     scene.setAttribute('aria-label',ferry?'旧渡':'青云宗外院');
-    const chapters=['第三声渡钟','云路上的灯','山外有人'];
+    const chapters=['第三声渡钟','云路上的灯','山外有人','问一招'];
     const chapter=Number(task?.section.split('-')[0]??1);
-    scene.querySelector('.court-chapter small').textContent='第'+'一二三'[chapter-1]+'章　'+chapters[chapter-1];
+    scene.querySelector('.court-chapter small').textContent='第'+'一二三四'[chapter-1]+'章　'+chapters[chapter-1];
     scene.querySelector('.court-chapter strong').textContent=task?.title??title;
     $('region').hidden=true;scene.hidden=false;motion.setVisible(false);
   }
@@ -964,7 +989,18 @@ const firstChapter=(()=>{
   function visit(place,fromMap=false){
     if(!finished||pendingBattle||enteringBattle)return;
     const task=tasks[progress];
+    if(task.pathStep&&task.place===place){
+      if(task.pathStep==='confirm'){
+        trainingAccess().then(state=>{
+          if(tasks[progress]!==task||enteringBattle)return;
+          if(state.mainPath){advanceTask();map();}
+          else if(!$('training-panel').open)training.open('paths');
+        }).catch(error=>caption('师堂',error.message));
+      }else training.open('paths');
+      return;
+    }
     if(task.lines&&task.place===place){playStoryTask(task);return;}
+
     if(task.encounter&&task.place===place){openBattle(task.encounter,()=>showChapterBattle(task));return;}
     if(place==='home'){
       backdrop('home');
@@ -993,9 +1029,9 @@ const firstChapter=(()=>{
   $('to-map').addEventListener('click',map);
   function returnFromBattle(){
     if(enteringBattle)return;
-    const practice=$('battle-entry').dataset.encounter==='yard';
+    const encounter=$('battle-entry').dataset.encounter;
     map();
-    if(practice){training.open('practice');return;}
+    if(encounter==='yard'||encounter==='pathTrial'){training.open(encounter==='yard'?'practice':'paths');return;}
     $('task').focus({preventScroll:true});
     const start=performance.now(),reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
     if(reduced)return;
@@ -1010,7 +1046,7 @@ const firstChapter=(()=>{
   $('battle-map').addEventListener('click',returnFromBattle);
   $('battle-return').addEventListener('click',returnFromBattle);
   let pendingBattle=null;
-  async function openBattle(encounter='skills',onReady,baseline=false,ferry=false){
+  async function openBattle(encounter='skills',onReady,baseline=false,ferry=false,trialPath){
     if(enteringBattle)return;
     const id=preview==='skills' ? new URLSearchParams(location.search).get('skill') : null;
     const key=id&&Object.keys(sourceMoves).find(k=>String(sourceMoves[k].id)===id);
@@ -1035,7 +1071,7 @@ const firstChapter=(()=>{
       let ready=false;
       async function prepare(){
         battle.stop();
-        await prepareBattle(encounter,key,baseline,request);
+        await prepareBattle(encounter,key,baseline,request,trialPath);
         ready=true;
       }
       const covered=entrance.cover(ferryIntro);
@@ -1057,7 +1093,7 @@ const firstChapter=(()=>{
       if(court.hidden&&region.hidden){
         if(ferry)backdrop('ferry');else map();
       }
-      caption(title,error.message||'云端战场载入失败。','重试',()=>openBattle(encounter,onReady,baseline,ferry));
+      caption(title,error.message||'云端战场载入失败。','重试',()=>openBattle(encounter,onReady,baseline,ferry,trialPath));
     }
   }
   document.querySelectorAll('[data-note]').forEach(el=>el.addEventListener('click',()=>{

@@ -91,6 +91,7 @@ button:focus-visible{outline:2px solid #fff0be;outline-offset:4px}
     <canvas id="battle-role" aria-label="后上方斜视，外门弟子踏剑飞过滚动的云雾"></canvas>
     <span id="battle-skill" hidden></span>
     <output id="battle-feedback" role="status" hidden></output>
+    <output id="escort-status" hidden></output>
     <ol id="battle-bar" aria-label="出战功法，自动施放"></ol>
     <section id="battle-books" aria-label="待用武学" hidden><div></div><output aria-live="polite"></output></section>
     <a id="skill-records" href="skill-records.html" hidden>功法图谱</a>

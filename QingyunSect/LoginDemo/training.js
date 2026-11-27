@@ -1,12 +1,19 @@
 const trainingRules=(()=>{
   const companions={adept:'守关阵修',blade:'巡山剑修',ward:'护阵弟子'};
-  const arts={guard:'护脉',seal:'镇行符'};
+  const paths={
+    sword:{name:'剑修',art:'归锋',detail:'两次有效攻击叠满剑印，归锋削去云盾并提高这次伤害。'},
+    body:{name:'体修',art:'震岳',detail:'迎住震地保护药碗并蓄劲，下一次攻击震开云盾。'}
+  };
+  const arts={guard:'护脉',seal:'镇行符',sword:paths.sword.art,body:paths.body.art};
   const storeKey='qingyun.third-bell.v1',minute=60000,breakthroughCost=30;
   function initial(){
     return {claimed:[],cultivation:0,pages:0,tickets:0,sand:0,marrow:0,realm:1,breath:0,
-      recruit:'',ally:'',allyRank:0,bead:false,beadRank:0,swordRank:0,art:'',meditatingSince:0};
+      recruit:'',ally:'',allyRank:0,bead:false,beadRank:0,swordRank:0,art:'',meditatingSince:0,
+      triedPaths:[],borrowedPath:'',mainPath:'',deliveryCleared:false};
   }
   function award(state,tasks,progress,clears,now){
+    state.triedPaths=Object.keys(paths).filter(key=>clears['4-1']?.[key]===true);
+    state.deliveryCleared=Object.hasOwn(clears,'4-2');
     tasks.forEach((task,i)=>{
       const reward=task.trainingReward;
       if(!reward||state.claimed.includes(reward.key))return;
@@ -51,13 +58,21 @@ const trainingRules=(()=>{
         requireState(has('stoneRoad')&&!s.beadRank,'定风珠当前无法温养');pay(s,'sand',1);s.beadRank=1;break;
       case 'temper':
         requireState(has('delivery')&&!s.swordRank,'飞剑当前无法温养');pay(s,'marrow',1);s.swordRank=1;break;
+      case 'borrowPath':
+        requireState(has('pathReady')&&!s.deliveryCleared&&s.triedPaths?.includes(pick),'先在剑坪通过这门法门的试修');
+        s.borrowedPath=pick;break;
+      case 'choosePath':
+        requireState(has('pathMentor')&&s.deliveryCleared&&!s.mainPath&&s.triedPaths?.includes(pick),'完成交药并通过这门法门的试修后方可拜师');
+        s.mainPath=pick;s.pages++;break;
       default:throw Error('未知的修行动作');
     }
   }
   function snapshot(s){
     return {attack:10+(s.realm-1)+2*s.swordRank,hp:100+10*(s.realm-1),breath:s.breath,previousArt:s.art,
-      learnedArts:Object.keys(arts).filter(key=>s.claimed.includes(key==='guard'?'stoneRoad':'rearRoad')),
+      learnedArts:[...(s.claimed.includes('stoneRoad')?['guard']:[]),...(s.claimed.includes('rearRoad')?['seal']:[]),
+        ...(Object.hasOwn(paths,s.mainPath)?[s.mainPath]:[])],
+      mainPath:s.mainPath,
       bead:s.bead?1+s.beadRank:0,ally:s.ally,allyRank:s.ally===s.recruit?s.allyRank:0};
   }
-  return {storeKey,initial,award,change,snapshot,companions,arts,meditation,breakthroughCost};
+  return {storeKey,initial,award,change,snapshot,companions,arts,paths,meditation,breakthroughCost};
 })();

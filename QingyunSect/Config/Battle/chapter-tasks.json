@@ -261,5 +261,112 @@
         "action": "回到舆图"
       }
     ]
+  },
+  {
+    "section": "4-1",
+    "place": "home",
+    "title": "把药碗送稳",
+    "text": "4-1 · 把药碗送稳",
+    "lines": [
+      {
+        "speaker": "许舟",
+        "text": "我在木鸢上挂了一碗水。你替它走一趟，前头那具练功石傀会抬盾。"
+      },
+      {
+        "speaker": "许舟",
+        "text": "体修可以迎着震地积蓄劲力，剑修可以给盾边留下剑印。碗和傀儡都是同一套，你想换着试也行。",
+        "action": "到剑坪试修"
+      }
+    ],
+    "trainingReward": {
+      "key": "pathReady"
+    },
+    "trainingStop": "paths"
+  },
+  {
+    "section": "4-1",
+    "place": "home",
+    "title": "把药碗送稳",
+    "text": "剑坪试修，借一门法门出山",
+    "pathStep": "trial"
+  },
+  {
+    "section": "4-2",
+    "place": "ferry",
+    "title": "带出山的一招",
+    "text": "4-2 · 带出山的一招",
+    "lines": [
+      {
+        "speaker": "许舟",
+        "text": "这碗是要送给病人的真药。照着图走，岸上有人接应。"
+      },
+      {
+        "speaker": "我",
+        "text": "前头的守渡石傀已经举盾。我用剑坪试过的那一手，把药送过去。",
+        "action": "整备后送药"
+      }
+    ],
+    "trainingStop": "partners"
+  },
+  {
+    "stageId": "4-2",
+    "place": "ferry",
+    "text": "护送药碗越过守渡阵",
+    "encounter": "medicineRun"
+  },
+  {
+    "section": "4-2",
+    "place": "ferry",
+    "title": "药童接碗",
+    "text": "靠岸，把药交给药童",
+    "lines": [
+      {
+        "speaker": "药童",
+        "text": "从露出水面的第二级上来。我照着图等你，那两级是许舟补画的。"
+      },
+      {
+        "speaker": "我",
+        "text": "药还温着。你端稳，我陪你送进药舍，看他喝上第一口。",
+        "action": "交药，回宗"
+      }
+    ],
+    "trainingReward": {
+      "key": "medicineDelivered"
+    }
+  },
+  {
+    "section": "4-3",
+    "place": "home",
+    "title": "我还想学这一手",
+    "text": "4-3 · 我还想学这一手",
+    "lines": [
+      {
+        "speaker": "许舟",
+        "text": "碗已经洗干净了。真遇上石傀时，你用的是哪一手？回剑坪再试一趟也行。"
+      },
+      {
+        "speaker": "我",
+        "text": "我想把顺手的那门练下去。今天就去见师长，明早再请他看我走一遍。",
+        "action": "去拜见师长"
+      }
+    ],
+    "trainingReward": {
+      "key": "pathMentor"
+    },
+    "trainingStop": "paths"
+  },
+  {
+    "section": "4-3",
+    "place": "home",
+    "title": "我还想学这一手",
+    "text": "到师堂确认主修",
+    "pathStep": "confirm"
+  },
+  {
+    "section": "4-3",
+    "place": "home",
+    "title": "明早练功",
+    "text": "第四章已完成 · 问一招",
+    "pathStep": "review"
   }
 ]

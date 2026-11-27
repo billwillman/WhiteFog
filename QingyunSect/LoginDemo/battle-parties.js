@@ -7,7 +7,8 @@ function resolveBattleParty(name,rules,available,loadout) {
     if(!skill||!available.includes(id))throw Error('战斗技能 '+id+' 尚未导出本地技能包');
     return {id,cooldown:skill.cooldown/1000};
   }
-  const slots=party.practice?party.player:(loadout??party.player);
+  const fixedSkills=party.practice===true||party.fixedSkills===true;
+  const slots=fixedSkills?party.player:(loadout??party.player);
   if(slots.length>6||new Set(slots.map(s=>s.book)).size!==slots.length)
     throw Error('上排最多放六门不同的我方武学');
   const player=slots.map(slot=>{
@@ -19,6 +20,6 @@ function resolveBattleParty(name,rules,available,loadout) {
     model:row.enemyModel,enemy:row.enemySkills.map(move),flock:row.flock,health:row.health,attack:row.attack,slam:row.slam
   }));
   const enemy=[...new Map(waves.flatMap(wave=>wave.enemy).map(skill=>[skill.id,skill])).values()];
-  return {heading:party.heading,title:party.title,practice:party.practice===true,player,enemy,waves,
+  return {heading:party.heading,title:party.title,practice:party.practice===true,fixedSkills,escort:party.escort,player,enemy,waves,
     links:rules.equippedLinks(slots.map(slot=>slot.book),party.world)};
 }

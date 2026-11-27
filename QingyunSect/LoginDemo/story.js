@@ -49,8 +49,20 @@ const firstChapter=(()=>{
     return previewTraining;
   }
   function updateIdentity(s){document.querySelector('.identity b').textContent=s.realm===2?'炼气二层':'炼气一层';}
-  const training=makeTrainingPanel(trainingAccess,baseline=>openBattle('yard',null,baseline),updateIdentity);
-  async function prepareBattle(encounter,key,baseline,request){
+  const training=makeTrainingPanel(trainingAccess,baseline=>openBattle('yard',null,baseline),updateIdentity,startPathTrial,key=>{
+    const step=tasks[progress].pathStep;
+    if((key==='borrowPath'&&step==='trial')||(key==='choosePath'&&step==='confirm'))advanceTask();
+    map();
+  });
+  function startPathTrial(path){
+    openBattle('pathTrial',()=>battle.show('pathTrial',null,won=>{
+      if(!won)return;
+      (firstClears['4-1']??={})[path]=true;
+      save();
+      return trainingRules.paths[path].name+'试修通过 · 药碗送达';
+    }),false,false,path);
+  }
+  async function prepareBattle(encounter,key,baseline,request,trialPath){
     const state=encounter==='skills'?null:await trainingAccess();
     if(request&&request!==pendingBattle)throw Error('已取消进场');
     const snapshot=state?trainingRules.snapshot(state):null;
@@ -58,7 +70,13 @@ const firstChapter=(()=>{
       snapshot.baseline=baseline||(!state.breath&&!state.swordRank);
       if(baseline){snapshot.breath=0;snapshot.attack-=2*state.swordRank;}
     }
+    if(encounter==='pathTrial'||encounter==='medicineRun'){
+      const path=trialPath??state.borrowedPath;
+      if(!Object.hasOwn(trainingRules.paths,path))throw Error('请先在剑坪通过试修并选择法门');
+      snapshot.lessonPath=path;
+    }
     return battle.prepare(encounter,key,snapshot);
+
   }
   function showChapterBattle(task){
     battle.show(task.encounter,null,won=>{
@@ -125,9 +143,9 @@ const firstChapter=(()=>{
     if(picture.getAttribute('src')!==src)picture.src=src;
     picture.alt=ferry?'旧渡岸边有人往火盆里添湿柴，雾中药舟正等着引路':'青云宗外院的石阶与廊庑';
     scene.setAttribute('aria-label',ferry?'旧渡':'青云宗外院');
-    const chapters=['第三声渡钟','云路上的灯','山外有人'];
+    const chapters=['第三声渡钟','云路上的灯','山外有人','问一招'];
     const chapter=Number(task?.section.split('-')[0]??1);
-    scene.querySelector('.court-chapter small').textContent='第'+'一二三'[chapter-1]+'章　'+chapters[chapter-1];
+    scene.querySelector('.court-chapter small').textContent='第'+'一二三四'[chapter-1]+'章　'+chapters[chapter-1];
     scene.querySelector('.court-chapter strong').textContent=task?.title??title;
     $('region').hidden=true;scene.hidden=false;motion.setVisible(false);
   }
@@ -167,7 +185,18 @@ const firstChapter=(()=>{
   function visit(place,fromMap=false){
     if(!finished||pendingBattle||enteringBattle)return;
     const task=tasks[progress];
+    if(task.pathStep&&task.place===place){
+      if(task.pathStep==='confirm'){
+        trainingAccess().then(state=>{
+          if(tasks[progress]!==task||enteringBattle)return;
+          if(state.mainPath){advanceTask();map();}
+          else if(!$('training-panel').open)training.open('paths');
+        }).catch(error=>caption('师堂',error.message));
+      }else training.open('paths');
+      return;
+    }
     if(task.lines&&task.place===place){playStoryTask(task);return;}
+
     if(task.encounter&&task.place===place){openBattle(task.encounter,()=>showChapterBattle(task));return;}
     if(place==='home'){
       backdrop('home');
@@ -196,9 +225,9 @@ const firstChapter=(()=>{
   $('to-map').addEventListener('click',map);
   function returnFromBattle(){
     if(enteringBattle)return;
-    const practice=$('battle-entry').dataset.encounter==='yard';
+    const encounter=$('battle-entry').dataset.encounter;
     map();
-    if(practice){training.open('practice');return;}
+    if(encounter==='yard'||encounter==='pathTrial'){training.open(encounter==='yard'?'practice':'paths');return;}
     $('task').focus({preventScroll:true});
     const start=performance.now(),reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
     if(reduced)return;
@@ -213,7 +242,7 @@ const firstChapter=(()=>{
   $('battle-map').addEventListener('click',returnFromBattle);
   $('battle-return').addEventListener('click',returnFromBattle);
   let pendingBattle=null;
-  async function openBattle(encounter='skills',onReady,baseline=false,ferry=false){
+  async function openBattle(encounter='skills',onReady,baseline=false,ferry=false,trialPath){
     if(enteringBattle)return;
     const id=preview==='skills' ? new URLSearchParams(location.search).get('skill') : null;
     const key=id&&Object.keys(sourceMoves).find(k=>String(sourceMoves[k].id)===id);
@@ -238,7 +267,7 @@ const firstChapter=(()=>{
       let ready=false;
       async function prepare(){
         battle.stop();
-        await prepareBattle(encounter,key,baseline,request);
+        await prepareBattle(encounter,key,baseline,request,trialPath);
         ready=true;
       }
       const covered=entrance.cover(ferryIntro);
@@ -260,7 +289,7 @@ const firstChapter=(()=>{
       if(court.hidden&&region.hidden){
         if(ferry)backdrop('ferry');else map();
       }
-      caption(title,error.message||'云端战场载入失败。','重试',()=>openBattle(encounter,onReady,baseline,ferry));
+      caption(title,error.message||'云端战场载入失败。','重试',()=>openBattle(encounter,onReady,baseline,ferry,trialPath));
     }
   }
   document.querySelectorAll('[data-note]').forEach(el=>el.addEventListener('click',()=>{

@@ -206,5 +206,68 @@
     ],
     "enemyModel": "剑坪木人",
     "enemySkills": []
+  },
+  "pathTrial": {
+    "heading": "第四章　问一招",
+    "title": "剑坪试修",
+    "world": 1,
+    "player": [
+      {
+        "book": 21020,
+        "advance": 1,
+        "level": 0
+      }
+    ],
+    "escort": {
+      "label": "木鸢药碗",
+      "hp": 38,
+      "shield": 32,
+      "strikeDamage": 9
+    },
+    "waves": [
+      {
+        "enemyModel": "练功石傀",
+        "enemySkills": [],
+        "health": 34,
+        "attack": 12,
+        "slam": {
+          "first": 2.7,
+          "windup": 1.1,
+          "interval": 4.8
+        }
+      }
+    ],
+    "fixedSkills": true
+  },
+  "medicineRun": {
+    "heading": "第四章　问一招",
+    "title": "守渡阵送药",
+    "world": 1,
+    "player": [
+      {
+        "book": 21020,
+        "advance": 1,
+        "level": 0
+      }
+    ],
+    "escort": {
+      "label": "药碗",
+      "hp": 42,
+      "shield": 36,
+      "strikeDamage": 11
+    },
+    "waves": [
+      {
+        "enemyModel": "守渡石傀",
+        "enemySkills": [],
+        "health": 65,
+        "attack": 15,
+        "slam": {
+          "first": 2.7,
+          "windup": 1.1,
+          "interval": 4.8
+        }
+      }
+    ]
   }
 }

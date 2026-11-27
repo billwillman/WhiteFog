@@ -13,6 +13,7 @@
 #training-materials{font-size:13px;color:#655238}
 #training-content section{border-top:1px solid #c9bda4;margin-top:12px;padding-top:12px}
 #training-status{color:#914331}
+#escort-status{position:absolute;left:4%;top:17%;padding:.35em .6em;color:#fff6de;background:#302a28de;font:clamp(11px,2.7cqw,19px)/1.4 system-ui;pointer-events:none}
 #battle-entry #training-report{color:#fae4b1;background:#302a28de;max-height:15vh;overflow:auto;padding:4px 8px;font:clamp(11px,2.7cqw,19px)/1.4 system-ui;white-space:pre-line}
 
 #training-content .partner-portrait{float:left;width:3rem;height:3rem;object-fit:contain;margin:0 .7rem .4rem 0}

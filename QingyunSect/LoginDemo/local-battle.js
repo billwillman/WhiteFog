@@ -85,7 +85,7 @@ try {
   const uniform=Object.fromEntries(['origin','facing','size','cutoff','clipFromWorld'].map(k=>[k,gl.getUniformLocation(program,k)]));
   const clouds=await makeBattleClouds(gl,art),bird=await makeFlyingEnemy(gl,art.enemy);
   const presentation=makeBattlePresentation(gl),drawParticle=makeParticleRenderer(gl);
-  const drawWard=training.ally||training.bead?makeWardRenderer(gl):null;
+  const drawWard=training.ally||training.bead||party?.escort?makeWardRenderer(gl):null;
   const drawStone=party?.practice||party?.waves.some(w=>w.slam)?makeStoneGuardian(gl,party.practice):null;
   const effects=new Map(), requests=new Map();
   const keyFor=(key,reversed)=>key+(reversed?'-back':'-front');
@@ -348,6 +348,50 @@ try {
   const allyImpact=packages.flatMap(p=>p.opponent?[]:p.graphs.find(g=>g.key===p.entry).nodes)
     .find(n=>n.op==='Projectile'&&n.impact&&effects.has(keyFor(n.impact,false)));
   const wards=new Map();
+  let escort,bodyCharged=false;
+  const activePath=()=>training.lessonPath||(training.arts?.includes(training.mainPath)?training.mainPath:null);
+  function showEscort(){
+    send({kind:'escort',label:party.escort.label,hp:escort.hp,maxHp:party.escort.hp,shield:escort.shield,path:activePath()});
+  }
+  function defendEnemy(actor,damage){
+    if(damage<=0)return damage;
+    const path=activePath();
+    let advance=false;
+    if(path==='sword'){
+      actor.swordMarks++;
+      if(actor.swordMarks===2){
+        actor.swordMarks=0;advance=true;
+        trainingLog('swordArt','归锋 · 剑印已满，收锋追加 4 点伤害',4);
+      }else trainingLog('swordMark','留痕 · 剑印 1/2',1);
+    }
+    if(path==='body'&&bodyCharged){
+      bodyCharged=false;advance=true;
+      trainingLog('bodyArt','震岳 · 释放蓄劲，追加 4 点伤害',4);
+    }
+    if(advance)damage+=4;
+    if(!escort||actor!==enemy||escort.shield<=0)return damage;
+    const absorption=advance?0:Math.min(damage,escort.shield);
+    escort.shield=advance?0:escort.shield-absorption;
+    if(escort.shield<=0){wards.delete(actor);trainingLog('escortShield','云盾已破',0);}
+    showEscort();
+    return damage-absorption;
+  }
+  function strikeEscort(){
+    if(activePath()==='body'){
+      bodyCharged=true;
+      trainingLog('bodyGuard',escort?'蓄劲 · 迎住震地，护住药碗':'蓄劲 · 迎住震地',1);
+      return;
+    }
+    if(!escort)return;
+    const damage=Math.min(escort.hp,party.escort.strikeDamage);
+    escort.hp-=damage;
+    trainingLog('cargoHit',party.escort.label+'受震地冲击，损失 '+damage+' 点耐久',damage);
+    showEscort();
+    if(escort.hp>0)return;
+    ended=true;
+    trainingLog('cargoLost',party.escort.label+'受损，护送失败',0);
+    send({kind:'battleEnd',winner:'enemy'});
+  }
   let cueUntil=0,defenses,recoverAt=0,gustDone=false,practiceHit=false,practiceImpactAt=null;
   function trainingLog(key,text,amount){
     send({kind:'training',key,text,amount,time});
@@ -406,6 +450,8 @@ try {
     const slam=enemy.slam;
     if(!slam||enemy.stats.chp<=0)return;
     if(time>=enemy.strikeAt){
+      strikeEscort();
+      if(ended)return;
       const bead=defenses.bead,guard=!defenses.guard&&training.arts?.includes('guard');defenses.bead=0;if(guard)defenses.guard=true;
       for(const target of (ally&&ally.stats.chp>0?[ally,hero]:[hero])){
         let damage=Math.max(1,enemy.stats.atk-target.stats.def);
@@ -467,14 +513,21 @@ try {
       wards:training.ally==='adept'?1:training.ally==='ward'?1+training.allyRank:0,
       intercepts:training.ally==='blade'?1+training.allyRank:0,intercepted:0};
     recoverAt=0;gustDone=false;practiceHit=false;practiceImpactAt=null;cueUntil=0;trainingCue.hidden=true;wards.clear();
+    escort=party?.escort?{hp:party.escort.hp,shield:party.escort.shield}:null;bodyCharged=false;
     groups.forEach((group,index)=>{
       const wave=waves[index];
       for(const actor of group){
         actor.stats={atk:wave.flock?.attack??wave.attack??20,def:1,chp:wave.flock?.health??wave.health??80};
         actor.position=[...actor.home];actor.motion=null;actor.dive=null;actor.active=false;
+        actor.swordMarks=0;
+        actor.guardDamage=party&&(escort||training.mainPath)?damage=>defendEnemy(actor,damage):null;
       }
     });
     enterWave(0);
+    if(escort){
+      wards.set(enemy,Infinity);
+      if(begun){showEscort();trainingLog('escortStart',enemy.name+'抬起云盾',escort.shield);}
+    }
     $('events').replaceChildren();
     for(const [index,actor] of actors.entries()){
       actor.tipUntil=0;actor.maxHp=actor.stats.chp;
@@ -526,7 +579,7 @@ try {
         cancelAnimationFrame(frame);begun=true;reset();frame=requestAnimationFrame(tick);
       }
       if(formal){
-        if(data.action==='board'&&begun&&!ended&&!party.practice){
+        if(data.action==='board'&&begun&&!ended&&!party.fixedSkills){
           const updated=resolveBattleParty(encounter,skillRules,packages.map(p=>p.id),data.loadout);
           for(const link of party.links)for(const [id,amount] of link.attribute||[])hero.stats['zszs.attr.'+id]-=amount;
           for(const link of updated.links)for(const [id,amount] of link.attribute||[]){

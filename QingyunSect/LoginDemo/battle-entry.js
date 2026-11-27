@@ -17,7 +17,7 @@ function makeBattleEntry(art,onPracticeTrial) {
   const controls=byId('battle-controls'),auto=byId('battle-auto'),attack=byId('battle-attack');
   let raf=0,mode,plan,age=0,last=null,castIndex=0,active=null,victory=false;
   let automatic=true, readyAt=0, party=null, nextAutoPoll=0;
-  const cooldowns=new Map(),feedback=byId('battle-feedback');
+  const cooldowns=new Map(),feedback=byId('battle-feedback'),escortStatus=byId('escort-status');
   let feedbackUntil=0,onResult,requestVersion=0;
   const damageBySkill=new Map(),report=scene.querySelector('.duel-report');
   function keyForMove(id){
@@ -68,7 +68,7 @@ function makeBattleEntry(art,onPracticeTrial) {
     button.type='button';button.onclick=()=>{if(!editable())manual(button.dataset.key);};
     icon.alt=frame.alt='';li.append(icon,frame,timer,name,button);bar.append(li);return {li,icon,frame,timer,name,button};
   });
-  const editable=()=>!!party&&!party.practice&&!!mode&&mode!=='skills'&&!victory;
+  const editable=()=>!!party&&!party.fixedSkills&&!!mode&&mode!=='skills'&&!victory;
   let battleBag,learnedArts=[];
   const board=makeBattleBoard(bar,art,state=>{
     battleBag=state;
@@ -92,7 +92,7 @@ function makeBattleEntry(art,onPracticeTrial) {
     catch(error){return Promise.reject(error);}
     let ids=configuration?[...configuration.player,...configuration.enemy].map(move=>move.id):
       (key?[key]:[...new Set(sourceEncounters.skills.casts.map(c=>c[1]))]).map(k=>sourceMoves[k].id);
-    if(configuration&&!configuration.practice){
+    if(configuration&&!configuration.fixedSkills){
       const candidates=[...Object.keys(state.books).map(Number),...window.qingyunBookStart.ordinaryResults];
       ids=[...new Set([...ids,...candidates.map(book=>{
         const item=state.books[book];return skillRules.resolve(book,item?.advance??1,item?.level??0)?.skill;
@@ -104,7 +104,7 @@ function makeBattleEntry(art,onPracticeTrial) {
     if(preparedKey===signature&&ready)return ready;
     entryCancel?.();
     preparedKey=signature;party=configuration;battleBag=state;learnedArts=arts;
-    const fightTraining={...training,arts:activeArts()};
+    const fightTraining={...training,arts:configuration?.fixedSkills?[]:activeArts()};
     frame=document.createElement('iframe');frame.title='云端战斗';frame.className='battle-world';
     const trial=frame;
     ready=new Promise((resolve,reject)=>{
@@ -119,6 +119,12 @@ function makeBattleEntry(art,onPracticeTrial) {
         if(source!==trial.contentWindow||data?.type!=='qingyun-local-skill')return;
         if(data.data.kind==='ready'){clearTimeout(timeout);resolve();}
         if(data.data.kind==='staged')stageComplete?.();
+        if(mode&&data.data.kind==='escort'){
+          const {label,hp,maxHp,shield,path}=data.data;
+          const route=trainingRules.paths[path]?.name;
+          escortStatus.textContent=label+' '+hp+'/'+maxHp+(route?' · '+route:'')+(shield>0?' · 云盾 '+Number(shield.toFixed(1)):' · 云盾已破');
+          escortStatus.hidden=false;
+        }
         if(mode&&data.data.kind==='battleEnd')finishBattle(data.data.winner==='player');
         if(party&&mode&&data.data.kind==='training'){
           const event=data.data;
@@ -248,9 +254,9 @@ function makeBattleEntry(art,onPracticeTrial) {
       plan={slots,casts:[]};
     }else plan=single?{slots:[skillKey],casts:[[.6,skillKey]],period:single.seconds+2}:sourceEncounters.skills;
     age=0;castIndex=0;active=null;victory=false;cooldowns.clear();nextAutoPoll=.25;feedbackUntil=0;feedback.hidden=true;defeated=false;automatic=true;readyAt=0;
-    trainingEvents.clear();trainingReport.hidden=true;
+    trainingEvents.clear();trainingReport.hidden=true;escortStatus.hidden=true;
     damageBySkill.clear();report.hidden=true;scene.classList.remove('settled');delete result.dataset.outcome;
-    byId('battle-return').textContent=party?.practice?'返回修行':party?'点击继续':'回到舆图';
+    byId('battle-return').textContent=mode==='pathTrial'?'返回试修':party?.practice?'返回修行':party?'点击继续':'回到舆图';
     byId('battle-map').textContent=party?.practice?'‹ 修行':'‹ 舆图';
     attack.setAttribute('aria-label','施放'+(sourceMoves[primarySlot()]?.name||'功法'));
     scene.dataset.encounter=mode;scene.classList.toggle('formal-battle',!!party);controls.hidden=false;byId('skill-records').hidden=mode!=='skills';updateControls();

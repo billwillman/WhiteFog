@@ -1,9 +1,9 @@
-function makeTrainingPanel(access,onPractice,onState){
+function makeTrainingPanel(access,onPractice,onState,onTrial,onPathChoice){
   const panel=document.getElementById('training-panel'),content=document.getElementById('training-content');
   const status=document.getElementById('training-status'),close=document.getElementById('training-close');
   const materials=document.getElementById('training-materials'),nav=panel.querySelector('nav');
   const samples=new Map();
-  const tabs={practice:'修行',partners:'伙伴',gear:'法宝与御剑'};
+  const tabs={practice:'修行',partners:'伙伴',gear:'法宝与御剑',paths:'主修'};
   let tab='practice',state,busy=false,version=0,after=null,timer=0;
   function button(text,run,disabled=false){
     const el=document.createElement('button');el.type='button';el.textContent=text;el.disabled=disabled;
@@ -20,9 +20,11 @@ function makeTrainingPanel(access,onPractice,onState){
       if(busy)return;busy=true;status.textContent='正在保存…';
       panel.setAttribute('aria-busy','true');close.disabled=true;
       for(const control of content.querySelectorAll('button'))control.disabled=true;
-      try{state=await access(key,pick);onState(state);status.textContent='';}
+      let saved=false;
+      try{state=await access(key,pick);onState(state);status.textContent='';saved=true;}
       catch(error){status.textContent=error.message;}
       finally{busy=false;close.disabled=false;panel.removeAttribute('aria-busy');if(panel.open)render();}
+      if(saved&&(key==='borrowPath'||key==='choosePath')){dismiss(false);onPathChoice(key);}
     },disabled||busy);
     el.dataset.action=key;
     if(pick!=null)el.dataset.value=String(pick);
@@ -31,7 +33,10 @@ function makeTrainingPanel(access,onPractice,onState){
   function render(){
     const s=state,has=key=>s.claimed.includes(key);
     materials.textContent='修为 '+s.cultivation+'　残页 '+s.pages+'　灵砂 '+s.sand+'　云髓 '+s.marrow;
-    for(const el of nav.children)el.setAttribute('aria-pressed',String(el.dataset.tab===tab));
+    for(const el of nav.children){
+      el.hidden=el.dataset.tab==='paths'&&!has('pathReady');
+      el.setAttribute('aria-pressed',String(el.dataset.tab===tab));
+    }
     content.replaceChildren();
     if(tab==='practice'){
       row(s.realm===1?'炼气一层':'炼气二层',s.realm===1?'完成云关巡灯后，以 30 修为突破。':'气血上限 +10，攻击 +1。',
@@ -46,6 +51,16 @@ function makeTrainingPanel(access,onPractice,onState){
         if(s.swordRank||s.breath)buttons.push(trial('对照未温养、未参悟',true));
         const results=[...samples.values()].map(s=>s.label+'（攻击 '+s.attack+'）受冲击后 '+s.secondsToCast.toFixed(2)+' 秒出招，首击扣血 '+Number(s.damage.toFixed(2)));
         row('剑坪试招',results.length?results.join('；'):'同一具木人、同一股云流，记录实际出招时间和首击扣血。',buttons);
+      }
+    }else if(tab==='paths'){
+      for(const [id,path] of Object.entries(trainingRules.paths)){
+        const passed=s.triedPaths?.includes(id),chosen=s.mainPath===id;
+        const trial=button('试修'+path.name,()=>{dismiss(false);onTrial(id);});
+        trial.dataset.pathTrial=id;
+        const controls=[trial];
+        if(has('pathMentor')&&!s.mainPath)controls.push(action('拜师，学'+path.art,'choosePath',id,!passed));
+        else if(!s.deliveryCleared)controls.push(action('借'+path.art+'出山','borrowPath',id,!passed));
+        row(path.name+' · '+path.art+(chosen?'（已习得）':passed?'（试修通过）':''),path.detail,controls);
       }
     }else if(tab==='partners'){
       if(!s.recruit)row('外院招募帖',has('invite')?'用帖随机结识巡山剑修或护阵弟子，结识后自动同行。':'与许舟在剑坪校完航图后领取。',[action('用帖招募（'+s.tickets+'）','recruit',null,!s.tickets)]);
@@ -62,7 +77,8 @@ function makeTrainingPanel(access,onPractice,onState){
       if(has('stoneRoad')){
         row('定风珠'+(s.bead?' · 已佩戴':''),'每战首次震地为每位在场队员抵消 '+(s.beadRank?9:5)+' 点伤害。',
           [action(s.bead?'卸下':'佩戴','bead',!s.bead),...(!s.beadRank?[action('用 1 灵砂温养','polish',null,!s.sand)]:[])]);
-        for(const [key,name] of Object.entries(trainingRules.arts)){
+        for(const key of ['guard','seal']){
+          const name=trainingRules.arts[key];
           if(key==='seal'&&!has('rearRoad'))continue;
           row(name+' · 已学会', (key==='guard'?'每战首次震地，为主角额外抵消 5 点伤害。':'每战封住第一次雾鸢俯冲。')+'在战斗中拖到上排生效。');
         }
@@ -72,7 +88,7 @@ function makeTrainingPanel(access,onPractice,onState){
     }
   }
   for(const [key,label] of Object.entries(tabs)){
-    const el=button(label,()=>{if(!state)return;tab=key;status.textContent='';render();});el.dataset.tab=key;nav.append(el);
+    const el=button(label,()=>{if(!state)return;tab=key;status.textContent='';render();});el.dataset.tab=key;el.hidden=key==='paths';nav.append(el);
   }
   function dismiss(proceed){
     if(busy)return;
