@@ -22,7 +22,7 @@ button:focus-visible{outline:2px solid #fff0be;outline-offset:4px}
 #enter svg{display:block;width:100%;height:100%}
 </style>
 <style>/* STORY_STYLE */</style>
-<link rel="stylesheet" href="duel-hud.css"><link rel="stylesheet" href="training.css">
+<link rel="stylesheet" href="duel-hud.css"><link rel="stylesheet" href="training.css"><link rel="stylesheet" href="battle-transition.css">
 </head>
 <body><main aria-label="重生之我在青云宗修仙">
 <canvas aria-label="金色云洞与悬停御剑的青衣弟子"></canvas>
@@ -125,10 +125,14 @@ button:focus-visible{outline:2px solid #fff0be;outline-offset:4px}
   </section>
 </template>
 <canvas id="veil" aria-hidden="true" hidden></canvas>
+<div id="battle-transition" class="battle-transition" hidden>
+  <div class="battle-transition-mist" aria-hidden="true"></div>
+  <div class="battle-transition-controls" hidden><p role="status"></p><button type="button" hidden>回到舆图</button></div>
+</div>
 </main>
 <script src="battle-art/skills/index.js"></script>
 <script src="battle-art/skill-tables.js"></script>
-<script src="skill-rules.js"></script>
+<script src="skill-rules.js"></script><script src="battle-transition.js"></script>
 <script src="battle-art/encounters.js"></script>
 <script src="battle-board.js"></script><script src="training.js"></script><script src="training-panel.js"></script><script src="battle-parties.js"></script><script src="battle-art/book-start.js"></script><script src="skill-inventory.js"></script>
 <script>

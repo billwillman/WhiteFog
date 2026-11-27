@@ -5,7 +5,10 @@ const ids=[...new Set((params.get('skills')||single).split(','))], embedded=pare
 const $=id=>document.getElementById(id), canvas=$('field'),overlay=$('overlay'),ctx=overlay.getContext('2d');
 const send=data=>{if(embedded)parent.postMessage({type:'qingyun-local-skill',data},'*');};
 if(embedded)document.body.classList.add('embedded');
-function failed(error){document.body.classList.add('failed');$('status').textContent=error.message;send({kind:'error',text:error.message});}
+const standby=embedded&&params.has('standby');
+const entrance=standby?null:makeBattleTransition($('battle-transition'));
+if(entrance)entrance.wait('正在载入本地技能包…');
+function failed(error){entrance?.close();document.body.classList.add('failed');$('status').textContent=error.message;send({kind:'error',text:error.message});}
 function loadScript(path){
   return new Promise((resolve,reject)=>{const s=document.createElement('script');s.src=path;
     s.onload=resolve;s.onerror=()=>reject(Error('无法读取本地资源 '+path));document.head.append(s);});
@@ -496,10 +499,24 @@ try {
     if(clear)reset();release(p.id);
     cancelAnimationFrame(frame);last=null;frame=requestAnimationFrame(tick);
   }
-  reset();select(packages.find(p=>p.id===Number(single)));$('replay').onclick=()=>play(current.id,true);
+  async function preview(id,entry=false){
+    const replay=$('replay');
+    replay.disabled=true;
+    try{
+      if(!entry){cancelAnimationFrame(frame);await entrance.cover();}
+      begun=false;reset();select(packages.find(p=>p.id===Number(id)));draw();
+      await entrance.reveal();
+      begun=true;
+      // A formal start emits the initial wave event with the battle clock still at zero.
+      play(id,formal);
+    }finally{replay.disabled=false;}
+  }
+  if(entrance)$('replay').onclick=()=>preview(current.id).catch(failed);
   window.addEventListener('message',({source,data})=>{
     if(!embedded||source!==parent||data?.type!=='qingyun-local-input')return;
-    try{if(data.action==='begin'&&(!formal||!begun)){
+    try{
+      if(data.action==='stage'&&standby&&!begun){draw();send({kind:'staged'});return;}
+      if(data.action==='begin'&&(!formal||!begun)){
         cancelAnimationFrame(frame);begun=true;reset();frame=requestAnimationFrame(tick);
       }
       if(formal){
@@ -520,8 +537,9 @@ try {
     }catch(err){failed(err);}
   });
   window.addEventListener('pagehide',()=>cancelAnimationFrame(frame),{once:true});
-  $('status').textContent='';$('replay').hidden=false;
-  if(params.has('standby'))draw();else{begun=true;play(single,true);}
+  $('status').textContent='';$('replay').hidden=standby;
+  if(standby){reset();select(packages.find(p=>p.id===Number(single)));draw();}
+  else await preview(single,true);
   send({kind:'ready'});
 }catch(err){failed(err);}
 })();

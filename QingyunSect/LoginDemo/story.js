@@ -79,8 +79,9 @@ const firstChapter=(()=>{
     const login=new URL(location.href);
     login.search='';login.hash='';location.replace(login.href);
   }
-  let enteringBattle=false;
+  let enteringBattle=false,returnFogFrame=0;
   let motion,mapReady=false,shown=false,finished=false,revealStart=null,prepared=false;
+  const entrance=makeBattleTransition($('battle-transition'));
   const veil=$('veil'),ctx=veil.getContext('2d');
   veil.width=art.mistWidth;veil.height=art.mistHeight;
   const mask=Uint8Array.from(atob(art.mist),c=>c.charCodeAt(0));
@@ -148,48 +149,11 @@ const firstChapter=(()=>{
     });
   }
   function beginPassage(){
-    if(enteringBattle)return;
-    enteringBattle=true;
-    const story=$('story'),court=$('court'),painting=$('court-art'),speaker=$('dialogue');
-    const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let ready=false,age=0,last=null,openedAt=null,frame;
-    story.inert=true;
-    function reset(){
-      enteringBattle=false;story.inert=false;veil.hidden=true;
-      painting.style.transform='';speaker.style.opacity='';document.removeEventListener('visibilitychange',resetClock);
-    }
-    function resetClock(){last=null;}
-    document.addEventListener('visibilitychange',resetClock);
-    prepareBattle(ferryTask.encounter).then(()=>{ready=true;},()=>{
-      cancelAnimationFrame(frame);reset();
-      caption('旧渡 · 药舟','云路画面载入失败，可重新进入。','重试',beginPassage);
-    });
-    function advance(now){
-      if(!document.hidden){
-        if(last!==null)age+=Math.min(.10,(now-last)/1000)*(reduced?3:1);
-        last=now;
-        if(openedAt===null){
-          const push=smooth(0,1.65,age);
-          painting.style.transform='scale('+(1+(reduced?0:.13)*push)+')';
-          speaker.style.opacity=1-smooth(0,.75,age);
-          if(age>=1.32)fog(age,null);
-          if(age>=2.55&&ready){
-            dialogue.hide();court.hidden=true;
-            const stageIndex=tasks.indexOf(ferryTask);
-            if(progress===stageIndex-1){progress=stageIndex;save();}
-            showChapterBattle(ferryTask);openedAt=age;
-          }
-        }else{
-          const opening=age-openedAt;
-          fog(age,opening);
-          if(opening>=1.55){
-            reset();($('battle-result').hidden?$('battle-map'):$('battle-return')).focus({preventScroll:true});return;
-          }
-        }
-      }
-      frame=requestAnimationFrame(advance);
-    }
-    frame=requestAnimationFrame(advance);
+    openBattle(ferryTask.encounter,()=>{
+      const stageIndex=tasks.indexOf(ferryTask);
+      if(progress===stageIndex-1){progress=stageIndex;save();}
+      showChapterBattle(ferryTask);
+    },false,true);
   }
   function playStoryTask(task){
     if(task.place==='home'||task.place==='ferry')backdrop(task.place,task);
@@ -199,7 +163,7 @@ const firstChapter=(()=>{
       if(tasks[progress]!==task){map();return;}
       advanceTask();
       const next=tasks[progress];
-      const fight=next.encounter&&next.place===task.place?()=>openBattle(next.encounter,next):null;
+      const fight=next.encounter&&next.place===task.place?()=>openBattle(next.encounter,()=>showChapterBattle(next)):null;
       if(task.trainingStop){map();training.open(task.trainingStop,fight);}
       else if(fight)fight();else map();
     });
@@ -208,7 +172,7 @@ const firstChapter=(()=>{
     if(!finished||pendingBattle||enteringBattle)return;
     const task=tasks[progress];
     if(task.lines&&task.place===place){playStoryTask(task);return;}
-    if(task.encounter&&task.place===place){openBattle(task.encounter,task);return;}
+    if(task.encounter&&task.place===place){openBattle(task.encounter,()=>showChapterBattle(task));return;}
     if(place==='home'){
       backdrop('home');
       if(progress===0)courtLine();
@@ -239,33 +203,56 @@ const firstChapter=(()=>{
     map();$('task').focus({preventScroll:true});
     const start=performance.now(),reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
     if(reduced)return;
+    cancelAnimationFrame(returnFogFrame);
     function uncover(now){
       const age=(now-start)/1000;
       if(age>=1.55){veil.hidden=true;return;}
-      fog(4,age);requestAnimationFrame(uncover);
+      fog(4,age);returnFogFrame=requestAnimationFrame(uncover);
     }
     uncover(start);
   }
   $('battle-map').addEventListener('click',returnFromBattle);
   $('battle-return').addEventListener('click',returnFromBattle);
   let pendingBattle=null;
-  function openBattle(encounter='skills',task,baseline=false){
-    if(pendingBattle||enteringBattle)return;
+  async function openBattle(encounter='skills',onReady,baseline=false,ferry=false){
+    if(enteringBattle)return;
     const id=preview==='skills' ? new URLSearchParams(location.search).get('skill') : null;
     const key=id&&Object.keys(sourceMoves).find(k=>String(sourceMoves[k].id)===id);
     if(id && !key){caption('功法试放','当前战场版本尚未收录这门功法。','回到舆图',map);return;}
     const request={};
-    pendingBattle=request;
+    const story=$('story'),court=$('court'),region=$('region');
     const title=battleParties[encounter]?.heading??'功法试放';
-    caption(title,'正在载入云端战场……','回到舆图',()=>{pendingBattle=null;map();});
-    prepareBattle(encounter,key,baseline,request).then(()=>{
+    enteringBattle=true;pendingBattle=request;story.inert=true;
+    $('gm-open').inert=true;
+    cancelAnimationFrame(returnFogFrame);veil.hidden=true;
+    const dock=ferry&&!matchMedia('(prefers-reduced-motion: reduce)').matches
+      ?$('court-art').animate([{transform:'scale(1)'},{transform:'scale(1.13)'}],
+        {duration:1100,fill:'forwards',easing:'ease-out'}):null;
+    function restore(){
+      pendingBattle=null;enteringBattle=false;story.inert=false;$('gm-open').inert=false;
+      dock?.cancel();entrance.close();
+    }
+    try{
+      await entrance.cover(ferry);
+      battle.stop();
+      entrance.wait('正在载入云端战场…',()=>{restore();map();$('task').focus({preventScroll:true});});
+      await prepareBattle(encounter,key,baseline,request);
       if(pendingBattle!==request)return;
-      pendingBattle=null;dialogue.hide();$('region').hidden=true;$('court').hidden=true;motion.setVisible(false);
-      if(task)showChapterBattle(task);else battle.show(encounter,key);
-    },error=>{
+      dialogue.hide();region.hidden=true;court.hidden=true;motion.setVisible(false);
+      if(onReady)onReady();else battle.show(encounter,key);
+      await battle.stage();
+      await entrance.reveal();
+      battle.start();
+      restore();
+      $('battle-map').focus({preventScroll:true});
+    }catch(error){
       if(pendingBattle!==request)return;
-      pendingBattle=null;caption(title,error.message||'云端战场载入失败。','重试',()=>openBattle(encounter,task,baseline));
-    });
+      battle.stop();restore();
+      if(court.hidden&&region.hidden){
+        if(ferry)backdrop('ferry');else map();
+      }
+      caption(title,error.message||'云端战场载入失败。','重试',()=>openBattle(encounter,onReady,baseline,ferry));
+    }
   }
   document.querySelectorAll('[data-note]').forEach(el=>el.addEventListener('click',()=>{
     if(el.dataset.note==='功法')openBattle();else if(el.dataset.note==='背包')location.href='skill-records.html#bag';else training.open(el.dataset.note==='伙伴'?'partners':'practice');

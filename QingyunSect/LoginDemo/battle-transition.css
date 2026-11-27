@@ -1,0 +1,9 @@
+#battle-transition{position:absolute;inset:0;z-index:6;overflow:hidden;isolation:isolate}
+#battle-transition[hidden],.battle-transition-controls[hidden],.battle-transition button[hidden]{display:none}
+.battle-transition-mist{position:absolute;inset:-8%;background:
+  linear-gradient(145deg,#dce0df48,#edf0ebbb 48%,#cad3d661),
+  url("portrait-clouds.jpg") center 58%/cover no-repeat #d9deda}
+.battle-transition-controls{position:absolute;inset:auto 6% max(7%,env(safe-area-inset-bottom));display:grid;justify-items:center;gap:.6rem;color:#282f30;font:600 clamp(14px,4vw,20px)/1.4 system-ui,sans-serif;text-shadow:0 1px 3px #fff}
+.battle-transition-controls p{margin:0}
+.battle-transition button{position:static;inset:auto;transform:none;width:auto;min-height:40px;aspect-ratio:auto;padding:.3em .8em;border:1px solid #7a8585;border-radius:.3em;background:#ecf0e9;color:#282f30;font:inherit;letter-spacing:0;text-indent:0;text-shadow:none}
+.battle-transition button::before{display:none}

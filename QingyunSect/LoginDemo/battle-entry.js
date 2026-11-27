@@ -79,7 +79,7 @@ function makeBattleEntry(art,onPracticeHit) {
     showSlots();
   });
   const activeArts=()=>battleBag?.slots.filter(id=>learnedArts.includes(id))||[];
-  let frame, ready, preparedKey, entryCancel, defeated=false;
+  let frame, ready, preparedKey, entryCancel, stageComplete, defeated=false;
   const input=(action,key)=>frame?.contentWindow?.postMessage({type:'qingyun-local-input',action,skill:key?sourceMoves[key].id:undefined},'*');
   async function prepare(which,key,training){
     const version=++requestVersion;
@@ -108,10 +108,16 @@ function makeBattleEntry(art,onPracticeHit) {
     frame=document.createElement('iframe');frame.title='云端战斗';frame.className='battle-world';
     const trial=frame;
     ready=new Promise((resolve,reject)=>{
-      function dispose(){window.removeEventListener('message',receive);trial.remove();ready=null;preparedKey=null;entryCancel=null;}
+      const timeout=setTimeout(()=>fail(Error('战场载入超时，请重试。')),30000);
+      function dispose(){
+        clearTimeout(timeout);window.removeEventListener('message',receive);trial.remove();
+        ready=null;preparedKey=null;entryCancel=null;
+      }
+      function fail(error){dispose();stageComplete?.(error);reject(error);}
       function receive({source,data}){
         if(source!==trial.contentWindow||data?.type!=='qingyun-local-skill')return;
-        if(data.data.kind==='ready')resolve();
+        if(data.data.kind==='ready'){clearTimeout(timeout);resolve();}
+        if(data.data.kind==='staged')stageComplete?.();
         if(mode&&data.data.kind==='battleEnd')finishBattle(data.data.winner==='player');
         if(party&&mode&&data.data.kind==='training'){
           const event=data.data;
@@ -134,11 +140,11 @@ function makeBattleEntry(art,onPracticeHit) {
           }
           if(!party&&hit.targetHp<=0)defeated=true;
         }
-        if(data.data.kind==='error'){dispose();reject(Error(data.data.text));}
+        if(data.data.kind==='error')fail(Error(data.data.text));
       }
-      entryCancel=()=>{dispose();reject(Error('已退出战斗'));};
+      entryCancel=()=>fail(Error('已退出战斗'));
       window.addEventListener('message',receive);
-      trial.onerror=()=>{dispose();reject(Error('无法读取本地战斗页面'));};
+      trial.onerror=()=>fail(Error('无法读取本地战斗页面'));
     });
     trial.src='local-battle.html?standby=1&encounter='+encodeURIComponent(which)+'&skill='+ids[0]+'&skills='+ids.join(',')+(loadout?'&loadout='+encodeURIComponent(JSON.stringify(loadout)):'')+
       (training?'&training='+encodeURIComponent(JSON.stringify(fightTraining)):'');
@@ -248,7 +254,21 @@ function makeBattleEntry(art,onPracticeHit) {
     scene.querySelector('.court-chapter small').textContent=party?.heading??'功法试放';
     scene.querySelector('.court-chapter strong').textContent=party?.title??(single?single.name:'剑修与独臂木侠');
     showSlots();if(editable())board.open(battleBag,learnedArts);else board.close();
+  }
+  function stage(){
+    return new Promise((resolve,reject)=>{
+      const timeout=setTimeout(()=>finish(Error('战场首帧未能绘制，请重试。')),5000);
+      function finish(error){
+        clearTimeout(timeout);stageComplete=null;
+        if(error)reject(error);else resolve();
+      }
+      stageComplete=finish;
+      input('stage');
+    });
+  }
+  function start(){
+    if(!frame?.isConnected)throw Error('云端战场已断开，请重试。');
     input('begin');raf=requestAnimationFrame(tick);
   }
-  return {prepare,show,stop};
+  return {prepare,show,stage,start,stop};
 }
