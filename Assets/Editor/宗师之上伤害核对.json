@@ -2,6 +2,36 @@
   "version": "1.3.0",
   "skills": [
     {
+      "skillId": 21010,
+      "name": "基础掌法",
+      "levelTableId": 1010,
+      "hasLevelRow": true,
+      "advance": 1,
+      "level": 0,
+      "rawRatio": 700,
+      "rawFlat": 0,
+      "targetCount": 1,
+      "cooldownMs": 4000,
+      "timing": "478 ms 发射掌劲。",
+      "limit": "倍率与目标上限取自 1.3.0 原表，命中后按所绑伤害流程结算。",
+      "levelAssetPath": "Assets/WhiteFog/Skills/攻击公式/宗师之上数值/基础掌法21010_原表等级.asset"
+    },
+    {
+      "skillId": 21030,
+      "name": "基础刀法",
+      "levelTableId": 1030,
+      "hasLevelRow": true,
+      "advance": 1,
+      "level": 0,
+      "rawRatio": 500,
+      "rawFlat": 0,
+      "targetCount": 2,
+      "cooldownMs": 4000,
+      "timing": "299 ms 发射刀气；同一时点向名单内各目标各发一道。",
+      "limit": "倍率与目标上限取自 1.3.0 原表，命中后按所绑伤害流程结算。",
+      "levelAssetPath": "Assets/WhiteFog/Skills/攻击公式/宗师之上数值/基础刀法21030_原表等级.asset"
+    },
+    {
       "skillId": 21020,
       "name": "基础剑法",
       "levelTableId": 1020,

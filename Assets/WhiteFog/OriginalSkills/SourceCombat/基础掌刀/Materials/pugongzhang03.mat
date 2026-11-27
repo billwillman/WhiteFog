@@ -1,0 +1,106 @@
+%YAML 1.1
+%TAG !u! tag:yousandi.cn,2023:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: pugongzhang03
+  m_Shader: {fileID: 4800000, guid: 2140a2e8b7ee4de4f85e721b8cd36782, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - _USE_ALPHACLIP
+  - _USE_COLORCONTROL
+  - _USE_CUTOUT
+  - _USE_CUTOUT_DETAILTEX
+  - _USE_MASK_ON
+  m_InvalidKeywords:
+  - _USE_CUTOUT_TEX
+  - _USE_CUTOUT_THRESHOLD
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 3002
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _ColorControlTex:
+        m_Texture: {fileID: 2800000, guid: be1abaf7c9144ac4899c28fa635a08cb, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DissolveTex:
+        m_Texture: {fileID: 2800000, guid: fa417d45f484457a9c8715a57f082738, type: 3}
+        m_Scale: {x: 1, y: 2}
+        m_Offset: {x: 0, y: 0}
+    - _DissolveTexDetail:
+        m_Texture: {fileID: 2800000, guid: f70bf8ffe7fe8514d804d3f80d6a698c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DistortTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Mask:
+        m_Texture: {fileID: 2800000, guid: 446081f6927110c4faeb60c3746a03f1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0.17, y: 0}
+    - _Texture:
+        m_Texture: {fileID: 2800000, guid: e000af9e5cedbd548b6865823c68d65c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AlphaAdjust: 1
+    - _AlphaClip: 0.146
+    - _Brightness: 1
+    - _ColorControlTexIndependentTiling: 0
+    - _Cull: 0
+    - _DifferentFaceColor: 0
+    - _DissipateSoftCutout: 0
+    - _Dissolve: 0.112
+    - _DissolveEdageWidth: 0.098
+    - _DissolveTexDetailUscroll: 0
+    - _DissolveTexDetailVscroll: 0
+    - _DissolveTexLerp: 0.453
+    - _DissolveTexUscroll: 1
+    - _DissolveTexVscroll: 0
+    - _DistForceU: 1
+    - _DistForceV: 1
+    - _DistTime: 0.1
+    - _DistTime1: 0.1
+    - _DistortParticleSystemControl: 0
+    - _FxDstBlend: 10
+    - _FxSrcBlend: 5
+    - _Gradian: 0.01
+    - _GradianPow: 1
+    - _MainTexAngle: 0.5
+    - _MainTexAngleSpeed: 0
+    - _MainTexStrength: 1
+    - _MaskParticleSystemControl: 0
+    - _MaskTexAngle: 1
+    - _MaskU: 0
+    - _MaskV: 0
+    - _ParticleControl: 0
+    - _UVParticleControl: 0
+    - _U_Mirror: 0
+    - _Uscroll: 0
+    - _V_Mirror: 0
+    - _Vscroll: 0
+    - _ZTest: 4
+    - _ZWrite: 0
+    m_Colors:
+    - _BackColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BackColor1: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.24528301, g: 0.2190057, b: 0.16330162, a: 0.3254902}
+    - _Color1: {r: 0.4245283, g: 0.353773, b: 0.30666733, a: 1}
+    - _DistRGBA: {r: 0, g: 0, b: 0, a: 1}
+    - _EdageColor: {r: 0.047169805, g: 0.032389507, b: 0.01760921, a: 1}
+    - _MaskRGBA: {r: 1, g: 1, b: 1, a: 0}
+    - _MaskSpeed: {r: 0, g: 0, b: 0, a: 0}
+  m_BuildTextureStacks: []
