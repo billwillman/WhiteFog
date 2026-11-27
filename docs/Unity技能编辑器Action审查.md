@@ -1,23 +1,58 @@
 # Unity 技能编辑器 Action 审查
 
-2026-11-26 · WhiteFog · 团结 1.9.3 · 工程内 MCC 1.03
+2026-11-26 首次审查 · 2026-11-28 更新去留方案 · WhiteFog · 团结 1.9.3 · MCC 1.03
 
-**18 个 Action 类里，12 个来自 MCC 导入基线，6 个由本项目新增。最先可以收回的是施法提示的事件分发和普通治疗的数值运算。最需要保留的是已出手对象的生命周期、指定资源和骨骼的动画／特效播放，以及跨时刻的战斗结算。** 同一个策划按钮可以生成几个 MCC 节点。是否需要新增运行时类，取决于原图缺少哪一种执行行为。
+**保留「产生投射物」「改变当前投射物目标」「分段命中与公式结算」。** 简单固定伤害、施法事件和普通回复可逐步迁到原生组合。旧图保留能正常加载和运行的兼容入口。限时吸收盾、提示环和复杂挂点特效仍有各自的运行时行为要保留。
 
-按 `00cff19` 核对核心导入代码，按 `d1e238d` 识别 Demo。对照了工作台四页、节点图、运行时初始化、四张原作技能图的 `RootSet.Actions`，以及项目治疗模板和 MCC 预设。工作台添加菜单读取接口文件，节点图刷新 Action 列表时扫描脚本，运行时由 `Root` 反射调用 `InitAction`，按节点 UID 将实例放入 `NodeDic`。本次在隔离的团结工程让全部 18 类经过该初始化路径。[工作台添加入口](../Assets/SoftKitty/Shared/Editor/Graph/GraphView/SkillWorkbench.Projectile.cs) · [节点图类型发现](../Assets/SoftKitty/Shared/Editor/Graph/GraphView/MasterGraphWindow.cs) · [MCC 运行时装配](../Assets/SoftKitty/Shared/Scripts/Core/Graph/Root.cs)
+将 MCC 1.03 原始安装包、核心导入提交 `00cff19`、Demo 导入提交 `d1e238d` 与当前工作区对照。旧稿的 18 类运行时装配实测对应首轮 12 个原生 Action 和 6 个项目 Action。本次补审后来增加的 `RedirectProjectile`，合计 7 个项目节点。工作台菜单读接口文件，节点图扫描 Action 脚本，运行时按节点类名调用 `InitAction`。[工作台添加入口](../Assets/SoftKitty/Shared/Editor/Graph/GraphView/SkillWorkbench.Projectile.cs) · [节点图类型发现](../Assets/SoftKitty/Shared/Editor/Graph/GraphView/MasterGraphWindow.cs) · [MCC 运行时装配](../Assets/SoftKitty/Shared/Scripts/Core/Graph/Root.cs)
 
-## 1. 六个项目 Action 应怎样处理
+## 1. 七个项目 Action 的去留
 
-| 项目 Action | MCC 可以直接承担 | 确需保留的行为，以及工作台的处理建议 |
+| 扩展节点 | 可用的 MCC 原生节点或组件 | 直接替换会遗漏的行为 | 去留方案与受影响的图 |
+| --- | --- | --- | --- |
+| **产生投射物** [`Projectile`](../Assets/SoftKitty/Shared/Scripts/CustomClass/Action/ProjectileAction.cs) | `Instantiate` 生成挂有原生 `CombatDamage` 的预制体，可完成普通直飞、追踪、碰撞、标签过滤、对同一实体的命中间隔和命中销毁。 | 当前节点在配置的命中窗口内沿飞行段做定向盒扫掠，先筛资格再取最近接触者，按**实际受击实体与接触位置**执行下游。共用投射物配置、节点逐项复写、出手后独立飞行及落空行为也要保留。 | **保留。** 当前 10 张图、23 个独立发射节点依赖它。破空剑法三发，落花无情剑十一发。使用带原生发射器的预制体时，同一发只由一个执行者负责移动和结算。 |
+| **改变当前投射物目标** [`RedirectProjectile`](../Assets/SoftKitty/Shared/Scripts/CustomClass/Action/RedirectProjectileAction.cs) | 原生 `CombatDamage` 的自动寻敌能跟踪目标，`Instantiate` 可再发一枚投射物。 | 需要由一次接触后的图分支指挥**同一枚**投射物继续飞。它携带已命中名单，验证新目标可交互，并独立处理这次接触的后续动作，避免迟到的旧分支改变下一程。再发一枚会切断同一发的记录。 | **保留。** 当前白虹剑、狂风快剑各 1 个。保留同一发先打甲再飞向乙的出招过程，并验证乙提前死亡、回头重复命中和改向延迟。 |
+| **分段命中与公式结算** [`FormulaImpact`](../Assets/SoftKitty/Shared/Scripts/CustomClass/Action/FormulaImpactAction.cs) | `Variable` 读取属性，数学节点算倍率及分段，`Handler`、`Branch` 与随机输入做判定，`AttributeChange` 和 `Event` 写回及发送事件。可引用原生 MCC 伤害图。 | 需要绑定等级表和可复用的结算流程，按配置保留施放时施法者属性快照、结算时实际受击者的防御、各段权重和命中判定，以及护盾吸收、扣血和报表。只搬算式会失去这些输入的采样时点和接线语义。 | **保留为统一结算入口。** 当前 14 张图、29 个节点。共享伤害流程或单招专用流程可改用原生公式节点编辑，保留结算动作的上下文。重点复测破空剑法等多发技能和流星剑雨等多段直接命中。 |
+| **技能命中** [`SkillImpact`](../Assets/SoftKitty/Shared/Scripts/CustomClass/Action/SkillImpactAction.cs) | 简单固定伤害可用 `Distance`、`Branch`、带延迟或重复的 `Action`、`AttributeChange` 和 `Event` 组成原生图。投射技可用保留的 `Projectile` 接统一结算。 | 旧节点会在动作开始取一次伤害输入供后续段复用，并处理射程、接触后易伤、首段延迟和实际来伤。只接减属性会遗漏对实际受击者结算、盾余额、生命下限和正确的伤害事件。 | **旧图兼容，简单新招用原生组合或统一结算。** 当前图未找到引用。首版八张攻击样例若从历史版本恢复或导入，仍会用到它，名单见下表。 |
+| **表现动作** [`OriginalSkillVisual`](../Assets/SoftKitty/Shared/Scripts/CustomClass/Action/OriginalSkillVisualAction.cs) | 起手用 `Animation`，普通特效用带寿命的预制体和 `Instantiate`，发射用保留的 `Projectile`，时间标记保留为时间轴数据。 | 普通生成和动画无法直接覆盖原图中指定骨骼或局部偏移、只跟位置或跟随旋转、粒子生命周期、原作轨道时点和轨道命中盒。把位移标记转为 `Transform` 会额外产生实际位移。 | **保留旧图读取和复杂挂点，普通动作逐步拆分。** 当前 14 张图、59 个节点。工作台的「挂点特效（可配置命中盒）」仍生成这个类。迁移时用基础剑法、流星剑雨、玄铁剑法-下和破空剑法核对时序、挂点和接触回调。 |
+| **施法提示** [`SkillSignal`](../Assets/SoftKitty/Shared/Scripts/CustomClass/Action/SkillSignalAction.cs) | 原生 `Event` 负责业务事件，同名事件仍发送给原接收者，实体参数接施法者。固定外观的环可用 `Instantiate` 加自带寿命的特效预制体。 | 只用事件会失去提示环的位置、施法或敌对颜色、显示时长。旧节点可同时发事件和显示环，拆开后要核对仅显示时不发事件、需要发时只发一次。 | **发事件已改用原生组合，保留可配置提示环及旧图兼容。** 当前图未找到引用。首版六张样例用过这个类，名单见下表。 |
+| **护盾与回复** [`SkillVital`](../Assets/SoftKitty/Shared/Scripts/CustomClass/Action/SkillVitalAction.cs) | 普通治疗已可用实体属性及 `Max → Add → Min → AttributeChange.Override`，并用可交互条件约束受术者。原生 `GeneralDamageAdvanced` 提供护盾属性和伤害分支，可作搭图参考。 | 普通治疗迁移还需保留施法来源和可选回复提示。限时吸收盾需要一份与结算共用的盾余额、到期规则，以及同一击破盾后的剩余伤害。原生预设的两个分支没有直接体现同一击的溢出。例如盾剩 10、来伤 25，当前项目口径是吸收 10、继续结算余下 15。 | **普通回复用原生组合，保留限时吸收盾和旧图兼容。** 当前图未找到引用。首版清罡护体使用过它。更换盾实现时须核对到期、耗尽和破盾同一击三种情况。 |
+
+[项目扫掠与命中目标](../Assets/SoftKitty/Shared/Scripts/Core/Graph/SkillProjectile.cs) · [原生伤害图预设](../Assets/SoftKitty/MasterCombatCore/Presets/GeneralDamageAdvanced.asset) · [伤害、易伤与盾余额](../Assets/SoftKitty/MasterCombatCore/Scripts/Core/SkillDefence.cs)
+
+### 当前技能图依赖
+
+本次统计工程 `Assets` 中序列化资产的 `RootSet.Actions`。只计实际动作，类型菜单和重复的序列化引用副本不计。下列 14 张图在 [原作技能目录](../Assets/WhiteFog/Skills/宗师之上/)；数字是每张图的有效节点数。
+
+| 技能图 | `Projectile` | `RedirectProjectile` | `FormulaImpact` | `OriginalSkillVisual` |
+| --- | ---: | ---: | ---: | ---: |
+| 两仪剑 | 1 | 0 | 1 | 4 |
+| 基础剑法 | 1 | 0 | 1 | 4 |
+| 太极剑法 | 2 | 0 | 2 | 3 |
+| 少阳指 | 1 | 0 | 1 | 3 |
+| 普攻 | 1 | 0 | 1 | 3 |
+| 流星剑雨 | 0 | 0 | 5 | 8 |
+| 狂风快剑 | 1 | 1 | 1 | 4 |
+| 玄铁剑法-上 | 0 | 0 | 1 | 4 |
+| 玄铁剑法-下 | 0 | 0 | 1 | 5 |
+| 玄铁剑法 | 1 | 0 | 1 | 4 |
+| 白虹剑 | 1 | 1 | 1 | 4 |
+| 破空剑法 | 3 | 0 | 3 | 4 |
+| 落花无情剑 | 11 | 0 | 9 | 4 |
+| 黯然销魂掌 | 0 | 0 | 1 | 5 |
+| **合计** | **23** | **2** | **29** | **59** |
+
+### 历史样例依赖
+
+下表按首版九招的 `fadf023` 统计。该批图从历史版本恢复或从旧包导入时仍需对应的兼容类。技能图以外的外部存档或外部包需在迁移前另行核对。
+
+| 旧节点 | 首版中实际引用它的图 | 后续历史 |
 | --- | --- | --- |
-| [SkillSignal](../Assets/SoftKitty/Shared/Scripts/CustomClass/Action/SkillSignalAction.cs) | `Event` 可以向相同接收者发送同名事件。把实体参数接到施放者，Float 取 0、Bool 取 false，即可还原事件。 | 现有节点还会用 `SkillPlayback.Signal` 画带时长、颜色的环。建议“施法提示”做成事件与表现组合，两种输出按需配置。一键模板要避免重复发送事件。 |
-| [SkillVital](../Assets/SoftKitty/Shared/Scripts/CustomClass/Action/SkillVitalAction.cs) | 普通回复可用 `Max → Add → Min → AttributeChange.Override`。工程的[持续治疗图](../Assets/WhiteFog/SkillTemplates/持续治疗.asset)已经这样做。单一能量盾也有原生[高级伤害图](../Assets/SoftKitty/MasterCombatCore/Presets/GeneralDamageAdvanced.asset)可供配置。 | 回复仍要保留可交互条件、正确的受术者、施放来源和可选表现。限时盾余额及破盾溢出要统一规则。建议把回复放到原生模板，护盾独立设计；目前它们共用一个枚举。 |
-| [SkillImpact](../Assets/SoftKitty/Shared/Scripts/CustomClass/Action/SkillImpactAction.cs) | 距离 Handler、条件分支、定时／重复 Action、属性写回和 `Event` 可以表达固定数值直接命中。新投射技已能通过通用投射物接命中分支。 | 此类还实现发射前取值、飞行接触、易伤、结算延迟、扣血上限和事件。建议列为旧组合兼容，按需要拆成射程条件、发射和伤害结算模板。简单 `AttributeChange.Substract` 单独接上会丢失部分语义。 |
-| [FormulaImpact](../Assets/SoftKitty/Shared/Scripts/CustomClass/Action/FormulaImpactAction.cs) | 公式中的加乘、比较、属性输入、随机变量、分支和最终写回均有原生节点。 | 配置资产跨图复用、等级行、每段权重、施放时攻击快照、接触后按实际受击者读防御，以及逐段抽命中率需要执行上下文。保留公式结算能力；投射样式和提示可以交给通用表现／投射节点。各段权重之和、漏段跳过、打断、实际受击者应作为迁移验收项。 |
-| [OriginalSkillVisual](../Assets/SoftKitty/Shared/Scripts/CustomClass/Action/OriginalSkillVisualAction.cs) | 包含多种完全不同的事件。原生 `Animation` 支持按 State 名播放，`Instantiate` 支持生成资源、跟随实体；时间标记可以作为时间轴元数据。 | 建议保留旧图加载适配，创作入口按动画、挂点特效、投射物、标记区分。单独选 Clip、跨层 State、只跟位置、跟骨骼旋转、独立停止和接触回调各有具体差异。逐阶段见下节。 |
-| [Projectile](../Assets/SoftKitty/Shared/Scripts/CustomClass/Action/ProjectileAction.cs) | 原生 `CombatDamage` 已有发射、脚本／物理驱动、寻敌、速度曲线、物理层、标签筛选、同实体命中冷却和命中销毁；实施比较时也应包含它的预制体路径。 | 本项目还要求定向盒在时间窗内连续扫掠、先筛资格再选最近受击者、锁定实体身份、发射后独立于施法，以及按接触位置运行后续图。保留这一层，继续用 MCC 受击实体、标签和图端口。由原生发射器驱动的预制体应只有一个运动及命中执行者。 |
+| `SkillImpact` | 回风裂阵、御剑穿云、星弧连闪、缚影蚀脉、赤纹连灼、幽雾侵蚀、裂石冲撞、雷鳞震翅 | 到 `f0a20e9` 时，以上样例的动作已改走公式结算。 |
+| `SkillSignal` | 回风裂阵、御剑穿云、星弧连闪、清罡护体、裂石冲撞、雷鳞震翅 | `f0a20e9` 仍有引用，后续原作样例替换了这批旧图。 |
+| `SkillVital` | 清罡护体 | `f0a20e9` 仍有引用，导入这张旧图时要保留限时盾和提示表现。 |
 
-### 迁移前四招的依赖
+### 历史基线 · 迁移前四招的依赖
 
 团结 AssetDatabase 实际加载到 **29 个动作，全部序列化为 `OriginalSkillVisual`**。其中 4 个动画、1 个施法特效、1 个武器特效、4 次发射、11 个轨道特效，另有 8 个收招／位移标记。扫描范围是四张原作图的有效动作数组；序列化引用副本和可选类型清单不计入实例数。
 
@@ -38,7 +73,7 @@
 
 这四张图的动作上均未保存命中下游连线。对发射节点，工作台在没有连线时可注入“每段预览来伤”；旧轨道特效也可调用这个回调。原作试放中的飘字能证明预览发生了生命变化，不能单独证明四张资产已接入正式伤害公式。[试放注入](../Assets/SoftKitty/Shared/Editor/Graph/GraphView/SkillWorkbench.Demo.cs) · [发射节点的命中输出](../Assets/SoftKitty/Shared/Scripts/CustomClass/Action/ProjectileAction.cs)
 
-## 2. 十二个基线 Action 的去留
+## 2. 十二个基线 Action 的首次审查
 
 下表以执行类 `.cs` 和导入提交逐文件比对。**9 个执行类一致，3 个已有项目改动**。接口汉化和编辑器展示单独计。
 
@@ -83,7 +118,7 @@
 3. 用同一来源的资源与时点逐招迁移 `OriginalSkillVisual`；先比较存档重开、骨骼跟随、动画和发射，再比较命中后的实际扣血与事件。旧图保留加载路径，原作表演回放与正式伤害配置分别验收。
 4. 合并固定伤害和公式伤害中重复的调度、判定与扣血行为，同时保留原生属性写入及周期图入口。简单技能可导出为原生节点组合；具有快照、跨目标重绑定和独立生命周期的配置继续走必要扩展。
 
-本轮在与工作区关键源码、四张技能图一致的临时 Unity 工程内验证了 18 个 Action 的运行时装配。Play Mode 中用工作台创建图并走 `CombatDamage.PerformAction`，测得 `SkillSignal` 和 `Event` 均向同一受术者发出一次相同参数的事件。25 点回复分别从 95/100 加到 100/100、从 50/100 加到 75/100，`SkillVital` 和原生模板结果一致，施放者生命均保持 80。另走真实周期图执行入口核对单跳，并测量了 `Transform` 的世界位移。四张原作图本轮核对的是加载结果、阶段和连线。其余行为结论来自代码与预设审查；这次未逐参数试放全部 18 类。
+首轮审查在与当时关键源码、四张技能图一致的临时 Unity 工程内验证了 18 个 Action 的运行时装配。Play Mode 中用工作台创建图并走 `CombatDamage.PerformAction`，测得 `SkillSignal` 和 `Event` 均向同一受术者发出一次相同参数的事件。25 点回复分别从 95/100 加到 100/100、从 50/100 加到 75/100，`SkillVital` 和原生模板结果一致，施放者生命均保持 80。另走真实周期图执行入口核对单跳，并测量了 `Transform` 的世界位移。四张原作图本轮核对的是加载结果、阶段和连线。其余行为结论来自代码与预设审查；这次未逐参数试放全部 18 类。
 
 ## 5. 首轮迁移与工作台复测
 
