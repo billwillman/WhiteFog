@@ -114,7 +114,7 @@ public static class OriginalSkillEditorExport
         }
         if (SkillProjectile.IsLaunch(node) || ((node.ClassName == "SkillImpact" || node.ClassName == "FormulaImpact") && node.IntValues.ElementAtOrDefault(0) != 0))
         {
-            Add("投射物 Snap", node.projectileSnap);
+            Add("投射物配置", node.projectileSnap);
             var shot = (node.requiresProjectileSnap || SkillProjectile.IsImpactLaunch(node)) && !node.projectileSnap
                 ? null : SkillProjectile.For(node, graph);
             if (shot != null)

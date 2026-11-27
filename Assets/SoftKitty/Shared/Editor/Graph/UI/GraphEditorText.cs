@@ -6,7 +6,7 @@ namespace SoftKitty
     internal static class GraphEditorText
     {
         internal const string HitModeLabel = "命中方式";
-        internal const string HitModeHelp = "直接结算按当前输入执行。产生投射物引用投射物 Snap，接触到有效受击体后进入结算。接在独立投射物命中口时，可直接结算。";
+        internal const string HitModeHelp = "直接结算按当前输入执行。「产生投射物」使用所选的投射物配置，接触到有效受击体后进入结算。接在独立投射物命中口时，可直接结算。";
         internal static readonly string[] HitModeOptions = { "直接结算", "产生投射物" };
 
         internal static bool IsHitMode(CustomNode node, NodeInterfaceElement field) =>

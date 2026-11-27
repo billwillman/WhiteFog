@@ -152,19 +152,45 @@ namespace SoftKitty
         private static GameObject PrefabField(string label, GameObject prefab, string help) =>
             (GameObject)SkillFieldHelp.ObjectField(label, prefab, typeof(GameObject), false, help);
 
+        private static SkillProjectileSnap ProjectileConfigField(SkillProjectileSnap config)
+        {
+            const string title = "投射物配置";
+            const string help = "多个节点可共用一份投射物配置，包括外观、弹道、命中窗口和命中特效。修改配置会影响所有引用它的节点。只想调整当前节点时，点「另存投射物配置」。";
+            using (new SkillFieldHelp.Row(title, help))
+            {
+                var field = EditorGUI.PrefixLabel(EditorGUILayout.GetControlRect(), new GUIContent(title));
+                bool repaint = Event.current.type == EventType.Repaint;
+                // Keep Unity's picker and drag handling, and draw the value without its generated type suffix.
+                Color color = GUI.contentColor;
+                SkillProjectileSnap selected;
+                try
+                {
+                    if (repaint) GUI.contentColor = Color.clear;
+                    selected = (SkillProjectileSnap)EditorGUI.ObjectField(field, config, typeof(SkillProjectileSnap), false);
+                }
+                finally { GUI.contentColor = color; }
+                if (repaint)
+                {
+                    field.xMin += 3;
+                    field.xMax -= 20; // Leave the native picker button visible.
+                    GUI.Label(field, config ? config.name : "未选择", EditorStyles.label);
+                }
+                return selected;
+            }
+        }
+
         private void DrawProjectile(Action node, bool impactNode = false)
         {
             var snap = node.projectileSnap;
-            var selected = (SkillProjectileSnap)SkillFieldHelp.ObjectField("投射物 Snap", snap,
-                typeof(SkillProjectileSnap), false, "复用外观、弹道、碰撞窗口和命中特效。编辑 Snap 会同步更新引用它的节点。");
+            var selected = ProjectileConfigField(snap);
             if (selected != snap)
             {
                 Change(() => SetProjectileSnap(node, selected, impactNode));
                 snap = selected;
             }
-            if (GUILayout.Button(snap ? "另存投射物 Snap" : "新建投射物 Snap"))
+            if (GUILayout.Button(snap ? "另存投射物配置" : "新建投射物配置"))
             {
-                string path = EditorUtility.SaveFilePanelInProject("保存投射物 Snap", "投射物 Snap", "asset", "选择 Snap 的保存位置。");
+                string path = EditorUtility.SaveFilePanelInProject("保存投射物配置", "投射物配置", "asset", "选择投射物配置的保存位置。");
                 if (!string.IsNullOrEmpty(path))
                 {
                     var asset = CreateInstance<SkillProjectileSnap>();
@@ -179,8 +205,8 @@ namespace SoftKitty
             if (!snap)
             {
                 var text = node.requiresProjectileSnap || SkillProjectile.IsImpactLaunch(node)
-                    ? "请选择或新建投射物 Snap。绑定后才会发射。"
-                    : "此节点沿用原来的投射设置。新建 Snap 可从现有设置开始，也可选择已有 Snap。";
+                    ? "请选择或新建投射物配置。绑定后才会发射。"
+                    : "此节点沿用原有的投射设置。点「新建投射物配置」可将这些设置保存为配置，也可以直接选择已有配置。";
                 EditorGUILayout.HelpBox(text, MessageType.Info);
                 return;
             }
@@ -203,7 +229,7 @@ namespace SoftKitty
             shot.impact = PrefabField("命中特效", shot.impact, "投射物接触有效受击体时，在接触点生成的特效预制体。");
             if (shot.impact) shot.impactScale = Mathf.Max(0, SkillFieldHelp.FloatField("命中特效缩放", shot.impactScale, "按比例缩放命中特效的外观。1 为原尺寸，2 为两倍；碰撞范围由命中盒尺寸控制。"));
             if (!EditorGUI.EndChangeCheck()) return;
-            Undo.RecordObject(snap, "修改投射物 Snap");
+            Undo.RecordObject(snap, "修改投射物配置");
             snap.settings = shot;
             EditorUtility.SetDirty(snap);
             AssetDatabase.SaveAssetIfDirty(snap);

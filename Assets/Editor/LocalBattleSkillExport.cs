@@ -145,7 +145,7 @@ public static class LocalBattleSkillExport
                     break;
                 case "Projectile":
                     if (x.requiresProjectileSnap && (!x.projectileSnap || x.projectileSnap.settings == null))
-                        throw new InvalidDataException(x.Uid + " 缺少投射物 Snap。");
+                        throw new InvalidDataException(x.Uid + " 缺少投射物配置。");
                     var shot = SkillProjectile.For(x, asset as OriginalSkillGraph);
                     if (shot.path != SkillProjectile.FlightPath.LaunchPositionToTargetPosition)
                         throw new InvalidDataException("当前本地战场只支持向发射时目标位置直射。");

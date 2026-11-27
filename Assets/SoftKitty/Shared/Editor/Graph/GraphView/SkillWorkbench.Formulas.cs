@@ -181,7 +181,7 @@ namespace SoftKitty
                 bool canConnect = false;
                 if (SkillProjectile.IsImpactLaunch(action))
                 {
-                    origin = "投射物 Snap · " + (action.projectileSnap ? action.projectileSnap.name : "未绑定") +
+                    origin = "投射物配置 · " + (action.projectileSnap ? action.projectileSnap.name : "未绑定") +
                         " → " + (action.ClassName == "FormulaImpact" ? CalculationSource(action) : "伤害输入");
                 }
                 else if (IsHitSource(action, source) && !action.EmitsSettledHit)
