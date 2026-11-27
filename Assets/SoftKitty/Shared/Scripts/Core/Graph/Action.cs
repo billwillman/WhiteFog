@@ -15,6 +15,8 @@ namespace SoftKitty
         [SerializeReference] public SkillCalculation calculation;
         [SerializeReference] public SkillMotion motion;
         [SerializeReference] public SkillProjectile projectile;
+        public SkillProjectileSnap projectileSnap;
+        public bool requiresProjectileSnap;
         [SerializeReference] public OriginalSkillGraph.EffectCue visualEffect;
 
        
@@ -65,6 +67,8 @@ namespace SoftKitty
             calculation = _source.calculation;
             motion = _source.motion?.Copy();
             projectile = _source.projectile?.Copy();
+            projectileSnap = _source.projectileSnap;
+            requiresProjectileSnap = _source.requiresProjectileSnap;
             visualEffect = _source.visualEffect?.Copy();
         }
 
@@ -74,7 +78,7 @@ namespace SoftKitty
             inputPort.Add(new PortSetting("Action", "ActionIn", new string[2] { "RootOut", "BranchOutAction" }, false));
             CustomInit("Action", ClassName);
             EnsureExecutionConditionPort();
-            if (SkillProjectile.IsLaunch(this)) EnsureArrivalPort();
+            if (SkillProjectile.IsLaunch(this) || SkillProjectile.IsImpactLaunch(this)) EnsureArrivalPort();
         }
 
         // Append after the class-specific inputs so all existing entity/value port numbers stay valid.
@@ -93,6 +97,9 @@ namespace SoftKitty
             if (outputPort.Count == 0)
                 outputPort.Add(new PortSetting("命中目标", "BranchOutAction", new[] { "ActionIn", "BranchInAction" }, true));
         }
+
+        public bool EmitsSettledHit => IntValues.Count > 0 && IntValues[0] == (int)SkillPlayback.Style.Direct &&
+            (ClassName == "SkillImpact" || ClassName == "FormulaImpact" && calculation?.EffectiveMode != SkillCalculation.Mode.NativeGraph);
 
         private static int nextExecutionHash;
         internal static int NextExecutionHash()

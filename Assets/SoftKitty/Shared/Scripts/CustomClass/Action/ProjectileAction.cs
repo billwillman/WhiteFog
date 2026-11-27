@@ -48,8 +48,36 @@ namespace SoftKitty
             if (!caster || !SkillProjectile.IsLive(victim)) return;
             var host = SkillPlayback.On(instance).ProjectileHost();
             var skill = instance.mGraph;
-            var settings = SkillProjectile.For(node, skill);
-            host.Schedule(Fly(settings, caster, victim, state.orderedTargets, BuildContactHandler(node, skill, host, state, source, fallback)));
+            StartFlight(node, skill, host, state, caster, victim, fallback, null);
+        }
+
+        internal static void LaunchImpact(Action node, GraphObject skill, SkillPlayback host, GraphRuntimeState state,
+            Entity source, Entity target, System.Action<Entity, Vector3> settle)
+        {
+            if (!node.projectileSnap || node.projectileSnap.settings == null) return;
+            var caster = SkillPlayback.FindActor(source);
+            var victim = SkillPlayback.FindActor(target);
+            if (!caster || !SkillProjectile.IsLive(victim)) return;
+            var origin = SkillPlayback.Position(source, caster);
+            if (node.FloatValues[0] > 0 && Vector3.Distance(origin, SkillPlayback.Position(target, victim)) > node.FloatValues[0])
+            {
+                if (node.BoolValues[0]) host.Signal(caster, origin, "超出射程", .35f, Color.gray);
+                return;
+            }
+            StartFlight(node, skill, host, state, caster, victim, null, settle);
+        }
+
+        private static void StartFlight(Action node, GraphObject skill, SkillPlayback host, GraphRuntimeState state,
+            EntityComponent caster, EntityComponent victim, System.Action<Entity, Entity> fallback, System.Action<Entity, Vector3> settle)
+        {
+            if (node.requiresProjectileSnap && (!node.projectileSnap || node.projectileSnap.settings == null)) return;
+            var actions = BuildContactHandler(node, skill, host, state, caster.mData, fallback);
+            var shot = SkillProjectile.For(node, skill).Copy();
+            host.Schedule(Fly(shot, caster, victim, state.orderedTargets, (hit, point, contact) =>
+            {
+                settle?.Invoke(hit, point);
+                actions?.Invoke(hit, point, contact);
+            }));
         }
 
         internal static System.Action<Entity, Vector3> ContactHandler(Action node, GraphObject skill, SkillPlayback host,

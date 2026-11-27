@@ -142,8 +142,13 @@ namespace SoftKitty
         public static bool IsLaunch(Action node) => node.ClassName == "Projectile" ||
             (node.ClassName == "OriginalSkillVisual" && node.IntValues.Count > 0 && node.IntValues[0] == 3);
 
+        public static bool IsImpactLaunch(Action node) =>
+            (node.ClassName == "SkillImpact" || node.ClassName == "FormulaImpact") &&
+            node.IntValues.Count > 0 && node.IntValues[0] == (int)SkillPlayback.Style.Projectile;
+
         public static SkillProjectile For(Action node, GraphObject skill)
         {
+            if (node.projectileSnap && node.projectileSnap.settings != null) return node.projectileSnap.settings;
             if (node.projectile != null) return node.projectile;
             if (node.ClassName == "OriginalSkillVisual" && skill is OriginalSkillGraph original)
                 return new SkillProjectile {

@@ -18,29 +18,42 @@ namespace SoftKitty
             if (source == null || recipient == null || inputPort[3].connectedNodes.Count == 0) return;
             runtime.NodeStates[NodeIndex].lastBool = true;
             var host = SkillPlayback.On(instance);
+            var skill = instance.mGraph;
             host.ScheduleReleases(runtime, source, WaitTime, 1, 0, () =>
             {
                 if ((SkillPlayback.Style)IntValues[0] != SkillPlayback.Style.Direct && !ConditionsMet(ref runtime)) return;
                 var playback = (SkillPlayback.Style)IntValues[0] == SkillPlayback.Style.Direct ? host : host.ProjectileHost();
-                playback.Schedule(Strike(playback, source, recipient, runtime));
+                if (SkillProjectile.IsImpactLaunch(this))
+                {
+                    ProjectileAction.LaunchImpact(this, skill, playback, runtime, source, recipient, (hit, point) =>
+                    {
+                        var arrival = runtime.ForCast(null);
+                        arrival.RootState.SetInvolvedEntity("Target", hit);
+                        playback.Schedule(Strike(playback, source, hit, arrival, true));
+                    });
+                    return;
+                }
+                var confirmed = EmitsSettledHit ? ProjectileAction.ContactHandler(this, skill, playback, runtime, source, null) : null;
+                playback.Schedule(Strike(playback, source, recipient, runtime, confirmed: confirmed));
             });
         }
 
-        private IEnumerator Strike(SkillPlayback host, Entity source, Entity recipient, GraphRuntimeState cast)
+        private IEnumerator Strike(SkillPlayback host, Entity source, Entity recipient, GraphRuntimeState cast, bool contacted = false,
+            System.Action<Entity, Vector3> confirmed = null)
         {
             if (!recipient.AvailableForInteraction) yield break;
             var caster = SkillPlayback.FindActor(source);
             var victim = SkillPlayback.FindActor(recipient);
             Vector3 start = SkillPlayback.Position(source, caster);
             float distance = Vector3.Distance(start, SkillPlayback.Position(recipient, victim));
-            if (FloatValues[0] > 0 && distance > FloatValues[0])
+            if (!contacted && FloatValues[0] > 0 && distance > FloatValues[0])
             {
                 if (BoolValues[0]) host.Signal(caster, start, "超出射程", .35f, Color.gray);
                 yield break;
             }
 
             var style = (SkillPlayback.Style)IntValues[0];
-            if (style != SkillPlayback.Style.Direct)
+            if (!contacted && style != SkillPlayback.Style.Direct)
             {
                 EntityComponent struck = null;
                 yield return host.Flight(style, start, recipient, victim, distance / Mathf.Max(.1f, FloatValues[1]), FloatValues[2], projectile ?? new SkillProjectile(), source, hit => struck = hit);
@@ -70,6 +83,7 @@ namespace SoftKitty
                 cast.Hash = NextExecutionHash();
                 float amount = GetVariableValue(inputPort[3].connectedNodes[0], cast);
                 SkillPlayback.ApplyIncomingDamage(source, recipient, Mathf.Max(0, amount));
+                confirmed?.Invoke(recipient, SkillPlayback.Position(recipient, victim));
                 host.Signal(victim, SkillPlayback.Position(recipient, victim), "命中", .18f, new Color(1f,.55f,.22f));
             }
         }

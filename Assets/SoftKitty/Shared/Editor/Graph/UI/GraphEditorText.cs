@@ -5,6 +5,20 @@ namespace SoftKitty
 {
     internal static class GraphEditorText
     {
+        internal const string HitModeLabel = "命中方式";
+        internal const string HitModeHelp = "直接结算按当前输入执行。产生投射物引用投射物 Snap，接触到有效受击体后进入结算。接在独立投射物命中口时，可直接结算。";
+        internal static readonly string[] HitModeOptions = { "直接结算", "产生投射物" };
+
+        internal static bool IsHitMode(CustomNode node, NodeInterfaceElement field) =>
+            field.Uid == "style" && (node.ClassName == "SkillImpact" || node.ClassName == "FormulaImpact");
+
+        internal static bool IsLegacyProjectileField(CustomNode node, NodeInterfaceElement field) =>
+            (field.Uid == "speed" || field.Uid == "arc") && (node.ClassName == "SkillImpact" || node.ClassName == "FormulaImpact");
+
+        internal static int HitModeIndex(int value) => value == (int)SkillPlayback.Style.Direct ? 0 : 1;
+
+        internal static int HitModeValue(int index) => index == 0 ? (int)SkillPlayback.Style.Direct : (int)SkillPlayback.Style.Projectile;
+
         private static readonly Dictionary<string, string> Labels = new Dictionary<string, string>
         {
             { "Action", "动作" },

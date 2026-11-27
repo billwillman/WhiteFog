@@ -68,7 +68,8 @@ public static class OriginalSkillEditorExport
         var original = graph as OriginalSkillGraph;
         foreach (var f in node.CustomInterface.Elements)
         {
-            if (!SkillWorkbench.Visible(node, f.VisibleBind) || node.ClassName == "OriginalSkillVisual" && (f.Uid == "stage" || f.Uid == "cue")) continue;
+            if (!SkillWorkbench.Visible(node, f.VisibleBind) || GraphEditorText.IsLegacyProjectileField(node, f) ||
+                node.ClassName == "OriginalSkillVisual" && (f.Uid == "stage" || f.Uid == "cue")) continue;
             string label = GraphEditorText.Localize(f.Label);
             int i = f.Index;
             switch (f.Type)
@@ -79,7 +80,10 @@ public static class OriginalSkillEditorExport
                 case NodeInterfaceElementType.Bool_Variable: Add(label, node.BoolValues.ElementAtOrDefault(i)); break;
                 case NodeInterfaceElementType.Enum:
                     int index = node.IntValues.ElementAtOrDefault(i);
-                    Add(label, GraphEditorText.Localize(f.EnumOptions.ElementAtOrDefault(index) ?? index.ToString())); break;
+                    if (GraphEditorText.IsHitMode(node, f))
+                        Add(GraphEditorText.HitModeLabel, GraphEditorText.HitModeOptions[GraphEditorText.HitModeIndex(index)]);
+                    else Add(label, GraphEditorText.Localize(f.EnumOptions.ElementAtOrDefault(index) ?? index.ToString()));
+                    break;
                 case NodeInterfaceElementType.Input_Entity:
                 case NodeInterfaceElementType.Input_Float:
                     var links = node.inputPort.ElementAtOrDefault(i + 1)?.uid;
@@ -110,19 +114,24 @@ public static class OriginalSkillEditorExport
         }
         if (SkillProjectile.IsLaunch(node) || ((node.ClassName == "SkillImpact" || node.ClassName == "FormulaImpact") && node.IntValues.ElementAtOrDefault(0) != 0))
         {
-            var shot = SkillProjectile.For(node, graph);
-            if (SkillProjectile.IsLaunch(node))
+            Add("投射物 Snap", node.projectileSnap);
+            var shot = (node.requiresProjectileSnap || SkillProjectile.IsImpactLaunch(node)) && !node.projectileSnap
+                ? null : SkillProjectile.For(node, graph);
+            if (shot != null)
             {
-                info.onContact = true;
-                Add("飞行道具", shot.prefab); Add("拖尾", shot.trail); Add("命中特效", shot.impact);
-                Add("发射挂点", shot.launchBone); Add("目标挂点", shot.targetBone); Add("发射偏移", shot.launchOffset);
-                Add("命中偏移", shot.impactOffset); Add("飞行路径", shot.path.ToString()); Add("初速（米/秒）", shot.speed);
-                Add("加速度", shot.acceleration); Add("拖尾时长（秒）", shot.trailSeconds); Add("命中特效缩放", shot.impactScale);
-                if (shot.path == SkillProjectile.FlightPath.FollowTarget) Add("追踪超时（秒）", shot.trackingTimeout);
+                if (SkillProjectile.IsLaunch(node) || SkillProjectile.IsImpactLaunch(node))
+                {
+                    info.onContact = SkillProjectile.IsLaunch(node);
+                    Add("飞行道具", shot.prefab); Add("拖尾", shot.trail); Add("命中特效", shot.impact);
+                    Add("发射挂点", shot.launchBone); Add("目标挂点", shot.targetBone); Add("发射偏移", shot.launchOffset);
+                    Add("命中偏移", shot.impactOffset); Add("飞行路径", shot.path.ToString()); Add("初速（米/秒）", shot.speed);
+                    Add("加速度", shot.acceleration); Add("拖尾时长（秒）", shot.trailSeconds); Add("命中特效缩放", shot.impactScale);
+                    if (shot.path == SkillProjectile.FlightPath.FollowTarget) Add("追踪超时（秒）", shot.trackingTimeout);
+                }
+                Add("可命中对象", shot.hitRecipients.ToString()); Add("命中标签", string.Join("、", shot.hitTags));
+                Add("命中盒尺寸（米）", shot.hitBoxSize); Add("命中盒偏移", shot.hitBoxOffset); Add("受击层掩码", shot.hitLayers.value);
+                Add("命中盒开启（秒）", shot.hitBoxStart); Add("开启时长（0 至飞行结束）", shot.hitBoxSeconds);
             }
-            Add("可命中对象", shot.hitRecipients.ToString()); Add("命中标签", string.Join("、", shot.hitTags));
-            Add("命中盒尺寸（米）", shot.hitBoxSize); Add("命中盒偏移", shot.hitBoxOffset); Add("受击层掩码", shot.hitLayers.value);
-            Add("命中盒开启（秒）", shot.hitBoxStart); Add("开启时长（0 至飞行结束）", shot.hitBoxSeconds);
         }
         if (node.ClassName == "OriginalSkillVisual" && new[] {1, 2, 6}.Contains(node.IntValues.ElementAtOrDefault(0)))
         {

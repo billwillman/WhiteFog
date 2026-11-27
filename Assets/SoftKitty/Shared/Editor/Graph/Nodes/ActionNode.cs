@@ -16,7 +16,7 @@ namespace SoftKitty
         public ActionNode(Action _action)
         {
             m_data = _action;
-            if (SkillProjectile.IsLaunch(_action)) _action.EnsureArrivalPort();
+            if (SkillProjectile.IsLaunch(_action) || SkillProjectile.IsImpactLaunch(_action)) _action.EnsureArrivalPort();
         }
        
 
@@ -40,7 +40,6 @@ namespace SoftKitty
             VisualTreeAsset uiAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/SoftKitty/Shared/Editor/Graph/UXML/ActionNode.uxml");
             baseSettings = InstantiateSettings(uiAsset);
             baseSettings.style.width = 250;
-            baseSettings.style.height = 180;
             baseSettings.Q<DropdownField>("Type").choices.Clear();
             baseSettings.Q<DropdownField>("Type").choices.AddRange(mainDataObject.ActionClassNames);
             baseSettings.Q<DropdownField>("Type").index = mainDataObject.ActionClassNames.IndexOf(m_data.ClassName);
@@ -49,6 +48,7 @@ namespace SoftKitty
             {
                 if (x.target is not DropdownField) return;
                 m_data.ClassName = x.newValue;
+                if (m_data.ClassName == "Projectile") m_data.requiresProjectileSnap = true;
                 DeleteAllCustomPort(m_data,1);
                 m_data.ResetInputPortSetting();
                 RefreshProjectilePort();
@@ -107,7 +107,9 @@ namespace SoftKitty
 
         protected override void OnIntegerSettingChanged(string uid)
         {
-            if ((uid == "stage" || uid == "cue") && m_data.ClassName == "OriginalSkillVisual")
+            if (uid == "stage" && SkillProjectile.IsLaunch(m_data)) m_data.requiresProjectileSnap = true;
+            if ((uid == "stage" || uid == "cue") && m_data.ClassName == "OriginalSkillVisual" ||
+                uid == "style" && (m_data.ClassName == "SkillImpact" || m_data.ClassName == "FormulaImpact"))
             {
                 RefreshProjectilePort();
                 DrawFormulaLinks();
@@ -128,7 +130,8 @@ namespace SoftKitty
                 outputContainer.Add(port);
             }
             // A different effect index can temporarily disable contact on the same track.
-            else if (m_data.outputPort.Count > 0 && !(m_data.ClassName == "OriginalSkillVisual" && m_data.IntValues.FirstOrDefault() == 6))
+            else if (m_data.outputPort.Count > 0 && !(m_data.ClassName == "OriginalSkillVisual" && m_data.IntValues.FirstOrDefault() == 6) &&
+                !((m_data.ClassName == "SkillImpact" || m_data.ClassName == "FormulaImpact") && m_data.outputPort[0].uid.Count > 0))
             {
                 if (output.Count > 0)
                 {
@@ -155,10 +158,10 @@ namespace SoftKitty
             }
             if (output.Count > 0)
             {
-                output[0].portName = emits ? "命中后执行" : m_data.ClassName == "OriginalSkillVisual" ? "命中未启用" : GraphEditorText.Localize(m_data.outputPort[0].Name);
+                output[0].portName = m_data.EmitsSettledHit ? "结算命中后执行" : emits ? "命中后执行" : "命中未启用";
                 output[0].portColor = emits ? color : portColors[m_data.outputPort[0].Type];
             }
-            if (!emits && parents.Length == 0) return;
+            if (parents.Length == 0 && (!emits || m_data.EmitsSettledHit && m_data.outputPort.FirstOrDefault()?.uid.Count == 0)) return;
             var panel = new VisualElement { name = "hitLinks" };
             var heading = new Label(emits ? SkillWorkbench.HitSourceLabel(m_data) : SkillWorkbench.HitActionLabel(m_data));
             heading.style.unityFontStyleAndWeight = FontStyle.Bold;
@@ -176,7 +179,10 @@ namespace SoftKitty
             if (emits)
             {
                 var links = m_data.outputPort.FirstOrDefault()?.uid;
-                if (links == null || links.Count == 0) panel.Add(new Label("未连接命中动作"));
+                if (links == null || links.Count == 0)
+                {
+                    if (!m_data.EmitsSettledHit) panel.Add(new Label("未连接命中动作"));
+                }
                 else foreach (var link in links)
                 {
                     string uid = link.Split('#')[0];
@@ -206,6 +212,12 @@ namespace SoftKitty
                 var edit = new Button(() => SkillWorkbench.OpenAction(mainDataObject, m_data.Uid))
                     { name = "formulaLinks", text = "编辑动作属性" };
                 extensionContainer.Add(edit);
+                return;
+            }
+            if (m_data.ClassName == "SkillImpact")
+            {
+                extensionContainer.Add(new Button(() => SkillWorkbench.OpenAction(mainDataObject, m_data.Uid))
+                    { name = "formulaLinks", text = "编辑命中设置" });
                 return;
             }
             if (m_data.ClassName != "FormulaImpact") return;
@@ -257,6 +269,7 @@ namespace SoftKitty
 
         private void FormatType()
         {
+            baseSettings.style.height = m_data.Type == ActionType.Only_Once ? 105 : 165;
             baseSettings.Q<Button>("AdjustUp").style.display = m_data.Type == ActionType.Multiple_Time ? DisplayStyle.Flex : DisplayStyle.None;
             baseSettings.Q<Button>("AdjustDown").style.display = m_data.Type == ActionType.Multiple_Time ? DisplayStyle.Flex : DisplayStyle.None;
             baseSettings.Q<IntegerField>("Count").style.display = m_data.Type == ActionType.Multiple_Time ? DisplayStyle.Flex : DisplayStyle.None;

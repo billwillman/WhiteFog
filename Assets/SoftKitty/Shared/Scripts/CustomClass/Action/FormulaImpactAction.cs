@@ -62,32 +62,47 @@ namespace SoftKitty
                         }
                 }
                 var playback = SkillPlayback.On(instance);
+                var skill = instance.mGraph;
                 runtime.NodeStates[NodeIndex].lastBool = true;
                 playback.ScheduleReleases(runtime, caster, WaitTime, 1, 0, () =>
                 {
                     if (style != SkillPlayback.Style.Direct && !ConditionsMet(ref runtime)) return;
                     var host = style == SkillPlayback.Style.Direct ? playback : playback.ProjectileHost();
-                    host.Schedule(Strike(host, caster, target, context, stages, count, weights, runtime, nativeGraph));
+                    if (style == SkillPlayback.Style.Projectile)
+                    {
+                        var flight = runtime;
+                        flight.RootState = context;
+                        ProjectileAction.LaunchImpact(this, skill, host, runtime, caster, target, (hit, point) =>
+                        {
+                            var arrival = flight.ForCast(null);
+                            arrival.RootState.SetInvolvedEntity("Target", hit);
+                            host.Schedule(Strike(host, caster, hit, arrival.RootState, stages, count, weights, arrival, nativeGraph, point));
+                        });
+                        return;
+                    }
+                    var confirmed = EmitsSettledHit ? ProjectileAction.ContactHandler(this, skill, host, runtime, caster, null) : null;
+                    host.Schedule(Strike(host, caster, target, context, stages, count, weights, runtime, nativeGraph, confirmed: confirmed));
                 });
             }
             catch (Exception e) { Debug.LogError(instance.mGraph.name + " · " + Uid + "：" + e.Message, instance); }
         }
 
         private IEnumerator Strike(SkillPlayback host, Entity source, Entity target, RootRuntimeState context,
-            IReadOnlyList<Stage> stages, int count, float[] weights, GraphRuntimeState cast, GraphObject nativeGraph)
+            IReadOnlyList<Stage> stages, int count, float[] weights, GraphRuntimeState cast, GraphObject nativeGraph,
+            Vector3? contactPoint = null, System.Action<Entity, Vector3> confirmed = null)
         {
             if (!target.AvailableForInteraction) yield break;
             var caster = SkillPlayback.FindActor(source);
             var victim = SkillPlayback.FindActor(target);
             var origin = SkillPlayback.Position(source, caster);
             float distance = Vector3.Distance(origin, SkillPlayback.Position(target, victim));
-            if (FloatValues[0] > 0 && distance > FloatValues[0])
+            if (!contactPoint.HasValue && FloatValues[0] > 0 && distance > FloatValues[0])
             {
                 if (BoolValues[0]) host.Signal(caster, origin, "超出射程", .35f, Color.gray);
                 yield break;
             }
             var style = (SkillPlayback.Style)IntValues[0];
-            if (style != SkillPlayback.Style.Direct)
+            if (!contactPoint.HasValue && style != SkillPlayback.Style.Direct)
             {
                 EntityComponent struck = null;
                 yield return host.Flight(style, origin, target, victim, distance / Mathf.Max(.1f, FloatValues[1]), FloatValues[2], projectile ?? new SkillProjectile(), source, hit => struck = hit);
@@ -126,7 +141,7 @@ namespace SoftKitty
                 if (nativeGraph)
                 {
                     vars["hit.share"] = weights[i] * .01f;
-                    var point = SkillPlayback.Position(target, victim);
+                    var point = contactPoint ?? SkillPlayback.Position(target, victim);
                     if (style == SkillPlayback.Style.Direct && cast.projectileContact && cast.RootState.RootInstance)
                         point = cast.RootState.RootInstance.transform.position;
                     CombatDamage.RunImpactGraph(nativeGraph, cast, context, host, point, source, target,
@@ -204,6 +219,7 @@ namespace SoftKitty
                         SkillDefence.SpendShield(health, absorbed);
                         SkillPlayback.ApplySettledDamage(source, target, health, value);
                         cast.onDamageSettled?.Invoke(index, target, before - target.GetAttributeFloat("chp"), absorbed);
+                        confirmed?.Invoke(target, SkillPlayback.Position(target, victim));
                         host.Signal(victim, SkillPlayback.Position(target, victim), "命中", .18f, new Color(1f,.55f,.22f));
                     }
                 }

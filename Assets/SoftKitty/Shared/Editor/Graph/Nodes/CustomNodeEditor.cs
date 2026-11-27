@@ -103,6 +103,7 @@ namespace SoftKitty
                 List<string> _dropDowns = new List<string>();
                 for (int i = 0; i < _data.CustomInterface.Elements.Length; i++)
                 {
+                    if (GraphEditorText.IsLegacyProjectileField(_data, _data.CustomInterface.Elements[i])) continue;
                     int _index = _data.CustomInterface.Elements[i].Index;
                     string _uid = _data.CustomInterface.Elements[i].Uid;
                     string label = GraphEditorText.Localize(_data.CustomInterface.Elements[i].Label);
@@ -191,23 +192,25 @@ namespace SoftKitty
                                 newElement.Q<Label>("Item").text = label;
                                 break;
                             case NodeInterfaceElementType.Enum:
-                                newElement.Q<DropdownField>("Item").label = label;
-                                GraphEditorText.FormatDropdown(newElement.Q<DropdownField>("Item"));
+                                var dropdown = newElement.Q<DropdownField>("Item");
+                                bool isHitMode = GraphEditorText.IsHitMode(_data, _data.CustomInterface.Elements[i]);
+                                if (isHitMode) tooltip = GraphEditorText.HitModeHelp;
+                                dropdown.label = isHitMode ? GraphEditorText.HitModeLabel : label;
+                                GraphEditorText.FormatDropdown(dropdown);
                                 if (_data.IntValues.Count <= _index)
                                 {
                                     for (int u = _data.IntValues.Count; u <= _index; u++) _data.IntValues.Add(0);
                                 }
-                                newElement.Q<DropdownField>("Item").choices.Clear();
-                                newElement.Q<DropdownField>("Item").choices.AddRange(_data.CustomInterface.Elements[i].EnumOptions);
-                                newElement.Q<DropdownField>("Item").index = _data.IntValues[_index];
-                                _data.IntValues[_index]= Mathf.Clamp (_data.IntValues[_index],0, _data.CustomInterface.Elements[i].EnumOptions.Length-1);
-                                newElement.Q<DropdownField>("Item").value = _data.CustomInterface.Elements[i].EnumOptions[_data.IntValues[_index]];
-                                newElement.Q<DropdownField>("Item").RegisterValueChangedCallback(x =>
+                                var options = isHitMode ? GraphEditorText.HitModeOptions : _data.CustomInterface.Elements[i].EnumOptions;
+                                dropdown.choices = new List<string>(options);
+                                if (!isHitMode) _data.IntValues[_index] = Mathf.Clamp(_data.IntValues[_index], 0, options.Length - 1);
+                                dropdown.index = isHitMode ? GraphEditorText.HitModeIndex(_data.IntValues[_index]) : _data.IntValues[_index];
+                                dropdown.RegisterValueChangedCallback(x =>
                                 {
                                     if (x.target is not DropdownField field) return;
-                                    _data.IntValues[_index] = field.index;
+                                    _data.IntValues[_index] = isHitMode ? GraphEditorText.HitModeValue(field.index) : field.index;
                                     OnIntegerSettingChanged(_uid);
-                                    CheckVisibleBinding(_uid, true, _data.IntValues[_index]);
+                                    CheckVisibleBinding(_uid, true, field.index);
                                 });
                                 _dropDowns.Add(_uid);
                                 break;

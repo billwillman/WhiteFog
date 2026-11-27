@@ -141,6 +141,8 @@ public static class LocalBattleSkillExport
                     n.triggerHit = cue.triggerHit; n.hitDelay = cue.hitDelay; n.size = cue.hitBoxSize;
                     break;
                 case "Projectile":
+                    if (x.requiresProjectileSnap && (!x.projectileSnap || x.projectileSnap.settings == null))
+                        throw new InvalidDataException(x.Uid + " 缺少投射物 Snap。");
                     var shot = SkillProjectile.For(x, asset as OriginalSkillGraph);
                     if (shot.path != SkillProjectile.FlightPath.LaunchPositionToTargetPosition)
                         throw new InvalidDataException("当前本地战场只支持向发射时目标位置直射。");
@@ -154,7 +156,7 @@ public static class LocalBattleSkillExport
                 case "FormulaImpact":
                     var calc = x.calculation;
                     calc.ValidateFlow();
-                    if (calc.EffectiveMode != SkillCalculation.Mode.SharedFlow || x.IntValues[0] != 0 ||
+                    if (calc.EffectiveMode != SkillCalculation.Mode.SharedFlow || x.IntValues[0] != 0 || x.outputPort.Any(port => port.uid.Count > 0) ||
                         x.Type != ActionType.Only_Once || x.FloatValues.Any(f => f != 0) || x.BoolValues.Any(b => b))
                         throw new InvalidDataException("该命中结算含未支持的选项 " + x.Uid);
                     calc.ValidateShares(1);

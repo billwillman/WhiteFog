@@ -216,7 +216,7 @@ namespace SoftKitty
         private void DrawPreviewDamageInput()
         {
             previewHitDamage = Mathf.Max(0, EditorGUILayout.FloatField(new GUIContent("每段预览来伤",
-                "仅用于工作台试放。飞剑命中口有连线时执行连线；设为 0 可关闭预览回调的扣血。"), previewHitDamage));
+                "仅用于工作台试放。投射物命中口有连线时执行连线；设为 0 可关闭预览回调的扣血。"), previewHitDamage));
         }
         [SerializeField] private int previewDirection;
         [SerializeField] private int previewMode;

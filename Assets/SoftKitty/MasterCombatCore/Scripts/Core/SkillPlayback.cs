@@ -27,7 +27,8 @@ namespace SoftKitty
             target.OnEntityEvent("Damage", loss, source, false);
         }
 
-        public enum Style { Direct, Sword, Orb, Mist }
+        // Preserve the values used by previously authored graphs.
+        public enum Style { Direct = 0, Sword = 1, Orb = 2, Mist = 3, Projectile = 4 }
         private int running;
         private float retireAt = float.PositiveInfinity;
         private static Material traceMaterial;
@@ -171,7 +172,13 @@ namespace SoftKitty
         internal IEnumerator Flight(Style style, Vector3 start, Entity target, EntityComponent actor, float seconds, float arc,
             SkillProjectile hitBox, Entity source, System.Action<EntityComponent> onContact)
         {
-            Color color = style == Style.Sword ? Color.cyan : style == Style.Orb ? new Color(1,.55f,.12f) : new Color(.55f,1,.25f);
+            Color color = style switch
+            {
+                Style.Sword => Color.cyan,
+                Style.Orb => new Color(1,.55f,.12f),
+                Style.Projectile => Color.white,
+                _ => new Color(.55f,1,.25f)
+            };
             var line = Trace(style.ToString(), color, style == Style.Mist ? .17f : .09f, true);
             var shape = style == Style.Sword
                 ? new[] { new Vector3(0,0,.75f), new Vector3(.12f,0,-.24f), new Vector3(.22f,0,-.31f), new Vector3(0,0,-.5f), new Vector3(-.22f,0,-.31f), new Vector3(-.12f,0,-.24f) }
@@ -198,7 +205,8 @@ namespace SoftKitty
                     contact = hitBox.Contact(query, point, next, facing, time, nextTime, out var hitPoint);
                     point = contact ? hitPoint : next;
                     line.transform.SetPositionAndRotation(point, facing);
-                    if (style != Style.Sword) line.transform.Rotate(Vector3.up, nextTime * 260, Space.Self);
+                    if (style != Style.Sword && style != Style.Projectile)
+                        line.transform.Rotate(Vector3.up, nextTime * 260, Space.Self);
                     if (contact || nextTime >= seconds) break;
                     time = nextTime;
                     yield return null;

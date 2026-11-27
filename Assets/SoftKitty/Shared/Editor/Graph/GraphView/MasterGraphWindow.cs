@@ -258,6 +258,11 @@ namespace SoftKitty
             });
             ui.Q<Button>("SaveButton").clicked += Save;
             ui.Q<Button>("DiscardButton").clicked += Revert;
+            var arrange = new Button(graphView.ArrangeNodes) { text = "整理布局", tooltip = "沿连线整理节点，并留出展开卡片的间距。" };
+            arrange.style.height = 25;
+            arrange.style.marginTop = 4;
+            var toolbar = ui.Q<Button>("DiscardButton").parent;
+            toolbar.Insert(toolbar.IndexOf(ui.Q<Button>("DiscardButton")), arrange);
             progressBar =ui.Q<ProgressBar>("Progress");
             progressBar.value = 0F;
             progressBar.visible = false;

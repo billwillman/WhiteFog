@@ -223,7 +223,8 @@ namespace SoftKitty
                            join mapping in db.IdManager.idToKey on effect.uid equals mapping.key
                            select new { mapping.id, label = effect.name + " · " + effect.uid }).ToList();
             int current = choices.FindIndex(x => x.id == Mathf.FloorToInt(variable.Constant));
-            if (current < 0) choices.Insert(0, new { id = Mathf.FloorToInt(variable.Constant), label = "未映射 ID " + variable.Constant });
+            if (current < 0) choices.Insert(0, new { id = Mathf.FloorToInt(variable.Constant),
+                label = variable.Constant == -1 ? "请选择状态" : "未映射 ID " + variable.Constant });
             current = Mathf.Max(current, 0);
             int picked = EditorGUILayout.Popup(variable.outputPort[0].uid.Count > 1 ? "状态（共用数值节点）" : "状态",
                 current, choices.Select(x => x.label).ToArray());

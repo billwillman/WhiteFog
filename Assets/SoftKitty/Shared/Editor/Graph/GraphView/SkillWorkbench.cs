@@ -403,11 +403,12 @@ namespace SoftKitty
         }
 
         internal static bool IsHitSource(NodeBase source, GraphObject skill) => source is Action action &&
-            (SkillProjectile.IsLaunch(action) || action.ClassName == "OriginalSkillVisual" && action.IntValues.FirstOrDefault() == 6 &&
+            (action.EmitsSettledHit || SkillProjectile.IsLaunch(action) || SkillProjectile.IsImpactLaunch(action) || action.ClassName == "OriginalSkillVisual" && action.IntValues.FirstOrDefault() == 6 &&
              OriginalSkillVisualAction.EffectFor(action, skill as OriginalSkillGraph)?.triggerHit == true);
 
         internal static string HitSourceLabel(Action action) =>
-            action.WaitTime.ToString("0.###") + "s " + (SkillProjectile.IsLaunch(action) ? "投射物" : "轨道特效") + " " + action.Uid;
+            action.WaitTime.ToString("0.###") + "s " + (action.EmitsSettledHit ? ActionName(action) :
+                SkillProjectile.IsLaunch(action) || SkillProjectile.IsImpactLaunch(action) ? "投射物" : "轨道特效") + " " + action.Uid;
 
         internal static string HitActionLabel(Action action)
         {
@@ -425,15 +426,28 @@ namespace SoftKitty
             return c.ActiveFlow ? c.ActiveFlow.name : c.UsesLinkedAssets ? "节点内的公式" : "未绑定伤害流程";
         }
 
-        // A settlement with one contact source belongs underneath it. Shared settlements keep a single row.
-        private static ILookup<Action, Action> GroupHitSettlements(Action[] actions, ILookup<string, NodeBase> sources, GraphObject skill)
+        private static IEnumerable<(Action action, Action root, int depth)> HitRows(Action[] actions,
+            ILookup<string, NodeBase> sources, GraphObject skill)
         {
-            return actions.ToLookup(action =>
+            var groups = actions.ToLookup(action =>
             {
-                if (action.ClassName != "FormulaImpact") return null;
                 var parents = sources[action.Uid + "#0"].Distinct().ToArray();
                 return parents.Length == 1 && IsHitSource(parents[0], skill) ? (Action)parents[0] : null;
             });
+            var visited = new HashSet<Action>();
+            var pending = new Stack<(Action action, int depth)>();
+            foreach (var root in groups[null].Concat(actions))
+            {
+                if (visited.Contains(root)) continue;
+                pending.Push((root, 0));
+                while (pending.Count > 0)
+                {
+                    var (action, depth) = pending.Pop();
+                    if (!visited.Add(action)) continue;
+                    yield return (action, root, depth);
+                    foreach (var child in groups[action].Reverse()) pending.Push((child, depth + 1));
+                }
+            }
         }
 
         private void DrawTimeline(Root root, ILookup<string, NodeBase> sources)
@@ -459,14 +473,12 @@ namespace SoftKitty
             var motions = actions.ToDictionary(a => a, MotionTimeline);
             float horizon = Mathf.Max(2, actions.Select(a => a.WaitTime + Span(a) + (motions[a]?.seconds ?? 0) + .4f).DefaultIfEmpty(2).Max());
             cursor = EditorGUILayout.Slider("时间游标（秒）", cursor, 0, horizon);
-            var groups = GroupHitSettlements(actions, sources, graph);
-            foreach (var parentRow in groups[null])
-            foreach (var action in new[] { parentRow }.Concat(groups[parentRow]))
+            foreach (var (action, parentRow, depth) in HitRows(actions, sources, graph))
             {
                 var row = EditorGUILayout.GetControlRect(false, 24);
                 var name = new Rect(row.x, row.y, Mathf.Min(row.width * .49f, 285), row.height);
                 bool nested = action != parentRow;
-                if (nested) name.xMin += 16;
+                if (nested) name.xMin += Mathf.Min(depth, 4) * 14;
                 var lane = Rect.MinMaxRect(name.xMax + 4, row.y + 4, row.xMax - 5, row.yMax - 4);
                 var parents = sources[action.Uid + "#0"];
                 bool onArrival = parents.Any(p => IsHitSource(p, graph));
@@ -513,7 +525,8 @@ namespace SoftKitty
 
         internal static Action AddAction(Root root, string key, float time)
         {
-            var action = new Action(root) { ClassName = key, WaitTime = time, Position = new Vector2(450, root.Actions.Count * 420) };
+            var action = new Action(root) { ClassName = key, WaitTime = time,
+                Position = new Vector2(root.Position.x + LayoutColumnStep, OccupiedNodeRects(root).Max(r => r.yMax) + LayoutRowGap) };
             action.ResetInputPortSetting();
             root.Actions.Add(action);
             Wire(root, action, 0);
@@ -539,11 +552,14 @@ namespace SoftKitty
 
         private static Handler AddHandler(Root root, NodeBase owner, string key, int port = 0)
         {
-            var handler = new Handler(root) { ClassName = key, Position = owner.Position + new Vector2(-350, owner.inputPort[port].uid.Count * 260) };
+            var existing = new HashSet<NodeBase>(LayoutNodes(root));
+            var occupied = OccupiedNodeRects(root).ToList();
+            var handler = new Handler(root) { ClassName = key, Position = owner.Position - Vector2.right * LayoutColumnStep };
             handler.ResetInputPortSetting();
             root.Handlers.Add(handler);
             Wire(handler, owner, port);
             ConfigureInputs(root, handler, 0);
+            PlaceBelowObstacles(LayoutNodes(root).Where(n => !existing.Contains(n)).ToList(), occupied);
             return handler;
         }
 
@@ -657,6 +673,7 @@ namespace SoftKitty
             foreach (var field in action.CustomInterface.Elements)
             {
                 int i = field.Index;
+                Vector2 inputPosition = action.Position + new Vector2(-LayoutColumnStep, 144 + i * 240);
                 switch (field.Type)
                 {
                     case NodeInterfaceElementType.String_Variable: Fill(action.StringValues, i, ""); break;
@@ -665,13 +682,13 @@ namespace SoftKitty
                     case NodeInterfaceElementType.Enum: Fill(action.IntValues, i, 0); break;
                     case NodeInterfaceElementType.Bool_Variable: Fill(action.BoolValues, i, false); break;
                     case NodeInterfaceElementType.Input_Entity:
-                        var entity = new EntityClass(root) { Type = (field.Uid == "entityA" || field.Uid == "caster") ? EntityType.Dealer : EntityType.Target, Position = action.Position + new Vector2(-245, i * 130) };
+                        var entity = new EntityClass(root) { Type = (field.Uid == "entityA" || field.Uid == "caster") ? EntityType.Dealer : EntityType.Target, Position = inputPosition };
                         if (field.Uid == "redirectTarget") entity.Type = EntityType.NextCastTarget;
                         root.Entities.Add(entity);
                         Wire(entity, action, i + offset);
                         break;
                     case NodeInterfaceElementType.Input_Float:
-                        var value = new VariableClass(root) { Position = action.Position + new Vector2(-245, i * 130) };
+                        var value = new VariableClass(root) { Position = inputPosition };
                         root.Variables.Add(value);
                         Wire(value, action, i + offset);
                         break;
@@ -707,8 +724,14 @@ namespace SoftKitty
                 if (GUILayout.Button("查看命中来源   " + HitSourceLabel(source)))
                 { selection = source.Uid; cursor = source.WaitTime; Repaint(); }
             }
-            if (afterHit) EditorGUILayout.HelpBox("从上游的「命中目标」端口触发。延迟填 0，碰到受击体时立即对本次命中的对象执行。", MessageType.Info);
+            if (afterHit) EditorGUILayout.HelpBox("从上游的命中端口触发，目标绑定为本次实际受击者。延迟从上游命中时开始计时。", MessageType.Info);
             if (IsHitSource(action, graph)) DrawHitActions(action);
+            else if (action.ClassName == "FormulaImpact" && action.calculation?.EffectiveMode == SkillCalculation.Mode.NativeGraph &&
+                     action.calculation.nativeGraph && GUILayout.Button("在原生伤害图中配置命中 Buff"))
+            {
+                Open(action.calculation.nativeGraph);
+                GUIUtility.ExitGUI();
+            }
             DrawActionConditions(action);
             Edit(afterHit ? "命中后延迟（秒）" : "开始时间（秒）", action.WaitTime, x => action.WaitTime = x);
             var mode = (ActionType)EditorGUILayout.Popup("执行方式", (int)action.Type, Modes);
@@ -725,7 +748,7 @@ namespace SoftKitty
             else if (SkillMotion.UsesBinding(action)) DrawMotion(action, graph);
             else if (action.ClassName == "OriginalSkillVisual") DrawVisualAction(action);
             else if ((action.ClassName == "SkillImpact" || action.ClassName == "FormulaImpact") &&
-                     action.IntValues.ElementAtOrDefault(0) != (int)SkillPlayback.Style.Direct) DrawStrikeHitBox(action);
+                     action.IntValues.ElementAtOrDefault(0) != (int)SkillPlayback.Style.Direct) DrawProjectile(action, true);
             // Older graphs keep their original interface until opened in the node editor.
             if (!action.CustomInterface.Elements.Any(f => f.Uid == "interruptOnMove"))
             {
@@ -766,6 +789,7 @@ namespace SoftKitty
             foreach (var field in action.CustomInterface.Elements)
             {
                 if (!Visible(action, field.VisibleBind)) continue;
+                if (GraphEditorText.IsLegacyProjectileField(action, field)) continue;
                 if (action.ClassName == "OriginalSkillVisual" && (field.Uid == "stage" || field.Uid == "cue")) continue;
                 int i = field.Index;
                 string label = GraphEditorText.Localize(field.Label);
@@ -798,7 +822,16 @@ namespace SoftKitty
                     case NodeInterfaceElementType.Bool_Variable:
                         EditValue(action.BoolValues, i, false, v => EditorGUILayout.Toggle(label, v)); break;
                     case NodeInterfaceElementType.Enum:
-                        EditValue(action.IntValues, i, 0, v => EditorGUILayout.Popup(label, v, field.EnumOptions.Select(GraphEditorText.Localize).ToArray()));
+                        if (GraphEditorText.IsHitMode(action, field))
+                            EditValue(action.IntValues, i, 0, value =>
+                            {
+                                int current = GraphEditorText.HitModeIndex(value);
+                                int next = SkillFieldHelp.Popup(GraphEditorText.HitModeLabel, current,
+                                    GraphEditorText.HitModeOptions, GraphEditorText.HitModeHelp);
+                                return next == current ? value : GraphEditorText.HitModeValue(next);
+                            });
+                        else
+                            EditValue(action.IntValues, i, 0, v => EditorGUILayout.Popup(label, v, field.EnumOptions.Select(GraphEditorText.Localize).ToArray()));
                         break;
                 }
             }

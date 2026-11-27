@@ -33,6 +33,100 @@ namespace SoftKitty
                 node.RefreshHitLinks(this, sources[node.data.Uid + "#0"]);
         }
 
+        internal void ArrangeNodes()
+        {
+            var grouped = new HashSet<string>(Groups.SelectMany(group => group.data.Children));
+            var cards = NodeDic.Values.Where(card => !grouped.Contains(card.baseData.Uid)).ToArray();
+            if (cards.Length == 0 || cards.Any(card => !(card.layout.width > 0 && card.layout.height > 0))) return;
+            const float columnGap = 104;
+            const float rowGap = 32;
+            var links = edges.ToList().Where(edge => edge.output?.node is NodeBaseEditor && edge.input?.node is NodeBaseEditor)
+                .Select(edge => (source: (NodeBaseEditor)edge.output.node, target: (NodeBaseEditor)edge.input.node))
+                .Where(link => link.source != link.target && !grouped.Contains(link.source.baseData.Uid) &&
+                    !grouped.Contains(link.target.baseData.Uid)).Distinct().ToArray();
+            var outputs = links.ToLookup(link => link.source, link => link.target);
+            var inputs = links.ToLookup(link => link.target, link => link.source);
+            var incoming = cards.ToDictionary(card => card, card => inputs[card].Count());
+            var columns = cards.ToDictionary(card => card, card => 0);
+            var queue = new Queue<NodeBaseEditor>(cards.Where(card => incoming[card] == 0));
+            var ordered = new List<NodeBaseEditor>();
+            while (queue.Count != 0)
+            {
+                var card = queue.Dequeue();
+                ordered.Add(card);
+                foreach (var next in outputs[card])
+                {
+                    columns[next] = Mathf.Max(columns[next], columns[card] + 1);
+                    if (--incoming[next] == 0) queue.Enqueue(next);
+                }
+            }
+
+            // Keep helpers one column before their first consumer, including helpers on later hit branches.
+            for (int i = ordered.Count - 1; i >= 0; i--)
+            {
+                var card = ordered[i];
+                if (card.baseData is Action or Root || !outputs[card].Any()) continue;
+                columns[card] = Mathf.Max(columns[card], outputs[card].Min(next => columns[next]) - 1);
+            }
+
+            Undo.RegisterCompleteObjectUndo(graph, "整理节点布局");
+            float x = cards.Min(card => card.baseData.Position.x);
+            float top = cards.Min(card => card.baseData.Position.y);
+            var lanes = cards.GroupBy(card => columns[card]).OrderBy(group => group.Key).ToArray();
+            var left = new Dictionary<int, float>();
+            foreach (var column in lanes)
+            {
+                left[column.Key] = x;
+                x += column.Max(card => card.layout.width) + columnGap;
+            }
+            var obstacles = graph.RootSet.Notes.Select(note => new Rect(note.Position, note.Size))
+                .Concat(Groups.Select(group => group.GetPosition())).OrderBy(rect => rect.yMin).ToArray();
+            var placed = new Dictionary<NodeBaseEditor, Rect>();
+            // Lay out each independent cast action together with its inputs and all of its hit branches.
+            var roots = cards.Where(card => card.baseData is Root).ToArray();
+            var assigned = new HashSet<NodeBaseEditor>(roots);
+            var seeds = roots.SelectMany(root => outputs[root]).OrderBy(card => (card.baseData as Action)?.WaitTime ?? 0)
+                .Concat(cards.OrderBy(card => card.baseData.Uid, StringComparer.Ordinal));
+            var bands = new List<List<NodeBaseEditor>>();
+            foreach (var seed in seeds)
+            {
+                if (!assigned.Add(seed)) continue;
+                var band = new List<NodeBaseEditor> { seed };
+                for (int i = 0; i < band.Count; i++)
+                    foreach (var neighbor in inputs[band[i]].Concat(outputs[band[i]]))
+                        if (assigned.Add(neighbor)) band.Add(neighbor);
+                bands.Add(band);
+            }
+            if (bands.Count == 0) bands.Add(new List<NodeBaseEditor>());
+            bands[0].AddRange(roots);
+            foreach (var band in bands)
+            {
+                float bottom = top;
+                foreach (var column in band.GroupBy(card => columns[card]).OrderByDescending(group => group.Key))
+                {
+                    float y = top;
+                    float ConsumerY(NodeBaseEditor card) => outputs[card].Where(placed.ContainsKey)
+                        .Select(target => placed[target].y).DefaultIfEmpty(top).Min();
+                    foreach (var card in column.OrderBy(ConsumerY).ThenBy(card => card.baseData is Root ? 0 : card.baseData is Action ? 1 : 2)
+                        .ThenBy(card => card.baseData.Uid, StringComparer.Ordinal))
+                    {
+                        var rect = new Rect(new Vector2(left[column.Key], Mathf.Max(y, ConsumerY(card))), card.layout.size);
+                        foreach (var obstacle in obstacles)
+                            if (rect.Overlaps(obstacle)) rect.y = obstacle.yMax + rowGap;
+                        card.SetPosition(rect);
+                        card.UpdatePosition(rect);
+                        placed[card] = rect;
+                        y = rect.yMax + rowGap;
+                    }
+                    bottom = Mathf.Max(bottom, y);
+                }
+                top = bottom + rowGap;
+            }
+            EditorUtility.SetDirty(graph);
+            if (graph.autoSave) graph.pendingSave = true;
+            schedule.Execute(() => FrameAll());
+        }
+
         public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
         {
             return ports.ToList();
