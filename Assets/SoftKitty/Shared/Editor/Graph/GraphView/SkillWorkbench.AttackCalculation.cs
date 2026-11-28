@@ -43,6 +43,12 @@ namespace SoftKitty
                     if (GUILayout.Button("新增一级", EditorStyles.miniButton, GUILayout.Width(68))) AddLevel(table);
                 }
 
+                if (table.rows.Count == 0)
+                {
+                    EditorGUILayout.HelpBox("等级表为空。点「新增一级」创建 1 级后，公式才能读取该级数值。", MessageType.Info);
+                    return;
+                }
+
                 var keys = table.rows.SelectMany(row => row.fields).Select(field => field.key)
                     .Where(key => !string.IsNullOrWhiteSpace(key)).Distinct().ToList();
                 var columns = LevelColumns.Where(col => keys.Contains(col.key)).ToList();
@@ -50,12 +56,13 @@ namespace SoftKitty
                     if (!columns.Exists(col => col.key == key)) columns.Add((key, new GUIContent(key), 1f));
 
                 const float levelWidth = 48f;
+                const float deleteWidth = 44f;
                 Rect RowRect() => EditorGUILayout.GetControlRect(false, EditorGUIUtility.singleLineHeight,
-                    GUILayout.MinWidth(levelWidth + columns.Count * 105f));
+                    GUILayout.MinWidth(levelWidth + columns.Count * 105f + deleteWidth));
                 Rect Cell(Rect row, int index)
                 {
                     if (index < 0) return new Rect(row.x, row.y, levelWidth, row.height);
-                    float width = (row.width - levelWidth) / columns.Count;
+                    float width = (row.width - levelWidth - deleteWidth) / columns.Count;
                     return new Rect(row.x + levelWidth + index * width, row.y, width - 5f, row.height);
                 }
 
@@ -72,6 +79,7 @@ namespace SoftKitty
                         ? "该等级自定义参数的值，公式可按字段名读取这一列。" : column.title.tooltip);
                 }
 
+                SkillLevelTable.Row toDelete = null;
                 foreach (var level in table.rows.OrderBy(row => row.level))
                 {
                     var row = RowRect();
@@ -100,6 +108,15 @@ namespace SoftKitty
                             EditorUtility.SetDirty(table);
                         }
                     }
+                    var deleteRect = new Rect(row.xMax - deleteWidth, row.y, deleteWidth, row.height);
+                    var deleteLabel = new GUIContent("删除", $"删除这张等级表的 {level.level} 级，可撤销。其他等级保留原编号。");
+                    if (GUI.Button(deleteRect, deleteLabel, EditorStyles.miniButton)) toDelete = level;
+                }
+                if (toDelete != null)
+                {
+                    Undo.RegisterCompleteObjectUndo(table, "删除技能等级");
+                    table.rows.Remove(toDelete);
+                    EditorUtility.SetDirty(table);
                 }
             }
         }
